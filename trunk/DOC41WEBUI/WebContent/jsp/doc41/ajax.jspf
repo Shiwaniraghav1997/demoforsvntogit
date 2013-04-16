@@ -1,0 +1,81 @@
+
+<script language="JavaScript">
+	// onla one req, as long as no concurrent Ajax-calls are fired
+	var req;
+	var CONTEXT_PATH = readCookie("IV_JCT")+"<%=response.encodeURL(request.getContextPath())%>";
+
+	function getXMLHttpRequest() {
+	  var xhr = null;
+	  if ( window.XMLHttpRequest ) {
+	    // Mozilla/Safari
+	    xhr = new XMLHttpRequest();
+	  } else if ( typeof ActiveXObject != "undefined" ) {
+	    // IE
+	    xhr = new ActiveXObject("MicroSoft.XMLHTTP");
+	  }
+	  return xhr;
+	}
+
+	function callAjaxUri(uri, params, callbackFunction) {
+		req = getXMLHttpRequest();
+		req.onreadystatechange = callbackFunction;
+		req.open("POST", CONTEXT_PATH+"/"+uri, true);
+		req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); 
+		req.send(params);
+	}
+	
+	function processResponseHTML(req, id) {
+		// Handle results if the ready state is complete
+		if (req.readyState == 4) {
+			  if (req.status == 200) {
+				document.getElementById(id).innerHTML=req.responseText; 
+			  } else {
+			  	document.getElementById(id).innerHTML=req.status;
+			  }
+		}
+	}
+	
+				
+	function processResponseXML() {
+		// only if req shows "complete"
+		if (req.readyState == 4) {
+			// only if "OK"
+			if (req.status == 200) {
+			
+			//alert('response received');
+			//alert(req.responseText);
+			//renderHtml('listTable', req.responseText);
+			
+				renderData(req.responseXML.documentElement.getElementsByTagName('result')[0]);
+			} else {
+				alert("There was a problem retrieving the XML data:\n" + req.statusText);
+			}
+		}
+	}
+	
+	function renderHtml(elemname, elemdata) {
+		if ( document.getElementById(elemname) ) {
+				document.getElementById(elemname).innerHTML = elemdata;
+		} else {
+			alert('elemname: '+elemname + ' -> '+elemdata);
+		}
+	}
+	
+	function renderData(resultElems) {
+	
+		theResultRows = resultElems.getElementsByTagName('resultelem');
+		
+		if (! theResultRows) alert ("Error: no 'resultelem' available");
+		for(var c = 0; c < theResultRows.length; c++){
+			elemname = "" + theResultRows[c].getElementsByTagName('elemname')[0].firstChild.data;
+			elemdata = theResultRows[c].getElementsByTagName('elemdata')[0].firstChild.data;
+			
+			if ( document.getElementById(elemname) ) {
+				document.getElementById(elemname).innerHTML = elemdata;
+			//} else {
+			//  happens on read-only icon - don't show any message:
+			//	alert(elemname + ' -> '+elemdata);
+			}
+	   	}
+	}
+</script>

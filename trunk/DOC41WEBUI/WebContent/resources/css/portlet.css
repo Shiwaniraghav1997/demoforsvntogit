@@ -1,0 +1,424 @@
+.portlet-body {
+	width: 100%;
+}
+/* non-IE browsers will use this */
+body > .portlet-body {width: 99%;}
+
+.portlet-font {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: black;
+}
+
+.portlet-font-dim {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: silver;
+}
+
+.portlet-msg-status {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: black;
+	display: block;
+	background-color: #F2F9FC;
+	border-top: 1px solid #009899;
+	border-bottom: 1px solid #009899;
+	padding: 4px 5px;
+}
+
+.portlet-msg-info {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: black;
+	display: block;
+	background-color: #F2F9FC;
+	border-top: 1px solid #009899;
+	border-bottom: 1px solid #009899;
+	padding: 4px 5px;
+}
+
+.portlet-msg-error {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	border-top: 1px solid #009899;
+	border-bottom: 1px solid #009899;
+	padding: 6px 5px 6px 29px;	
+	min-height: 20px;
+	display: block;
+	color: #DE2121;
+	background-color: #F2F9FC;
+	background-image: url(../resources/icon_warning_small.gif);
+	background-repeat: no-repeat; 
+	background-position: 4px 4px;
+}
+
+.portlet-msg-alert {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #009899;
+	display: block;
+	background-color: #F2F9FC;
+	border-top: 1px solid #009899;
+	border-bottom: 1px solid #009899;
+	padding: 4px 5px;	
+}
+
+.portlet-msg-success {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: black;
+	display: block;
+	background-color: #F2F9FC;
+	border-top: 1px solid #009899;
+	border-bottom: 1px solid #009899;
+	padding: 4px 5px;	
+}
+
+.portlet-section-header {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	display: block;
+	background-color: #F2F9FC;
+	border: 1px solid #009899;
+	padding: 4px 1px;
+	margin-left: 5px;
+	text-align: right;
+	width: 100%;
+	height: 18px;
+}
+
+.portlet-section-subheader  {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: #009899;
+}
+
+.portlet-section-header tr td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	border-bottom: 1px solid #009899;
+}
+
+.portlet-section-body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	display: block;
+	background-color: #F2F9FC;
+	border: 1px solid #009899;
+	padding: 4px 1px;
+	margin-left: 5px;
+	width: 100%;
+}
+
+.portlet-section-body table {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	border: 1px solid #009899;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.portlet-section-alternate {
+}
+
+.portlet-section-selected {
+}
+
+.portlet-section-footer {
+}
+
+.portlet-section-text {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: black;
+}
+
+.portlet-table-header {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: #009899;
+	background-color: F2F9FC;
+}
+
+.portlet-table-header * th {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	border-color: #009899;
+	border-width: 0px 1px 1px 1px;
+	border-style: solid;
+	text-align: left;
+}
+
+.portlet-table-header * td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	border-color: #009899;
+	border-width: 0px 1px 1px 1px;
+	border-style: solid;
+	color: black;
+	background-color: white;
+	font-weight: normal;	
+	text-align: left;
+}
+
+.portlet-table-body * td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	border-color: #009899;
+	border-width: 0px 1px 1px 1px;
+	border-style: solid;
+	text-align: left;
+}
+
+.portlet-table-body tr.nobottom td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	border-color: #009899;
+	border-width: 0px 1px 0px 1px;
+	border-style: solid;
+	text-align: left;	
+}
+
+.portlet-table-body * th {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: #F2F9FC; 
+	border-color: #009899;
+	color: #009899;	
+	border-width: 0px 1px 1px 1px;
+	border-style: solid;
+	font-weight: bold;
+	text-align: right;
+	padding-right: 10px;
+}
+
+.portlet-table-header tr.nobottom th {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	border-color: #009899;
+	border-width: 0px 1px 0px 1px;
+	border-style: solid;
+}
+
+.portlet-table-body tr.nobottom th {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: #F2F9FC; 
+	border-color: #009899;
+	color: #009899;	
+	border-width: 0px 1px 0px 1px;
+	border-style: solid;
+	font-weight: bold;
+	text-align: right;
+	padding-right: 10px;	
+}
+
+.portlet-table-body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: black;
+	background-color: white;
+}
+
+.portlet-table-alternate {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	background-color: #F2F9FC;	
+}
+
+.portlet-table-selected {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: #BBE3E3;
+}
+
+.portlet-table-subheader {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #009899;
+}
+
+.portlet-table-footer {
+}
+
+.portlet-table-text {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: black;
+}
+
+.portlet-form-label {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: #009899;
+}
+
+.portlet-form-input-field {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: black;
+	border: 1px solid #009899;
+}
+
+.portlet-form-button {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: black;
+	border: 2px solid #009899;	
+	background-color: white;
+}
+
+.portlet-icon-label {
+}
+
+.portlet-dlg-icon-label {
+}
+
+.portlet-form-field-label {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color: black;
+}
+
+.portlet-table-body th .portlet-form-field-label {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color: black;
+	display: block;
+	text-align: right;
+	width: 100%;
+	padding-right: 10px;
+}
+
+.finished {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: red;
+}
+
+.loading {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: #8888ff;
+}
+
+.waiting {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: yellow;
+}
+
+.planned {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: #88ff88;
+}
+
+.break {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: #eeeeee;
+}
+
+.booking {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: #eeeeee;
+}
+
+.sum {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: #F2F9FC;
+	font-weight: bold;
+}
+
+tr.current-item td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: #BBE3E3;
+}
+
+.portlet-form-field {
+}
+
+.portlet-menu {
+}
+
+.portlet-menu-item {
+}
+
+.portlet-menu-item-selected {
+}
+
+.portlet-menu-item-hover {
+}
+
+.portlet-menu-item-hover-selected {
+}
+
+.portlet-menu-cascade-item {
+}
+
+.portlet-menu-cascade-item-selected {
+}
+
+.portlet-menu-description {
+}
+
+.portlet-menu-caption {
+}
