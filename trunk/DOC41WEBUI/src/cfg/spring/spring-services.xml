@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:sws="http://www.springframework.org/schema/web-services"
+	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd
+		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.1.xsd">
+
+	<!-- MONITORING		-->
+
+	<!-- LOGGING 		-->
+
+	<!-- MAPPER 		-->
+	
+	<!-- REPOSITORIES 	-->		 	
+
+	
+	<!--POI Excel -->
+	<!-- <bean id="poiListOfValuesMapper" class="com.bayer.bhc.doc41webui.service.poi.PoiReflectionMapper">
+		<constructor-arg ><value>com.bayer.bhc.doc41webui.integration.db.dc.masterdata.MDListOfValuesOverviewDC</value></constructor-arg>
+		<constructor-arg>
+			<list>
+				<value>LovType</value>
+				<value>LovKey</value>
+				<value>LanguageCode</value>
+			</list>
+		</constructor-arg>
+		<property name="excludeColumns">
+			<list>
+				<value>IsDefault</value>
+			</list>
+		</property>
+		<property name="fixMethodName" value="fixAfterExcelImport"/>
+	</bean> -->
+	
+
+	<!-- WebServices -->
+	
+
+	<!-- SERVICES -->		
+	
+	
+
+<!-- for Spring MVC have some better error messages --> 
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="message" />
+	</bean>
+
+	<!-- Configuring Language Codes -->	
+	<util:map id="languageCodes">
+		<entry key="en" value="English" />
+		<entry key="de" value="German" />
+		<entry key="es" value="Spanish" />
+		<entry key="zh" value="Chinese" />
+		<entry key="pt" value="Portuguese" />
+	</util:map>
+
+
+	<!-- Configuring Country Codes -->	
+	<util:map id="countryCodes">
+		<entry key="*" value="*" />
+		<entry key="US" value="United States" />
+		<entry key="GB" value="United Kingdom" />
+		<entry key="DE" value="Germany" />
+		<entry key="ES" value="Spain" />
+		<entry key="PT" value="Portugal" />
+	</util:map>
+    
+</beans>

@@ -1,0 +1,26 @@
+#DEFINITION for BOEPGUPermissionNDC:
+#--------------------------------
+
+Package=com.bayer.bhc.doc41webui.integration.db.dc.usermanagementN
+DCClassName=Doc41PGUPermissionNDC
+Tablename=[UM].UM_PGU_PERMISSIONS
+Superclass=com.bayer.ecim.foundation.web.usermanagementN.UMPGUPermissionNDC
+ImplementedInterfaces=
+Imports=
+ClassComment=DC for UM_PGU_PERMISSIONS in BOE2_FDT
+
+
+#Cols ignored, defined by super class:
+#-------------------------------------
+#CHANGED
+#CHANGEDBY
+#CHANGEDON
+#CREATED
+#CREATEDBY
+#CREATEDON
+#GROUP_ID
+#OBJECT_ID
+#PERMISSION_ID
+#PROFILE_ID
+#USERCHANGED
+#USER_ID

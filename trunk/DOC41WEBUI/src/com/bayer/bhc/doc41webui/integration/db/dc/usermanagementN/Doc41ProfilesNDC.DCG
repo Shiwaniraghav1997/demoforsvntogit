@@ -1,0 +1,25 @@
+#DEFINITION for BOEProfileNDC:
+#--------------------------------
+
+Package=com.bayer.bhc.doc41webui.integration.db.dc.usermanagementN
+DCClassName=Doc41ProfileNDC
+Tablename=[UM].UM_PROFILES
+Superclass=com.bayer.ecim.foundation.web.usermanagementN.UMProfileNDC
+ImplementedInterfaces=
+Imports=
+ClassComment=DC for UM_PROFILES in BOE2_FDT
+
+
+
+
+#Cols ignored, defined by super class:
+#-------------------------------------
+#CHANGED
+#CHANGEDBY
+#CHANGEDON
+#CREATED
+#CREATEDBY
+#CREATEDON
+#ISEXTERNAL
+#OBJECT_ID
+#USERCHANGED
