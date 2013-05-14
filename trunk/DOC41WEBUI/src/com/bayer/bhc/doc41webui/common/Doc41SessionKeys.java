@@ -12,29 +12,29 @@ package com.bayer.bhc.doc41webui.common;
 public interface Doc41SessionKeys {
 
     
-    String DOC41_USER                = "doc41User";
+    String DOC41_USER                	= "doc41User";
     
-    String DOC41_ORIGIN_URI                = "doc41OriginURI";
+    String DOC41_ORIGIN_URI				= "doc41OriginURI";
     
 //    String DOC41_SESSION_LANGUAGE    = "doc41SessionLanguage";
     
-    String DOC41_LAST_RENDERED_MAV   = "doc41LastRenderedMav";
+    String DOC41_LAST_RENDERED_MAV   	= "doc41LastRenderedMav";
     
-    String DOC41_LAST_RENDERED_CTRL  = "doc41LastRenderingController";
+    String DOC41_LAST_RENDERED_CTRL  	= "doc41LastRenderingController";
     
-    String DOC41_LAST_RENDERED_ACTION  = "lastRenderedAction";
+    String DOC41_LAST_RENDERED_ACTION	= "lastRenderedAction";
     
-    String BACK = "BACK";
+    String BACK 						= "BACK";
     
-    String RENDER = "RENDER";
+    String RENDER 						= "RENDER";
 
-    String TAB_MAP = "TAB_MAP";
+    String TAB_MAP 						= "TAB_MAP";
     
-    String USER_FILTER = "USER_FILTER";
+    String USER_FILTER 					= "USER_FILTER";
     
       
 
-    String USER_EDIT_FORM = "USER_EDIT_FORM";
+    String USER_EDIT_FORM 				= "USER_EDIT_FORM";
     
 
 }
