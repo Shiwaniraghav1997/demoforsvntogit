@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 import com.bayer.bbs.aila.model.AILAPerson;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.domain.User;
-import com.bayer.bhc.doc41webui.integration.db.dc.usermanagementN.Doc41UserNDC;
+import com.bayer.ecim.foundation.web.usermanagementN.UMUserNDC;
 import com.bayer.ecim.foundation.web.usermanagementN.UM_CONSTS_N;
 
 @Component
 public class UserMapper extends AbstractMapper {
 
-	public User mapToDomainObject(final Doc41UserNDC pDataCarrier, User pDomainObject) {
+	public User mapToDomainObject(final UMUserNDC pDataCarrier, User pDomainObject) {
 		pDomainObject = super.mapToDomainObject(pDataCarrier, pDomainObject);
 		if(null == pDomainObject || null == pDataCarrier) {
             return pDomainObject;
@@ -50,7 +50,7 @@ public class UserMapper extends AbstractMapper {
 		return pDomainObject;
 	}
 	
-	public Doc41UserNDC mapToDataCarrier(final User pDomainObject, Doc41UserNDC pDataCarrier) {
+	public UMUserNDC mapToDataCarrier(final User pDomainObject, UMUserNDC pDataCarrier) {
 		pDataCarrier =super.mapToDataCarrier(pDomainObject, pDataCarrier);
 		if(null == pDomainObject || null == pDataCarrier) {
             return pDataCarrier;

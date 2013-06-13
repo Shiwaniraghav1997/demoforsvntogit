@@ -25,12 +25,12 @@ import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.db.LdapDAO;
 import com.bayer.bhc.doc41webui.integration.db.UserManagementDAO;
-import com.bayer.bhc.doc41webui.integration.db.dc.usermanagementN.Doc41ProfileNDC;
-import com.bayer.bhc.doc41webui.integration.db.dc.usermanagementN.Doc41UserNDC;
-import com.bayer.bhc.doc41webui.integration.db.dc.usermanagementN.Doc41UserProfileNDC;
 import com.bayer.bhc.doc41webui.service.mapping.UserMapper;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.SendMail;
+import com.bayer.ecim.foundation.web.usermanagementN.UMProfileNDC;
+import com.bayer.ecim.foundation.web.usermanagementN.UMUserNDC;
+import com.bayer.ecim.foundation.web.usermanagementN.UMUserProfileNDC;
 
 /**
  * @author ezzqc
@@ -76,7 +76,7 @@ public class UserManagementRepository extends AbstractRepository {
     public User getUserByCwid(final String pCwid) throws Doc41RepositoryException {
     	try {
 	        Doc41Log.get().debug(this.getClass(), "System", "Entering UserManagementRepositoryImpl.getUserByCwid(): " + pCwid);
-	        Doc41UserNDC userDC = userManagementDAO.getUserByCWID(pCwid);
+	        UMUserNDC userDC = userManagementDAO.getUserByCWID(pCwid);
 	        if (userDC == null ) return null;
 	        User domainUser = null;
 	        domainUser = copyDcToDomainUser(userDC);
@@ -99,10 +99,10 @@ public class UserManagementRepository extends AbstractRepository {
 		try{
 			Doc41Log.get().debug(this.getClass(), "System", "Entering UserManagementRepositoryImpl.getUsers()");        
 
-			PagingResult<Doc41UserNDC> result = userManagementDAO.getDoc41UserNDCs(pUserPagingRequest);
-			List<Doc41UserNDC> userDCList = result.getResult();
+			PagingResult<UMUserNDC> result = userManagementDAO.getUMUserNDCs(pUserPagingRequest);
+			List<UMUserNDC> userDCList = result.getResult();
 			List<User> domainUserList = new ArrayList<User>();
-			for (Doc41UserNDC userDC : userDCList) {
+			for (UMUserNDC userDC : userDCList) {
 				User user = copyDcToDomainUser(userDC);
 				domainUserList.add(user);
 			}        
@@ -171,7 +171,7 @@ public class UserManagementRepository extends AbstractRepository {
         
         // UserManagement DB part
         try {
-            Doc41UserNDC userDC = userManagementDAO.getUserByCWID(pUser.getCwid());
+            UMUserNDC userDC = userManagementDAO.getUserByCWID(pUser.getCwid());
             
             
             if (userDC == null) {
@@ -279,7 +279,7 @@ public class UserManagementRepository extends AbstractRepository {
         }
         
      	// UserManagement DB part
-        Doc41UserNDC userDC = copyDomainToDCUser(pUser, false);
+        UMUserNDC userDC = copyDomainToDCUser(pUser, false);
         try {
         	userManagementDAO.updateUser(userDC);
         } catch (Doc41TechnicalException e) {
@@ -309,11 +309,11 @@ public class UserManagementRepository extends AbstractRepository {
 	            
 	        } else {
 	        	// refresh roles
-	        	List<Doc41ProfileNDC> userProfiles = 
+	        	List<UMProfileNDC> userProfiles = 
 	    				userManagementDAO.getProfilesByUser(userDC.getObjectID());
 	    		
 	            List<String> roles = new ArrayList<String>();
-	            for (Doc41ProfileNDC profile : userProfiles) {                    
+	            for (UMProfileNDC profile : userProfiles) {                    
 	                Doc41Log.get().debug(this.getClass(), "System", "getProfilename: " + profile.getProfilename());
 	                roles.add(profile.getProfilename());
 	            }
@@ -335,10 +335,10 @@ public class UserManagementRepository extends AbstractRepository {
      */
     protected Map<String, Long> getUserProfileMap(Long pUserObjectID) throws Doc41RepositoryException {
     	try {
-	        List<Doc41ProfileNDC> profilesOfUser = userManagementDAO.getProfilesByUser(pUserObjectID);
+	        List<UMProfileNDC> profilesOfUser = userManagementDAO.getProfilesByUser(pUserObjectID);
 	        Map<String, Long> profileMap = new HashMap<String, Long>();
 	        if (profilesOfUser != null) {
-	            for (Doc41ProfileNDC profile : profilesOfUser) {	     
+	            for (UMProfileNDC profile : profilesOfUser) {	     
 	                profileMap.put(profile.getProfilename(), profile.getUserProfileId());
 	            }
 	        }
@@ -351,12 +351,12 @@ public class UserManagementRepository extends AbstractRepository {
     
 	
 
-    protected void addUserToProfileInDB(Doc41UserNDC pUserDC, String roleName, Locale pLoc) throws Doc41RepositoryException {
-        Doc41UserProfileNDC userProfileNDC;
+    protected void addUserToProfileInDB(UMUserNDC pUserDC, String roleName, Locale pLoc) throws Doc41RepositoryException {
+        UMUserProfileNDC userProfileNDC;
         try {
         	User usr = UserInSession.get();
             userProfileNDC = userManagementDAO.createUserProfile(pLoc);
-            Doc41ProfileNDC profile = userManagementDAO.getProfileByName(roleName, pLoc);
+            UMProfileNDC profile = userManagementDAO.getProfileByName(roleName, pLoc);
             userProfileNDC.setUserId(pUserDC.getObjectID());
             userProfileNDC.setProfileId(profile.getObjectID());
             
@@ -369,17 +369,17 @@ public class UserManagementRepository extends AbstractRepository {
         }
     }
 			
-	protected User copyDcToDomainUser(Doc41UserNDC pUserDC) throws Doc41RepositoryException {
+	protected User copyDcToDomainUser(UMUserNDC pUserDC) throws Doc41RepositoryException {
 		try{
 			if (pUserDC == null) return null;
 
 			User domainUser = userMapper.mapToDomainObject(pUserDC, new User());
 	 
-			List<Doc41ProfileNDC> userProfiles = 
+			List<UMProfileNDC> userProfiles = 
 					userManagementDAO.getProfilesByUser(pUserDC.getObjectID());
 			
 	        List<String> roles = new ArrayList<String>();
-	        for (Doc41ProfileNDC profile : userProfiles) {                    
+	        for (UMProfileNDC profile : userProfiles) {                    
 	            Doc41Log.get().debug(this.getClass(), "System", "getProfilename: " + profile.getProfilename());
 	            roles.add(profile.getProfilename());
 	        }
@@ -392,9 +392,9 @@ public class UserManagementRepository extends AbstractRepository {
 	}
 	
 	
-	protected Doc41UserNDC copyDomainToDCUser(User pDomainUser, boolean pIsNewUser) throws Doc41RepositoryException {        
+	protected UMUserNDC copyDomainToDCUser(User pDomainUser, boolean pIsNewUser) throws Doc41RepositoryException {        
         Doc41Log.get().debug(this.getClass(), "System", "Entering copyDomainToDCUser(): "+ pDomainUser);
-        Doc41UserNDC userDC = null;
+        UMUserNDC userDC = null;
         
 		if (pDomainUser != null && pDomainUser.getCwid() != null) {
 	        

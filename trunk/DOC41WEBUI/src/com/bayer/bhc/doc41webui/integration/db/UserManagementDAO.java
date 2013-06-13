@@ -13,15 +13,16 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
-import com.bayer.bhc.doc41webui.integration.db.dc.usermanagementN.Doc41ProfileNDC;
-import com.bayer.bhc.doc41webui.integration.db.dc.usermanagementN.Doc41UserNDC;
-import com.bayer.bhc.doc41webui.integration.db.dc.usermanagementN.Doc41UserProfileNDC;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.dbx.DeleteException;
 import com.bayer.ecim.foundation.dbx.QueryException;
 import com.bayer.ecim.foundation.dbx.ResultObject;
 import com.bayer.ecim.foundation.dbx.StoreException;
+import com.bayer.ecim.foundation.web.usermanagementN.OTUserManagementN;
+import com.bayer.ecim.foundation.web.usermanagementN.UMProfileNDC;
+import com.bayer.ecim.foundation.web.usermanagementN.UMUserNDC;
+import com.bayer.ecim.foundation.web.usermanagementN.UMUserProfileNDC;
 import com.bayer.ecim.foundation.web.usermanagementN.UM_CONSTS_N;
 
 /**
@@ -30,12 +31,6 @@ import com.bayer.ecim.foundation.web.usermanagementN.UM_CONSTS_N;
  */
 @Component
 public class UserManagementDAO {
-	private Doc41UserManagementN userManagementDAO;
-	
-	public UserManagementDAO() {
-		userManagementDAO = Doc41UserManagementN.get();
-	}
-	
 	/**
      * Observers do not have permissions to store and delete functions.
      * 
@@ -47,13 +42,13 @@ public class UserManagementDAO {
         }
     }
     
-	public Doc41ProfileNDC getProfileByName(String pName, Locale pLocale) throws Doc41TechnicalException {
+	public UMProfileNDC getProfileByName(String pName, Locale pLocale) throws Doc41TechnicalException {
 		try {
-	        Doc41ProfileNDC profile = null;
-	        ResultObject profiles = Doc41UserManagementN.get().getProfiles(null, null, pName, -1, -1, null, null, null, null, pLocale);
+	        UMProfileNDC profile = null;
+	        ResultObject profiles = OTUserManagementN.get().getProfiles(null, null, pName, -1, -1, null, null, null, null, pLocale);
 	        if (profiles != null && profiles.getResult() != null && profiles.getResult().size() > 0) {
 	            // get profile by name should return a unique result
-	            profile = (Doc41ProfileNDC) profiles.getResult().get(0);
+	            profile = (UMProfileNDC) profiles.getResult().get(0);
 	        }
 	        return profile;
 		} catch (QueryException e) {
@@ -61,21 +56,21 @@ public class UserManagementDAO {
 		}
     }
     
-	public void saveUserProfile(Doc41UserProfileNDC pProfile) throws Doc41TechnicalException {
+	public void saveUserProfile(UMUserProfileNDC pProfile) throws Doc41TechnicalException {
         checkUser();
         
         try {
-            Doc41UserManagementN.get().storeDC(pProfile);
+            OTUserManagementN.get().storeDC(pProfile);
         } catch (StoreException e) {
             throw new Doc41TechnicalException(this.getClass(), "saveUserProfile", e);
         }
     }
 	
-	public void updateUser(final Doc41UserNDC pUserDC) throws Doc41TechnicalException {
+	public void updateUser(final UMUserNDC pUserDC) throws Doc41TechnicalException {
         checkUser();
         
 		try {
-            Doc41UserManagementN.get().storeDC(pUserDC);
+            OTUserManagementN.get().storeDC(pUserDC);
             
 		} catch (InitException e) {
             throw new Doc41TechnicalException(this.getClass(), "updateUser", e);
@@ -89,18 +84,18 @@ public class UserManagementDAO {
 	public void removeUserProfile(Long pObjectId) throws Doc41TechnicalException {
         checkUser();
         try {
-            Doc41UserManagementN.get().deleteDCById(new Doc41UserProfileNDC(), pObjectId);
+            OTUserManagementN.get().deleteDCById(new UMUserProfileNDC(), pObjectId);
         } catch (DeleteException e) {
             throw new Doc41TechnicalException(this.getClass(), "removeUserProfile", e);
         }
     }
     
-	public Doc41UserNDC insertUser(final Doc41UserNDC pUserDC) throws Doc41TechnicalException {
-        Doc41UserNDC userDC = null;
+	public UMUserNDC insertUser(final UMUserNDC pUserDC) throws Doc41TechnicalException {
+        UMUserNDC userDC = null;
         checkUser();
         
 		try {
-            userDC = (Doc41UserNDC) Doc41UserManagementN.get().storeDC(pUserDC);
+            userDC = (UMUserNDC) OTUserManagementN.get().storeDC(pUserDC);
 		} catch (InitException e) {
             throw new Doc41TechnicalException(this.getClass(), "insertUser", e);
 		} catch (StoreException e) {
@@ -109,7 +104,7 @@ public class UserManagementDAO {
         return userDC;
 	}
    
-	public PagingResult<Doc41UserNDC> getDoc41UserNDCs(UserPagingRequest pUserRequest) throws Doc41TechnicalException {
+	public PagingResult<UMUserNDC> getUMUserNDCs(UserPagingRequest pUserRequest) throws Doc41TechnicalException {
        Long objectState = null;
         if (Boolean.TRUE.equals(pUserRequest.getIsActive())) {
             objectState = UM_CONSTS_N.STATEACTIVE;
@@ -121,17 +116,17 @@ public class UserManagementDAO {
             String orderBy = StringTool.isTrimmedEmptyOrNull(pUserRequest.getOrderBy()) ? "LASTNAME" : pUserRequest.getOrderBy();
             ResultObject resultObject = null;
             if (!StringTool.isTrimmedEmptyOrNull(pUserRequest.getRole())) {
-                Doc41ProfileNDC profileNDC = getProfileByName(pUserRequest.getRole(), LocaleInSession.get());
-                resultObject = userManagementDAO.getUsersByProfile(profileNDC.getObjectID(),null, pUserRequest.getSurname(), null, objectState, pUserRequest.getIsExternal(), pUserRequest.getStartIndex(), pUserRequest.getEndIndex(), pUserRequest.getCompany(), null, orderBy, new Long(pUserRequest.getTotalSize()), LocaleInSession.get());
+                UMProfileNDC profileNDC = getProfileByName(pUserRequest.getRole(), LocaleInSession.get());
+                resultObject = OTUserManagementN.get().getUsersByProfile(profileNDC.getObjectID(),null, pUserRequest.getSurname(), null, objectState, pUserRequest.getIsExternal(), pUserRequest.getStartIndex(), pUserRequest.getEndIndex(), pUserRequest.getCompany(), null, orderBy, new Long(pUserRequest.getTotalSize()), LocaleInSession.get());
                 Doc41Log.get().debug(this.getClass(), "System", "getUsers(...) getUsersByProfile returned (hitCount): " + resultObject.getHitCount());
             } else {
                 // company as quicksearch:
-                resultObject = userManagementDAO.getUsers(pUserRequest.getCwid(), null, null, pUserRequest.getSurname(), null, objectState, null, pUserRequest.getIsExternal(), pUserRequest.getStartIndex(), pUserRequest.getEndIndex(), pUserRequest.getCompany(), null, orderBy, new Long(pUserRequest.getTotalSize()), LocaleInSession.get());
+                resultObject = OTUserManagementN.get().getUsers(pUserRequest.getCwid(), null, null, pUserRequest.getSurname(), null, objectState, null, pUserRequest.getIsExternal(), pUserRequest.getStartIndex(), pUserRequest.getEndIndex(), pUserRequest.getCompany(), null, orderBy, new Long(pUserRequest.getTotalSize()), LocaleInSession.get());
             }
             @SuppressWarnings("unchecked")
-			List<Doc41UserNDC> userDCList = resultObject.getDCListResult();
+			List<UMUserNDC> userDCList = resultObject.getDCListResult();
             
-            PagingResult<Doc41UserNDC> result = new PagingResult<Doc41UserNDC>();
+            PagingResult<UMUserNDC> result = new PagingResult<UMUserNDC>();
             result.setResult(userDCList);
             if (resultObject.getHitCount() != null) {
             	result.setTotalSize(resultObject.getHitCount().intValue());
@@ -146,10 +141,10 @@ public class UserManagementDAO {
         }
 	}
 	
-	public Doc41UserNDC getUserByCWID(final String pCwid) throws Doc41TechnicalException {
-        Doc41UserNDC user = null;
+	public UMUserNDC getUserByCWID(final String pCwid) throws Doc41TechnicalException {
+        UMUserNDC user = null;
 		try {
-			user = Doc41UserManagementN.get().getUserByCWID(pCwid, Locale.ENGLISH);
+			user = OTUserManagementN.get().getUserByCWID(pCwid, Locale.ENGLISH);
 		} catch (InitException e) {
             throw new Doc41TechnicalException(this.getClass(), "getUserByCwid", e);
 		} catch (QueryException e) {
@@ -158,11 +153,11 @@ public class UserManagementDAO {
 		return user;
 	}
 	
-	public Doc41UserNDC createUser(Locale pLoc) throws Doc41TechnicalException {
-        Doc41UserNDC user = null;
+	public UMUserNDC createUser(Locale pLoc) throws Doc41TechnicalException {
+        UMUserNDC user = null;
         checkUser();        
         try {
-            user = Doc41UserManagementN.get().createUserDC(pLoc);
+            user = OTUserManagementN.get().createUserDC(pLoc);
         } catch (InstantiationException e) {
             throw new Doc41TechnicalException(this.getClass(), "createUser", e);
         } catch (IllegalAccessException e) {
@@ -173,11 +168,11 @@ public class UserManagementDAO {
         return user;
     }
 	
-	public Doc41UserProfileNDC createUserProfile(Locale pLoc) throws Doc41TechnicalException {
-        Doc41UserProfileNDC userProfile = null;
+	public UMUserProfileNDC createUserProfile(Locale pLoc) throws Doc41TechnicalException {
+        UMUserProfileNDC userProfile = null;
         checkUser();        
         try {
-            userProfile = Doc41UserManagementN.get().createUserProfileDC(pLoc);
+            userProfile = OTUserManagementN.get().createUserProfileDC(pLoc);
         } catch (InitException e) {
             throw new Doc41TechnicalException(this.getClass(), "createUserProfile", e);
         } catch (InstantiationException e) {
@@ -192,10 +187,10 @@ public class UserManagementDAO {
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<Doc41ProfileNDC> getProfilesByUser(Long pUserId) throws Doc41TechnicalException {
-		List<Doc41ProfileNDC> profiles = new ArrayList<Doc41ProfileNDC>();
+	public List<UMProfileNDC> getProfilesByUser(Long pUserId) throws Doc41TechnicalException {
+		List<UMProfileNDC> profiles = new ArrayList<UMProfileNDC>();
         try {
-            profiles = Doc41UserManagementN.get().getProfilesByUser(pUserId, null, null, LocaleInSession.get());
+            profiles = OTUserManagementN.get().getProfilesByUser(pUserId, null, null, LocaleInSession.get());
         } catch (QueryException e) {
             throw new Doc41TechnicalException(this.getClass(), "getProfilesByUser", e);
         }
