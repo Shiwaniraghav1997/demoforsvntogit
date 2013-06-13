@@ -1,0 +1,4 @@
+"PROFILENAME","PROFILEDESCRIPTION","ISEXTERNAL"
+"adm","Administrator","0"
+"int","internal user from Bayer","0"
+"exu","external user","1"
