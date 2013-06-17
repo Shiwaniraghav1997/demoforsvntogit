@@ -104,15 +104,15 @@
 				style="height: 16px;"><doc41:translate label="navMyProfile" />
 			</th>
 
-<%-- 			<c:if test="${user.orderEntryAllowed || user.historyAllowed}">
-				<th width=100px onclick="toggleVisibility('navigationColumn1')"
-					onmouseover="style.backgroundColor='#0077FF';switchon('navigationColumn1');"
-					onmouseout="style.backgroundColor='#0032c1'; stopActivation();"
-					style="height: 16px"><doc41:translate label="navOrders" />
-				</th>
-			</c:if>
+ 			
+			<th width=100px onclick="toggleVisibility('navigationColumn1')"
+				onmouseover="style.backgroundColor='#0077FF';switchon('navigationColumn1');"
+				onmouseout="style.backgroundColor='#0032c1'; stopActivation();"
+				style="height: 16px"><doc41:translate label="navDocuments" />
+			</th>
+			
 
-			<c:if test="${user.inventoryAgent||user.bayerInventoryManager||user.pricingComplianceAgent||user.businessConsignmentAdmin}">
+<%--			<c:if test="${user.inventoryAgent||user.bayerInventoryManager||user.pricingComplianceAgent||user.businessConsignmentAdmin}">
 				<th width=160px onclick="toggleVisibility('navigationColumn2')"
 					onmouseover="style.backgroundColor='#0077FF';switchon('navigationColumn2');"
 					onmouseout="style.backgroundColor='#0032c1'; stopActivation();"
@@ -153,30 +153,30 @@
 					<tr class="nobottom" style="font-weight: normal;">
 						<td class="navigationCell" onmouseover="stopDeactivation();"
 							onmouseout="stopActivation()";><a
-							href="#" onclick="sendGet('userprofile.htm', '')"><doc41:translate label="navMyProfile" /></a></td>
+							href="#" onclick="sendGet('myprofile.htm', '')"><doc41:translate label="navMyProfile" /></a></td>
 					</tr>
 					<tr>
 						<td class="navigationCellEmpty" />
 					</tr>
 				</table>
 			</td>
-			<%-- <c:if test="${user.orderEntryAllowed || user.historyAllowed}">
-				<td>
-					<table id="navigationColumn1" class="navigationColumn">
-						<c:if test="${user.orderEntryAllowed}">
-							<tr class="nobottom" style="font-weight: normal;">
-								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-									<a href="#" onclick="sendGet('orderentry.htm', 'reset=true')"><doc41:translate label="navOrderEntry" /></a></td>
-							</tr>
-						</c:if>
-						<tr>
-							<td class="navigationCellEmpty" />
+			
+			<td>
+				<table id="navigationColumn1" class="navigationColumn">
+					<c:if test="${user.customer}">
+						<tr class="nobottom" style="font-weight: normal;">
+							<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
+								<a href="#" onclick="sendGet('coa.htm', 'reset=true')"><doc41:translate label="navCOA" /></a></td>
 						</tr>
-					</table>
-				</td>
-			</c:if>
+					</c:if>
+					<tr>
+						<td class="navigationCellEmpty" />
+					</tr>
+				</table>
+			</td>
+			
 
-			<c:if test="${user.inventoryAgent||user.bayerInventoryManager||user.pricingComplianceAgent||user.businessConsignmentAdmin}">
+			<%--<c:if test="${user.inventoryAgent||user.bayerInventoryManager||user.pricingComplianceAgent||user.businessConsignmentAdmin}">
 				<td>
 					<table id="navigationColumn2" class="navigationColumn">
 						<c:if test="${user.bayerInventoryManager}">

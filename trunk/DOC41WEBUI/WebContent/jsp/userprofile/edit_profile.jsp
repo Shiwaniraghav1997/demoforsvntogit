@@ -4,8 +4,10 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="doc41" uri="doc41-tags" %>
 
-<form:form commandName="user" action="userprofile.htm" method="post">
-	<form:hidden path="id"/>	
+<form:form commandName="user" action="saveprofile.htm" method="post">
+	<form:hidden path="id"/>
+	<form:hidden path="type"/>
+	<form:hidden path="active"/>		
 
 	<div class="portlet-section-header">
 		<input type="submit" name="_finish" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />

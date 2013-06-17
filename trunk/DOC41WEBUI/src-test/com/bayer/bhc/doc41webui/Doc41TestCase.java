@@ -21,7 +21,6 @@ import com.bayer.bhc.doc41webui.domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader=FoundationXmlContextLoader.class,locations={"classpath:cfg/spring/applicationContext.xml",
-		"classpath:cfg/spring/spring-integration.xml",
 		"classpath:cfg/spring/spring-services.xml"
 		})
 

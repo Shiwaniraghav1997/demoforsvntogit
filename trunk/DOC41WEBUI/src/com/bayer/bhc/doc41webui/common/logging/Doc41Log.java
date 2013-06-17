@@ -157,6 +157,8 @@ public class Doc41Log {
 			
 			if (mav != null) {
 				jspName = mav.getViewName();
+			} else {
+				jspName = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_VIEW);
 			}
 			Doc41LogEntry pObj = new Doc41LogEntry(usr, usr, null, action, jspName, null, null, null, null, null, null, null, null);
 			Dbg.get().println(LOGGING, logClass, pRequest.getRemoteUser(),pObj);

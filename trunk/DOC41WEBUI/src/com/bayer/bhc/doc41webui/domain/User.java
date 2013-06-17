@@ -21,7 +21,7 @@ public class User extends DomainObject {
 
 	public static final String ROLE_TECH_ADMIN = "doc41_tadm";
 
-	public static final String ROLE_A = "doc41_a";
+	public static final String ROLE_CUSTOMER = "doc41_cust";
 	
 	public static final String ROLE_OBSERVER = "boe_obsv";
 
@@ -194,8 +194,7 @@ public class User extends DomainObject {
 	public String toString() {
 		return "User [cwid=" + cwid + ", surname=" + surname + ", firstname="
 				+ firstname + ", email=" + email + ", phone=" + phone
-				+ ", type=" + type + ", active=" + active + ", password="
-				+ password  + ", roles="
+				+ ", type=" + type + ", active=" + active + ", roles="
 				+ roles
 				+ ", locale=" + locale 
 				+ ", readOnly=" + readOnly + ", timeZone=" + timeZone
@@ -219,6 +218,9 @@ public class User extends DomainObject {
 		return roles.contains(ROLE_TECH_ADMIN);
 	}
 
+	public boolean isCustomer() {
+		return roles.contains(ROLE_CUSTOMER);
+	}
 	
 	private String company = "";
 
@@ -240,5 +242,8 @@ public class User extends DomainObject {
 		setLocale(LocaleTool.getLocaleFromString(languageCountry));
 	}
 	
-		
+	public User() {
+		// TODO Auto-generated constructor stub
+		System.out.println("test");
+	}	
 }

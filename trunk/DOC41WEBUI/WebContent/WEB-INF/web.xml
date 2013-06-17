@@ -39,10 +39,12 @@
   </servlet>
   <servlet>
     <servlet-name>doc41</servlet-name>
-    <servlet-class>com.bayer.bhc.doc41webui.web.Doc41ExceptionResolver</servlet-class>
+    <!-- <servlet-class>com.bayer.bhc.doc41webui.web.Doc41ExceptionResolver</servlet-class> -->
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>doc41</servlet-name>
+    <!-- <url-pattern>*.htm</url-pattern> -->
     <url-pattern>*.htm</url-pattern>
   </servlet-mapping>
   <servlet>
@@ -108,9 +110,7 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>
 			classpath:cfg/spring/applicationContext.xml
-			classpath:cfg/spring/spring-integration.xml
 			classpath:cfg/spring/spring-services.xml
-			classpath:cfg/spring/spring-usecases.xml
 		</param-value>
   </context-param>
   <context-param>

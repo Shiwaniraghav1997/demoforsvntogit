@@ -22,6 +22,9 @@ public interface Doc41SessionKeys {
     
     String DOC41_LAST_RENDERED_CTRL  	= "doc41LastRenderingController";
     
+    String DOC41_LAST_RENDERED_VIEW  	= "doc41LastRenderingView";
+    String DOC41_LAST_RENDERED_MODEL  	= "doc41LastRenderingModel";
+    
     String DOC41_LAST_RENDERED_ACTION	= "lastRenderedAction";
     
     String BACK 						= "BACK";

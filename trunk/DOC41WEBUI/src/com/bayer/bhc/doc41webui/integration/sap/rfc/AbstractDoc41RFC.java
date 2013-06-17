@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.integration.sap.rfc;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
@@ -109,6 +110,11 @@ public abstract class AbstractDoc41RFC<E> implements RFCCaller<E> {
 		return "X";
     	}
     	return null;
+	}
+
+
+	protected Date mergeSapDateTime(Date ardate, Date artime) {
+		return new Date(ardate.getTime()+artime.getTime());
 	}
 	
 }

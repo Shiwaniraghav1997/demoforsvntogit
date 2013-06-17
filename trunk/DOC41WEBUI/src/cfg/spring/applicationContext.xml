@@ -19,11 +19,7 @@
 	<!-- to include Foundation staging properties -->
 	<context:property-placeholder/>
 	
-	<context:component-scan base-package="com.bayer.bhc.doc41webui.usecase,com.bayer.bhc.doc41webui.service,com.bayer.bhc.doc41webui.service.*,com.bayer.bhc.doc41webui.integration.*,com.bayer.bhc.doc41webui.integration.sap.service,com.bayer.bhc.doc41webui.tasks.model.*,com.bayer.bhc.doc41webui.web"/>
-	
-	<!-- Enables the Spring MVC @Controller programming model -->
-	<mvc:annotation-driven />
-	
-	
+	<context:component-scan base-package="com.bayer.bhc.doc41webui.usecase,com.bayer.bhc.doc41webui.service,com.bayer.bhc.doc41webui.service.*,com.bayer.bhc.doc41webui.integration.*,com.bayer.bhc.doc41webui.integration.sap.service,com.bayer.bhc.doc41webui.tasks.model.*"/>
+		
 	<beans:bean id="applicationContextProvider" class="com.bayer.bhc.doc41webui.common.ApplicationContextProvider"></beans:bean>
 </beans:beans>
