@@ -21,9 +21,15 @@ public class User extends DomainObject {
 
 	public static final String ROLE_TECH_ADMIN = "doc41_tadm";
 
-	public static final String ROLE_CUSTOMER = "doc41_cust";
+	public static final String ROLE_CARRIER = "doc41_carr";
 	
-	public static final String ROLE_OBSERVER = "boe_obsv";
+	public static final String ROLE_CUSTOMS_BROKER = "doc41_cusbr";
+	
+	public static final String ROLE_LAYOUT_SUPPLIER = "doc41_laysup";
+	
+	public static final String ROLE_PM_SUPPLIER = "doc41_pmsup";
+	
+	public static final String ROLE_OBSERVER = "doc41_obsv";
 
 	public static final String TYPE_INTERNAL = "internal";
 
@@ -218,8 +224,20 @@ public class User extends DomainObject {
 		return roles.contains(ROLE_TECH_ADMIN);
 	}
 
-	public boolean isCustomer() {
-		return roles.contains(ROLE_CUSTOMER);
+	public boolean isCarrier() {
+		return roles.contains(ROLE_CARRIER);
+	}
+	
+	public boolean isCustomsBroker() {
+		return roles.contains(ROLE_CUSTOMS_BROKER);
+	}
+	
+	public boolean isLayoutSupplier() {
+		return roles.contains(ROLE_LAYOUT_SUPPLIER);
+	}
+	
+	public boolean isPmSupplier() {
+		return roles.contains(ROLE_PM_SUPPLIER);
 	}
 	
 	private String company = "";
