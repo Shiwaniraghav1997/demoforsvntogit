@@ -163,10 +163,10 @@
 			
 			<td>
 				<table id="navigationColumn1" class="navigationColumn">
-					<c:if test="${user.customer}">
+					<c:if test="${user.carrier}">
 						<tr class="nobottom" style="font-weight: normal;">
 							<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('coa.htm', 'reset=true')"><doc41:translate label="navCOA" /></a></td>
+								<a href="#" onclick="sendGet('/documents/upload.htm;type=bol', 'reset=true')"><doc41:translate label="navBoL" /></a></td>
 						</tr>
 					</c:if>
 					<tr>
