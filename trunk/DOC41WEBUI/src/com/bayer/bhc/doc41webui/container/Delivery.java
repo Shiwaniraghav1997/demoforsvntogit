@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.container;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Delivery implements Serializable {
 	private static final long serialVersionUID = -8681479691481502207L;
@@ -9,6 +10,7 @@ public class Delivery implements Serializable {
 	private String shippingUnitNumber;
 	private String shipToNumber;
 	private String SoldToNumber;
+	private Date goodsIssueDate;
 	
 	public String getDeliveryNumber() {
 		return deliveryNumber;
@@ -34,7 +36,12 @@ public class Delivery implements Serializable {
 	public void setSoldToNumber(String soldToNumber) {
 		SoldToNumber = soldToNumber;
 	}
-	
+	public Date getGoodsIssueDate() {
+		return goodsIssueDate;
+	}
+	public void setGoodsIssueDate(Date goodsIssueDate) {
+		this.goodsIssueDate = goodsIssueDate;
+	}
 	
 
 }
