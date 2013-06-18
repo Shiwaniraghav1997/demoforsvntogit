@@ -53,16 +53,16 @@ public class Doc41ControllerAdvice {
 	}
 	
 	@ExceptionHandler(Exception.class)
-	public ModelAndView processHandlerException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-		ModelAndView exMv = resolveException(request, response, handler, ex);
-		if (exMv != null) {
-			return exMv;
+	public String processHandlerException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+		String view = resolveException(request, response, handler, ex);
+		if (view != null) {
+			return view;
 		} else {
 			throw ex;
 		}
 	}
 	
-	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+	public String resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 
 		if (ex instanceof MaxUploadSizeExceededException){
 			ex = new Doc41ExceptionBase("File is to big for upload!",ex);
@@ -76,23 +76,19 @@ public class Doc41ControllerAdvice {
 		if (ex instanceof Doc41ExceptionBase) {
 			String viewName = (String) request.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_VIEW);
 			String action = (String)request.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL);
-			@SuppressWarnings("unchecked")
-			Map<String, Object> model =(Map<String, Object>)request.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_MODEL);
-			if (model != null) {
 
-				model.put(DOC41_EXCEPTION, ex);
-				model.put(Doc41SessionKeys.DOC41_LAST_RENDERED_ACTION, action.substring(0, action.length()-10)+".htm");
+			request.setAttribute(DOC41_EXCEPTION, ex);
+			request.setAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_ACTION, action.substring(0, action.length()-10)+".htm");
 
-				// search for Doc41OptimisticLockingException or Doc41AccessDeniedException:
-				while (ex.getCause() instanceof Exception) {
-					ex = (Exception)ex.getCause();
+			// search for Doc41OptimisticLockingException or Doc41AccessDeniedException:
+			while (ex.getCause() instanceof Exception) {
+				ex = (Exception)ex.getCause();
 
-					if (ex instanceof Doc41OptimisticLockingException) {
-						model.put(DOC41_EXCEPTION, ex);
-					}
-					if (ex instanceof Doc41AccessDeniedException) {
-						model.put(DOC41_EXCEPTION, ex);
-					}
+				if (ex instanceof Doc41OptimisticLockingException) {
+					request.setAttribute(DOC41_EXCEPTION, ex);
+				}
+				if (ex instanceof Doc41AccessDeniedException) {
+					request.setAttribute(DOC41_EXCEPTION, ex);
 				}
 			}
 			//fallback to userprofile to avoid bugging the same failing controller again for this request..
@@ -103,7 +99,7 @@ public class Doc41ControllerAdvice {
 			else{
 				viewName="userprofile/myprofile";
 			}
-			return new ModelAndView(viewName,model);
+			return viewName;
 		}
 		return null;
 	}
