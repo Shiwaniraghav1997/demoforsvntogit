@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.bayer.bhc.doc41webui.container.Delivery;
@@ -18,7 +19,7 @@ import com.bayer.bhc.doc41webui.container.UploadForm;
 public class UploadController extends AbstractDoc41Controller {
 
 	@RequestMapping(value="/documents/new",method = RequestMethod.GET)
-	public UploadForm getNew(@MatrixVariable(required=true) String type,@MatrixVariable String deliverynumber, @MatrixVariable String fileid){
+	public UploadForm getNew(@RequestParam(required=true) String type,@RequestParam String deliverynumber, @RequestParam String fileid){
 		//TODO implement
 		return null;
 	}
