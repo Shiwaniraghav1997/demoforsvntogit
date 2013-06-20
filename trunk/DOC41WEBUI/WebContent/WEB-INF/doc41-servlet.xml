@@ -26,10 +26,15 @@
     
     <context:component-scan base-package="com.bayer.bhc.doc41webui.tasks.model.*,com.bayer.bhc.doc41webui.web,com.bayer.bhc.doc41webui.web.*"/>
 	<mvc:annotation-driven ignoreDefaultModelOnRedirect="true"/>
-	<mvc:interceptors>
-	    <beans:bean class="com.bayer.bhc.doc41webui.web.Doc41HandlerInterceptor" />
-	</mvc:interceptors>
 	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/resources/**" />
+		    <beans:bean class="com.bayer.bhc.doc41webui.web.Doc41HandlerInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+    
     <!-- maps request URLs to Controller names -->
     <!-- <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/> -->
 
