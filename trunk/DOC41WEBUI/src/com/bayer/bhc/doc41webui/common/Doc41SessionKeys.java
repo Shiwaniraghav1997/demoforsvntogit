@@ -11,7 +11,8 @@ package com.bayer.bhc.doc41webui.common;
  */
 public interface Doc41SessionKeys {
 
-    
+    String USER							= "user";
+	
     String DOC41_USER                	= "doc41User";
     
     String DOC41_ORIGIN_URI				= "doc41OriginURI";
