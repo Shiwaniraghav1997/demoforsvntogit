@@ -46,7 +46,7 @@ import com.bayer.ecim.foundation.business.sbcommon.SessionDataDC;
  * @author evayd
  *
  */
-public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implements Doc41SessionKeys{
+public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implements Doc41SessionKeys {
 	
 	private static final String DB_SESSION_DC_REQ_ATTR ="DB_SESSION_DC_REQ_ATTR";
 	
@@ -116,6 +116,8 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 					tmpLanguage = request.getLocale().getLanguage();
 				}
 				LocaleInSession.put(new Locale(tmpLanguage));
+				/* Add user to request */
+				request.setAttribute(USER, usr);
 			}
 			return true;
 		} catch (Exception e1) {
@@ -139,7 +141,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			AbstractDoc41Controller d41Controller = (AbstractDoc41Controller) realHandler;
 			return d41Controller.hasRolePermission(usr);
 		}
-		return false;
+		return true;
 	}
 
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, org.springframework.web.servlet.ModelAndView modelAndView) throws Exception {
