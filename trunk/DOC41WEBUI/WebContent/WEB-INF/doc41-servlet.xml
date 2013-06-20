@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:util="http://www.springframework.org/schema/util"
+<beans:beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/beans		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context	http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/tx		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/security	http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 	<!-- <context:annotation-config />
 	<bean id="handlerMapping"
@@ -21,7 +27,7 @@
     <context:component-scan base-package="com.bayer.bhc.doc41webui.tasks.model.*,com.bayer.bhc.doc41webui.web,com.bayer.bhc.doc41webui.web.*"/>
 	<mvc:annotation-driven ignoreDefaultModelOnRedirect="true"/>
 	<mvc:interceptors>
-	    <bean class="com.bayer.bhc.doc41webui.web.Doc41HandlerInterceptor" />
+	    <beans:bean class="com.bayer.bhc.doc41webui.web.Doc41HandlerInterceptor" />
 	</mvc:interceptors>
 	
     <!-- maps request URLs to Controller names -->
@@ -31,20 +37,23 @@
  	
  	<!-- this bean with the well known name generates view names for us -->
     <!-- not strictly required since we just want to accept the defaults-->
-    <bean id="viewNameTranslator" class="org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator"/>
+    <beans:bean id="viewNameTranslator" class="org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator"/>
 
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/jsp/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
- 	
- 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+ 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	
 	    <!-- one of the properties available; the maximum file size in bytes -->
-	    <property name="maxUploadSize" value="3000000"/>
-	</bean>
+	    <beans:property name="maxUploadSize" value="3000000"/>
+	</beans:bean>
 	
 	
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/view directory -->
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/jsp/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>	
 	
 	
 <!--	<mvc:annotation-driven conversion-service="conversionService"> 
@@ -244,4 +253,4 @@
 <!--    	 	<property name="abortAction" value="redirect:/contactpersonview.htm"/> -->
 <!--    	</bean> -->
 
-</beans>
+</beans:beans>
