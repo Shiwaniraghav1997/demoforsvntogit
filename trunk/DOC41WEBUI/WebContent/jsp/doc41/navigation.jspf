@@ -136,7 +136,7 @@
 					<tr class="nobottom" style="font-weight: normal;">
 						<td class="navigationCell" onmouseover="stopDeactivation();"
 							onmouseout="stopActivation()";><a
-							href="#" onclick="sendGet('userprofile/myprofile.htm', '')"><doc41:translate label="navMyProfile" /></a></td>
+							href="#" onclick="sendGet('userprofile/myprofile', '')"><doc41:translate label="navMyProfile" /></a></td>
 					</tr>
 					<tr>
 						<td class="navigationCellEmpty" />
@@ -166,7 +166,7 @@
 					<table id="navigationColumn2" class="navigationColumn">
 						<tr class="nobottom" style="font-weight: normal;">
 							<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-							<a href="#" onclick="sendGet('userlist.htm', '')"><doc41:translate label="navUserManagement" /></a></td>
+							<a href="#" onclick="sendGet('useradmin/userlist', '')"><doc41:translate label="navUserManagement" /></a></td>
 						</tr>
 						
 						<tr>
@@ -189,7 +189,7 @@
 						<c:if test="${user.businessAdmin}">
 							<tr class="nobottom" style="font-weight: normal;">
 								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('translations/translationOverview.htm', '')"><doc41:translate label="navTranslations" /></a></td>
+								<a href="#" onclick="sendGet('translations/translationOverview', '')"><doc41:translate label="navTranslations" /></a></td>
 							</tr>
 							<tr class="nobottom" style="font-weight: normal;">
 								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
