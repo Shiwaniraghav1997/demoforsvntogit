@@ -67,7 +67,7 @@ public class TranslationEditController extends Doc41Controller {
         if (getTagId(request)!=null) {
              command=getTranslationForm(this.translationsUC.getTagById(getTagId(request)));
         }
-        command.setCommand("");
+//        command.setCommand("");
         return command;
     }
     

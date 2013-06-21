@@ -12,7 +12,7 @@ import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
  * Translations View Bean.
  * @author ezzqc
  */
-public class TranslationsForm extends AbortableCommandForm {
+public class TranslationsForm  {
 	private static final long serialVersionUID = 1L;
 	
 	private String component="*";
@@ -22,8 +22,8 @@ public class TranslationsForm extends AbortableCommandForm {
 	private String country;
 	private String language;
 	private String objectID;
+	private String orderBy;
 	
-	private Boolean isTechAdmin=Boolean.FALSE;
 	private String mandant=TranslationsDAO.SYSTEM_ID;
 	
 
@@ -124,6 +124,13 @@ public class TranslationsForm extends AbortableCommandForm {
 	public void setObjectID(String objectID) {
 		this.objectID = objectID;
 	}
+	
+	public String getOrderBy() {
+		return orderBy;
+	}
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
+	}
     
     public void reset() {
     	this.tagName=null;
@@ -131,19 +138,8 @@ public class TranslationsForm extends AbortableCommandForm {
         this.component=null;
         this.jspName=null;
         this.language=null;
+        this.orderBy=null;
    }
-    
-	/**
-	 * @return the isTechAdmin
-	 */
-	public Boolean getIsTechAdmin() {
-		return isTechAdmin;
-	}
-	/**
-	 * @param isTechAdmin the isTechAdmin to set
-	 */
-	public void setIsTechAdmin(Boolean isTechAdmin) {
-		this.isTechAdmin = isTechAdmin;
-	}
+
 
 }

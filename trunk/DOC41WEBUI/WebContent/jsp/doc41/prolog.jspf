@@ -27,6 +27,17 @@
 <script type="text/javascript" src="<%= response.encodeURL(request.getContextPath() + "/resources/js/jquery-1.7.2.min.js") %>"></script>
 <script type="text/javascript" src="<%= response.encodeURL(request.getContextPath() + "/resources/js/domLib.js") %>"></script>
 
+<!-- Tablesorter: required -->
+<link rel="stylesheet" href="<%= response.encodeURL(request.getContextPath() + "/resources/css/theme.tablesorter.green.css") %>">
+<script src="<%= response.encodeURL(request.getContextPath() + "/resources/js/jquery.tablesorter.min.js") %>"></script>
+
+<!-- Tablesorter pager: required -->
+<link rel="stylesheet" href="<%= response.encodeURL(request.getContextPath() + "/resources/css/jquery.tablesorter.pager.css") %>">
+<script src="<%= response.encodeURL(request.getContextPath() + "/resources/js/jquery.tablesorter.pager.min.js") %>"></script>
+
+<!-- Tablesorter: optional -->
+<script src="<%= response.encodeURL(request.getContextPath() + "/resources/js/jquery.tablesorter.widgets.min.js") %>"></script>
+
 <style type="text/css">
 </style>
 
@@ -390,8 +401,8 @@
 	
 	function sendGet(target, params) {
 		//alert(target+','+params);
-		//sendGet2Target(target, params);
-		sendPost(target, "render=true&"+params);
+		sendGet2Target(target, params);
+		//sendPost(target, "render=true&"+params);
 	}
 	
 	function sendGet2(target, params) {

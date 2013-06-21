@@ -27,10 +27,11 @@ public class TranslationDeleteController extends TranslationsViewController {
     private static final String OBJECTID="objectID";
        
     protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-        if (getTagId(request)!=null){
-            this.getTranslationsUC().deleteTagById(getTagId(request));
-        }
-        return redirectOnAbort(request, response);
+//        if (getTagId(request)!=null){
+//            this.getTranslationsUC().deleteTagById(getTagId(request));
+//        }
+//        return redirectOnAbort(request, response);
+    	return null;//TODO
     }
 
     /**

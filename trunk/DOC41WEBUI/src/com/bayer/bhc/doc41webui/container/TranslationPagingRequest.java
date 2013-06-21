@@ -38,6 +38,7 @@ public class TranslationPagingRequest extends PagingRequest {
         this.countryCode=pFilter.getCountry();
         this.tagName=pFilter.getTagName();
         this.tagValue=pFilter.getTagValue();
+        setOrderBy(pFilter.getOrderBy());
     }
     
     /**

@@ -6,53 +6,67 @@
 package com.bayer.bhc.doc41webui.web.translations;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
+import com.bayer.bhc.doc41webui.common.paging.GetAllPagingData;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
+import com.bayer.bhc.doc41webui.common.paging.TableSorterParams;
+import com.bayer.bhc.doc41webui.common.paging.TablesorterPagingData;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.container.PagingForm;
 import com.bayer.bhc.doc41webui.container.TranslationPagingRequest;
 import com.bayer.bhc.doc41webui.container.TranslationsForm;
 import com.bayer.bhc.doc41webui.domain.Translation;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
 import com.bayer.bhc.doc41webui.usecase.TranslationsUC;
-import com.bayer.bhc.doc41webui.web.PagingListController;
+import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.ConfigMap;
 
 /**
  * Controller to manage Translations view related requests using Translations Usecase.
- * @author ezzqc
+ * @author ezzqc,evayd
  * 
  */
-public class TranslationsViewController extends PagingListController {
+@Controller
+public class TranslationsViewController extends AbstractDoc41Controller {
  
     //Constant variables
-    private static final String COMMAND = "transView";
-    private static final String RENDER_VIEW = "viewTrans";
     private static final String TRANSLATIONS_LIST= "translationList";
     private static final String LANGUAGE_CODES = "languageCodes";
     private static final String JSP_LIST = "pageList";
     private static final String COMPONENT_LIST = "componentList";
-    private static final String REFRESH = "refresh";
-    private static final String TECH_ADMIN = "ccp_tadm";
-    
-    
+	private static final String[] DB_COL_NAMES = {"MANDANT","COMPONENT","JSP_NAME","TAG_NAME","LANGUAGE_CODE","COUNTRY_CODE","TAG_VALUE"};
+	
+    @Autowired
     private TranslationsUC translationsUC;
     
-	public TranslationsUC getTranslationsUC() {
-		return translationsUC;
+    @ModelAttribute(LANGUAGE_CODES)
+	public Map<String, String> addLanguageCodes(){
+		return translationsUC.getLanguageCodes();
 	}
+    
+    @ModelAttribute(COMPONENT_LIST)
+   	public List<String> addComponentList() throws Doc41ExceptionBase{
+   		return this.translationsUC.getComponentList();
+   	}
 
-	public void setTranslationsUC(TranslationsUC translationsUC) {
-		this.translationsUC = translationsUC;
-	}
-
-	private final Boolean isEditable() {
+    @ModelAttribute("editable")
+	public Boolean isEditable() {
         @SuppressWarnings("unchecked")
 		Map<Object,Object> fdtConfig = ConfigMap.get().getSubConfig(TranslationsRepository.COMPONENT_KEY, TranslationsRepository.CONFIG_KEY);
         if (fdtConfig != null && "true".equals(fdtConfig.get("enabled"))) {
@@ -61,58 +75,66 @@ public class TranslationsViewController extends PagingListController {
         return Boolean.FALSE;
     }
     
+    @ModelAttribute(JSP_LIST)
+    public List<String> getJspList() throws Doc41ExceptionBase{
+    	return this.translationsUC.getPageList(null);
+    }
+    
 	protected boolean hasRolePermission(User usr) {
     	return usr.isBusinessAdmin() || usr.isTechnicalAdmin();
     }
 	
-    protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        TranslationsForm command = (TranslationsForm) request.getSession().getAttribute(COMMAND);
-        if (command == null) {
-        	command = new TranslationsForm();
-            request.getSession().setAttribute(COMMAND, command);
-        }
-        command.setCommand("");
-        return command;
-    }
-    
-    protected ModelAndView getListModel(PagingForm pform, HttpServletRequest request, Object command) throws Exception {
-        TranslationsForm filter = (TranslationsForm) command;
-        verifyTagsTransferPermission(request,filter);
+	@RequestMapping(value="/translations/translationOverview",method=RequestMethod.GET)
+    protected void get(HttpServletRequest request,Map<String,Object> model) throws Exception {
         
-        if(isResetRequest(filter)){
-        	filter.reset();
-        }
-        if(REFRESH.equals(filter.getCommand())){
-            filter.setJspName(null);
-        }
-        pform.setActionName(RENDER_VIEW);
-        PagingResult<Translation> result = this.translationsUC.findTags(new TranslationPagingRequest(filter,pform));
-        pform.setTotalSize(result.getTotalSize());
-
-        return new ModelAndView().addObject(TRANSLATIONS_LIST,result.getResult())
-                                    .addObject(LANGUAGE_CODES,this.translationsUC .getLanguageCodes())
-                                        .addObject(JSP_LIST,this.translationsUC .getPageList(filter.getComponent()))
-                                            .addObject(COMPONENT_LIST,this.translationsUC.getComponentList())
-                                                .addObject("editable", isEditable());
     }
-  
-    /**
-	 * Verfies User roles to Transfer Tags to Production, if user having Technical Admin role,
-	 *  then user allowed to transfer tags, else not.
-	 * @param request <code>PortletRequest</code>
-	 * @param filter <code>TranslationsForm</code>
-     * @throws Exception <code>Exception</code> to be thrown,if error occures
-	 */
-	private void verifyTagsTransferPermission(HttpServletRequest request, TranslationsForm filter) throws Exception {
-		if(request.getRemoteUser()!=null){
-			User user=UserInSession.get();
-			if(!user.getRoles().isEmpty()&&user.getRoles().contains(TECH_ADMIN)){
-				//user is part of Tech Admin group.
-				filter.setIsTechAdmin(Boolean.TRUE);
-			}else{
-				//user is not part of Tech Admin group.
-				filter.setIsTechAdmin(Boolean.FALSE);
-			}
+	
+	@RequestMapping(value="/translations/jsontable*", method=RequestMethod.GET,produces="application/json") 
+    @ResponseBody
+    public Map<String, Object> getTable(HttpServletRequest request,TableSorterParams params) throws Doc41ExceptionBase {
+		TranslationsForm translationsForm = new TranslationsForm();
+		translationsForm.setMandant(params.getFilter(0));
+		translationsForm.setComponent(params.getFilter(1));
+		translationsForm.setJspName(params.getFilter(2));
+		translationsForm.setTagName(params.getFilter(3));
+		translationsForm.setLanguage(params.getFilter(4));
+		translationsForm.setCountry(params.getFilter(5));
+		translationsForm.setTagValue(params.getFilter(6));
+		
+		translationsForm.setOrderBy(params.getSortColumn(DB_COL_NAMES));
+		
+        PagingResult<Translation> result = this.translationsUC.findTags(new TranslationPagingRequest(translationsForm,new TablesorterPagingData(params.getPage(),params.getSize())));
+		List<Translation> list = result.getResult();
+		List<String[]> rows = new ArrayList<String[]>();
+		for (Translation translation : list) {
+			String[] row = new String[9];
+			row[0]= translation.getMandant();
+			row[1]= translation.getComponent();
+			row[2]= translation.getJspName();
+			row[3]= translation.getTagName();
+			row[4]= translation.getLanguage();
+			row[5]= translation.getCountry();
+			row[6]= translation.getTagValue();
+			row[7]= "<a href='translationedit?objectID="+translation.getId()+"'><img src='"+request.getContextPath()+"/resources/img/common/page_edit.gif'/></a>";
+			//TODO confirmation dialog
+			row[8]= "<a href='translationdelete?objectID="+translation.getId()+"'><img src='"+request.getContextPath()+"/resources/img/common/trash.png'/></a>";
+			rows.add(row);
 		}
-	}
+		
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("total_rows", result.getTotalSize());
+//        map.put("headers", HEADERS);
+        map.put("rows",rows);
+
+        return map;
+    }
+	
+    
+	//TODO Post for changing filter
+	
+	//TODO Delete Post
+	
+	//TODO Distribute Post
+	
+	//extra Controller: Edit, Add
 }

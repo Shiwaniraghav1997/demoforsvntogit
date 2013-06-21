@@ -51,6 +51,7 @@ public class TranslationsDAO extends AbstractDAOImpl {
     private static final String TAG_NAME ="TAG_NAME";
     private static final String IS_TAG_EXIST_QUERY = "isTagExist";
 	private static final String TAG_VALUE = "TAG_VALUE";
+	private static final String ORDER_BY = "ORDER_BY";
 
     /*
      * (non-Javadoc)
@@ -58,10 +59,10 @@ public class TranslationsDAO extends AbstractDAOImpl {
      */
     public PagingResult<TranslationsDC> findTags(TranslationPagingRequest pagingRequest) throws Doc41TechnicalException {
         Doc41Log.get().debug(TranslationsDAO.class, null, "findTags():ENTRY ");
-        String[] parameterNames = { MANDANT, COMPONENT, JSP_NAME, LANGUAGE_CODE, COUNTRY_CODE,TAG_NAME,TAG_VALUE };
+        String[] parameterNames = { MANDANT, COMPONENT, JSP_NAME, LANGUAGE_CODE, COUNTRY_CODE,TAG_NAME,TAG_VALUE,ORDER_BY };
         Object[] parameterValues = { SYSTEM_ID, pagingRequest.getComponent(),
                 pagingRequest.getJspName(), pagingRequest.getLanguage(),pagingRequest.getCountryCode(),
-                pagingRequest.getTagName(),pagingRequest.getTagValue() };
+                pagingRequest.getTagName(),pagingRequest.getTagValue(),pagingRequest.getOrderBy() };
         return find(parameterNames, parameterValues, TRANSLATIONS_OVERVIEW_QUERY,
                 TranslationsDC.class, pagingRequest.getTotalSize(), pagingRequest.getStartIndex(),
                 pagingRequest.getEndIndex());

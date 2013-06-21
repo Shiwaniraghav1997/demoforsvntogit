@@ -10,7 +10,6 @@
     <%@include file="../doc41/navigation.jspf" %>
     
     <div class="portlet-body">
-		<%@include file="translationsList/filter.jsp"%>
 		<%@include file="translationsList/view.jsp"%>
 	</div>
   </body>

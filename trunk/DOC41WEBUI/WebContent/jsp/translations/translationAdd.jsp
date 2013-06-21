@@ -7,14 +7,13 @@
   <body>
     <%@include file="../doc41/header.jspf" %>
     <div class="portlet-body">
-		<form:form commandName="transView" action="${lastRenderedAction}" method="post">
-			<form:hidden path="command" />
+		<form:form commandName="translationsForm" action="${lastRenderedAction}" method="post">
 			
 			<div class="portlet-section-header">
 				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
 					<th><doc41:translate label="TranslationAdd"/></th>
 				</table>
-				<input type="button" class="portlet-form-button" onclick="submitAction('transView', 'abort', this)" value="<doc41:translate label="Cancel"/>"/>
+				<input type="button" class="portlet-form-button" onclick="submitAction('translationsForm', 'abort', this)" value="<doc41:translate label="Cancel"/>"/>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="Save"/>" />
 			
 			</div>
@@ -22,7 +21,7 @@
 			<div class="portlet-section-body">
 				<table class="nohover" cellpadding="4" cellspacing="0">
 					<thead class="portlet-table-header">
-					<spring:hasBindErrors name="transView">
+					<spring:hasBindErrors name="translationsForm">
 							<tr>
 								<td colspan="4">
 									<c:forEach items="${errors.fieldErrors}" var="error">
@@ -33,7 +32,7 @@
 								</td>
 							</tr>
 						</spring:hasBindErrors>
-						<spring:hasBindErrors name="transView">
+						<spring:hasBindErrors name="translationsForm">
 							<tr>
 								<td colspan="4">
 									<c:forEach items="${errors.globalErrors}" var="error">

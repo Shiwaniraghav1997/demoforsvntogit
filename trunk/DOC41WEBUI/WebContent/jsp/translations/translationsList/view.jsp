@@ -1,63 +1,93 @@
+<script type="text/javascript">
+<!--
+tsheaders = {
+          7: {
+            sorter: false,
+            filter: false
+          },
+          8: {
+	      	sorter: false,
+	      	filter: false
+	      }
+};
+//-->
+</script>
+<script type="text/javascript" src="<%= response.encodeURL(request.getContextPath() + "/resources/js/doc41tablesorter.js") %>"></script>
+
+
+ 
+
 <c:if test="${editable}">
 	<div class="portlet-section-header">
-  		<%@include file="../../doc41/paging.jsp"%>
-    	<input type="button" class="portlet-form-button" onclick="sendGet('translationadd.htm', '')" value="<doc41:translate label="buttonCreate"/>" />
+    	<input type="button" class="portlet-form-button" onclick="sendGet('translationadd', '')" value="<doc41:translate label="buttonCreate"/>" />
 	</div>
 </c:if>
-<c:if test="${!editable}">
-	<div class="portlet-section-header">
-  		<%@include file="../../doc41/paging.jsp"%>
-	</div>
-</c:if>
+
 
 <div class="portlet-section-body">
-<table cellpadding="4" cellspacing="0">
-	<thead class="portlet-table-header" >
-		<c:if test="${empty translationList}">
-			<tr>
-				<td colspan="9" style="color:red">
-				<doc41:translate label="NoTranslationsFound" />
-				</td>
-			</tr>
-		</c:if>
-		<tr>
-			<th><doc41:translate label="Mandant" /></th>
-			<th><doc41:translate label="Component" /></th>
-			<th><doc41:translate label="Page" /></th>
-			<th><doc41:translate label="TagName" /></th>
-			<th><doc41:translate label="Language" /></th>
-			<th><doc41:translate label="Country" /></th>
-			<th><doc41:translate label="TagValue" /></th>
-			<th colspan="2">&nbsp;</th>
-		</tr>
-	</thead>
 
-	<tbody class="portlet-table-body">
-		<c:forEach items="${translationList}" var="view" varStatus="lineInfo">
-			<tr<c:if test="${lineInfo.count % 2 == 0}"> class="portlet-table-alternate" </c:if>>
-				<td><c:out value="${view.mandant}"/></td>
-				<td><c:out value="${view.component}"/></td>
-				<td><c:out value="${view.jspName}"/></td>
-				<td><c:out value="${view.tagName}"/></td>
-				<td><c:out value="${view.language}"/></td>
-				<td><c:out value="${view.country}"/></td>
-				<td><c:out value="${view.tagValue}"/></td>
-				<c:if test="${editable}">
-					<td style="background-color: #FFFFFF;">
-					<a href="#" onclick="sendGet('translationedit.htm', 'objectID=${view.id}')">
-						<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/common/page_edit.gif") %>" alt="<doc41:translate label="Edit"/>" title="<doc41:translate label="Edit"/>" style="border: 0px;"></a>
-					</td>
-					<td style="background-color: #FFFFFF;">
-					<a href="#"	onclick="sendPostAfterCheck('<doc41:translate label="DeletionWanted"/>', 'translationdelete.htm', 'objectID=${view.id}')"> 
-						<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/common/trash.png") %>" alt="<doc41:translate label="Delete"/>" title="<doc41:translate label="Delete"/>" style="border: 0px;" /></a>
-					</td>
-				</c:if>
-			</tr>
-		</c:forEach>
-	</tbody>
+<div class="portlet-section-body">
+
+      <div class="pager">
+        <img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/first.png") %>" class="first" alt="First" title="First page" />
+		<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/prev.png") %>" class="prev" alt="Prev" title="Previous page" />
+		<span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+		<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/next.png") %>" class="next" alt="Next" title="Next page" />
+		<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/last.png") %>" class="last" alt="Last" title= "Last page" />
+        <select class="pagesize">
+         	<option selected="selected" value="10">10</option>
+			<option value="20">20</option>
+			<option value="30">30</option>
+			<option value="40">40</option>
+        </select>
+      </div>
+<table class="tablesorter" id="doc41table">
+  <thead class="portlet-table-header" >
+    <tr>
+      
+       <!-- thead text will be updated from the JSON; make sure the number of columns matches the JSON data -->
+       <!-- header update currently disabled to put names in the jsp instead of in java  -->
+    <th data-placeholder="exact only"><doc41:translate label="Mandant" /></th>
+	<th data-placeholder="exact only"><doc41:translate label="Component" /></th>
+	<th data-placeholder="exact only"><doc41:translate label="Page" /></th>
+	<th><doc41:translate label="TagName" /></th>
+	<th data-placeholder="exact only"><doc41:translate label="Language" /></th>
+	<th data-placeholder="exact only"><doc41:translate label="Country" /></th>
+	<th><doc41:translate label="TagValue" /></th>
+	<th>&nbsp;</th>
+	<th>&nbsp;</th>
+    </tr>
+    <colgroup>
+    	<col width="5%"/>
+    	<col width="10%"/>
+    	<col width="10%"/>
+    	<col width="20%"/>
+    	<col width="5%"/>
+    	<col width="5%"/>
+    	<col width="41%"/>
+    	<col width="2%"/>
+    	<col width="2%"/>
+    </colgroup>
+  </thead>
+
+  <tbody class="portlet-table-body"> <!-- tbody will be loaded via JSON -->
+  </tbody>
 </table>
-</div> 
-
-<div class="portlet-section-header">
-	<%@include file="../../doc41/paging_footer.jsp" %>
+<div class="pager">
+        <img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/first.png") %>" class="first" alt="First" title="First page" />
+		<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/prev.png") %>" class="prev" alt="Prev" title="Previous page" />
+		<span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+		<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/next.png") %>" class="next" alt="Next" title="Next page" />
+		<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/last.png") %>" class="last" alt="Last" title= "Last page" />
+        <select class="pagesize">
+         	<option selected="selected" value="10">10</option>
+			<option value="20">20</option>
+			<option value="30">30</option>
+			<option value="40">40</option>
+        </select>
+      </div>
 </div>
+
+
+
+
