@@ -75,6 +75,6 @@ public class UserprofileController extends AbstractDoc41Controller {
 		UserInSession.get().setLocale(user.getLocale());
         LocaleInSession.put(user.getLocale());
         
-        return "redirect:/userprofile/myprofile.htm";
+        return "redirect:/userprofile/myprofile";
     }
 }
