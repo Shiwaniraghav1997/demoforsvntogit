@@ -1,5 +1,5 @@
 /**
- * File:TranslationsViewController.Java
+ * File:TranslationsListController.Java
  * (C) Copyright 2008 Bayer AG Leverkusen, Bayer Business Services
  * All rights reserved.
  */
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
@@ -39,14 +40,16 @@ import com.bayer.ecim.foundation.basic.ConfigMap;
  * 
  */
 @Controller
-public class TranslationsViewController extends AbstractDoc41Controller {
+public class TranslationsListController extends AbstractDoc41Controller {
  
     //Constant variables
 //    private static final String TRANSLATIONS_LIST= "translationList";
     private static final String LANGUAGE_CODES = "languageCodes";
+    private static final String COUNTRY_CODES = "countryCodes";
     private static final String JSP_LIST = "pageList";
     private static final String COMPONENT_LIST = "componentList";
 	private static final String[] DB_COL_NAMES = {"MANDANT","COMPONENT","JSP_NAME","TAG_NAME","LANGUAGE_CODE","COUNTRY_CODE","TAG_VALUE"};
+	private static final String OBJECTID="objectID";
 	
     @Autowired
     private TranslationsUC translationsUC;
@@ -54,6 +57,10 @@ public class TranslationsViewController extends AbstractDoc41Controller {
     @ModelAttribute(LANGUAGE_CODES)
 	public Map<String, String> addLanguageCodes(){
 		return translationsUC.getLanguageCodes();
+	}
+    @ModelAttribute(COUNTRY_CODES)
+	public Map<String, String> addCountryCodes(){
+		return translationsUC.getCountryCodes();
 	}
     
     @ModelAttribute(COMPONENT_LIST)
@@ -102,19 +109,24 @@ public class TranslationsViewController extends AbstractDoc41Controller {
         PagingResult<Translation> result = this.translationsUC.findTags(new TranslationPagingRequest(translationsForm,new TablesorterPagingData(params.getPage(),params.getSize())));
 		List<Translation> list = result.getResult();
 		List<String[]> rows = new ArrayList<String[]>();
-		for (Translation translation : list) {
-			String[] row = new String[9];
-			row[0]= translation.getMandant();
-			row[1]= translation.getComponent();
-			row[2]= translation.getJspName();
-			row[3]= translation.getTagName();
-			row[4]= translation.getLanguage();
-			row[5]= translation.getCountry();
-			row[6]= translation.getTagValue();
-			row[7]= "<a href='translationedit?objectID="+translation.getId()+"'><img src='"+request.getContextPath()+"/resources/img/common/page_edit.gif'/></a>";
-			//TODO confirmation dialog
-			row[8]= "<a href='translationdelete?objectID="+translation.getId()+"'><img src='"+request.getContextPath()+"/resources/img/common/trash.png'/></a>";
+		if(list.isEmpty()){
+			String[] row = new String[]{"","","","not found","","",""};
 			rows.add(row);
+		} else {
+			for (Translation translation : list) {
+				String[] row = new String[9];
+				row[0]= translation.getMandant();
+				row[1]= translation.getComponent();
+				row[2]= translation.getJspName();
+				row[3]= translation.getTagName();
+				row[4]= translation.getLanguage();
+				row[5]= translation.getCountry();
+				row[6]= translation.getTagValue();
+				//TODO move HTML to JSP or JS
+				row[7]= "<a onclick=\"sendGet('translations/translationEdit', 'objectID="+translation.getDcId()+"')\" href=\"#\"><img src='"+request.getContextPath()+"/resources/img/common/page_edit.gif'/></a>";
+				row[8]= "<a onclick=\"sendPostAfterCheck('Do you really want to delete this Item?', 'deletetranslation', 'objectID="+translation.getDcId()+"')\" href=\"#\"><img src='"+request.getContextPath()+"/resources/img/common/trash.png'/></a>";
+				rows.add(row);
+			}
 		}
 		
         Map<String, Object> map = new HashMap<String, Object>();
@@ -125,10 +137,20 @@ public class TranslationsViewController extends AbstractDoc41Controller {
         return map;
     }
 	
-    
-	//TODO Post for changing filter
+	//DELETE TRANSLATION
 	
-	//TODO Delete Post
+	@RequestMapping(value="/translations/deletetranslation",method=RequestMethod.POST)
+	public String deleteTranslation(@RequestParam(value=OBJECTID) Long tagId) throws Doc41ExceptionBase{
+		if(tagId==null){
+			return "/translations/translationOverview";
+		}
+		translationsUC.deleteTagById(tagId);
+        
+        return "redirect:/translations/translationOverview";
+	}
+	
+    
+	
 	
 	//TODO Distribute Post
 	

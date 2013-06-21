@@ -5,79 +5,70 @@
  */
 package com.bayer.bhc.doc41webui.web.translations;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
-import org.springframework.validation.BindException;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.TranslationsForm;
 import com.bayer.bhc.doc41webui.domain.Translation;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.TranslationsUC;
 import com.bayer.bhc.doc41webui.web.Doc41Controller;
-import com.bayer.ecim.foundation.basic.StringTool;
 
-/**
- * Controller to handle Translations edit.
- * @author ezzqc
- * 
- */
+@Controller
 public class TranslationEditController extends Doc41Controller {
 
     //Constant variables
     private static final String OBJECTID = "objectID";
-    private static final String COMMAND = "transView";
     private static final String LANGUAGE_CODES = "languageCodes";
     private static final String COUNTRY_CODES = "countryCodes";
 
    
-    /**
-     *  translationsUC spring managed bean The <code>TranslationsUC </code>
-     */
-    TranslationsUC translationsUC;
-
-    /**
-     * @param translationsUC the translationsUC to set
-     */
-    public void setTranslationsUC(TranslationsUC translationsUC) {
-        this.translationsUC = translationsUC;
+    @Autowired
+    private TranslationsUC translationsUC;
+    
+    @ModelAttribute(LANGUAGE_CODES)
+	public Map<String, String> addLanguageCodes(){
+		return translationsUC.getLanguageCodes();
+	}
+    @ModelAttribute(COUNTRY_CODES)
+	public Map<String, String> addCountryCodes(){
+		return translationsUC.getCountryCodes();
+	}
+    
+    @RequestMapping(value="/translations/translationEdit",method = RequestMethod.GET)
+    public TranslationsForm get(@RequestParam(value=OBJECTID) Long tagId) throws Doc41ExceptionBase {
+		Translation translation = this.translationsUC.getTagById(tagId);
+		TranslationsForm translationForm = getTranslationForm(translation);
+		return translationForm;
     }
+    
+    @RequestMapping(value="/translations/updatetranslation",method = RequestMethod.POST)
+    public String save(@ModelAttribute TranslationsForm translationForm, BindingResult result, Model model) throws Doc41ExceptionBase{
+		new TranslationValidator().validate(translationForm, result);
+    	if (result.hasErrors()) {
+    		return "/translations/translationEdit";
+        }
+		
+        this.translationsUC.editTag(getTranslation(translationForm));	
+
+        return "redirect:/translations/translationOverview";
+    }
+
     
     protected boolean hasRolePermission(User usr) {
     	return usr.isBusinessAdmin() || usr.isTechnicalAdmin();
     }
 
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-    	TranslationsForm form = (TranslationsForm) command;
-        this.translationsUC.editTag(getTranslation(form));
-        
-        //return super.onSubmit(request, response, command, errors);
-        return redirectOnAbort(request, response);
-    }
-
-    protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        TranslationsForm command = (TranslationsForm) request.getSession().getAttribute(COMMAND);
-        // if session form is null create new one and store in session.
-        if (command == null) {
-            command = new TranslationsForm();
-            request.getSession().setAttribute(COMMAND, command);
-        }
-        if (getTagId(request)!=null) {
-             command=getTranslationForm(this.translationsUC.getTagById(getTagId(request)));
-        }
-//        command.setCommand("");
-        return command;
-    }
-    
-    @SuppressWarnings("deprecation")
-    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return super.handleRequestInternal(request, response)
-        		.addObject(LANGUAGE_CODES,this.translationsUC .getLanguageCodes())
-        			.addObject(COUNTRY_CODES,this.translationsUC .getCountryCodes());
-    }
-    
     /**
      * Fills domain object with input params from command object.
      * @param translationsCommand               The <code>TranslationsForm</code>
@@ -115,16 +106,4 @@ public class TranslationEditController extends Doc41Controller {
         return command;
     }
     
-    /**
-     * Extracts The TagId from The request.
-     * @param request The<code>HttpServletRequest</code>
-     * @return The tagId The<code>Long</code>
-     */
-    private Long getTagId(HttpServletRequest request) {
-        Long tagId=null;
-        if(!StringTool.isTrimmedEmptyOrNull(request.getParameter(OBJECTID))){
-            tagId=Long.valueOf(request.getParameter(OBJECTID));
-        }
-        return tagId;
-    }
 }
