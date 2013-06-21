@@ -152,8 +152,12 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			while (st.hasMoreTokens())  ctrl = st.nextToken();
 
 			request.getSession().setAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL, ctrl.toLowerCase());
-			String viewName = modelAndView.getViewName();
-			request.getSession().setAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_VIEW, viewName);
+			if(modelAndView!=null){
+				String viewName = modelAndView.getViewName();
+				if(viewName!=null){
+					request.getSession().setAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_VIEW, viewName);
+				}
+			}
 		} catch (Exception e1) {
 			User usr = determineUser(request);
 			if(!(e1 instanceof NestingException)){ //to prevent duplicate logs as the NestingException constructor already logs
