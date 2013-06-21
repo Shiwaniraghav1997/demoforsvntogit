@@ -14,7 +14,7 @@ $(function(){
       widgets: ['zebra', 'filter'],
       headers: tsheaders,
       filter_searchDelay: 1000,
-      filter_liveSearch:false
+      filter_serversideFiltering : false
       
     })
 

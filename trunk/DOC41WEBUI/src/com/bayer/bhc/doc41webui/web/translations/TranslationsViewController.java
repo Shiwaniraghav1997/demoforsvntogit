@@ -18,16 +18,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
-import com.bayer.bhc.doc41webui.common.paging.GetAllPagingData;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.paging.TableSorterParams;
 import com.bayer.bhc.doc41webui.common.paging.TablesorterPagingData;
-import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.TranslationPagingRequest;
 import com.bayer.bhc.doc41webui.container.TranslationsForm;
 import com.bayer.bhc.doc41webui.domain.Translation;
@@ -46,7 +42,7 @@ import com.bayer.ecim.foundation.basic.ConfigMap;
 public class TranslationsViewController extends AbstractDoc41Controller {
  
     //Constant variables
-    private static final String TRANSLATIONS_LIST= "translationList";
+//    private static final String TRANSLATIONS_LIST= "translationList";
     private static final String LANGUAGE_CODES = "languageCodes";
     private static final String JSP_LIST = "pageList";
     private static final String COMPONENT_LIST = "componentList";
