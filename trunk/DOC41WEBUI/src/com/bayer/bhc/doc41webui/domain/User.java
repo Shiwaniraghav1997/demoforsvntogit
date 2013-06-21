@@ -260,8 +260,4 @@ public class User extends DomainObject {
 		setLocale(LocaleTool.getLocaleFromString(languageCountry));
 	}
 	
-	public User() {
-		// TODO Auto-generated constructor stub
-		System.out.println("test");
-	}	
 }
