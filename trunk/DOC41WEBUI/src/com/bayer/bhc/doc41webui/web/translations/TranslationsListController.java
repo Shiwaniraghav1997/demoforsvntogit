@@ -92,7 +92,7 @@ public class TranslationsListController extends AbstractDoc41Controller {
         
     }
 	
-	@RequestMapping(value="/translations/jsontable*", method=RequestMethod.GET,produces="application/json") 
+	@RequestMapping(value="/translations/jsontable", method=RequestMethod.GET,produces="application/json") 
     @ResponseBody
     public Map<String, Object> getTable(HttpServletRequest request,TableSorterParams params) throws Doc41ExceptionBase {
 		TranslationsForm translationsForm = new TranslationsForm();
