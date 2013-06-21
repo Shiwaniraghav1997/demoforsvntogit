@@ -7,7 +7,7 @@
   <body>
     <%@include file="../doc41/header.jspf" %>
     <div class="portlet-body">
-		<form:form commandName="translationsForm" action="${lastRenderedAction}" method="post">
+		<form:form commandName="translationsForm" action="inserttranslation" method="post">
 			
 			<div class="portlet-section-header">
 				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >

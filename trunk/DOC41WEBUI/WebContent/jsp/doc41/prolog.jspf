@@ -29,6 +29,7 @@
 
 <!-- Tablesorter: required -->
 <link rel="stylesheet" href="<%= response.encodeURL(request.getContextPath() + "/resources/css/theme.tablesorter.green.css") %>">
+<link rel="stylesheet" href="<%= response.encodeURL(request.getContextPath() + "/resources/css/doc41tablesorter.css") %>">
 <script src="<%= response.encodeURL(request.getContextPath() + "/resources/js/jquery.tablesorter.min.js") %>"></script>
 
 <!-- Tablesorter pager: required -->

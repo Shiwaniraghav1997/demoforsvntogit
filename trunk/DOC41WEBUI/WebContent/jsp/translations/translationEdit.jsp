@@ -7,7 +7,7 @@
     <%@include file="../doc41/header.jspf" %>
     
     <div class="portlet-body">
-		<form:form commandName="translationsForm" action="translationedit" method="post" >
+		<form:form commandName="translationsForm" action="updatetranslation" method="post" >
 			<form:hidden path="objectID" />
 			
 			<div class="portlet-section-header">
