@@ -7,7 +7,6 @@ package com.bayer.bhc.doc41webui.web;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,7 +57,7 @@ public class UserprofileController extends AbstractDoc41Controller {
 //    }
     
     @RequestMapping(value="/userprofile/saveprofile*",method = RequestMethod.POST)
-    public String save(@ModelAttribute User user, BindingResult result, Model model) throws Doc41BusinessException{
+    public String save(@ModelAttribute User user, BindingResult result) throws Doc41BusinessException{
     	if (result.hasErrors()) {
             return "/userprofile/myprofile";
         }
