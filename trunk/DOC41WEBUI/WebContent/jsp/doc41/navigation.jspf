@@ -111,34 +111,17 @@
 				style="height: 16px"><doc41:translate label="navDocuments" />
 			</th>
 			
-
-<%--			<c:if test="${user.inventoryAgent||user.bayerInventoryManager||user.pricingComplianceAgent||user.businessConsignmentAdmin}">
-				<th width=160px onclick="toggleVisibility('navigationColumn2')"
-					onmouseover="style.backgroundColor='#0077FF';switchon('navigationColumn2');"
-					onmouseout="style.backgroundColor='#0032c1'; stopActivation();"
-					style="height: 16px"><doc41:translate label="navConsignmentEntry" />
-				</th>
-			</c:if> --%>
-
 			<c:if test="${user.businessAdmin}">
-				<th width=150px onclick="toggleVisibility('navigationColumn3')"
-					onmouseover="style.backgroundColor='#0077FF';switchon('navigationColumn3');"
+				<th width=150px onclick="toggleVisibility('navigationColumn2')"
+					onmouseover="style.backgroundColor='#0077FF';switchon('navigationColumn2');"
 					onmouseout="style.backgroundColor='#0032c1'; stopActivation();"
 					style="height: 16px"><doc41:translate label="navPermissions" />
 				</th>
 			</c:if>
-			
-	<%-- 		<c:if test="${user.businessAdmin}"> TODO CR 34 Enhancement 34 EVAYD 27.3.13
-				<th width=150px onclick="toggleVisibility('navigationColumn4')"
-					onmouseover="style.backgroundColor='#0077FF';switchon('navigationColumn4');"
-					onmouseout="style.backgroundColor='#0032c1'; stopActivation();"
-					style="height: 16px"><doc41:translate label="navReports" />
-				</th>
-			</c:if> --%>
 
 			<c:if test="${user.businessAdmin || user.technicalAdmin}">
-				<th width=150px onclick="toggleVisibility('navigationColumn5')"
-					onmouseover="style.backgroundColor='#0077FF';switchon('navigationColumn5');"
+				<th width=150px onclick="toggleVisibility('navigationColumn3')"
+					onmouseover="style.backgroundColor='#0077FF';switchon('navigationColumn3');"
 					onmouseout="style.backgroundColor='#0032c1'; stopActivation();"
 					style="height: 16px"><doc41:translate label="navMaintenance" />
 				</th>
@@ -153,7 +136,7 @@
 					<tr class="nobottom" style="font-weight: normal;">
 						<td class="navigationCell" onmouseover="stopDeactivation();"
 							onmouseout="stopActivation()";><a
-							href="#" onclick="sendGet('myprofile.htm', '')"><doc41:translate label="navMyProfile" /></a></td>
+							href="#" onclick="sendGet('userprofile/myprofile.htm', '')"><doc41:translate label="navMyProfile" /></a></td>
 					</tr>
 					<tr>
 						<td class="navigationCellEmpty" />
@@ -176,123 +159,27 @@
 			</td>
 			
 
-			<%--<c:if test="${user.inventoryAgent||user.bayerInventoryManager||user.pricingComplianceAgent||user.businessConsignmentAdmin}">
-				<td>
-					<table id="navigationColumn2" class="navigationColumn">
-						<c:if test="${user.bayerInventoryManager}">
-							<tr class="nobottom" style="font-weight: normal;">
-								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('pricingerroroverviewlist.htm', '')"><doc41:translate label="navPricingErrorOverviewList" /></a></td>
-							</tr>
-						</c:if>
-						<c:if test="${user.bayerInventoryManager||user.pricingComplianceAgent||user.businessConsignmentAdmin}">
-							<tr class="nobottom" style="font-weight: normal;">
-								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('pricingerrorlist.htm', '')"><doc41:translate label="navPricingErrorList" /></a></td>
-							</tr>
-						</c:if>
-						<c:if test="${user.inventoryAgent||user.bayerInventoryManager}">
-							<tr class="nobottom" style="font-weight: normal;">
-								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('reconcile.htm', '')"><doc41:translate label="navReconcile" /></a></td>
-							</tr>
-						</c:if>
-						<c:if test="${user.bayerInventoryManager}">
-							<tr class="nobottom" style="font-weight: normal;">
-								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('overviewbalance.htm', '')"><doc41:translate label="navOverviewBalanceSituation" /></a></td>
-							</tr>
-						</c:if>
-						<c:if test="${user.inventoryAgent}">
-							<tr class="nobottom" style="font-weight: normal;">
-								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('transferrequest.htm', '')"><doc41:translate label="navTransferRequest" /></a></td>
-							</tr>
-						</c:if>
-						<c:if test="${user.bayerInventoryManager}">
-							<tr class="nobottom" style="font-weight: normal;">
-								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('adjustmentrequest.htm', '')"><doc41:translate label="navAdjustmentRequest" /></a></td>
-							</tr>
-						</c:if>
-						<c:if test="${user.inventoryAgent||user.bayerInventoryManager||user.pricingComplianceAgent||user.businessConsignmentAdmin}">
-							<tr class="nobottom" style="font-weight: normal;">
-								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('transactions.htm', '')"><doc41:translate label="navTransHistory" /></a></td>
-							</tr>
-						</c:if>
-						<tr>
-							<td class="navigationCellEmpty" />
-						</tr>
-					
-					</table>
-				</td>
-			</c:if> --%>
 
 			<!-- navPermissions -->
 			<c:if test="${user.businessAdmin}">
 				<td>
-					<table id="navigationColumn3" class="navigationColumn">
+					<table id="navigationColumn2" class="navigationColumn">
 						<tr class="nobottom" style="font-weight: normal;">
 							<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
 							<a href="#" onclick="sendGet('userlist.htm', '')"><doc41:translate label="navUserManagement" /></a></td>
 						</tr>
-						<tr class="nobottom" style="font-weight: normal;">
-							<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('promotionlist.htm', '')"><doc41:translate label="navPromotionManagement" /></a></td>
-						</tr>
-						<tr class="nobottom" style="font-weight: normal;">
-							<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('listofvaluesoverview.htm', '')"><doc41:translate label="navLovManagement" /></a></td>
-						</tr>
-						<tr class="nobottom" style="font-weight: normal;">
-							<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-							<a href="#" onclick="sendGet('boeagentoverview.htm', '')"><doc41:translate label="navBOEAgentManagement" /></a></td>
-						</tr>
 						
-						<tr class="nobottom" style="font-weight: normal;">
-							<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-							<a href="#" onclick="sendGet('inventoryagentoverview.htm', '')"><doc41:translate label="navINVAgentManagement" /></a></td>
-						</tr>
-						
-						
-						<tr class="nobottom" style="font-weight: normal;">
-							<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-							<a href="#" onclick="sendGet('productsoverview.htm', '')"><doc41:translate	label="navProductsManagement" /></a></td>
-						</tr>
-						
-						<tr class="nobottom" style="font-weight: normal;">
-							<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-							<a href="#" onclick="sendGet('ordertypeconfigoverview.htm', '')"><doc41:translate	label="navOrderTypeConfiguration" /></a></td>
-						</tr>
-						
-						<tr class="nobottom" style="font-weight: normal;">
-							<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-							<a href="#" onclick="sendGet('roleordertypeassign.htm', '')"><doc41:translate	label="navRoleOrderTypeAssignment" /></a></td>
-						</tr>
 						<tr>
 							<td class="navigationCellEmpty" />
 						</tr>
 					</table>
-				</td>
-			</c:if>
-			
-			<!-- navReports -->
-			<c:if test="${user.businessAdmin}">
-				<td>
-				<table id="navigationColumn4" class="navigationColumn">
-						<tr class="nobottom" style="font-weight: normal;">
-							<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-							<a href="#" onclick="sendGet('reportuserorderperm.htm', '')"><doc41:translate label="navReportUserOrderPerm" /></a></td>
-						</tr>
-						</table>
 				</td>
 			</c:if>
 			
 			<!-- navMaintenance -->
 			<c:if test="${user.businessAdmin || user.technicalAdmin}">
 				<td>
-					<table id="navigationColumn5" class="navigationColumn">
+					<table id="navigationColumn3" class="navigationColumn">
 						<c:if test="${user.technicalAdmin}">
 							<tr class="nobottom" style="font-weight: normal;">
 								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
@@ -302,13 +189,9 @@
 						<c:if test="${user.businessAdmin}">
 							<tr class="nobottom" style="font-weight: normal;">
 								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('translationsview.htm', '')"><doc41:translate label="navTranslations" /></a></td>
+								<a href="#" onclick="sendGet('translations/translationOverview.htm', '')"><doc41:translate label="navTranslations" /></a></td>
 							</tr>
 							<tr class="nobottom" style="font-weight: normal;">
-								<td class="navigationCell" onmouseover="stopDeactivation();"onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('busedit.htm', '')"><doc41:translate label="navSystemAdmin" /></a></td>
-							</tr>
-								<tr class="nobottom" style="font-weight: normal;">
 								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
 								<a href="#" onclick="sendGet('monitoringoverview.htm', '')"><doc41:translate label="navInterfaceMonitoring" /></a></td>
 							</tr>
