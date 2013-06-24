@@ -11,107 +11,67 @@
 			<tr>
 				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_BUSINESS_ADMIN %>.gif" alt="<doc41:translate label="<%=User.ROLE_BUSINESS_ADMIN %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_BUSINESS_ADMIN %>"/></th>
 				<td style="width: 35%">
-					<c:if test="${edituser.type eq 'external'}">
+					<c:if test="${userEditForm.type eq 'external'}">
 						<form:checkbox path="roles" value="<%=User.ROLE_BUSINESS_ADMIN %>" disabled="true"/>
 					</c:if>
-					<c:if test="${edituser.type eq 'internal'}">
+					<c:if test="${userEditForm.type eq 'internal'}">
 						<form:checkbox path="roles" value="<%=User.ROLE_BUSINESS_ADMIN %>"/>
 					</c:if>
 				</td>
 				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_TECH_ADMIN %>.gif"" alt="<doc41:translate label="<%=User.ROLE_TECH_ADMIN %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_TECH_ADMIN %>"/></th>
 				<td style="width: 35%">
-					<c:if test="${edituser.type eq 'external'}">
+					<c:if test="${userEditForm.type eq 'external'}">
 						<form:checkbox path="roles" value="<%=User.ROLE_TECH_ADMIN %>" disabled="true"/>
 					</c:if>
-					<c:if test="${edituser.type eq 'internal'}">
+					<c:if test="${userEditForm.type eq 'internal'}">
 						<form:checkbox path="roles" value="<%=User.ROLE_TECH_ADMIN %>"/>
 					</c:if>
 				</td>
 			</tr>
 			<tr>
-				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_CUSTOMER_SERVICE %>.gif"" alt="<doc41:translate label="<%=User.ROLE_CUSTOMER_SERVICE %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_CUSTOMER_SERVICE %>"/></th>
+				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_CARRIER %>.gif"" alt="<doc41:translate label="<%=User.ROLE_CARRIER %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_CARRIER %>"/></th>
 				<td style="width: 35%">
-					<c:if test="${edituser.type eq 'external'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMER_SERVICE %>" disabled="true"/>
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_CARRIER %>" disabled="true"/>
 					</c:if>
-					<c:if test="${edituser.type eq 'internal'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMER_SERVICE %>"/>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_CARRIER %>"/>
 					</c:if>
 				</td>
-				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_INSIDE_SALES %>.gif"" alt="<doc41:translate label="<%=User.ROLE_INSIDE_SALES %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_INSIDE_SALES %>"/></th>
+				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_CUSTOMS_BROKER %>.gif"" alt="<doc41:translate label="<%=User.ROLE_CUSTOMS_BROKER %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_CUSTOMS_BROKER %>"/></th>
 				<td style="width: 35%">
-					<c:if test="${edituser.type eq 'external'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_INSIDE_SALES %>" disabled="true"/>
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMS_BROKER %>" disabled="true"/>
 					</c:if>
-					<c:if test="${edituser.type eq 'internal'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_INSIDE_SALES %>"/>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMS_BROKER %>"/>
 					</c:if>
-				</td>
-			</tr>
-			<tr>
-				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_VETTECH_SERVICE %>.gif"" alt="<doc41:translate label="<%=User.ROLE_VETTECH_SERVICE %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_VETTECH_SERVICE %>"/></th>
-				<td style="width: 35%">
-					<c:if test="${edituser.type eq 'external'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_VETTECH_SERVICE %>" disabled="true"/>
-					</c:if>
-					<c:if test="${edituser.type eq 'internal'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_VETTECH_SERVICE %>"/>
-					</c:if>
-				</td>
-				<th style="width: 15%"></th>
-				<td style="width: 35%"></td>
-			</tr>
-			<tr>
-				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_CONSIGNMENT_FILLUP %>.gif"" alt="<doc41:translate label="<%=User.ROLE_CONSIGNMENT_FILLUP %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_CONSIGNMENT_FILLUP %>"/></th>
-				<td style="width: 35%">
-					<c:if test="${edituser.type eq 'external'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CONSIGNMENT_FILLUP %>" disabled="true"/>
-					</c:if>
-					<c:if test="${edituser.type eq 'internal'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CONSIGNMENT_FILLUP %>"/>
-					</c:if>
-				</td>
-				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_EXT_CONSIGNMENT_FILLUP %>.gif"" alt="<doc41:translate label="<%=User.ROLE_EXT_CONSIGNMENT_FILLUP %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_EXT_CONSIGNMENT_FILLUP %>"/></th>
-				<td style="width: 35%">
-					<form:checkbox path="roles" value="<%=User.ROLE_EXT_CONSIGNMENT_FILLUP %>"/>
 				</td>
 			</tr>
 			
 			<tr>
-				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_CONSIGNMENT_INVENTORY %>.gif"" alt="<doc41:translate label="<%=User.ROLE_CONSIGNMENT_INVENTORY %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_CONSIGNMENT_INVENTORY %>"/></th>
-				<td>
-					<form:checkbox path="roles" value="<%=User.ROLE_CONSIGNMENT_INVENTORY %>"/>
-				</td>
-				<th><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_CONSIGNMENT_PRICING %>.gif"" alt="<doc41:translate label="<%=User.ROLE_CONSIGNMENT_PRICING %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_CONSIGNMENT_PRICING %>"/></th>
-				<td>
-					<form:checkbox path="roles" value="<%=User.ROLE_CONSIGNMENT_PRICING %>"/>
-				</td>
-			</tr>
-			<tr>
-				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_CONSIGNMENT_INVENTORY_MANAGER %>.gif"" alt="<doc41:translate label="<%=User.ROLE_CONSIGNMENT_INVENTORY_MANAGER %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_CONSIGNMENT_INVENTORY_MANAGER %>"/></th>
+				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_LAYOUT_SUPPLIER %>.gif"" alt="<doc41:translate label="<%=User.ROLE_LAYOUT_SUPPLIER %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_LAYOUT_SUPPLIER %>"/></th>
 				<td style="width: 35%">
-					<c:if test="${edituser.type eq 'external'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CONSIGNMENT_INVENTORY_MANAGER %>" disabled="true"/>
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_LAYOUT_SUPPLIER %>" disabled="true"/>
 					</c:if>
-					<c:if test="${edituser.type eq 'internal'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CONSIGNMENT_INVENTORY_MANAGER %>"/>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_LAYOUT_SUPPLIER %>"/>
 					</c:if>
 				</td>
-				<th><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_CONSIGNMENT_ADMIN %>.gif"" alt="<doc41:translate label="<%=User.ROLE_CONSIGNMENT_ADMIN %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_CONSIGNMENT_ADMIN %>"/></th>
-				<td>
-					<c:if test="${edituser.type eq 'external'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CONSIGNMENT_ADMIN %>" disabled="true"/>
+				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_PM_SUPPLIER %>.gif"" alt="<doc41:translate label="<%=User.ROLE_PM_SUPPLIER %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_PM_SUPPLIER %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_PM_SUPPLIER %>" disabled="true"/>
 					</c:if>
-					<c:if test="${edituser.type eq 'internal'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CONSIGNMENT_ADMIN %>"/>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_PM_SUPPLIER %>"/>
 					</c:if>
 				</td>
 			</tr>
+			
 			<tr>
-				<th><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_EXT_AGENT %>.gif"" alt="<doc41:translate label="<%=User.ROLE_EXT_AGENT %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_EXT_AGENT %>"/></th>
-				<td>
-					<form:checkbox path="roles" value="<%=User.ROLE_EXT_AGENT %>"/>
-				</td>
+				
 				<th><img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/usermanagement/symbol_OBSV.gif") %>" alt="<doc41:translate label="<%=User.ROLE_OBSERVER %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_OBSERVER %>"/></th>
 				<td>
 					<form:checkbox path="roles" value="<%=User.ROLE_OBSERVER %>"/>

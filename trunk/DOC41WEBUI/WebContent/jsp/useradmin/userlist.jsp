@@ -65,8 +65,8 @@
 					<th><doc41:translate label="UserOverview"/></th>
 				</table>
 				
-				<input class="portlet-form-button" type="button" onclick="sendGet('userlookup', '')" value="<doc41:translate label="ButtonLookup"/>" />
-				<input class="portlet-form-button" type="button" onclick="sendGet('usercreate', '')" value="<doc41:translate label="ButtonCreate"/>" />
+				<input class="portlet-form-button" type="button" onclick="sendGet('useradmin/userlookup', '')" value="<doc41:translate label="ButtonLookup"/>" />
+				<input class="portlet-form-button" type="button" onclick="sendGet('useradmin/usercreate', '')" value="<doc41:translate label="ButtonCreate"/>" />
 			</div>
 		
 		

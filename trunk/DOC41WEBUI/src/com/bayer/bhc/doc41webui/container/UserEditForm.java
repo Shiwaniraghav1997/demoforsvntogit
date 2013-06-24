@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.container;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,11 +10,11 @@ import org.springframework.validation.Errors;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.ecim.foundation.basic.StringTool;
 
-public class UserEditForm extends AbstractCommandForm {
+public class UserEditForm implements Serializable{
 	
-	private static final long serialVersionUID = 2807977121122930112L;
+	private static final long serialVersionUID = 618389489171249351L;
 	
-	private User user;
+	private Long objectID;
 	private String cwid;
 	private String surname;
 	private String firstname;
@@ -28,16 +29,18 @@ public class UserEditForm extends AbstractCommandForm {
 	private String type;
 	private List<String> roles;
 
-	@Override
 	public void validate(HttpServletRequest request, Errors errors) {
 		if(!StringTool.equals(getPassword(), getPasswordRepeated())){
 			errors.rejectValue("passwordRepeated", "pwDifferent", "password and passwordRepeated do not match.");
 		}
 	}
 	
+	public UserEditForm(){
+		super();
+	}
+	
 	public UserEditForm(User user) {
 		super();
-		this.user = user;
 		
 		setFirstname		(user.getFirstname());
 		setSurname			(user.getSurname());  
@@ -51,12 +54,14 @@ public class UserEditForm extends AbstractCommandForm {
 		setLanguageCountry	(StringTool.toString(user.getLocale()));
 		setActive			(user.getActive());   
 		setType				(user.getType());     
-		setRoles			(user.getRoles());   
+		setRoles			(user.getRoles());  
+		setObjectID(user.getDcId());
 
 	}
 
 
 	public User copyToDomainUser(){
+		User user = new User();
 		user.setFirstname	(getFirstname	());
 		user.setSurname		(getSurname		());
 		user.setCwid		(getCwid		());
@@ -177,9 +182,16 @@ public class UserEditForm extends AbstractCommandForm {
 		this.roles = roles;
 	}
 	
+	public Long getObjectID() {
+		return objectID;
+	}
+	public void setObjectID(Long objectID) {
+		this.objectID = objectID;
+	}
+	
 	@Override
 	public String toString() {
-		return "UserEditForm [user=" + user + ", cwid=" + cwid + ", surname="
+		return "UserEditForm [ cwid=" + cwid + ", surname="
 				+ surname + ", firstname=" + firstname + ", password="
 				+ password + ", passwordRepeated=" + passwordRepeated
 				+ ", company=" + company + ", email=" + email + ", phone="

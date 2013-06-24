@@ -117,7 +117,7 @@ public class UserlistController extends AbstractDoc41Controller {
 
 	private String displayEditButton(HttpServletRequest request, String cwid,
 			Tags tags) {
-		return "<a href='#' onclick=\"sendGet('useredit', 'editcwid=${user.cwid}')\"><img src='"+request.getContextPath()+"/resources/img/common/page_edit.gif' alt='"+tags.getTag("ButtonEdit")+"' title='"+tags.getTag("ButtonEdit")+"' style=\"border: 0px;\"></a>";
+		return "<a href='#' onclick=\"sendGet('useradmin/useredit', 'editcwid="+cwid+"')\"><img src='"+request.getContextPath()+"/resources/img/common/page_edit.gif' alt='"+tags.getTag("ButtonEdit")+"' title='"+tags.getTag("ButtonEdit")+"' style=\"border: 0px;\"></a>";
 	}
 
 	private String displayRole(HttpServletRequest request,boolean isRole, Tags tags) {
