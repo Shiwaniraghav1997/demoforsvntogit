@@ -13,7 +13,7 @@
 				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
 					<th><doc41:translate label="TranslationAdd"/></th>
 				</table>
-				<input type="button" class="portlet-form-button" onclick="submitAction('translationsForm', 'abort', this)" value="<doc41:translate label="Cancel"/>"/>
+				<input type="button" class="portlet-form-button" onclick="sendGet('translations/translationOverview')" value="<doc41:translate label="Cancel"/>"/>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="Save"/>" />
 			
 			</div>
