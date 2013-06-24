@@ -5,59 +5,60 @@
 package com.bayer.bhc.doc41webui.web.useradmin;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.validation.BindException;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.bayer.bhc.doc41webui.container.UserEditForm;
+import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
+import com.bayer.bhc.doc41webui.container.UserLookupForm;
 import com.bayer.bhc.doc41webui.domain.User;
-import com.bayer.bhc.doc41webui.web.Doc41Controller;
+import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 
-/**
- * User import controller. Imports internal user from LDAP.
- * 
- * @author ezzqc
- */
-public class UserlookupController extends Doc41Controller {
+@Controller
+public class UserlookupController extends AbstractDoc41Controller {
 	
 	protected boolean hasRolePermission(User usr) {
     	return usr.isBusinessAdmin() || usr.isTechnicalAdmin();
     }
 	
-	protected Object formBackingObject(HttpServletRequest request) throws Exception {
-		request.getSession().setAttribute("userId",null);
-		return new User();
-	}
+//	@ModelAttribute("languageCountryList")
+//	public List<SelectionItem> addLanguageCountryList(){
+//		return getDisplaytextUC().getLanguageCountryCodes();
+//	}
+//	
+//	@ModelAttribute("timeZoneList")
+//	public List<SelectionItem> addTimezones(){
+//		return getDisplaytextUC().getTimezones();
+//	}
 	
-	@SuppressWarnings("deprecation")
-	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return super.handleRequestInternal(request, response)
-                .addObject("languageCountryList", getDisplaytextUC().getLanguageCountryCodes())
-                        .addObject("timeZoneList", getDisplaytextUC().getTimezones());
+	@RequestMapping(value="/useradmin/userlookup",method = RequestMethod.GET)
+    public UserLookupForm get() {
+		return new UserLookupForm();
     }
-
 	
-	@SuppressWarnings("deprecation")
-	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-		
-		// perform ldap search:
-        String cwid = request.getParameter("lookupcwid");
+	@RequestMapping(value="/useradmin/lookuppost",method = RequestMethod.POST)
+    public String save(HttpServletRequest request,@ModelAttribute UserLookupForm userLookupForm, BindingResult result) throws Doc41ExceptionBase{
+    	if (result.hasErrors()) {
+    		return "/useradmin/lookuppost";
+        }
+
+    	// perform ldap search:
+        String cwid = userLookupForm.getCwid();
         if (StringUtils.isNotBlank(cwid)) {
         	User importUser = getUserManagementUC().lookupUser(cwid);
-        	
-            //return new ModelAndView(getSuccessView()).addObject("edituser", user);
-//        	Agent agentLoginUser = getUserManagementUC().getAgentForUser(UserInSession.get(), false,true);
-        	UserEditForm form = new UserEditForm(importUser);
-            request.getSession().setAttribute("importuser", form);
-            return redirectOnSuccess(request, response, command, errors);
-            
+        	if(importUser==null){
+        		result.rejectValue("cwid", "noFound", "Please enter a cwid.");
+                return "/useradmin/lookuppost";
+        	}
+        	return "redirect:/useradmin/userimport?importcwid="+cwid;
         } else {
-            errors.rejectValue("cwid", "isRequired", "Please enter a cwid.");
+            result.rejectValue("cwid", "isRequired", "Please enter a cwid.");
+            return "/useradmin/lookuppost";
         }
-        
-		return super.onSubmit(request, response, command, errors);
-	}
-		
+    }
+	
 }

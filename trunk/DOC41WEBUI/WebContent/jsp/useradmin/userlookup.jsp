@@ -1,13 +1,6 @@
 <%@include file="../doc41/prolog.jspf" %>
 <doc41:loadTranslations jspName="import" component="useradmin"/> 
 
-
-<script >
-	function lookupCwid() {
-		var cwid = $('#lookupcwid').val();
-		sendPost('userlookup.htm', 'lookupcwid='+cwid);
-	}
-</script>
 	
 <html>
   <head><title>User Import</title></head>
@@ -15,14 +8,15 @@
     <%@include file="../doc41/header.jspf" %>
 
 	<div class="portlet-body">
-		<form:form commandName="edituser" action="${lastRenderedAction}" method="post">
+		<form:form commandName="userLookupForm" action="lookuppost" method="post">
 			
 			<div class="portlet-section-header">
 				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
 					<th><doc41:translate label="UserImport"/></th>
 				</table>
-				<input type="button" class="portlet-form-button" onclick="window.location.href='userlist.htm'" value="<doc41:translate label="ButtonCancel"/>" />
-				<input type="button" class="portlet-form-button" onclick="lookupCwid()" value="<doc41:translate label="ButtonLookup"/>" name="ButtonLookup" />
+				
+				<input type="button" class="portlet-form-button" onclick="sendGet('useradmin/userlist')" value="<doc41:translate label="Cancel"/>"/>
+				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonLookup"/>" />
 			</div>
 		
 			<div class="portlet-section-body">
@@ -33,7 +27,7 @@
 						</tr>
 					</thead>
 					<tbody class="portlet-table-body">	
-						<spring:hasBindErrors name="edituser">
+						<spring:hasBindErrors name="lookupuser">
 							<tr>
 								<td colspan="4">
 									<c:forEach items="${errors.fieldErrors}" var="error">
@@ -48,11 +42,7 @@
 						<tr>
 							<th style="width: 15%"><doc41:translate label="Surname"/></th> 
 							<td style="width: 35%">
-								<c:if test="${empty edituser.surname}"><doc41:translate label="AutomaticImport"/></c:if>
-								<c:if test="${not empty edituser.surname}">
-									<c:out value="${edituser.surname}"/>
-									<form:hidden path="surname"/>
-								</c:if>
+								<doc41:translate label="AutomaticImport"/>
 							</td>
 							<th style="width: 15%"><doc41:translate label="Password"/></th>
 							<td style="width: 35%"><doc41:translate label="NotChangeable"/></td>
@@ -60,26 +50,18 @@
 						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="Firstname"/></th>
 							<td>
-								<c:if test="${empty edituser.firstname}"><doc41:translate label="AutomaticImport"/></c:if>
-								<c:if test="${not empty edituser.firstname}">
-									<c:out value="${edituser.firstname}"/>
-									<form:hidden path="firstname"/>
-								</c:if>				
+								<doc41:translate label="AutomaticImport"/>
 							</td>
 							<th><doc41:translate label="RepeatPassword"/></th>
 							<td><doc41:translate label="NotChangeable"/></td>
 						</tr>
 						<tr>
 							<th><doc41:translate label="Cwid"/></th>
-							<td><form:input id="lookupcwid" path="cwid" cssClass="portlet-form-input-field"/></td>
+							<td><form:input id="cwid" path="cwid" cssClass="portlet-form-input-field"/></td>
 							
 							<th><doc41:translate label="Company"/></th>
 							<td>
-								<c:if test="${empty edituser.company}"><doc41:translate label="AutomaticImport"/></c:if>
-								<c:if test="${not empty edituser.company}">
-									<c:out value="${edituser.company}"/>
-									<form:hidden path="company"/>
-								</c:if>
+								<doc41:translate label="AutomaticImport"/>
 							</td>
 						</tr>
 					</tbody>
