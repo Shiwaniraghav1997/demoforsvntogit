@@ -18,8 +18,11 @@ public class UseractivationController extends UserlistController {
 	
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
 		
-        getUserManagementUC().toggleUserActivation(request.getParameter("togglecwid"));
-		
-        return redirectOnSuccess(request, response, command, errors);
+//        getUserManagementUC().toggleUserActivation(request.getParameter("togglecwid"));
+//		
+//        return redirectOnSuccess(request, response, command, errors);
+        
+        
+        return null;
 	}
 }

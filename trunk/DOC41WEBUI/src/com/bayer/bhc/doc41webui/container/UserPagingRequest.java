@@ -27,6 +27,10 @@ public class UserPagingRequest extends PagingRequest {
     private Boolean isActive;
 
     private Boolean isExternal;
+    
+    private String firstname;
+    
+    private String email;
 
     public UserPagingRequest(final UserListFilter pFilter, final PagingData pagingData) {
         super(pagingData);
@@ -48,6 +52,9 @@ public class UserPagingRequest extends PagingRequest {
         cwid = pFilter.getCwid() != null ? pFilter.getCwid().toUpperCase() : null;
         company = pFilter.getCompany();
         surname = pFilter.getSurname();
+        firstname = pFilter.getFirstname();
+        email = pFilter.getEmail();
+        setOrderBy(pFilter.getOrderBy());
     }
 
     public String getCompany() {
@@ -73,5 +80,12 @@ public class UserPagingRequest extends PagingRequest {
     public String getSurname() {
         return surname;
     }
+    public String getFirstname() {
+		return firstname;
+	}
+    public String getEmail() {
+		return email;
+	}
+    
 
 }

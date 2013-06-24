@@ -13,6 +13,7 @@ import com.bayer.bhc.doc41webui.usecase.UserManagementUC;
  *
  */
 public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
+	public static final String OBJECTID="objectID";
 	
 	@Autowired
 	protected DisplaytextUC displaytextUC;

@@ -12,6 +12,7 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.common.paging.PagingData;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.PagingForm;
@@ -99,13 +100,13 @@ public class UserManagementUC {
 	 * @param filter selected by user
 	 * @return List of users
 	 */
-    public PagingResult<User> findUsers(UserListFilter pFilter, PagingForm pForm) throws Doc41BusinessException {
+    public PagingResult<User> findUsers(UserListFilter pFilter, PagingData pdata) throws Doc41BusinessException {
         PagingResult<User> userList;
         
         try {
             // logging
         	Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(), "findUsers()");
-            UserPagingRequest userRequest = new UserPagingRequest(pFilter, pForm);
+            UserPagingRequest userRequest = new UserPagingRequest(pFilter, pdata);
             userList = getUserManagementRepository().getUsers(userRequest);
         } catch (Doc41RepositoryException e) {
             throw new Doc41BusinessException(Doc41ErrorMessageKeys.USR_FIND_ALL_FAILED, e);
