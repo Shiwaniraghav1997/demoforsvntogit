@@ -25,14 +25,18 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.paging.TableSorterParams;
 import com.bayer.bhc.doc41webui.common.paging.TablesorterPagingData;
+import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.container.TranslationPagingRequest;
 import com.bayer.bhc.doc41webui.container.TranslationsForm;
 import com.bayer.bhc.doc41webui.domain.Translation;
 import com.bayer.bhc.doc41webui.domain.User;
+import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
 import com.bayer.bhc.doc41webui.usecase.TranslationsUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.ConfigMap;
+import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
+import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
 /**
  * Controller to manage Translations view related requests using Translations Usecase.
@@ -49,7 +53,6 @@ public class TranslationsListController extends AbstractDoc41Controller {
     private static final String JSP_LIST = "pageList";
     private static final String COMPONENT_LIST = "componentList";
 	private static final String[] DB_COL_NAMES = {"MANDANT","COMPONENT","JSP_NAME","TAG_NAME","LANGUAGE_CODE","COUNTRY_CODE","TAG_VALUE"};
-	private static final String OBJECTID="objectID";
 	
     @Autowired
     private TranslationsUC translationsUC;
@@ -88,13 +91,14 @@ public class TranslationsListController extends AbstractDoc41Controller {
     }
 	
 	@RequestMapping(value="/translations/translationOverview",method=RequestMethod.GET)
-    protected void get(HttpServletRequest request,Map<String,Object> model) throws Exception {
+    protected void get() throws Exception {
         
     }
 	
 	@RequestMapping(value="/translations/jsontable", method=RequestMethod.GET,produces="application/json") 
     @ResponseBody
-    public Map<String, Object> getTable(HttpServletRequest request,TableSorterParams params) throws Doc41ExceptionBase {
+    public Map<String, Object> getTable(HttpServletRequest request,TableSorterParams params) throws Doc41ExceptionBase, BATranslationsException {
+		Tags tags = new Tags(TranslationsDAO.SYSTEM_ID, "TADMN", "translationOverview", LocaleInSession.get());
 		TranslationsForm translationsForm = new TranslationsForm();
 		translationsForm.setMandant(params.getFilter(0));
 		translationsForm.setComponent(params.getFilter(1));
@@ -122,9 +126,14 @@ public class TranslationsListController extends AbstractDoc41Controller {
 				row[4]= translation.getLanguage();
 				row[5]= translation.getCountry();
 				row[6]= translation.getTagValue();
-				//TODO move HTML to JSP or JS
-				row[7]= "<a onclick=\"sendGet('translations/translationEdit', 'objectID="+translation.getDcId()+"')\" href=\"#\"><img src='"+request.getContextPath()+"/resources/img/common/page_edit.gif'/></a>";
-				row[8]= "<a onclick=\"sendPostAfterCheck('Do you really want to delete this Item?', 'deletetranslation', 'objectID="+translation.getDcId()+"')\" href=\"#\"><img src='"+request.getContextPath()+"/resources/img/common/trash.png'/></a>";
+				//maybe switch from JSON to jsp fragment to prevent HTML in java
+				if(isEditable()){
+					row[7]= "<a onclick=\"sendGet('translations/translationEdit', 'objectID="+translation.getDcId()+"')\" href=\"#\"><img src='"+request.getContextPath()+"/resources/img/common/page_edit.gif' alt='"+tags.getTag("Edit")+"' title='"+tags.getTag("Edit")+"'/></a>";
+					row[8]= "<a onclick=\"sendPostAfterCheck("+tags.getTag("DeletionWanted")+", 'deletetranslation', 'objectID="+translation.getDcId()+"')\" href=\"#\"><img src='"+request.getContextPath()+"/resources/img/common/trash.png' alt='"+tags.getTag("Delete")+"' title='"+tags.getTag("Delete")+"'/></a>";
+				} else {
+					row[7]="&nbsp;";
+					row[8]="&nbsp;";
+				}
 				rows.add(row);
 			}
 		}
@@ -137,8 +146,6 @@ public class TranslationsListController extends AbstractDoc41Controller {
         return map;
     }
 	
-	//DELETE TRANSLATION
-	
 	@RequestMapping(value="/translations/deletetranslation",method=RequestMethod.POST)
 	public String deleteTranslation(@RequestParam(value=OBJECTID) Long tagId) throws Doc41ExceptionBase{
 		if(tagId==null){
@@ -149,10 +156,4 @@ public class TranslationsListController extends AbstractDoc41Controller {
         return "redirect:/translations/translationOverview";
 	}
 	
-    
-	
-	
-	//TODO Distribute Post
-	
-	//extra Controller: Edit, Add
 }
