@@ -90,6 +90,9 @@ $(function(){
                 row.push(d[r][c]); // add each table cell data to row array
               }
             }
+            if(typeof printcells == 'function') { 
+            	printcells(row);
+            }
             rows.push(row); // add new row array to rows array
           }
           // in version 2.10, you can optionally return $(rows) a set of table rows within a jQuery object
