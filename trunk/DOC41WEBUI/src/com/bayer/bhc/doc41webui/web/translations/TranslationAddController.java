@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,7 +56,7 @@ public class TranslationAddController extends AbstractDoc41Controller {
     }
     
     @RequestMapping(value="/translations/inserttranslation",method = RequestMethod.POST)
-    public String save(@ModelAttribute TranslationsForm translationForm, BindingResult result, Model model) throws Doc41ExceptionBase{
+    public String save(@ModelAttribute TranslationsForm translationForm, BindingResult result) throws Doc41ExceptionBase{
 		new TranslationValidator().validate(translationForm, result);
     	if (result.hasErrors()) {
     		return "/translations/translationAdd";

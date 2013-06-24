@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +21,10 @@ import com.bayer.bhc.doc41webui.container.TranslationsForm;
 import com.bayer.bhc.doc41webui.domain.Translation;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.TranslationsUC;
-import com.bayer.bhc.doc41webui.web.Doc41Controller;
+import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 
 @Controller
-public class TranslationEditController extends Doc41Controller {
+public class TranslationEditController extends AbstractDoc41Controller {
 
     //Constant variables
     private static final String OBJECTID = "objectID";
@@ -53,7 +52,7 @@ public class TranslationEditController extends Doc41Controller {
     }
     
     @RequestMapping(value="/translations/updatetranslation",method = RequestMethod.POST)
-    public String save(@ModelAttribute TranslationsForm translationForm, BindingResult result, Model model) throws Doc41ExceptionBase{
+    public String save(@ModelAttribute TranslationsForm translationForm, BindingResult result) throws Doc41ExceptionBase{
 		new TranslationValidator().validate(translationForm, result);
     	if (result.hasErrors()) {
     		return "/translations/translationEdit";
