@@ -5,6 +5,8 @@
  */
 package com.bayer.bhc.doc41webui.container;
 
+import java.io.Serializable;
+
 import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
 
 
@@ -12,7 +14,7 @@ import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
  * Translations View Bean.
  * @author ezzqc
  */
-public class TranslationsForm  {
+public class TranslationsForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String component="*";
