@@ -41,7 +41,7 @@
 			</c:when>
 			<c:otherwise>
 				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('monitoring/editContactPerson', 'objectId=${ebcUser.dcId}')"
+					onclick="sendGet('monitoring/editContactPerson', 'objectId=${ebcUser.dcId}&serviceName=${service.name}')"
 					value="<doc41:translate label="Edit"/>" /></td>
 			</c:otherwise>
 		</c:choose>
@@ -87,7 +87,7 @@
 			</c:when>
 			<c:otherwise>
 				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('monitoring/editContactPerson', 'objectId=${backendUser.dcId}')"
+					onclick="sendGet('monitoring/editContactPerson', 'objectId=${backendUser.dcId}&serviceName=${service.name}')"
 								value="<doc41:translate label="Edit"/>" /></td>
 			</c:otherwise>
 		</c:choose>

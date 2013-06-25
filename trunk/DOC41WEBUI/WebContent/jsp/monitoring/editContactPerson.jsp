@@ -5,12 +5,13 @@
   <head><title><doc41:translate label="EditContactPerson" /></title></head>
   <body>
   <%@include file="../doc41/header.jspf" %>
-<form:form commandName="user" method="post" action="contactpersonedit.htm">
+<form:form commandName="user" method="post" action="editContactPersonPost">
 <form:hidden path="dcId"/>
 <form:hidden path="type"/>
+<form:hidden path="company"/>
 	<div class="portlet-section-header">
-		<input type="button" class="portlet-form-button" onclick="window.location.href='contactpersonview.htm'" value="<doc41:translate label="ButtonCancel"/>" />
-		<input type="submit" name="save" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
+		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/viewContactPerson','serviceName=${user.company}')" value="<doc41:translate label="ButtonCancel"/>"/>
+		<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
 	</div>
 
 	<div class="portlet-section-body">
