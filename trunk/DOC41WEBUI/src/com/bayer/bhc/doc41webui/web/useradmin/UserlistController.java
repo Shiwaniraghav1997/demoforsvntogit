@@ -70,7 +70,7 @@ public class UserlistController extends AbstractDoc41Controller {
 		} else {
 			for (User user : list) {
 				String[] row = new String[16];
-				row[0]= displayStatus(request,user,tags);
+				row[0]= displayStatus(request,user.getActive(),tags);
 				row[1]= StringTool.nullToEmpty(user.getSurname());
 				row[2]= StringTool.nullToEmpty(user.getFirstname());
 				row[3]= StringTool.nullToEmpty(user.getCwid());
@@ -127,19 +127,6 @@ public class UserlistController extends AbstractDoc41Controller {
 		} else {
 			return "&nbsp;";
 		}
-	}
-
-	private String displayStatus(HttpServletRequest request,User user, Tags tags) {
-		String altText;
-		String iconName;
-		if(user.getActive()){
-			altText = tags.getTag("Active");
-			iconName = "ball_green.gif";
-		} else {
-			altText = tags.getTag("Inactive");
-			iconName = "ball_red.gif";
-		}
-		return "<img src='"+request.getContextPath()+"/resources/img/common/"+iconName+"' alt='"+altText+"' style='border: 0px;'>";
 	}
 
 	@RequestMapping(value="/useradmin/toggleuser",method=RequestMethod.POST)

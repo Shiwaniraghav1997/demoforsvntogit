@@ -3,6 +3,11 @@ $(function(){
 	if(typeof tsheaders === "undefined"){
 		tsheaders={};
 	}
+	
+	//addparams can be used to append additional request parameters
+	if(typeof addparams === "undefined"){
+		addparams='';
+	}
 
   // Initialize tablesorter
   // ***********************
@@ -36,7 +41,7 @@ $(function(){
       // the filterList to the url into an "fcol" array.
       // So a sortList = [[2,0],[3,0]] becomes "&col[2]=0&col[3]=0" in the url
       // and a filterList = [[2,Blue],[3,13]] becomes "&fcol[2]=Blue&fcol[3]=13" in the url
-      ajaxUrl : 'jsontable?page={page}&size={size}&{filterList:filter}&{sortList:sort}',
+      ajaxUrl : 'jsontable?page={page}&size={size}&{filterList:filter}&{sortList:sort}'+addparams,
 
       // modify the url after all processing has been applied
       customAjaxUrl: function(table, url) {

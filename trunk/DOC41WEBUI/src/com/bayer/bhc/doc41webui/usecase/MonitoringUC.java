@@ -12,8 +12,8 @@ import com.bayer.bhc.doc41webui.common.Doc41ErrorMessageKeys;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryException;
 import com.bayer.bhc.doc41webui.common.paging.FilterPagingRequest;
+import com.bayer.bhc.doc41webui.common.paging.PagingData;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
-import com.bayer.bhc.doc41webui.container.PagingForm;
 import com.bayer.bhc.doc41webui.domain.Monitor;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.service.repository.MonitoringRepository;
@@ -50,10 +50,11 @@ public class MonitoringUC {
 		}
 	}
 
-	public PagingResult<Monitor> findMonitoringHistoryByInterface(String iName,PagingForm pagingRequest) throws Doc41BusinessException {
+	public PagingResult<Monitor> findMonitoringHistoryByInterface(String iName,PagingData pagingRequest,String orderBy) throws Doc41BusinessException {
 		try {
 			FilterPagingRequest fPagingRequest=new FilterPagingRequest(pagingRequest);
 			fPagingRequest.addFiltering("INTERFACE_NAME",iName);
+			fPagingRequest.addFiltering("ORDER_BY",orderBy);
 			return getRepository().findMonitoringHistoryByInterface(fPagingRequest);
 		} catch (Doc41RepositoryException e) {
 			throw new Doc41BusinessException(Doc41ErrorMessageKeys.MONITOR_FIND_HISTORY_FAILED, e);

@@ -6,16 +6,13 @@
 </head>
 <body>
 <%@include file="../doc41/header.jspf"%>
-	<form:form commandName="monitoring" method="post"
-		action="interfaceadd.htm">
+	<form:form commandName="monitor" method="post"
+		action="addInterfacePost">
 
 		<!--Buttons Bar: Start-->
 		<div class="portlet-section-header">
-			<input type="button" class="portlet-form-button"
-				onclick="window.location.href='monitoringoverview.htm'"
-				value="<doc41:translate label="ButtonCancel"/>" /> <input
-				type="submit" name="save" class="portlet-form-button"
-				value="<doc41:translate label="ButtonSave"/>" />
+				<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="ButtonCancel"/>"/>
+				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
 		</div>
 
 		<!--Buttons Bar :End-->

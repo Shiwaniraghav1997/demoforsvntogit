@@ -60,7 +60,7 @@ public class MonitoringContactDC
 
 	/** Set the database tablename (null if unspecified) for this DC. */
 	static {
-		setDBTablename( MonitoringContactDC.class, "[BOE].IM_MONITORING_CONTACT" );
+		setDBTablename( MonitoringContactDC.class, "[DOC41WEB_MGR].IM_MONITORING_CONTACT" );
 	}
 
 	private static final long serialVersionUID = 20130410014923029L;

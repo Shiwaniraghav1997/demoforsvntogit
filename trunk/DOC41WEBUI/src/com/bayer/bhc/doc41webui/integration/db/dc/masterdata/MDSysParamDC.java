@@ -56,7 +56,7 @@ public class MDSysParamDC
 
 	/** Set the database tablename (null if unspecified) for this DC. */
 	static {
-		setDBTablename( MDSysParamDC.class, "[BOE].MD_SYSPARAM" );
+		setDBTablename( MDSysParamDC.class, "[DOC41WEB_MGR].MD_SYSPARAM" );
 	}
 
 	private static final long serialVersionUID = 20130409035827586L;

@@ -52,7 +52,7 @@ public class MonitoringHistoryDC
 
 	/** Set the database tablename (null if unspecified) for this DC. */
 	static {
-		setDBTablename( MonitoringHistoryDC.class, "[BOE].IM_MONITORING_HISTORY" );
+		setDBTablename( MonitoringHistoryDC.class, "[DOC41WEB_MGR].IM_MONITORING_HISTORY" );
 	}
 
 	private static final long serialVersionUID = 20130410014929852L;

@@ -36,7 +36,7 @@ public class InterfaceDetailDC
 
 	/** Set the database tablename (null if unspecified) for this DC. */
 	static {
-		setDBTablename( InterfaceDetailDC.class, "[BOE].IM_INTERFACE_DETAIL" );
+		setDBTablename( InterfaceDetailDC.class, "[DOC41WEB_MGR].IM_INTERFACE_DETAIL" );
 	}
 
 	private static final long serialVersionUID = 20130410014915417L;

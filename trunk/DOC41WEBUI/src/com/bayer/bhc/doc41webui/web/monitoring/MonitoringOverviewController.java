@@ -5,58 +5,37 @@
  */
 package com.bayer.bhc.doc41webui.web.monitoring;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.domain.Monitor;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.MonitoringUC;
-import com.bayer.bhc.doc41webui.web.Doc41Controller;
+import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 
-/**
- * All Monitoring Interfaces Latest requests processing Overview controller .
- * @author mbghy
- */
-public class MonitoringOverviewController extends Doc41Controller {
+@Controller
+public class MonitoringOverviewController extends AbstractDoc41Controller {
 
     /**
      * INTERFACE The <code>String</code> constant variable.
      */
     private static final String MONITORING_ENTRIES = "monitoringEntries";
 
-    /**
-     * monitoringUC The spring managed bean<code>MonitoringUC</code>.
-     */
+    @Autowired
     private MonitoringUC monitoringUC;
 
-    /**
-     * @return the monitoringUC
-     */
-    public MonitoringUC getMonitoringUC() {
-        return monitoringUC;
+ 
+    @RequestMapping(value="/monitoring/monitoringOverview",method = RequestMethod.GET)
+    public @ModelAttribute(MONITORING_ENTRIES) List<Monitor> get() throws Doc41BusinessException{
+    	return monitoringUC.getLatestMonitoringEntries();
     }
 
-    /**
-     * @param monitoringUC the monitoringUC to set
-     */
-    public void setMonitoringUC(final MonitoringUC monitoringUC) {
-        this.monitoringUC = monitoringUC;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see org.springframework.web.portlet.mvc.AbstractFormController#handleRenderRequestInternal(javax.portlet.RenderRequest,
-     *      javax.portlet.RenderResponse)
-     */
-    @SuppressWarnings("deprecation")
-	protected ModelAndView handleRequestInternal(HttpServletRequest arg0, HttpServletResponse arg1)
-            throws Exception {
-    	Doc41Log.get().debug(this.getClass(), arg0.getRemoteUser(), "handleRenderRequestInternal:ENTRY");
-    	return super.handleRequestInternal(arg0, arg1)
-                      .addObject(MONITORING_ENTRIES,getMonitoringUC().getLatestMonitoringEntries());
-    }
 
 
 	@Override

@@ -1,19 +1,49 @@
 <%@include file="../doc41/prolog.jspf"%>
 <doc41:loadTranslations component="tAdmin" jspName="monitoringHistory" />
 
+<script type="text/javascript">
+<!--
+
+	tsheaders = {
+		0 : {
+			filter : false
+		},
+		1 : {
+			filter : false
+		},
+		2 : {
+			filter : false
+		},
+		3 : {
+			filter : false
+		},
+		4 : {
+			filter : false
+		},
+		5 : {
+			filter : false
+		},
+		6 : {
+			filter : false
+		}
+	};
+	addparams='&serviceName=<%=request.getParameter("serviceName")%>';
+//-->
+</script>
+<script type="text/javascript" src="<%= response.encodeURL(request.getContextPath() + "/resources/js/doc41tablesorter.js") %>"></script>
+
+
 <html>
 	<head>
 	<title><doc41:translate label="MonitoringHistory" /></title>
 	</head>
-	<script type="text/javascript"
-		src="<%=response.encodeURL(request.getContextPath() + "/resources/js/sorttable.js")%>">
-	</script>
+
 	
 	<body>
 	<%@include file="../doc41/header.jspf"%>
 		<!--Buttons Bar: Start-->
 		<div class="portlet-section-header">
-			<input type="button" class="portlet-form-button" onclick="window.location.href='monitoringoverview.htm'" value="<doc41:translate label="Back"/>" />
+			<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="Back"/>"/>
 		</div>
 		<!--Buttons Bar :End-->
 	
@@ -36,9 +66,6 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="pagingBlock">
-			<%@include file="../doc41/paging.jsp"%>
-		</div>
 		<div class="portlet-section-body">
 			<table class="nohover" cellpadding="4" cellspacing="0">
 				<thead class="portlet-table-header">
@@ -47,7 +74,20 @@
 					</tr>
 				</thead>
 			</table>
-			<table class="sortable" cellpadding="4" cellspacing="0">
+			<div class="pager">
+		        <img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/first.png") %>" class="first" alt="First" title="First page" />
+				<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/prev.png") %>" class="prev" alt="Prev" title="Previous page" />
+				<span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+				<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/next.png") %>" class="next" alt="Next" title="Next page" />
+				<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/last.png") %>" class="last" alt="Last" title= "Last page" />
+		        <select class="pagesize">
+		         	<option selected="selected" value="10">10</option>
+					<option value="20">20</option>
+					<option value="30">30</option>
+					<option value="40">40</option>
+		        </select>
+		    </div>
+			<table class="tablesorter" id="doc41table">
 				<thead class="portlet-table-header">
 					<tr>
 						<th><doc41:translate label="EntryId" /></th>
@@ -58,35 +98,32 @@
 						<th><doc41:translate label="Remarks" /></th>
 						<th><doc41:translate label="ResponseTime(ms)" /></th>
 					</tr>
+					<colgroup>
+				    	<col width="10%"/>
+				    	<col width="15%"/>
+				    	<col width="15%"/>
+				    	<col width="5%"/>
+				    	<col width="25%"/>
+				    	<col width="25%"/>
+				    	<col width="5%"/>
+				    </colgroup>
 				</thead>
-				<tbody class="portlet-table-body">
-					<c:forEach items="${monitoringHistoryByInterface}" var="view"
-						varStatus="lineInfo">
-						<tr
-							<c:if test="${lineInfo.count % 2 == 0}"> class="portlet-table-alternate" </c:if>>
-							<td><c:out value="${view.id}"/></td>
-							<td><c:out value="${view.action}"/></td>
-							<td><c:out value="${view.created}"/></td>
-							<td><c:if test="${view.status}">
-									<img
-										src="<%=response.encodeURL(request.getContextPath()
-								+ "/resources/img/common/ball_green.gif")%>"
-										alt="<doc41:translate label="Active"/>" 
-										title="<doc41:translate label="Active"/>" style="border: 0px;">
-								</c:if> <c:if test="${!view.status}">
-									<img
-										src="<%=response.encodeURL(request.getContextPath()
-								+ "/resources/img/common/ball_red.gif")%>"
-										alt="<doc41:translate label="Inactive"/>" 
-										title="<doc41:translate label="Inactive"/>" style="border: 0px;">
-								</c:if></td>
-							<td><c:out value="${view.details}"/></td>
-							<td><c:out value="${view.remarks}"/></td>
-							<td><c:out value="${view.responseTime}"/></td>
-						</tr>
-					</c:forEach>
-				</tbody>
+				<tbody class="portlet-table-body"> <!-- tbody will be loaded via JSON -->
+		  </tbody>
 			</table>
+			<div class="pager">
+		        <img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/first.png") %>" class="first" alt="First" title="First page" />
+				<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/prev.png") %>" class="prev" alt="Prev" title="Previous page" />
+				<span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+				<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/next.png") %>" class="next" alt="Next" title="Next page" />
+				<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/last.png") %>" class="last" alt="Last" title= "Last page" />
+		        <select class="pagesize">
+		         	<option selected="selected" value="10">10</option>
+					<option value="20">20</option>
+					<option value="30">30</option>
+					<option value="40">40</option>
+		        </select>
+		    </div>		
 		</div>
 	</body>
 </html>

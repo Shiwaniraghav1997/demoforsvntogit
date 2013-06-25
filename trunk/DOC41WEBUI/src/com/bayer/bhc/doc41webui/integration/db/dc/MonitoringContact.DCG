@@ -3,7 +3,7 @@
 
 Package=com.bayer.bhc.doc41webui.integration.db.dc
 DCClassName=MonitoringContactDC
-Tablename=[BOE].IM_MONITORING_CONTACT
+Tablename=[DOC41WEB_MGR].IM_MONITORING_CONTACT
 Superclass=com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier
 ImplementedInterfaces=
 Imports=

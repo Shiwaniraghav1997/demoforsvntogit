@@ -19,8 +19,10 @@
 						</tr>
 					</thead>
 	<tr align="right">
-	<td><input type="button" class="portlet-form-button" onclick="window.location.href='monitoringoverview.htm'" value="<doc41:translate label="Refresh" />" />
-		<input type="button" class="portlet-form-button" onclick="window.location.href='interfaceadd.htm'" value="<doc41:translate label="AddInterface"/>" /></td>
+	<td>
+		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="Refresh"/>"/>
+		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/addInterface')" value="<doc41:translate label="AddInterface"/>"/>
+	</td>
 	</tr>
 	</table>
 	</div>
@@ -68,11 +70,11 @@
 							<td><c:out value="${view.remarks}"/></td>
 							<td><c:out value="${view.responseTime}"/></td>
 							<td style="background-color: #FFFFFF;">
-							 <a href="#" onclick="sendGet('monitoringhistory.htm', 'serviceName=${view.name}')"><img
+							 <a href="#" onclick="sendGet('monitoring/monitoringHistory', 'serviceName=${view.name}')"><img
 								src="<%= response.encodeURL(request.getContextPath() + "/resources/img/common/clock.png") %>" title="<doc41:translate label="History"/>"
 								alt="<doc41:translate label="History"/>" style="border: 0px;"></a></td>
 							<td style="background-color: #FFFFFF;">
-							 <a href="#" onclick="sendGet('contactpersonview.htm', 'serviceName=${view.name}')"><img
+							 <a href="#" onclick="sendGet('monitoring/viewContactPerson', 'serviceName=${view.name}')"><img
 								src="<%= response.encodeURL(request.getContextPath() + "/resources/img/common/report_user.png") %>" title="<doc41:translate label="ContactPerson"/>"
 								alt="<doc41:translate label="ContactPerson"/>" style="border: 0px;"></a></td>
 						</tr>
@@ -82,8 +84,10 @@
 	<table class="nohover" cellpadding="3">
 
 	<tr align="right">
-	<td><input type="button" class="portlet-form-button" onclick="window.location.href='monitoringoverview.htm'" value="<doc41:translate label="Refresh" />" />
-		<input type="button" class="portlet-form-button" onclick="window.location.href='interfaceadd.htm'" value="<doc41:translate label="AddInterface"/>" /></td>
+	<td>
+		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="Refresh"/>"/>
+		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/addInterface')" value="<doc41:translate label="AddInterface"/>"/>
+	</td>
 	</tr>
 	</table>
 			</div>

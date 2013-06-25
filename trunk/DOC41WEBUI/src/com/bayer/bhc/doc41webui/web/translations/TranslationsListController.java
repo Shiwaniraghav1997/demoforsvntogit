@@ -91,7 +91,7 @@ public class TranslationsListController extends AbstractDoc41Controller {
     }
 	
 	@RequestMapping(value="/translations/translationOverview",method=RequestMethod.GET)
-    protected void get() throws Exception {
+    public void get()  {
         
     }
 	

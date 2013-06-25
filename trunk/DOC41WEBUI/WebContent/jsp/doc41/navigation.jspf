@@ -193,7 +193,7 @@
 							</tr>
 							<tr class="nobottom" style="font-weight: normal;">
 								<td class="navigationCell" onmouseover="stopDeactivation();" onmouseout="stopActivation()";>
-								<a href="#" onclick="sendGet('monitoringoverview.htm', '')"><doc41:translate label="navInterfaceMonitoring" /></a></td>
+								<a href="#" onclick="sendGet('monitoring/monitoringOverview', '')"><doc41:translate label="navInterfaceMonitoring" /></a></td>
 							</tr>
 						</c:if>
 						<tr>
