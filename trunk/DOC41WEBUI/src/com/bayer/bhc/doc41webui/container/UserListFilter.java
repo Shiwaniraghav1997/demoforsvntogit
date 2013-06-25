@@ -1,18 +1,16 @@
 package com.bayer.bhc.doc41webui.container;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.validation.Errors;
+import java.io.Serializable;
 
 /**
  * UserListFilter.
  * 
  * @author ezzqc
  */
-public class UserListFilter  {
-	private static final long serialVersionUID = 1L;
-	
-    public static final String FILTER_ALL_OPTIONS = "all";
+public class UserListFilter implements Serializable {
+	private static final long serialVersionUID = -3712923928152812412L;
+
+	public static final String FILTER_ALL_OPTIONS = "all";
     
 	private String status = FILTER_ALL_OPTIONS;
 
