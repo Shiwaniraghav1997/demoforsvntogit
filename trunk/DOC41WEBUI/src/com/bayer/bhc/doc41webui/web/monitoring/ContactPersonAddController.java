@@ -3,95 +3,52 @@
  */
 package com.bayer.bhc.doc41webui.web.monitoring;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.validation.BindException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.ValidationUtils;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.MonitoringUC;
-import com.bayer.bhc.doc41webui.web.Doc41Controller;
+import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 
-/**
- * @author MBGHY
- *
- */
-public class ContactPersonAddController extends Doc41Controller {
+@Controller
+public class ContactPersonAddController extends AbstractDoc41Controller {
 
-	 /**
-     * INTERFACE_NAME The <code>String</code> constant variable.
-     */
-    private static final String INTERFACE_NAME = "serviceName";
-
-	private static final String CONTACT_TYPE = "contactType";
-	
+	@Autowired
 	private MonitoringUC monitoringUC;
 
-	/**
-	 * @return the monitoringUC
-	 */
-	public MonitoringUC getMonitoringUC() {
-		return monitoringUC;
-	}
-
-	/**
-	 * @param monitoringUC
-	 *            the monitoringUC to set
-	 */
-	public void setMonitoringUC(MonitoringUC monitoringUC) {
-		this.monitoringUC = monitoringUC;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.bayer.bhc.doc41webui.web.Doc41Controller#hasRolePermission(com.bayer.bhc.doc41webui.domain.User)
-	 */
 	@Override
 	protected boolean hasRolePermission(User usr) {
 		return usr.isBusinessAdmin() || usr.isTechnicalAdmin();
 	}
 	
-	@Override
-	protected Object formBackingObject(HttpServletRequest request)
-			throws Exception {
+	@RequestMapping(value="monitoring/addContactPerson",method = RequestMethod.GET)
+	public User get(@RequestParam String serviceName,@RequestParam String contactType) throws Doc41BusinessException{
 		User user=new User();
-		user.setCompany(getParameterValueByName(request,INTERFACE_NAME));
-    	user.setType(getParameterValueByName(request,CONTACT_TYPE));
+		user.setCompany(serviceName);
+    	user.setType(contactType);
 		return user;
 	}
 	
-	@Override
-	protected ModelAndView processFormSubmission(HttpServletRequest request,
-			HttpServletResponse response, Object command, BindException errors)
-			throws Exception {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "surname", "surname.required","surname is required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstname", "firstname.required","firstname is required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cwid", "cwid.required","cwid is required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "email.required","email is required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phone", "phone.required","phone is required");
-		return super.processFormSubmission(request, response, command, errors);
-	}
-
-	@Override
-	protected ModelAndView onSubmit(HttpServletRequest request,
-			HttpServletResponse response, Object command, BindException errors)
-			throws Exception {
-       
-		getMonitoringUC().addContactPerson((User)command);
-     
-         //remove conact type from session after adding.
-        request.getSession().setAttribute(CONTACT_TYPE,null);
-		return super.redirectOnSuccess(request, response, command, errors);
-	}
-	
-	private String getParameterValueByName(HttpServletRequest request,String name) {
-		String value = request.getParameter(name);
-		if(value != null) {
-			request.getSession().setAttribute(name,value);
-		}else{
-			value = (String) request.getSession().getAttribute(name);
-		}
-		return value;
-	}
+	@RequestMapping(value="/monitoring/addContactPersonPost",method = RequestMethod.POST)
+    public String save(@ModelAttribute User user, BindingResult result) throws Doc41ExceptionBase{
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "surname", "surname.required","surname is required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "firstname", "firstname.required","firstname is required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "cwid", "cwid.required","cwid is required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "email", "email.required","email is required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(result, "phone", "phone.required","phone is required");
+    	if (result.hasErrors()) {
+    		return "/monitoring/addContactPerson";
+        }
+		
+    	monitoringUC.addContactPerson(user);
+        return "redirect:/monitoring/viewContactPerson?serviceName="+user.getCompany();
+    }
 }

@@ -36,7 +36,7 @@
 		<c:choose>
 			<c:when test="${ebcUser.dcId==null}">
 				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('monitoring/addContactPerson', 'contactType=EBC')"
+					onclick="sendGet('monitoring/addContactPerson', 'contactType=EBC&serviceName=${service.name}')"
 					value="<doc41:translate label="Add"/>" /></td>
 			</c:when>
 			<c:otherwise>
@@ -82,7 +82,7 @@
 		<c:choose>
 			<c:when test="${backendUser.dcId==null}">
 				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('monitoring/addContactPerson', 'contactType=BACKEND')"
+					onclick="sendGet('monitoring/addContactPerson', 'contactType=BACKEND&serviceName=${service.name}')"
 					value="<doc41:translate label="Add"/>" /></td>
 			</c:when>
 			<c:otherwise>
