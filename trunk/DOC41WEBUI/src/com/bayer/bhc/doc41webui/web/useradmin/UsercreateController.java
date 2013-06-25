@@ -4,67 +4,70 @@
  */
 package com.bayer.bhc.doc41webui.web.useradmin;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.validation.BindException;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41InvalidPasswordException;
-import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.container.UserEditForm;
 import com.bayer.bhc.doc41webui.domain.User;
-import com.bayer.bhc.doc41webui.web.Doc41Controller;
+import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 
-/**
- * User create Controller. Create a new user.
- * 
- */
-public class UsercreateController extends Doc41Controller {
+@Controller
+public class UsercreateController extends AbstractDoc41Controller {
+	
+	@ModelAttribute("languageCountryList")
+	public List<SelectionItem> addLanguageCountryList(){
+		return getDisplaytextUC().getLanguageCountryCodes();
+	}
+	
+	@ModelAttribute("timeZoneList")
+	public List<SelectionItem> addTimezones(){
+		return getDisplaytextUC().getTimezones();
+	}
 		
 	protected boolean hasRolePermission(User usr) {
 		return usr.isBusinessAdmin() || usr.isTechnicalAdmin();
     }
 	
-	@SuppressWarnings("deprecation")
-	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return super.handleRequestInternal(request, response)
-                .addObject("languageCountryList", getDisplaytextUC().getLanguageCountryCodes())
-                        .addObject("timeZoneList", getDisplaytextUC().getTimezones());
-    }
-	
-	protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        //Removing UserId from session.
-        request.getSession().setAttribute("userId",null);
-        request.getSession().setAttribute("createdId",null);
-        
-        
+	@RequestMapping(value="/useradmin/usercreate",method = RequestMethod.GET)
+    public UserEditForm get() throws Doc41ExceptionBase {
 		UserEditForm userEditForm = new UserEditForm(new User());
 		userEditForm.setActive(Boolean.FALSE);
 		userEditForm.setType(User.TYPE_EXTERNAL);
-		
-		Doc41Log.get().debug(this.getClass(), "System", "Exiting UsercreateController.formBackingObject() " + userEditForm);
-		return userEditForm ;
-	}
+		return userEditForm;
+    }
 	
-	@SuppressWarnings("deprecation")
-	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-		UserEditForm form =(UserEditForm)command;
-        //user.setLocale(request.getLocale());
-		try {
-			User user = form.copyToDomainUser();
-//			user.setType(User.TYPE_EXTERNAL);
-//            user.setLocale(request.getLocale());
-            getUserManagementUC().createUser(user);
-            
-            //request.setParameter("cwid", user.getCwid());
-            request.getSession().setAttribute("createdId", user.getCwid());
-            return redirectOnSuccess(request, response, command, errors);
-
-		} catch (Doc41InvalidPasswordException e) {
-            errors.rejectValue("password", "error.password.invalid", "Please enter a valid password.");
+	@RequestMapping(value="/useradmin/createuser",method = RequestMethod.POST)
+    public String save(HttpServletRequest request,@ModelAttribute UserEditForm userEditForm, BindingResult result) throws Doc41ExceptionBase{
+    	userEditForm.validate(request, result);
+    	if (result.hasErrors()) {
+    		return "/useradmin/usercreate";
         }
-		
-        return super.onSubmit(request, response, command, errors);
-	}
+    	try {
+        	User user = userEditForm.copyToDomainUser();
+//        	user.setType(User.TYPE_EXTERNAL);
+        	
+    			try {
+                  getUserManagementUC().createUser(user);
+                  return "redirect:/useradmin/userlist";
+                  
+    			} catch (Doc41InvalidPasswordException e) {
+    				result.rejectValue("password", "error.password.invalid", "Please enter a valid password.");
+    				return "/useradmin/usercreate";
+    			}
+
+        } catch (Doc41InvalidPasswordException e) {
+            result.rejectValue("password", "error.password.invalid", "Please enter a valid password.");
+            return "/useradmin/usercreate";
+        }
+    }
 }

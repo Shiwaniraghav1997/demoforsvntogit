@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41InvalidPasswordException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.container.UserEditForm;
 import com.bayer.bhc.doc41webui.domain.User;
@@ -38,6 +39,9 @@ public class UsereditController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/useradmin/useredit",method = RequestMethod.GET)
     public UserEditForm get(@RequestParam(value="editcwid") String cwid) throws Doc41ExceptionBase {
+		if(cwid==null){
+			throw new Doc41TechnicalException(null,"cwid is null");
+		}
 		UserEditForm userEditForm;
 		User updateUser = getUserManagementUC().findUser(cwid);
 		userEditForm = new UserEditForm(updateUser);

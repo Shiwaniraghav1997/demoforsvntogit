@@ -4,67 +4,82 @@
  */
 package com.bayer.bhc.doc41webui.web.useradmin;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.validation.BindException;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41InvalidPasswordException;
+import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.container.UserEditForm;
 import com.bayer.bhc.doc41webui.domain.User;
-import com.bayer.bhc.doc41webui.web.Doc41Controller;
+import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 
-/**
- * User import controller. Imports internal user from LDAP.
- * 
- * @author ezzqc
- */
-public class UserimportController extends Doc41Controller {
+@Controller
+public class UserimportController extends AbstractDoc41Controller {
+	
+	@ModelAttribute("languageCountryList")
+	public List<SelectionItem> addLanguageCountryList(){
+		return getDisplaytextUC().getLanguageCountryCodes();
+	}
+	
+	@ModelAttribute("timeZoneList")
+	public List<SelectionItem> addTimezones(){
+		return getDisplaytextUC().getTimezones();
+	}
 	
 	protected boolean hasRolePermission(User usr) {
 		return usr.isBusinessAdmin() || usr.isTechnicalAdmin();
     }
 	
-	protected Object formBackingObject(HttpServletRequest request) throws Exception {
-		UserEditForm form = (UserEditForm) request.getSession().getAttribute("importuser");
-		return form;
-	}
-	
-	@SuppressWarnings("deprecation")
-	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return super.handleRequestInternal(request, response)
-                .addObject("languageCountryList", getDisplaytextUC().getLanguageCountryCodes())
-                        .addObject("timeZoneList", getDisplaytextUC().getTimezones());
+	@RequestMapping(value="/useradmin/userimport",method = RequestMethod.GET)
+    public UserEditForm get(@RequestParam(value="importcwid") String cwid) throws Doc41ExceptionBase {
+		UserEditForm userEditForm;
+		User importUser = getUserManagementUC().lookupUser(cwid);
+		userEditForm = new UserEditForm(importUser);
+		return userEditForm;
     }
 
 	
-	@SuppressWarnings("deprecation")
-	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-		UserEditForm form =(UserEditForm)command;
-		User user = form.copyToDomainUser();
-		
-//		user.setActive(Boolean.FALSE);
-		user.setType(User.TYPE_INTERNAL);
-//		user.setLocale(request.getLocale());
-		
-		if (StringUtils.isNotBlank(user.getCwid()) && StringUtils.isNotBlank(user.getSurname())) {
-			try {
-              getUserManagementUC().createUser(user);
-              // switch to edit controller:
-              return new ModelAndView("redirect:/useredit.htm?editcwid="+user.getCwid().toUpperCase());
-              
-			} catch (Doc41InvalidPasswordException e) {
-              errors.rejectValue("password", "error.password.invalid", "Please enter a valid password.");
-			}
-		} else {
-			if (StringUtils.isBlank(user.getCwid())) {
-				errors.rejectValue("cwid", "isRequired", "Please enter a cwid.");
-          	} else {
-          		errors.rejectValue("cwid", "lookupRequired", "Please perform lookup first.");
-          	}
-		}
-		return super.onSubmit(request, response, command, errors);
-	}
+    @RequestMapping(value="/useradmin/importuser",method = RequestMethod.POST)
+    public String save(HttpServletRequest request,@ModelAttribute UserEditForm userEditForm, BindingResult result) throws Doc41ExceptionBase{
+    	userEditForm.validate(request, result);
+    	if (result.hasErrors()) {
+    		return "/useradmin/userimport";
+        }
+    	try {
+        	User user = userEditForm.copyToDomainUser();
+        	user.setType(User.TYPE_INTERNAL);
+        	
+        	if (StringUtils.isNotBlank(user.getCwid()) && StringUtils.isNotBlank(user.getSurname())) {
+    			try {
+                  getUserManagementUC().createUser(user);
+                  return "redirect:/useradmin/userlist";
+                  
+    			} catch (Doc41InvalidPasswordException e) {
+    				result.rejectValue("password", "error.password.invalid", "Please enter a valid password.");
+    				return "/useradmin/userimport";
+    			}
+    		} else {
+    			if (StringUtils.isBlank(user.getCwid())) {
+    				result.rejectValue("cwid", "isRequired", "Please enter a cwid.");
+    				return "/useradmin/userimport";
+              	} else {
+              		result.rejectValue("cwid", "lookupRequired", "Please perform lookup first.");
+              		return "/useradmin/userimport";
+              	}
+    		}
+        } catch (Doc41InvalidPasswordException e) {
+            result.rejectValue("password", "error.password.invalid", "Please enter a valid password.");
+            return "/useradmin/userimport";
+        }
+    }
 }

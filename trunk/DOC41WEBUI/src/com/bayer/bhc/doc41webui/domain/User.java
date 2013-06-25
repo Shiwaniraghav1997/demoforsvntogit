@@ -240,6 +240,10 @@ public class User extends DomainObject {
 		return roles.contains(ROLE_PM_SUPPLIER);
 	}
 	
+	public boolean isObserver() {
+		return roles.contains(ROLE_OBSERVER);
+	}
+	
 	private String company = "";
 
 

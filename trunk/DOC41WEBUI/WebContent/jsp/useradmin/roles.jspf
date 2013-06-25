@@ -32,19 +32,19 @@
 				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_CARRIER %>.gif"" alt="<doc41:translate label="<%=User.ROLE_CARRIER %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_CARRIER %>"/></th>
 				<td style="width: 35%">
 					<c:if test="${userEditForm.type eq 'external'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CARRIER %>" disabled="true"/>
+						<form:checkbox path="roles" value="<%=User.ROLE_CARRIER %>"/>
 					</c:if>
 					<c:if test="${userEditForm.type eq 'internal'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CARRIER %>"/>
+						<form:checkbox path="roles" value="<%=User.ROLE_CARRIER %>" disabled="true"/>
 					</c:if>
 				</td>
 				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_CUSTOMS_BROKER %>.gif"" alt="<doc41:translate label="<%=User.ROLE_CUSTOMS_BROKER %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_CUSTOMS_BROKER %>"/></th>
 				<td style="width: 35%">
 					<c:if test="${userEditForm.type eq 'external'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMS_BROKER %>" disabled="true"/>
+						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMS_BROKER %>"/>
 					</c:if>
 					<c:if test="${userEditForm.type eq 'internal'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMS_BROKER %>"/>
+						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMS_BROKER %>" disabled="true"/>
 					</c:if>
 				</td>
 			</tr>
@@ -53,19 +53,19 @@
 				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_LAYOUT_SUPPLIER %>.gif"" alt="<doc41:translate label="<%=User.ROLE_LAYOUT_SUPPLIER %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_LAYOUT_SUPPLIER %>"/></th>
 				<td style="width: 35%">
 					<c:if test="${userEditForm.type eq 'external'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_LAYOUT_SUPPLIER %>" disabled="true"/>
+						<form:checkbox path="roles" value="<%=User.ROLE_LAYOUT_SUPPLIER %>"/>
 					</c:if>
 					<c:if test="${userEditForm.type eq 'internal'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_LAYOUT_SUPPLIER %>"/>
+						<form:checkbox path="roles" value="<%=User.ROLE_LAYOUT_SUPPLIER %>" disabled="true"/>
 					</c:if>
 				</td>
 				<th style="width: 15%"><img src="<%= response.encodeURL(request.getContextPath()) %>/resources/img/usermanagement/symbol_<%=User.ROLE_PM_SUPPLIER %>.gif"" alt="<doc41:translate label="<%=User.ROLE_PM_SUPPLIER %>"/>" style="border: 0px;">&nbsp;<doc41:translate label="<%=User.ROLE_PM_SUPPLIER %>"/></th>
 				<td style="width: 35%">
 					<c:if test="${userEditForm.type eq 'external'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_PM_SUPPLIER %>" disabled="true"/>
+						<form:checkbox path="roles" value="<%=User.ROLE_PM_SUPPLIER %>"/>
 					</c:if>
 					<c:if test="${userEditForm.type eq 'internal'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_PM_SUPPLIER %>"/>
+						<form:checkbox path="roles" value="<%=User.ROLE_PM_SUPPLIER %>" disabled="true"/>
 					</c:if>
 				</td>
 			</tr>

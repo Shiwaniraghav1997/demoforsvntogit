@@ -27,6 +27,7 @@ import com.bayer.bhc.doc41webui.container.UserListFilter;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
+import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
@@ -70,19 +71,19 @@ public class UserlistController extends AbstractDoc41Controller {
 			for (User user : list) {
 				String[] row = new String[16];
 				row[0]= displayStatus(request,user,tags);
-				row[1]= user.getSurname();
-				row[2]= user.getFirstname();
-				row[3]= user.getCwid();
-				row[4]= user.getEmail();
-				row[5]= user.getPhone();
-				row[6]= user.getType();
+				row[1]= StringTool.nullToEmpty(user.getSurname());
+				row[2]= StringTool.nullToEmpty(user.getFirstname());
+				row[3]= StringTool.nullToEmpty(user.getCwid());
+				row[4]= StringTool.nullToEmpty(user.getEmail());
+				row[5]= StringTool.nullToEmpty(user.getPhone());
+				row[6]= StringTool.nullToEmpty(user.getType());
 				row[7]= displayRole(request,user.isCarrier(),tags); 
 				row[8]= displayRole(request,user.isCustomsBroker(),tags);
 				row[9]= displayRole(request,user.isLayoutSupplier(),tags);
 				row[10]= displayRole(request,user.isPmSupplier(),tags);
 				row[11]= displayRole(request,user.isBusinessAdmin(),tags);
 				row[12]= displayRole(request,user.isTechnicalAdmin(),tags);
-				row[13]= displayRole(request,user.getReadOnly(),tags);
+				row[13]= displayRole(request,user.isObserver(),tags);
 				//TODO move HTML to JSP
 				row[14]= displayEditButton(request,user.getCwid(),tags);
 				row[15]= displayToggleButton(request,user,tags);

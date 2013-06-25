@@ -7,16 +7,18 @@
     <%@include file="../doc41/header.jspf" %>
 
 	<div class="portlet-body">
-		<form:form commandName="edituser" action="${lastRenderedAction}" method="post">
-			<form:hidden path="command"/>
+		<form:form commandName="userEditForm" action="importuser" method="post">
 			<div class="portlet-section-header">
+				<form:hidden path="type" />
+				<form:hidden path="cwid" />
+				
 				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
 					<th><doc41:translate label="UserImport"/></th>
 				</table>
-				<input type="button" class="portlet-form-button" onclick="window.location.href='userlist.htm'" value="<doc41:translate label="ButtonCancel"/>" />
-				<input type="button" class="portlet-form-button" onclick="sendGet('userlookup.htm');" value="<doc41:translate label="ButtonLookup"/>" />
-				<c:if test="${!empty edituser.surname}">
-					<input type="button" class="portlet-form-button" onclick="submitAction('edituser', 'submit', this)" value="<doc41:translate label="ButtonSave"/>" name="save" />
+				<input type="button" class="portlet-form-button" onclick="sendGet('useradmin/userlist')" value="<doc41:translate label="ButtonCancel"/>"/>
+				<input type="button" class="portlet-form-button" onclick="sendGet('useradmin/userlookup');" value="<doc41:translate label="ButtonLookup"/>" />
+				<c:if test="${!empty userEditForm.surname}">
+					<input type="submit" class="portlet-form-button" value="<doc41:translate label="Save"/>" />
 				</c:if>
 			</div>
 		
@@ -28,7 +30,7 @@
 						</tr>
 					</thead>
 					<tbody class="portlet-table-body">	
-						<spring:hasBindErrors name="edituser">
+						<spring:hasBindErrors name="userEditForm">
 							<tr>
 								<td colspan="4">
 									<c:forEach items="${errors.fieldErrors}" var="error">
@@ -43,9 +45,9 @@
 						<tr>
 							<th style="width: 15%"><doc41:translate label="Surname"/></th> 
 							<td style="width: 35%">
-								<c:if test="${empty edituser.surname}"><doc41:translate label="AutomaticImport"/></c:if>
-								<c:if test="${not empty edituser.surname}">
-									<c:out value="${edituser.surname}"/>
+								<c:if test="${empty userEditForm.surname}"><doc41:translate label="AutomaticImport"/></c:if>
+								<c:if test="${not empty userEditForm.surname}">
+									<c:out value="${userEditForm.surname}"/>
 									<form:hidden path="surname"/>
 								</c:if>
 							</td>
@@ -55,9 +57,9 @@
 						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="Firstname"/></th>
 							<td>
-								<c:if test="${empty edituser.firstname}"><doc41:translate label="AutomaticImport"/></c:if>
-								<c:if test="${not empty edituser.firstname}">
-									<c:out value="${edituser.firstname}"/>
+								<c:if test="${empty userEditForm.firstname}"><doc41:translate label="AutomaticImport"/></c:if>
+								<c:if test="${not empty userEditForm.firstname}">
+									<c:out value="${userEditForm.firstname}"/>
 									<form:hidden path="firstname"/>
 								</c:if>				
 							</td>
@@ -66,33 +68,33 @@
 						</tr>
 						<tr>
 							<th><doc41:translate label="Cwid"/></th>
-							<td><c:out value="${edituser.cwid}"/></td>
+							<td><c:out value="${userEditForm.cwid}"/></td>
 							
 							<th><doc41:translate label="Company"/></th>
 							<td>
-								<c:if test="${empty edituser.company}"><doc41:translate label="AutomaticImport"/></c:if>
-								<c:if test="${not empty edituser.company}">
-									<c:out value="${edituser.company}"/>
+								<c:if test="${empty userEditForm.company}"><doc41:translate label="AutomaticImport"/></c:if>
+								<c:if test="${not empty userEditForm.company}">
+									<c:out value="${userEditForm.company}"/>
 									<form:hidden path="company"/>
 								</c:if>
 							</td>
 						</tr>
 						
-						<c:if test="${!empty edituser.surname}">
+						<c:if test="${!empty userEditForm.surname}">
 							<tr class="portlet-table-alternate">
 								<th><doc41:translate label="Email"/></th>
 								<td>
-									<c:if test="${empty edituser.email}"><doc41:translate label="AutomaticImport"/></c:if>
-									<c:if test="${not empty edituser.email}">
-										<c:out value="${edituser.email}"/>
+									<c:if test="${empty userEditForm.email}"><doc41:translate label="AutomaticImport"/></c:if>
+									<c:if test="${not empty userEditForm.email}">
+										<c:out value="${userEditForm.email}"/>
 										<form:hidden path="email"/>
 									</c:if>
 								</td>
 								<th><doc41:translate label="Phone"/></th>
 								<td>
-									<c:if test="${empty edituser.phone}"><doc41:translate label="AutomaticImport"/></c:if>
-									<c:if test="${not empty edituser.phone}">
-										<c:out value="${edituser.phone}"/>
+									<c:if test="${empty userEditForm.phone}"><doc41:translate label="AutomaticImport"/></c:if>
+									<c:if test="${not empty userEditForm.phone}">
+										<c:out value="${userEditForm.phone}"/>
 										<form:hidden path="phone"/>
 									</c:if>
 								</td>
@@ -105,7 +107,7 @@
 									</form:select>
 								</td>
 								<th><doc41:translate label="Type"/></th>
-								<td><c:out value="${edituser.type}"/></td>
+								<td><c:out value="${userEditForm.type}"/></td>
 							</tr>
 							
 							<tr class="portlet-table-alternate">
@@ -119,21 +121,6 @@
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
-							<th><doc41:translate label="Agent"/></th>
-								<td>
-									<form:select path="agentId" cssClass="portlet-form-input-field">
-										<form:option value=""><doc41:translate label="UseDefault" /></form:option>
-										<form:options items="${agentList}" itemValue="dcId" itemLabel="name"/>
-									</form:select>
-								</td>
-								<th><doc41:translate label="InventoryAgent"/></th>
-								<td>
-									<form:select path="invAgentId" cssClass="portlet-form-input-field" onChange="changeUserAgentLocations()">
-										<form:option value=""><doc41:translate label="SelectAgent" /></form:option>
-										<form:options items="${inventoryAgentList}" itemValue="dcId" itemLabel="name"/>
-									</form:select>
-								</td>
-							</tr> 
 							<tr>
 								<th><doc41:translate label="Status"/></th>
 								<td>
@@ -142,20 +129,13 @@
 										<form:option value="true"><doc41:translate label="Active"/></form:option>
 								   </form:select>
 								</td>
-								<th><doc41:translate label="location" /></th>
-								<td>
-									<div id="div-agentlocations">
-										<form:select cssClass="portlet-form-input-field" path="locationIds">
-											<form:options items="${locationList}"  itemValue="value" itemLabel="label" />
-										</form:select>
-									</div>
-								</td>
+
 							</tr>				
 						</c:if>
 					</tbody>
 				</table>
 			</div>
-			<c:if test="${!empty edituser.surname}">
+			<c:if test="${!empty userEditForm.surname}">
 				<%@include file="roles.jspf"%>
 			</c:if>
 		</form:form>
