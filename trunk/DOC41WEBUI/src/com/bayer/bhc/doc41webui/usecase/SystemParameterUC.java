@@ -38,8 +38,6 @@ public class SystemParameterUC {
 	}
 	
 	public Boolean isDBSessionPersistence() {
-		//TODO remove
-		if(true)return false;
 		try {			
 			return systemParameterRepository.isDBSessionPersistence();
          } catch (Doc41RepositoryException e) {
