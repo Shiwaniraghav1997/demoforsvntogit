@@ -15,7 +15,6 @@ import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.paging.PagingData;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.container.PagingForm;
 import com.bayer.bhc.doc41webui.container.UserListFilter;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.domain.User;
