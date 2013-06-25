@@ -5,7 +5,9 @@
   <body>
   <%@include file="../doc41/header.jspf" %>
 <!--Buttons Bar: Start-->
-<div class="portlet-section-header"><input type="button" class="portlet-form-button" onclick="window.location.href='monitoringoverview.htm'" value="<doc41:translate label="Back"/>" /></div>
+<div class="portlet-section-header">
+	<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="Back"/>"/>
+</div>
 <!--Buttons Bar :End-->
 <div class="portlet-section-body">
 <table cellpadding="4" cellspacing="0" class="nohover">
@@ -34,12 +36,12 @@
 		<c:choose>
 			<c:when test="${ebcUser.dcId==null}">
 				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('contactpersonadd.htm', 'contactType=EBC')"
+					onclick="sendGet('monitoring/addContactPerson', 'contactType=EBC')"
 					value="<doc41:translate label="Add"/>" /></td>
 			</c:when>
 			<c:otherwise>
 				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('contactpersonedit.htm', 'objectId=${ebcUser.dcId}')"
+					onclick="sendGet('monitoring/editContactPerson', 'objectId=${ebcUser.dcId}')"
 					value="<doc41:translate label="Edit"/>" /></td>
 			</c:otherwise>
 		</c:choose>
@@ -80,12 +82,12 @@
 		<c:choose>
 			<c:when test="${backendUser.dcId==null}">
 				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('contactpersonadd.htm', 'contactType=BACKEND')"
+					onclick="sendGet('monitoring/addContactPerson', 'contactType=BACKEND')"
 					value="<doc41:translate label="Add"/>" /></td>
 			</c:when>
 			<c:otherwise>
 				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('contactpersonedit.htm', 'objectId=${backendUser.dcId}')"
+					onclick="sendGet('monitoring/editContactPerson', 'objectId=${backendUser.dcId}')"
 								value="<doc41:translate label="Edit"/>" /></td>
 			</c:otherwise>
 		</c:choose>
