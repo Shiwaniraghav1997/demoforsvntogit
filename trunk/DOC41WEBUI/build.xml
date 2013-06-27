@@ -23,7 +23,7 @@
 
 	<property name="tomcat.dir.tmp" value="/tmp"/>
 	<property name="tomcat.script.control" value="sudo /etc/init.d/tomcat-doc41" />
-	<property name="tomcat.script.deploy" value="sudo /app/jenkins/scripts/deploy_war.sh" />
+	<property name="tomcat.script.deploy" value="sudo /app/jenkins/scripts/deploy_war_doc41.sh" />
 	<property name="apache.script.control" value="sudo /app/jenkins/scripts/start_stop_V_Hosts" />
 	<property name="server.dev1" value="byymss" />
 	<property name="server.dev2" value="" />
