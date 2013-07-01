@@ -308,8 +308,18 @@ public class SAPSingleton extends Singleton {
 			throw new SAPException("No configuration for RFC \""+pRFCName+"\"", null, null, null, null, true, true);
 		}
 		String bPoolName = mRFCConfig.get("pool");
+		if(StringTool.isTrimmedEmptyOrNull(bPoolName)){
+			throw new SAPException("no pool configured for RFC '"+pRFCName+"'", null);
+		}
 		String bSAPRFCName = mRFCConfig.get("sapcall");
+		if(StringTool.isTrimmedEmptyOrNull(bSAPRFCName)){
+			throw new SAPException("no sapcall configured for RFC '"+pRFCName+"'", null);
+		}
 		String bRFCCallerClass = mRFCConfig.get("class");
+		if(StringTool.isTrimmedEmptyOrNull(bRFCCallerClass)){
+			throw new SAPException("no class configured for RFC '"+pRFCName+"'", null);
+		}
+		
 
 		try {
 //			if (cIsReInitializing.booleanValue()) {

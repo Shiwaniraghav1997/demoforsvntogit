@@ -8,12 +8,14 @@ import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.integration.sap.util.RFCCaller;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
+import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
+import com.sap.conn.jco.JCoParameterList;
 import com.sap.conn.jco.JCoTable;
 
 public abstract class AbstractDoc41RFC<E> implements RFCCaller<E> {
 	
-	private static final String OT_RETURN = "ET_RETURN";
+	private static final String OT_RETURN = "TR_RETURN";
 	private static final String OTRET_TYPE = "TYPE";
 	private static final String OTRET_ID = "ID";
 	private static final String OTRET_NUMBER = "NUMBER";
@@ -28,6 +30,8 @@ public abstract class AbstractDoc41RFC<E> implements RFCCaller<E> {
 	private static final String OTRET_ROW = "ROW";
 	private static final String OTRET_FIELD = "FIELD";
 	private static final String OTRET_SYSTEM = "SYSTEM";
+	
+	private static final String RETURNCODE_OK = "0";
 
 	public AbstractDoc41RFC() {
 		super();
@@ -115,6 +119,21 @@ public abstract class AbstractDoc41RFC<E> implements RFCCaller<E> {
 
 	protected Date mergeSapDateTime(Date ardate, Date artime) {
 		return new Date(ardate.getTime()+artime.getTime());
+	}
+	
+	public void checkReturnCode(JCoFunction pFunction, String codeCol, String msgCol) throws SAPException{
+		JCoParameterList exportParameterList = pFunction.getExportParameterList();
+		String returnCode = exportParameterList.getString(codeCol);
+		if(!StringTool.equals(returnCode, RETURNCODE_OK)){
+			String msg ="";
+			if(!StringTool.isTrimmedEmptyOrNull(msgCol)){
+				String msgParam = exportParameterList.getString(msgCol);
+				if(!StringTool.isTrimmedEmptyOrNull(msgParam)){
+					msg =", msg: "+msgParam;
+				}
+			}
+			throw new SAPException("return code "+codeCol+" is "+returnCode+" but should have been "+RETURNCODE_OK+msg,null);
+		}
 	}
 	
 }

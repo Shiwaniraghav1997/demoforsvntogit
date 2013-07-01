@@ -2,7 +2,7 @@
 
 <!-- simply redirects to the start page  -->
 
-<c:redirect url="/userprofile.htm"/>
+<c:redirect url="/userprofile/myprofile"/>
 
 
 

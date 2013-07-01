@@ -1,18 +1,13 @@
 package com.bayer.bhc.doc41webui.integration.sap.rfc;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.container.Delivery;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
-import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
-import com.sap.conn.jco.JCoStructure;
 import com.sap.conn.jco.JCoTable;
 
 public class GetDeliveriesWithoutDocumentRFC extends AbstractDoc41RFC<Delivery>{
@@ -26,12 +21,7 @@ public class GetDeliveriesWithoutDocumentRFC extends AbstractDoc41RFC<Delivery>{
 	private static final String OUT_SHIP_TO = null;
 	private static final String OUT_SOLD_TOY = null;
 	
-	//TODO
-	private static final String RETURNCODE_OK = "OK";
 	private static final String OUT_DELIVERY = null;
-
-	
-
 	
 
 	@Override
@@ -66,21 +56,18 @@ public class GetDeliveriesWithoutDocumentRFC extends AbstractDoc41RFC<Delivery>{
 		ArrayList<Delivery> mResult = new ArrayList<Delivery>();
         if (pFunction != null) {
             processReturnTable(pFunction);
-            JCoParameterList exportParameterList = pFunction.getExportParameterList();
-            String returnCode = exportParameterList.getString(OUT_RETURNCODE);
-            if(StringTool.equals(returnCode, RETURNCODE_OK)){
-            	JCoTable deliveriesTable = pFunction.getTableParameterList().getTable(OT_DELIVERY);
-            	if(deliveriesTable!=null){
-            		for(int i=0;i<deliveriesTable.getNumRows();i++){
-            			Delivery del = new Delivery();
-            			del.setDeliveryNumber(deliveriesTable.getString(OUT_DELIVERY));
-            			del.setShippingUnitNumber(deliveriesTable.getString(OUT_SHIPPING_UNIT));
-            			del.setShipToNumber(deliveriesTable.getString(OUT_SHIP_TO));
-            			del.setSoldToNumber(deliveriesTable.getString(OUT_SOLD_TOY));
-            			
-            			mResult.add(del);
-            			deliveriesTable.nextRow();
-            		}
+            checkReturnCode(pFunction, OUT_RETURNCODE, null);
+            JCoTable deliveriesTable = pFunction.getTableParameterList().getTable(OT_DELIVERY);
+            if(deliveriesTable!=null){
+            	for(int i=0;i<deliveriesTable.getNumRows();i++){
+            		Delivery del = new Delivery();
+            		del.setDeliveryNumber(deliveriesTable.getString(OUT_DELIVERY));
+            		del.setShippingUnitNumber(deliveriesTable.getString(OUT_SHIPPING_UNIT));
+            		del.setShipToNumber(deliveriesTable.getString(OUT_SHIP_TO));
+            		del.setSoldToNumber(deliveriesTable.getString(OUT_SOLD_TOY));
+
+            		mResult.add(del);
+            		deliveriesTable.nextRow();
             	}
             }
         }

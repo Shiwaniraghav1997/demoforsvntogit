@@ -2,7 +2,7 @@
 <doc41:loadTranslations jspName="documentupload" component="documents" />
 <html>
 <head>
-<title><doc41:translate label="Upload Document" />${type???}</title>
+<title><doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${uploadForm.type}" /></title>
 </head>
 
 <body>
@@ -17,7 +17,7 @@
 				<table class="nohover">
 					<thead class="portlet-table-header">
 						<tr>
-							<th colspan="2"><doc41:translate label="Upload Document" />${type???}</th>
+							<th colspan="2"><doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${uploadForm.type}" /></th>
 						</tr>
 					</thead>
 					<spring:hasBindErrors name="uploadForm">

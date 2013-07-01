@@ -69,10 +69,10 @@ public class Doc41ControllerAdvice {
 
 		if (ex instanceof Doc41ExceptionBase) {
 			String viewName = (String) request.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_VIEW);
-			String action = (String)request.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL);
+//			String action = (String)request.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL);
 
 			request.setAttribute(DOC41_EXCEPTION, ex);
-			request.setAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_ACTION, action.substring(0, action.length()-10)+".htm");
+//			request.setAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_ACTION, action.substring(0, action.length()-10)+".htm");
 
 			// search for Doc41OptimisticLockingException or Doc41AccessDeniedException:
 			while (ex.getCause() instanceof Exception) {

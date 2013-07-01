@@ -2,18 +2,13 @@ package com.bayer.bhc.doc41webui.integration.sap.rfc;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
-import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
-import com.sap.conn.jco.JCoStructure;
 
 public class CreateHttpPutRFC extends AbstractDoc41RFC<URL>{
 	//TODO
@@ -23,12 +18,6 @@ public class CreateHttpPutRFC extends AbstractDoc41RFC<URL>{
 	private static final String OUT_RETURNCODE = "RETURN_CODE";
 	private static final String OUT_URL = "URL";
 	private static final String OUT_RETURN_MESSAGE = "RETURN_MESSAGE";
-	
-	//TODO
-	private static final String RETURNCODE_OK = "OK";
-	
-	
-
 	
 
 	@Override
@@ -64,13 +53,9 @@ public class CreateHttpPutRFC extends AbstractDoc41RFC<URL>{
 			ArrayList<URL> mResult = new ArrayList<URL>();
 			if (pFunction != null) {
 			    processReturnTable(pFunction);
+			    checkReturnCode(pFunction, OUT_RETURNCODE,OUT_RETURN_MESSAGE);
 			    JCoParameterList exportParameterList = pFunction.getExportParameterList();
-			    String returnCode = exportParameterList.getString(OUT_RETURNCODE);
-			    if(StringTool.equals(returnCode, RETURNCODE_OK)){
-			    	mResult.add(new URL(exportParameterList.getString(OUT_URL)));
-			    } else {
-			    	throw new SAPException("error on create http put url: "+exportParameterList.getString(OUT_RETURN_MESSAGE), null);
-			    }
+			    mResult.add(new URL(exportParameterList.getString(OUT_URL)));
 			}
 			Doc41Log.get().debug(CreateHttpPutRFC.class, null, "processResult():EXIT");
 			return mResult;

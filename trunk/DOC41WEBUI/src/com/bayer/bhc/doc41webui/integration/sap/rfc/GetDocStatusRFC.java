@@ -1,21 +1,14 @@
 package com.bayer.bhc.doc41webui.integration.sap.rfc;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
-import com.bayer.bhc.doc41webui.container.ContentRepositoryInfo;
-import com.bayer.bhc.doc41webui.container.Delivery;
 import com.bayer.bhc.doc41webui.container.DocumentStatus;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
-import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
-import com.sap.conn.jco.JCoStructure;
-import com.sap.conn.jco.JCoTable;
 
 public class GetDocStatusRFC extends AbstractDoc41RFC<DocumentStatus>{
 	//TODO
@@ -27,12 +20,6 @@ public class GetDocStatusRFC extends AbstractDoc41RFC<DocumentStatus>{
 	private static final String OUT_AR_TIME = "EV_AR_TIME";
 	
 	private static final String OUT_RETURNCODE = "EV_RETURNCODE";
-	
-	//TODO
-	private static final String RETURNCODE_OK = "OK";
-
-	
-
 	
 
 	@Override
@@ -67,18 +54,16 @@ public class GetDocStatusRFC extends AbstractDoc41RFC<DocumentStatus>{
 		ArrayList<DocumentStatus> mResult = new ArrayList<DocumentStatus>();
         if (pFunction != null) {
             processReturnTable(pFunction);
+            checkReturnCode(pFunction, OUT_RETURNCODE, null);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
-            String returnCode = exportParameterList.getString(OUT_RETURNCODE);
-            if(StringTool.equals(returnCode, RETURNCODE_OK)){
-            	DocumentStatus docStat = new DocumentStatus();
-            	docStat.setStatus(exportParameterList.getString(OUT_DOCSTATUS));
-            	
-            	Date artime = exportParameterList.getTime(OUT_AR_TIME);
-            	Date ardate = exportParameterList.getTime(OUT_AR_DATE);
-            	
-            	docStat.setArchivingDate(mergeSapDateTime(ardate,artime));
-            	mResult.add(docStat);
-            }
+            DocumentStatus docStat = new DocumentStatus();
+            docStat.setStatus(exportParameterList.getString(OUT_DOCSTATUS));
+
+            Date artime = exportParameterList.getTime(OUT_AR_TIME);
+            Date ardate = exportParameterList.getTime(OUT_AR_DATE);
+
+            docStat.setArchivingDate(mergeSapDateTime(ardate,artime));
+            mResult.add(docStat);
         }
         Doc41Log.get().debug(GetDocStatusRFC.class, null, "processResult():EXIT");
         return mResult;
