@@ -8,7 +8,7 @@
 <body>
 	  <%@include file="../doc41/header.jspf" %>
 	<div id="div-body" class="portlet-body">
-		<form:form commandName="uploadForm" action="uploaddocument"
+		<form:form commandName="uploadForm" action="upload"
 			method="post" enctype="multipart/form-data">
 			<div class="portlet-section-header">
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="Upload"/>" />
@@ -27,17 +27,29 @@
 									<tr style="color: red">
 										<doc41:translate label="${error.code}" />
 									</tr>
-								</c:forEach></td>
+								</c:forEach>
+							</td>
 						</tr>
 					</spring:hasBindErrors>
 					
+					<pre>
 					TODO Delivery Nummer
 					TODO Button "Available Delivery Numbers"
 					TODO Creditor
 					TODO Rechnungsnummer je Lieferung
 					TODO Version
 					TODO dynamische Attribute
+					TODO predefined values
+					</pre>
 					
+					 <c:forEach items="${uploadForm.attributeValues}" var="attributeValues" varStatus="status">
+				        <tr>
+				            <td><c:out value="${uploadForm.attributeLabels[attributeValues.key]}"/>
+				            <input type="hidden" name="attributeLabels['${attributeValues.key}']" value="${uploadForm.attributeLabels[attributeValues.key]}"/>
+				            </td>
+				            <td><input name="attributeValues['${attributeValues.key}']" value="${attributeValues.value}"/></td>
+				        </tr>
+				    </c:forEach>
 					
 					
 					<tbody class="portlet-table-body">
@@ -49,9 +61,10 @@
 					</tbody>
 				</table>
 				<br>
-				<div class="portlet-section-header">
-					<input type="submit" class="portlet-form-button" value="<doc41:translate label="Upload"/>" />
-				</div>
+
+			</div>
+			<div class="portlet-section-header">
+				<input type="submit" class="portlet-form-button" value="<doc41:translate label="Upload"/>" />
 			</div>
 		</form:form>
 	</div>

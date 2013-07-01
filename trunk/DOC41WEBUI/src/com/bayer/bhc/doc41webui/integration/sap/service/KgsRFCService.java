@@ -37,6 +37,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		List<String> textKeysToTranslate = new ArrayList<String>();
         for (DocTypeDef docTypeDef : docTypeDefs) {
         	String d41id = docTypeDef.getD41id();
+//        	textKeysToTranslate.add(d41id);
         	if(isTypeSupported(d41id)){
         		Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "start Metadata loading for doc type "+d41id);
         		DocMetadata metadata = new DocMetadata(docTypeDef);

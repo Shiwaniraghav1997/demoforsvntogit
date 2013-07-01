@@ -1,23 +1,26 @@
 package com.bayer.bhc.doc41webui.container;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
 public class UploadForm {
 
-	private String[] attributeNames;
+	private Map<String,String> attributeLabels;
 	private Map<String, String> attributeValues;
 	private String fileId;
 	private String type;
 	private transient MultipartFile file;
 	
 	
-	public String[] getAttributeNames() {
-		return attributeNames;
+	public Map<String, String> getAttributeLabels() {
+		return attributeLabels;
 	}
-	public void setAttributeNames(String[] attributeNames) {
-		this.attributeNames = attributeNames;
+	public void setAttributeLabels(Map<String, String> attributeLabels) {
+		this.attributeLabels = attributeLabels;
 	}
 	public Map<String, String> getAttributeValues() {
 		return attributeValues;
@@ -42,6 +45,19 @@ public class UploadForm {
 	}
 	public void setFile(MultipartFile file) {
 		this.file = file;
+	}
+	public void initAttributes(List<Attribute> attributeDefinitions,String languageCode) {
+		attributeLabels = new HashMap<String, String>();
+		attributeValues = new LinkedHashMap<String, String>();
+		for (Attribute attribute : attributeDefinitions) {
+			String key = attribute.getName();
+			String label = attribute.getTranslation(languageCode);
+			//TODO attribute.getValues()
+			attributeLabels.put(key, label);
+			attributeValues.put(key, "");
+		}
+
+		
 	}
 	
 }

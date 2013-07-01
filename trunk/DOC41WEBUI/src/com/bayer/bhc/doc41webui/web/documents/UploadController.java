@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.container.Attribute;
 import com.bayer.bhc.doc41webui.container.Delivery;
 import com.bayer.bhc.doc41webui.container.UploadForm;
@@ -30,7 +31,7 @@ public class UploadController extends AbstractDoc41Controller {
 		uploadForm.setType(type);
 		uploadForm.setFileId(fileid);
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type);
-		//TODO metainfo
+		uploadForm.initAttributes(attributeDefinitions,LocaleInSession.get().getLanguage());
 		return uploadForm;
 	}
 	
@@ -46,7 +47,7 @@ public class UploadController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/documents/upload",method = RequestMethod.POST)
 	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result,@RequestParam(value="file",required=false) MultipartFile file){ //ggf. kein modelattribute wegen sessionattribute
-		if(file==null && uploadForm.getFileId()==null){
+		if((file==null||file.getSize()==0) && uploadForm.getFileId()==null){
 			result.reject("uploadFileMissing");
 		}
 		if (result.hasErrors()) {

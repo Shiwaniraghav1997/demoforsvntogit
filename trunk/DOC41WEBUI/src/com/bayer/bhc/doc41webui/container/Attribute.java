@@ -55,7 +55,7 @@ public class Attribute implements Serializable {
 		if(translations!=null){
 			return translations.get(language);
 		}
-		return null;
+		return "["+name+"]";
 	}
 	
 	public List<String> getValues() {
