@@ -8,6 +8,9 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 public class UploadForm {
+	
+	private String deliveryNumber;
+	private String shippingUnitNumber;
 
 	private Map<String,String> attributeLabels;
 	private Map<String, String> attributeValues;
@@ -46,6 +49,19 @@ public class UploadForm {
 	public void setFile(MultipartFile file) {
 		this.file = file;
 	}
+	public String getDeliveryNumber() {
+		return deliveryNumber;
+	}
+	public void setDeliveryNumber(String deliveryNumber) {
+		this.deliveryNumber = deliveryNumber;
+	}
+	public String getShippingUnitNumber() {
+		return shippingUnitNumber;
+	}
+	public void setShippingUnitNumber(String shippingUnitNumber) {
+		this.shippingUnitNumber = shippingUnitNumber;
+	}
+	
 	public void initAttributes(List<Attribute> attributeDefinitions,String languageCode) {
 		attributeLabels = new HashMap<String, String>();
 		attributeValues = new LinkedHashMap<String, String>();

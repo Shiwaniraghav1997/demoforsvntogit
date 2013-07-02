@@ -1,6 +1,8 @@
 package com.bayer.bhc.doc41webui.usecase;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +13,9 @@ import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.container.Attribute;
+import com.bayer.bhc.doc41webui.container.Delivery;
 import com.bayer.bhc.doc41webui.container.DocMetadata;
+import com.bayer.bhc.doc41webui.integration.sap.rfc.GetDeliveriesWithoutDocumentRFC;
 import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
@@ -70,5 +74,34 @@ public class DocumentUC {
 		} else {
 			throw new Doc41BusinessException("unknown doc type: "+docType);
 		}
+	}
+
+
+
+	public List<Delivery> getOpenDeliveries(String type, String carrier) {
+		List<Delivery> deliveries = new ArrayList<Delivery>();
+		// TODO use RFC GetDeliveriesWithoutDocumentRFC
+		
+		Delivery dummy1 = new Delivery();
+		dummy1.setDeliveryNumber("10001");
+		dummy1.setGoodsIssueDate(new Date());
+		dummy1.setShippingUnitNumber("20001");
+		dummy1.setShipToNumber("30001");
+		dummy1.setSoldToNumber("40001");
+		deliveries.add(dummy1);
+		
+		Delivery dummy2 = new Delivery();
+		dummy2.setDeliveryNumber("10002");
+		dummy2.setGoodsIssueDate(new Date());
+		dummy2.setShippingUnitNumber("20002");
+		dummy2.setShipToNumber("30002");
+		dummy2.setSoldToNumber("40002");
+		deliveries.add(dummy2);
+		return deliveries ;
+	}
+	
+	public boolean checkDeliveryForPartner(String carrier,String deliveryNumber,String shippingUnitNumber){
+		//TODO use RFC CheckDeliveryForPartnerRFC
+		return true;
 	}
 }

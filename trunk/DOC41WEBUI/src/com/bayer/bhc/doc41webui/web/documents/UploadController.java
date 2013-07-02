@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.Attribute;
 import com.bayer.bhc.doc41webui.container.Delivery;
 import com.bayer.bhc.doc41webui.container.UploadForm;
@@ -38,6 +39,7 @@ public class UploadController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/documents/opendeliveries",method = RequestMethod.GET)
 	public List<Delivery> getOpenDeliveries(@RequestParam() String type,@RequestParam() String carrier){
+		List<Delivery> dels = documentUC.getOpenDeliveries(type,carrier);
 		//TODO
 		
 		//füllt Popup mit Tabelle, Uebernahme Deliverynumber in Haupt-JSP durch JS
@@ -49,6 +51,9 @@ public class UploadController extends AbstractDoc41Controller {
 	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result,@RequestParam(value="file",required=false) MultipartFile file){ //ggf. kein modelattribute wegen sessionattribute
 		if((file==null||file.getSize()==0) && uploadForm.getFileId()==null){
 			result.reject("uploadFileMissing");
+		} else if(documentUC.checkDeliveryForPartner(UserInSession.get().getCompany(), uploadForm.getDeliveryNumber(), uploadForm.getShippingUnitNumber())){
+			//TODO use Carrier field instead of Company
+			result.reject("DeliveryNotAllowedForCarrier");
 		}
 		if (result.hasErrors()) {
             return "/documents/documentupload";
