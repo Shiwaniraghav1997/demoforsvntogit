@@ -76,7 +76,7 @@ $(function(){
       // return [ total_rows, $rows (jQuery object; optional), headers (array; optional) ]
       ajaxProcessing: function(data){
         if (data && data.hasOwnProperty('rows')) {
-          var r, row, c, d = data.rows,
+          var r, row, d = data.rows,
           // total number of rows (required)
           total = data.total_rows,
           // array of header names (optional)
@@ -90,7 +90,7 @@ $(function(){
           for ( r=0; r < len; r++ ) {
             row = []; // new row array
             // cells
-            for ( c in d[r] ) {
+            for (var c in d[r] ) {
               if (typeof(c) === "string") {
                 row.push(d[r][c]); // add each table cell data to row array
               }

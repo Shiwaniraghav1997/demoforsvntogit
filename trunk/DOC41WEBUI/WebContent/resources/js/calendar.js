@@ -102,7 +102,7 @@ function resetCellsRows(pNamespace)
 				if (tmpCell) 
 				{	
 					var theDateRow = tmpCell.cells;
-					for (c = 0; c < theDateRow.length; c++) 
+					for (var c = 0; c < theDateRow.length; c++) 
 					{
 				        theDateRow[c].style.backgroundColor = color;
 				    } 
@@ -178,7 +178,7 @@ function renderColorOnClick(pMatNo, pDate)
 			if (tmpCell) 
 			{	
 				var theDateRow = tmpCell.cells;
-				for (c = 0; c < theDateRow.length; c++) 
+				for (var c = 0; c < theDateRow.length; c++) 
 				{
 			        theDateRow[c].style.backgroundColor = color;
 	
@@ -315,7 +315,7 @@ function renderColorCellRow(pNamespace, id, color, source)
 		if(id.substr(0,4) == "CalM")
 		{		
 			var theDateRow = theDateCell.cells;
-			for (c = 0; c < theDateRow.length; c++) 
+			for (var c = 0; c < theDateRow.length; c++) 
 			{
 		        theDateRow[c].style.backgroundColor = color;
 		    } 
