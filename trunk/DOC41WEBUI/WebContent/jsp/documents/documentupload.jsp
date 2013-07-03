@@ -1,5 +1,11 @@
 <%@include file="../doc41/prolog.jspf"%>
 <doc41:loadTranslations jspName="documentupload" component="documents" />
+<script type="text/javascript" src="<%= response.encodeURL(request.getContextPath() + "/resources/js/doc41popup.js") %>"></script>
+<script>
+function test(text){
+	alert(text);
+}
+</script>
 <html>
 <head>
 <title><doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${uploadForm.type}" /></title>
@@ -32,6 +38,7 @@
 						</tr>
 					</spring:hasBindErrors>
 					
+					<tr><td colspan="3">
 					<pre>
 					TODO Delivery Nummer
 					TODO Button "Available Delivery Numbers"
@@ -41,6 +48,16 @@
 					TODO dynamische Attribute
 					TODO predefined values
 					</pre>
+					</td></tr>
+					<tr>
+						<td><doc41:translate label="DeliveryNumber" /></td>
+						<td><form:input path="deliveryNumber" cssClass="portlet-form-input-field"  maxlength="70"/></td>
+						<td><p><a href="opendeliveries?type=${uploadForm.type}" id="fireIframe">Open Deliveries</a></p></td>
+					</tr>
+					<tr>
+						<td><doc41:translate label="ShippingUnitNumber" /></td>
+						<td><form:input path="shippingUnitNumber" cssClass="portlet-form-input-field"  maxlength="70"/></td>
+					</tr>
 					
 					 <c:forEach items="${uploadForm.attributeValues}" var="attributeValues" varStatus="status">
 				        <tr>

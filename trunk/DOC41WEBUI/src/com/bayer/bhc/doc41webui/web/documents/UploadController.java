@@ -15,8 +15,8 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.Attribute;
-import com.bayer.bhc.doc41webui.container.Delivery;
 import com.bayer.bhc.doc41webui.container.UploadForm;
+import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 
@@ -25,6 +25,10 @@ public class UploadController extends AbstractDoc41Controller {
 	
 	@Autowired
 	private DocumentUC documentUC;
+	
+	protected boolean hasRolePermission(User usr) {
+    	return usr.isCarrier();
+    }
 
 	@RequestMapping(value="/documents/documentupload",method = RequestMethod.GET)
 	public UploadForm get(@RequestParam() String type,@RequestParam(required=false) String fileid) throws Doc41BusinessException{
@@ -34,17 +38,6 @@ public class UploadController extends AbstractDoc41Controller {
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type);
 		uploadForm.initAttributes(attributeDefinitions,LocaleInSession.get().getLanguage());
 		return uploadForm;
-	}
-	
-	
-	@RequestMapping(value="/documents/opendeliveries",method = RequestMethod.GET)
-	public List<Delivery> getOpenDeliveries(@RequestParam() String type,@RequestParam() String carrier){
-		List<Delivery> dels = documentUC.getOpenDeliveries(type,carrier);
-		//TODO
-		
-		//füllt Popup mit Tabelle, Uebernahme Deliverynumber in Haupt-JSP durch JS
-		
-		return null;
 	}
 	
 	@RequestMapping(value="/documents/upload",method = RequestMethod.POST)
