@@ -2,9 +2,10 @@
 <doc41:loadTranslations jspName="documentupload" component="documents" />
 <script type="text/javascript" src="<%= response.encodeURL(request.getContextPath() + "/resources/js/doc41popup.js") %>"></script>
 <script>
-function test(text){
-	$('#open_delivery_dialog').dialog('close');
-	alert(text);
+function setDeliveryNumber(delNumber,shipunit){
+	$allPopups['open_delivery_dialog'].dialog('close');
+	$('#deliveryNumber').val(delNumber);
+	$('#shippingUnitNumber').val(shipunit);
 }
 </script>
 <html>

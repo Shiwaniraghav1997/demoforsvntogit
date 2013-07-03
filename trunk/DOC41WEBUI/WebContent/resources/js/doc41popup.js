@@ -1,25 +1,32 @@
+var $allPopups ={};
+
 $(document).ready(function() {
 
-//the ID is used in the anchor tag on the page where the dialog will be loaded, which can be used on multiple links for multiple external files
 $('a#openPopupLink').each(function() {
 var $link = $(this);
+var $href=$link.attr('href');
+var $target = $link.attr('target');
         
-var $dialog = $('<div id="'+$link.attr('target')+'"></div>')
+var $dialog = $('<div id="'+$target+'">&nbsp;</div>')
 .dialog({
 autoOpen: false,
 
 width: 700,
 height: 470,
+open: function(event,ui){
+	$(this).load($href);
+},
 close: function(event, ui) {
-			$(this).html('<div id="'+$link.attr('target')+'"></div>');
+			$(this).html('&nbsp;');
 		}
 });
 
 $link.click(function() {
-	$dialog.load($link.attr('href'));
 	$dialog.dialog('open');
 	return false;
 });
+
+$allPopups[$target] = $dialog;
 
 });
 

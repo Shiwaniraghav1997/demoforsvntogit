@@ -49,8 +49,8 @@
 		  <tbody class="portlet-table-body">
 		  	<c:forEach items="${deliveryList}" var="delivery"
 				varStatus="status">
-				<tr>
-					<td><a onclick="test('${delivery.deliveryNumber}')" href="#">${delivery.deliveryNumber}</a></td>
+				<tr style="cursor: pointer;" onclick="setDeliveryNumber('${delivery.deliveryNumber}','${delivery.shippingUnitNumber}')">
+					<td><c:out value="${delivery.deliveryNumber}"/></td>
 					<td><c:out value="${delivery.shippingUnitNumber}"/></td>
 					<td><c:out value="${delivery.shipToNumber}"/></td>
 					<td><c:out value="${delivery.soldToNumber}"/></td>
