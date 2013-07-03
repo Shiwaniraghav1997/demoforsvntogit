@@ -3,8 +3,10 @@ package com.bayer.bhc.doc41webui.integration.sap.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -34,7 +36,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	public Map<String, DocMetadata> getDocMetadata(Collection<String> languageCodes) throws Doc41ServiceException {
 		Map<String, DocMetadata> metadataMap = new HashMap<String, DocMetadata>();
 		List<DocTypeDef> docTypeDefs = getDocTypeDefs();
-		List<String> textKeysToTranslate = new ArrayList<String>();
+		Set<String> textKeysToTranslate = new HashSet<String>();
         for (DocTypeDef docTypeDef : docTypeDefs) {
         	String d41id = docTypeDef.getD41id();
 //        	textKeysToTranslate.add(d41id);
@@ -81,7 +83,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	}
 
 	private Map<String, Map<String, String>> getTranslations(
-			List<String> textKeysToTranslate, Collection<String> languageCodes) throws Doc41ServiceException {
+			Set<String> textKeysToTranslate, Collection<String> languageCodes) throws Doc41ServiceException {
 		// /BAY0/GZ_D41_BO_GET_TEXTS for attr labels
 		Map<String, Map<String, String>> map = new HashMap<String, Map<String,String>>();
 		for (String language : languageCodes) {
@@ -99,7 +101,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		return map;
 	}
 	
-	private List<KeyValue> getTranslations(List<String> textKeysToTranslate,String language) throws Doc41ServiceException{
+	private List<KeyValue> getTranslations(Set<String> textKeysToTranslate,String language) throws Doc41ServiceException{
 		List<Object> params = new ArrayList<Object>();
 		params.add(textKeysToTranslate);
 		params.add(language);

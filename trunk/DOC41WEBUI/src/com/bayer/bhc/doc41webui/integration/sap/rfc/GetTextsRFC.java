@@ -2,6 +2,7 @@ package com.bayer.bhc.doc41webui.integration.sap.rfc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.container.KeyValue;
@@ -28,7 +29,7 @@ public class GetTextsRFC extends AbstractDoc41RFC<KeyValue> {
         if (pFunction != null) {
             if (pInputParms != null) {
             	@SuppressWarnings("unchecked")
-				List<String> textKeysToTranslate = (List<String>) pInputParms.get(0);
+				Set<String> textKeysToTranslate = (Set<String>) pInputParms.get(0);
             	String language = (String) pInputParms.get(1);
             	
             	JCoParameterList sapInput = pFunction.getImportParameterList();
