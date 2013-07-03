@@ -1,11 +1,12 @@
-<%@include file="../doc41/prolog.jspf"%>
-<doc41:loadTranslations jspName="addContactPerson" component="tAdmin" />
+<%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
+jspName="addContactPerson" 	component="tAdmin"
+activeTopNav="maintenance" 	activeNav="interfaceMonitoring"
+title="AddContactPerson">
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
-<html>
-  <head><title><doc41:translate label="AddContactPerson" /></title></head>
-  <body>
-  <%@include file="../doc41/header.jspf" %>
-	<form:form commandName="user" method="post" action="addContactPersonPost">
+<form:form commandName="user" method="post" action="addContactPersonPost">
 	<form:hidden path="type"/>
 	<form:hidden path="company"/>
 	
@@ -51,5 +52,4 @@
 	</table>
 	</div>
 </form:form>
-  </body>
-</html>
+</doc41:layout>

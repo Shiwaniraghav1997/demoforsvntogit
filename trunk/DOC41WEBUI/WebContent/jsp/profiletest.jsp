@@ -1,17 +1,13 @@
-<%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
-jspName="edit" 				component="useradmin"
-activeTopNav="management" 	activeNav="userManagement" 
-title="My Profile">
+<%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="<%=this.getClass().getSimpleName()%>"
+	activeTopNav="myProfile" activeNav="translations" 
+	jspName="edit" 		component="useradmin">
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" 		uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
-<form:form commandName="user" action="saveprofile" method="post">
-	<div>
-		<form:hidden path="id"/>
-		<form:hidden path="type"/>
-		<form:hidden path="active"/>		
-	</div>
+<form:form commandName="user" action="profiletest" method="post">
+	<form:hidden path="id"/>	
 
 	<div class="portlet-section-header">
 		<input type="submit" name="_finish" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
@@ -40,7 +36,7 @@ title="My Profile">
 				
 				
 				<tr>
-					<th style="width: 15%"><doc41:translate label="Surname"/></th> 
+					<th style="width: 15%"><doc41:translate label="Surname"/>Ein ueh: ü</th> 
 					<td style="width: 35%">
 						<c:if test="${user.type eq 'external' && !user.readOnly}">
 							<form:input path="surname" cssClass="portlet-form-input-field"/>
@@ -122,4 +118,5 @@ title="My Profile">
 		</table>
 	</div>
 </form:form>
+
 </doc41:layout>

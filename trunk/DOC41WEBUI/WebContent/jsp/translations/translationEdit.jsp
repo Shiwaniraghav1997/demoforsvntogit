@@ -1,18 +1,20 @@
-<%@include file="../doc41/prolog.jspf"%> 
-<doc41:loadTranslations component="TADMN" jspName="translationEdit" />
+<%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
+jspName="translationEdit" 	component="TADMN"
+activeTopNav="maintenance" 	activeNav="translations"
+title="Translations">
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
-<html>
-  <head><title>Translations</title></head>
-  <body>
-    <%@include file="../doc41/header.jspf" %>
-    
     <div class="portlet-body">
 		<form:form commandName="translationsForm" action="updatetranslation" method="post" >
-			<form:hidden path="objectID" />
+			<div>
+				<form:hidden path="objectID" />
+			</div>
 			
 			<div class="portlet-section-header">
 				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
-					<th><doc41:translate label="TranslationEdit"/></th>
+					<tr><th><doc41:translate label="TranslationEdit"/></th></tr>
 				</table>
 			
 				<input type="button" class="portlet-form-button" onclick="sendGet('translations/translationOverview')" value="<doc41:translate label="Cancel"/>"/>
@@ -23,18 +25,18 @@
 				<table class="nohover" cellpadding="4" cellspacing="0">
 					<thead class="portlet-table-header">
 					<spring:hasBindErrors name="translationsForm">
-							<tr>
-								<td colspan="4">
-									<c:forEach items="${errors.fieldErrors}" var="error">
-										<tr style="color: red">
-											<doc41:translate label="${error.code}" />
-										</tr>
-									</c:forEach>
-								</td>
-							</tr>
-						</spring:hasBindErrors>
-						
 						<tr>
+							<td colspan="4">
+								<c:forEach items="${errors.fieldErrors}" var="error">
+									<tr style="color: red">
+										<doc41:translate label="${error.code}" />
+									</tr>
+								</c:forEach>
+							</td>
+						</tr>
+					</spring:hasBindErrors>
+						
+					<tr>
 						<th><doc41:translate label="Mandant" /></th>
 						<th><doc41:translate label="Component" /></th>
 						<th><doc41:translate label="PageName" /></th>
@@ -63,9 +65,9 @@
 							cssClass="portlet-form-input-field"   onchange="javascript:checkLength(this, 4000);" onkeydown="javascript:checkLength(this, 4000);" onkeyup="javascript:checkLength(this, 4000);" /></td>
 					</tr>
 				</thead>
+				
 			</table>
 			</div>
 		</form:form>
 	</div>
-  </body>
-</html>
+</doc41:layout>

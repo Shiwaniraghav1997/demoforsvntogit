@@ -1,10 +1,10 @@
-<%@include file="../doc41/prolog.jspf" %>
-<doc41:loadTranslations jspName="edit" component="useradmin"/>
-
-<html>
-  <head><title>User Management</title></head>
-  <body>
-    <%@include file="../doc41/header.jspf" %>
+<%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
+jspName="edit" 				component="useradmin"
+activeTopNav="management" 	activeNav="userManagement" 
+title="User Management">
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
 	<div class="portlet-body">
 		<form:form commandName="userEditForm" action="createuser" method="post">
@@ -159,5 +159,4 @@
 			<%@include file="roles.jspf"%>
 		</form:form>
 	</div>
-  </body>
-</html>
+</doc41:layout>

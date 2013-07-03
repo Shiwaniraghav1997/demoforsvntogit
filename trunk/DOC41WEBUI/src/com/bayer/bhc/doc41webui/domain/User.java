@@ -263,5 +263,14 @@ public class User extends DomainObject {
 	public void setLanguageCountry(String languageCountry){
 		setLocale(LocaleTool.getLocaleFromString(languageCountry));
 	}
+
+	/**
+	 * Needed for EL in JSPs
+	 * @return
+	 */
+	public String[] getALL_ROLES() {
+		return User.ALL_ROLES;
+	}
+	
 	
 }

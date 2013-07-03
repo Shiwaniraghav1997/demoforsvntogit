@@ -1,17 +1,17 @@
-<%@include file="../doc41/prolog.jspf"%>
-<doc41:loadTranslations component="TADMN" jspName="translationAdd" />
+<%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
+jspName="translationAdd" 	component="TADMN"
+activeTopNav="maintenance" 	activeNav="translations"
+title="Translations">
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
-
-<html>
-  <head><title>Translations</title></head>
-  <body>
-    <%@include file="../doc41/header.jspf" %>
     <div class="portlet-body">
 		<form:form commandName="translationsForm" action="inserttranslation" method="post">
 			
 			<div class="portlet-section-header">
 				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
-					<th><doc41:translate label="TranslationAdd"/></th>
+					<tr><th><doc41:translate label="TranslationAdd"/></th></tr>
 				</table>
 				<input type="button" class="portlet-form-button" onclick="sendGet('translations/translationOverview')" value="<doc41:translate label="Cancel"/>"/>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="Save"/>" />
@@ -76,5 +76,4 @@
 			</div>
 		</form:form>
 	</div>
-  </body>
-</html>
+</doc41:layout>

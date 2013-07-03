@@ -1,9 +1,10 @@
-<%@include file="../doc41/prolog.jspf"%>
-<doc41:loadTranslations jspName="viewContcatPerson" component="tAdmin" />
-<html>
-  <head><title><doc41:translate	label="ViewContactPerson" /></title></head>
-  <body>
-  <%@include file="../doc41/header.jspf" %>
+<%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
+jspName="viewContcatPerson" component="tAdmin"
+activeTopNav="maintenance" 	activeNav="interfaceMonitoring"
+title="ViewContactPerson">
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 <!--Buttons Bar: Start-->
 <div class="portlet-section-header">
 	<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="Back"/>"/>
@@ -13,7 +14,7 @@
 <table cellpadding="4" cellspacing="0" class="nohover">
 	<thead class="portlet-table-header">
 		<tr>
-			<th width="100%" colspan="5"><doc41:translate	label="InterfaceDetails" /></th>
+			<th colspan="5"><doc41:translate label="InterfaceDetails" /></th>
 		</tr>
 	</thead>
 	<tbody class="portlet-table-body">
@@ -31,17 +32,16 @@
 <div>
 <table class="nohover">
 	<tr class="portlet-table-header">
-		<td width="100%" colspan="4"><doc41:translate
-			label="EBCContactPerson" /></td>
+		<td colspan="4"><doc41:translate label="EBCContactPerson" /></td>
 		<c:choose>
 			<c:when test="${ebcUser.dcId==null}">
 				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('monitoring/addContactPerson', 'contactType=EBC&serviceName=${service.name}')"
+					onclick="sendGet('monitoring/addContactPerson', 'contactType=EBC&amp;serviceName=${service.name}')"
 					value="<doc41:translate label="Add"/>" /></td>
 			</c:when>
 			<c:otherwise>
 				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('monitoring/editContactPerson', 'objectId=${ebcUser.dcId}&serviceName=${service.name}')"
+					onclick="sendGet('monitoring/editContactPerson', 'objectId=${ebcUser.dcId}&amp;serviceName=${service.name}')"
 					value="<doc41:translate label="Edit"/>" /></td>
 			</c:otherwise>
 		</c:choose>
@@ -77,17 +77,16 @@
 <div>
 <table class="nohover">
 	<tr class="portlet-table-header">
-		<td width="100%" colspan="4"><doc41:translate
-			label="BackendContactPerson" /></td>
+		<td colspan="4"><doc41:translate label="BackendContactPerson" /></td>
 		<c:choose>
 			<c:when test="${backendUser.dcId==null}">
 				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('monitoring/addContactPerson', 'contactType=BACKEND&serviceName=${service.name}')"
+					onclick="sendGet('monitoring/addContactPerson', 'contactType=BACKEND&amp;serviceName=${service.name}')"
 					value="<doc41:translate label="Add"/>" /></td>
 			</c:when>
 			<c:otherwise>
 				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('monitoring/editContactPerson', 'objectId=${backendUser.dcId}&serviceName=${service.name}')"
+					onclick="sendGet('monitoring/editContactPerson', 'objectId=${backendUser.dcId}&amp;serviceName=${service.name}')"
 								value="<doc41:translate label="Edit"/>" /></td>
 			</c:otherwise>
 		</c:choose>
@@ -120,5 +119,4 @@
 	</tbody>
 </table>
 </div>
-  </body>
-</html>
+</doc41:layout>

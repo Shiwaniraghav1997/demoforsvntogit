@@ -1,6 +1,12 @@
-<%@include file="../doc41/prolog.jspf"%>
-<doc41:loadTranslations jspName="documentupload" component="documents" />
-<script type="text/javascript" src="<%= response.encodeURL(request.getContextPath() + "/resources/js/doc41popup.js") %>"></script>
+<%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
+jspName="documentupload" 	component="documents"
+activeTopNav="documents" 	activeNav="documentType1"
+title="Upload Document ${uploadForm.type}">
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41popup.js"></script>
 <script>
 function setDeliveryNumber(delNumber,shipunit){
 	$allPopups['open_delivery_dialog'].dialog('close');
@@ -8,13 +14,7 @@ function setDeliveryNumber(delNumber,shipunit){
 	$('#shippingUnitNumber').val(shipunit);
 }
 </script>
-<html>
-<head>
-<title><doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${uploadForm.type}" /></title>
-</head>
 
-<body>
-	  <%@include file="../doc41/header.jspf" %>
 	<div id="div-body" class="portlet-body">
 		<form:form commandName="uploadForm" action="upload"
 			method="post" enctype="multipart/form-data">
@@ -87,5 +87,4 @@ function setDeliveryNumber(delNumber,shipunit){
 			</div>
 		</form:form>
 	</div>
-</body>
-</html>
+</doc41:layout>

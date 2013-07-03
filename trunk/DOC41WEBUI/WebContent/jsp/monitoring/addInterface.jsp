@@ -1,11 +1,11 @@
-<%@include file="../doc41/prolog.jspf"%>
-<doc41:loadTranslations component="tAdmin" jspName="addInterface" />
-<html>
-<head>
-<title><doc41:translate label="AddInterface" /></title>
-</head>
-<body>
-<%@include file="../doc41/header.jspf"%>
+<%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
+jspName="addInterface" 		component="tAdmin"
+activeTopNav="maintenance" 	activeNav="interfaceMonitoring"
+title="AddInterface">
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
+
 	<form:form commandName="monitor" method="post"
 		action="addInterfacePost">
 
@@ -21,8 +21,7 @@
 			<table cellpadding="4" cellspacing="0" class="nohover">
 				<thead class="portlet-table-header">
 					<tr>
-						<th width="100%" colspan="5"><doc41:translate
-								label="Interface Details" />
+						<th colspan="5"><doc41:translate label="Interface Details" /></th>
 					</tr>
 				</thead>
 				<tbody class="portlet-table-body">
@@ -47,5 +46,4 @@
 			</table>
 		</div>
 	</form:form>
-</body>
-</html>
+</doc41:layout>

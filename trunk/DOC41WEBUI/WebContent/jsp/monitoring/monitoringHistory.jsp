@@ -1,5 +1,10 @@
-<%@include file="../doc41/prolog.jspf"%>
-<doc41:loadTranslations component="tAdmin" jspName="monitoringHistory" />
+<%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
+jspName="monitoringHistory" component="tAdmin"
+activeTopNav="maintenance" 	activeNav="interfaceMonitoring"
+title="MonitoringHistory">
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
 <script type="text/javascript">
 <!--
@@ -27,20 +32,10 @@
 			filter : false
 		}
 	};
-	addparams='&serviceName=<%=request.getParameter("serviceName")%>';
+	addparams='&serviceName=${serviceName}';
 //-->
 </script>
-<script type="text/javascript" src="<%= response.encodeURL(request.getContextPath() + "/resources/js/doc41tablesorter.js") %>"></script>
-
-
-<html>
-	<head>
-	<title><doc41:translate label="MonitoringHistory" /></title>
-	</head>
-
-	
-	<body>
-	<%@include file="../doc41/header.jspf"%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41tablesorter.js"></script>
 		<!--Buttons Bar: Start-->
 		<div class="portlet-section-header">
 			<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="Back"/>"/>
@@ -51,7 +46,7 @@
 			<table cellpadding="4" cellspacing="0" class="nohover">
 				<thead class="portlet-table-header">
 					<tr>
-						<th width="100%" colspan="5"><doc41:translate label="InterfaceDetails" />
+						<th colspan="5"><doc41:translate label="InterfaceDetails" /></th>
 					</tr>
 				</thead>
 				<tbody class="portlet-table-body">
@@ -75,11 +70,11 @@
 				</thead>
 			</table>
 			<div class="pager">
-		        <img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/first.png") %>" class="first" alt="First" title="First page" />
-				<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/prev.png") %>" class="prev" alt="Prev" title="Previous page" />
+		        <img src="${pageContext.request.contextPath}/resources/img/tablesorter/first.png" class="first" alt="First" title="First page" />
+				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/prev.png" class="prev" alt="Prev" title="Previous page" />
 				<span class="pagedisplay"></span> <!-- this can be any element, including an input -->
-				<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/next.png") %>" class="next" alt="Next" title="Next page" />
-				<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/last.png") %>" class="last" alt="Last" title= "Last page" />
+				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/next.png" class="next" alt="Next" title="Next page" />
+				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/last.png" class="last" alt="Last" title= "Last page" />
 		        <select class="pagesize">
 		         	<option selected="selected" value="10">10</option>
 					<option value="20">20</option>
@@ -88,6 +83,15 @@
 		        </select>
 		    </div>
 			<table class="tablesorter" id="doc41table">
+				<colgroup>
+			    	<col width="10%"/>
+			    	<col width="15%"/>
+			    	<col width="15%"/>
+			    	<col width="5%"/>
+			    	<col width="25%"/>
+			    	<col width="25%"/>
+			    	<col width="5%"/>
+			    </colgroup>
 				<thead class="portlet-table-header">
 					<tr>
 						<th><doc41:translate label="EntryId" /></th>
@@ -98,25 +102,16 @@
 						<th><doc41:translate label="Remarks" /></th>
 						<th><doc41:translate label="ResponseTime(ms)" /></th>
 					</tr>
-					<colgroup>
-				    	<col width="10%"/>
-				    	<col width="15%"/>
-				    	<col width="15%"/>
-				    	<col width="5%"/>
-				    	<col width="25%"/>
-				    	<col width="25%"/>
-				    	<col width="5%"/>
-				    </colgroup>
 				</thead>
 				<tbody class="portlet-table-body"> <!-- tbody will be loaded via JSON -->
-		  </tbody>
+		  		</tbody>
 			</table>
 			<div class="pager">
-		        <img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/first.png") %>" class="first" alt="First" title="First page" />
-				<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/prev.png") %>" class="prev" alt="Prev" title="Previous page" />
+		        <img src="${pageContext.request.contextPath}/resources/img/tablesorter/first.png" class="first" alt="First" title="First page" />
+				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/prev.png" class="prev" alt="Prev" title="Previous page" />
 				<span class="pagedisplay"></span> <!-- this can be any element, including an input -->
-				<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/next.png") %>" class="next" alt="Next" title="Next page" />
-				<img src="<%= response.encodeURL(request.getContextPath() + "/resources/img/tablesorter/last.png") %>" class="last" alt="Last" title= "Last page" />
+				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/next.png" class="next" alt="Next" title="Next page" />
+				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/last.png" class="last" alt="Last" title= "Last page" />
 		        <select class="pagesize">
 		         	<option selected="selected" value="10">10</option>
 					<option value="20">20</option>
@@ -125,5 +120,4 @@
 		        </select>
 		    </div>		
 		</div>
-	</body>
-</html>
+</doc41:layout>

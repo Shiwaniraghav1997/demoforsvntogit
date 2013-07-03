@@ -1,0 +1,26 @@
+<%@taglib prefix="doc41" uri="doc41-tags" %>
+			<!--  BEGIN Top Navigation -->
+			<div id="mainNav">
+			 <ul class="hnav main">
+			  <doc41:topNavEntry href="userprofile/myprofile" title="navMyProfile" id="myProfile" cssclass="first home">
+			  	<!-- doc41:navEntry href="userprofile/myprofile" title="My Profile" id="myProfile" cssclass="first-child" /-->
+			  </doc41:topNavEntry>
+			  
+			  <doc41:topNavEntry href="documents/documentupload" title="navDocuments" id="documents">
+			  	<doc41:navEntry href="documents/documentupload" title="Document Upload" id="documentUpload" cssclass="first-child" />
+			  </doc41:topNavEntry>
+			  
+			  <doc41:topNavEntry href="useradmin/userlist" title="navManagement" id="management">
+			  	<doc41:navEntry href="useradmin/userlist" title="User Management" id="myProfile" cssclass="first-child" />
+			  </doc41:topNavEntry>
+			  
+			  <doc41:topNavEntry href="monitoring/monitoringOverview" title="navMaintenance" id="maintenance">
+			  	<doc41:navEntry href="SupportConsole" title="Support Console" id="supportConsole" cssclass="first-child"/>
+			  	<doc41:navEntry href="translations/translationOverview" title="Translations" id="translations"/>
+			  	<!-- doc41:navEntry href="busedit" title="System Administration" id="systemAdministration"/-->
+			  	<doc41:navEntry href="monitoring/monitoringOverview" title="Interface Monitoring" id="interfaceMonitoring"/>
+			  </doc41:topNavEntry>
+			  
+			 </ul>
+			</div>
+			<!--  END   Top Navigation -->

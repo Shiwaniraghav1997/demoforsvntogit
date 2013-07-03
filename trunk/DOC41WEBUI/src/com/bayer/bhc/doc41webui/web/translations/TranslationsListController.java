@@ -129,7 +129,7 @@ public class TranslationsListController extends AbstractDoc41Controller {
 				//maybe switch from JSON to jsp fragment to prevent HTML in java
 				if(isEditable()){
 					row[7]= "<a onclick=\"sendGet('translations/translationEdit', 'objectID="+translation.getDcId()+"')\" href=\"#\"><img src='"+request.getContextPath()+"/resources/img/common/page_edit.gif' alt='"+tags.getTag("Edit")+"' title='"+tags.getTag("Edit")+"'/></a>";
-					row[8]= "<a onclick=\"sendPostAfterCheck("+tags.getTag("DeletionWanted")+", 'deletetranslation', 'objectID="+translation.getDcId()+"')\" href=\"#\"><img src='"+request.getContextPath()+"/resources/img/common/trash.png' alt='"+tags.getTag("Delete")+"' title='"+tags.getTag("Delete")+"'/></a>";
+					row[8]= "<a onclick=\"sendPostAfterCheck('"+tags.getTag("DeletionWanted")+"', 'deletetranslation', 'objectID="+translation.getDcId()+"')\" href=\"#\"><img src='"+request.getContextPath()+"/resources/img/common/trash.png' alt='"+tags.getTag("Delete")+"' title='"+tags.getTag("Delete")+"'/></a>";
 				} else {
 					row[7]="&nbsp;";
 					row[8]="&nbsp;";

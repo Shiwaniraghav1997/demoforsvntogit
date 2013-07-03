@@ -1,31 +1,20 @@
-<%@include file="../doc41/prolog.jspf"%>
-<doc41:loadTranslations jspName="monitoringOverview" component="tAdmin" />
+<%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
+jspName="monitoringOverview" component="tAdmin"
+activeTopNav="maintenance" 	activeNav="interfaceMonitoring"
+title="MonitoringOverview">
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
-<html>
-<head>
-<title><doc41:translate label="MonitoringOverview" /></title>
-</head>
-
-<body>
-	<%@include file="../doc41/header.jspf"%>
-	<%@include file="../doc41/navigation.jspf"%>
-
-	<div class="portlet-section-body">
-				<table class="nohover" cellpadding="3">
-					<thead class="portlet-table-header">
-						<tr>
-							<th colspan="7"><doc41:translate
-									label="MonitoringOverview" /></th>
-						</tr>
-					</thead>
-	<tr align="right">
-	<td>
+	<div class="portlet-section-header">
+		<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
+			<tr><th><doc41:translate label="MonitoringOverview"/></th></tr>
+		</table>
+	
 		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="Refresh"/>"/>
 		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/addInterface')" value="<doc41:translate label="AddInterface"/>"/>
-	</td>
-	</tr>
-	</table>
 	</div>
+	
 	<div class="portlet-section-body">
 	<table class="nohover" cellpadding="4" cellspacing="0">
 		<thead class="portlet-table-header">
@@ -57,26 +46,25 @@
 							<td><doc41:formatDate date="${view.created}" zone="${user.timeZone}"></doc41:formatDate>&nbsp;<doc41:formatTime date="${view.created}" zone="${user.timeZone}"></doc41:formatTime></td>
 							<td><c:if test="${view.status}">
 								<img
-									src="<%=response.encodeURL(request.getContextPath()
-							+ "/resources/img/common/ball_green.gif")%>" title="<doc41:translate label="Success"/>"
-									alt="<doc41:translate label="Success"/>" style="border: 0px;">
-							</c:if> <c:if test="${!view.status}">
+									src="${pageContext.request.contextPath}/resources/img/common/ball_green.gif" title="<doc41:translate label="Success"/>"
+									alt="<doc41:translate label="Success"/>" style="border: 0px;"/>
+								</c:if> <c:if test="${!view.status}">
 								<img
-									src="<%=response.encodeURL(request.getContextPath()
-							+ "/resources/img/common/ball_red.gif")%>" title="<doc41:translate label="Failure"/>"
-									alt="<doc41:translate label="Failure"/>" style="border: 0px;">
-							</c:if></td>
+									src="${pageContext.request.contextPath}/resources/img/common/ball_red.gif" title="<doc41:translate label="Failure"/>"
+									alt="<doc41:translate label="Failure"/>" style="border: 0px;"/>
+								</c:if>
+							</td>
 							<td><c:out value="${view.details}"/></td>
 							<td><c:out value="${view.remarks}"/></td>
 							<td><c:out value="${view.responseTime}"/></td>
 							<td style="background-color: #FFFFFF;">
 							 <a href="#" onclick="sendGet('monitoring/monitoringHistory', 'serviceName=${view.name}')"><img
-								src="<%= response.encodeURL(request.getContextPath() + "/resources/img/common/clock.png") %>" title="<doc41:translate label="History"/>"
-								alt="<doc41:translate label="History"/>" style="border: 0px;"></a></td>
+								src="${pageContext.request.contextPath}/resources/img/common/clock.png" title="<doc41:translate label="History"/>"
+								alt="<doc41:translate label="History"/>" style="border: 0px;"/></a></td>
 							<td style="background-color: #FFFFFF;">
 							 <a href="#" onclick="sendGet('monitoring/viewContactPerson', 'serviceName=${view.name}')"><img
-								src="<%= response.encodeURL(request.getContextPath() + "/resources/img/common/report_user.png") %>" title="<doc41:translate label="ContactPerson"/>"
-								alt="<doc41:translate label="ContactPerson"/>" style="border: 0px;"></a></td>
+								src="${pageContext.request.contextPath}/resources/img/common/report_user.png" title="<doc41:translate label="ContactPerson"/>"
+								alt="<doc41:translate label="ContactPerson"/>" style="border: 0px;"/></a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -91,5 +79,4 @@
 	</tr>
 	</table>
 			</div>
-	  </body>
-</html>	
+</doc41:layout>
