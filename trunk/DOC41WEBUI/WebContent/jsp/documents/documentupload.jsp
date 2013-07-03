@@ -3,6 +3,7 @@
 <script type="text/javascript" src="<%= response.encodeURL(request.getContextPath() + "/resources/js/doc41popup.js") %>"></script>
 <script>
 function test(text){
+	$('#open_delivery_dialog').dialog('close');
 	alert(text);
 }
 </script>
@@ -52,7 +53,7 @@ function test(text){
 					<tr>
 						<td><doc41:translate label="DeliveryNumber" /></td>
 						<td><form:input path="deliveryNumber" cssClass="portlet-form-input-field"  maxlength="70"/></td>
-						<td><p><a href="opendeliveries?type=${uploadForm.type}" id="fireIframe">Open Deliveries</a></p></td>
+						<td><p><a href="opendeliveries?type=${uploadForm.type}" id="openPopupLink" target="open_delivery_dialog">Open Deliveries</a></p></td>
 					</tr>
 					<tr>
 						<td><doc41:translate label="ShippingUnitNumber" /></td>
