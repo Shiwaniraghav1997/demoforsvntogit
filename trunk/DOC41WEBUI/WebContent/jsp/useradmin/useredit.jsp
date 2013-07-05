@@ -8,8 +8,10 @@ title="">
 
 <div class="portlet-body">
 	<form:form commandName="userEditForm" action="updateuser" method="post">
-		<form:hidden path="objectID" />
-		<form:hidden path="type" />
+		<div>
+			<form:hidden path="objectID" />
+			<form:hidden path="type" />
+		</div>
 
 		<div class="portlet-section-header">
 			<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.paging.TableSorterParams;
@@ -36,8 +37,8 @@ public class UserlistController extends AbstractDoc41Controller {
 
 	private static final String[] DB_COL_NAMES = {"objectState_Id","lastName","firstName","cwid","email","phone1","ISEXTERNAL"};
 
-	protected boolean hasRolePermission(User usr) {
-		return usr.isBusinessAdmin() || usr.isTechnicalAdmin();
+	protected boolean hasPermission(User usr) {
+		return usr.hasPermission(Doc41Constants.PERMISSION_BUSINESS_ADMIN, Doc41Constants.PERMISSION_TECHNICAL_ADMIN);
     }
 	
 	@RequestMapping(value="/useradmin/userlist",method=RequestMethod.GET)
@@ -77,13 +78,13 @@ public class UserlistController extends AbstractDoc41Controller {
 				row[4]= StringTool.nullToEmpty(user.getEmail());
 				row[5]= StringTool.nullToEmpty(user.getPhone());
 				row[6]= StringTool.nullToEmpty(user.getType());
-				row[7]= displayRole(request,user.isCarrier(),tags); 
-				row[8]= displayRole(request,user.isCustomsBroker(),tags);
-				row[9]= displayRole(request,user.isLayoutSupplier(),tags);
-				row[10]= displayRole(request,user.isPmSupplier(),tags);
-				row[11]= displayRole(request,user.isBusinessAdmin(),tags);
-				row[12]= displayRole(request,user.isTechnicalAdmin(),tags);
-				row[13]= displayRole(request,user.isObserver(),tags);
+				row[7]= displayRole(request,user.hasRole(User.ROLE_CARRIER),tags); 
+				row[8]= displayRole(request,user.hasRole(User.ROLE_CUSTOMS_BROKER),tags);
+				row[9]= displayRole(request,user.hasRole(User.ROLE_LAYOUT_SUPPLIER),tags);
+				row[10]= displayRole(request,user.hasRole(User.ROLE_PM_SUPPLIER),tags);
+				row[11]= displayRole(request,user.hasRole(User.ROLE_BUSINESS_ADMIN),tags);
+				row[12]= displayRole(request,user.hasRole(User.ROLE_TECH_ADMIN),tags);
+				row[13]= displayRole(request,user.hasRole(User.ROLE_OBSERVER),tags);
 				//TODO move HTML to JSP
 				row[14]= displayEditButton(request,user.getCwid(),tags);
 				row[15]= displayToggleButton(request,user,tags);

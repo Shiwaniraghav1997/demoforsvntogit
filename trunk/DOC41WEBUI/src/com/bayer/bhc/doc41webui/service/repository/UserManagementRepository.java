@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.bayer.bbs.aila.model.AILAPerson;
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.Doc41ErrorMessageKeys;
 import com.bayer.bhc.doc41webui.common.exception.Doc41AccessDeniedException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
@@ -20,6 +21,7 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
+import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.domain.User;
@@ -28,6 +30,8 @@ import com.bayer.bhc.doc41webui.integration.db.UserManagementDAO;
 import com.bayer.bhc.doc41webui.service.mapping.UserMapper;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.SendMail;
+import com.bayer.ecim.foundation.dbx.QueryException;
+import com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC;
 import com.bayer.ecim.foundation.web.usermanagementN.UMProfileNDC;
 import com.bayer.ecim.foundation.web.usermanagementN.UMUserNDC;
 import com.bayer.ecim.foundation.web.usermanagementN.UMUserProfileNDC;
@@ -222,7 +226,7 @@ public class UserManagementRepository extends AbstractRepository {
 	        	} else {
 	        		if(pUser.getActive()){
 	        			getLdapDAO().addInternalUserToGroup(pUser.getCwid());
-	        			if(pUser.isTechnicalAdmin()){
+	        			if(pUser.hasPermission(Doc41Constants.PERMISSION_TECHNICAL_ADMIN)){
 	        				getLdapDAO().addInternalUserToLogGroup(pUser.getCwid());
 	        			} else {
 	        				getLdapDAO().removeInternalUserFromLogGroup(pUser.getCwid());
@@ -383,10 +387,22 @@ public class UserManagementRepository extends AbstractRepository {
 	            Doc41Log.get().debug(this.getClass(), "System", "getProfilename: " + profile.getProfilename());
 	            roles.add(profile.getProfilename());
 	        }
-			domainUser.setRoles(roles);		
+			domainUser.setRoles(roles);
+			
+			pUserDC.loadResolvedUserPermissions(LocaleInSession.get());
+			@SuppressWarnings("unchecked")
+			List<UMPermissionNDC> permissionDCs = pUserDC.getResolvedUserPermissions();
+			List<String> permissions = new ArrayList<String>();
+			for (UMPermissionNDC permissionDC : permissionDCs) {                    
+	            Doc41Log.get().debug(this.getClass(), "System", "getPermission Code: " + permissionDC.getCode());
+	            permissions.add(permissionDC.getCode());
+	        }
+			domainUser.setPermissions(permissions);
 			
 			return domainUser;
 		} catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("UserManagementRepository.copyDcToDomainUser", e);
+		} catch (QueryException e) {
 			throw new Doc41RepositoryException("UserManagementRepository.copyDcToDomainUser", e);
 		}
 	}

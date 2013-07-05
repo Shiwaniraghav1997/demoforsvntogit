@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.domain.Monitor;
 import com.bayer.bhc.doc41webui.domain.User;
@@ -39,8 +40,8 @@ public class MonitoringOverviewController extends AbstractDoc41Controller {
 
 
 	@Override
-	protected boolean hasRolePermission(User usr) {
-		return usr.isBusinessAdmin() || usr.isTechnicalAdmin();
+	protected boolean hasPermission(User usr) {
+		return usr.hasPermission(Doc41Constants.PERMISSION_BUSINESS_ADMIN, Doc41Constants.PERMISSION_TECHNICAL_ADMIN);
 	}
 
 }

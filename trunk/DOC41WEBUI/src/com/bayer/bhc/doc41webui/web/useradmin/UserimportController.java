@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41InvalidPasswordException;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
@@ -36,8 +37,8 @@ public class UserimportController extends AbstractDoc41Controller {
 		return getDisplaytextUC().getTimezones();
 	}
 	
-	protected boolean hasRolePermission(User usr) {
-		return usr.isBusinessAdmin() || usr.isTechnicalAdmin();
+	protected boolean hasPermission(User usr) {
+		return usr.hasPermission(Doc41Constants.PERMISSION_BUSINESS_ADMIN, Doc41Constants.PERMISSION_TECHNICAL_ADMIN);
     }
 	
 	@RequestMapping(value="/useradmin/userimport",method = RequestMethod.GET)

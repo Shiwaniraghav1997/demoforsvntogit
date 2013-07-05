@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -26,8 +27,8 @@ public class UploadController extends AbstractDoc41Controller {
 	@Autowired
 	private DocumentUC documentUC;
 	
-	protected boolean hasRolePermission(User usr) {
-    	return usr.isCarrier();
+	protected boolean hasPermission(User usr) {
+		return usr.hasPermission(Doc41Constants.PERMISSION_CARRIER);
     }
 
 	@RequestMapping(value="/documents/documentupload",method = RequestMethod.GET)

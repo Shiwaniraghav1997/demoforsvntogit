@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.Delivery;
 import com.bayer.bhc.doc41webui.domain.User;
@@ -30,8 +31,8 @@ public class OpenDeliveriesController extends AbstractDoc41Controller {
 	@Autowired
 	private DocumentUC documentUC;
 	
-	protected boolean hasRolePermission(User usr) {
-    	return usr.isCarrier();
+	protected boolean hasPermission(User usr) {
+		return usr.hasPermission(Doc41Constants.PERMISSION_CARRIER);
     }
 	
 	@RequestMapping(value="/documents/opendeliveries",method = RequestMethod.GET)

@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.TimeZone;
+import com.bayer.ecim.foundation.basic.BasicDataCarrier;
 import com.bayer.ecim.foundation.basic.LocaleTool;
 import com.bayer.ecim.foundation.basic.StringTool;
+import com.bayer.ecim.foundation.dbx.QueryException;
+import com.bayer.ecim.foundation.dbx.ResultObject;
+import com.bayer.ecim.foundation.web.usermanagementN.OTUserManagementN;
+import com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC;
 
 /**
  * User domain object.
@@ -74,30 +80,64 @@ public class User extends DomainObject {
 
 	// Default: german time zone - Europe/Berlin
 	private Long timeZone = new Long(TimeZone.GMT_1);
-		
-	private Boolean automaticClose = false;
-	private int closeAfter;
+
+	private List<String> permissions = new ArrayList<String>();
+	
+	public boolean hasPermission(String ... permissions) {
+		for (String permission : permissions) {
+			if (getPermissions().contains(permission)) {
+				return true;
+			}
+		}
+
+		// Check if permissions exists, throw Error otherwise
+		try {
+			ResultObject ro = OTUserManagementN.get().getPermissions(null, null, null, null, null, null, null, -1, -1, null, null, null, null, LocaleInSession.get());
+			List<String> allPermissions = new ArrayList<String>();
+			for (BasicDataCarrier basicDC : ro.getAsArrayResult()) {
+				UMPermissionNDC permission = (UMPermissionNDC) basicDC;
+				allPermissions.add(permission.getCode());
+			}
+			for (String permission : permissions) {
+				if (!allPermissions.contains(permission)) {
+					throw new RuntimeException(String.format("Permission %s doesn't exist.", permission));
+				}
+			}
+		} catch (QueryException e) {
+			e.printStackTrace();
+		}
+	
+		return false;
+	}
+	
+	public boolean hasRole(String role) {
+		return roles.contains(role);
+	}
+
+	
+//	private Boolean automaticClose = false;
+//	private int closeAfter;
 
 	// convenience method:
 	public boolean isExternalUser() {
 		return getType().equals(User.TYPE_EXTERNAL);
 	}
 	
-	public Boolean getAutomaticClose() {
-		return automaticClose;
-	}
-
-	public void setAutomaticClose(Boolean automaticClose) {
-		this.automaticClose = automaticClose;
-	}
-
-	public int getCloseAfter() {
-		return closeAfter;
-	}
-
-	public void setCloseAfter(int closeAfter) {
-		this.closeAfter = closeAfter;
-	}
+//	public Boolean getAutomaticClose() {
+//		return automaticClose;
+//	}
+//
+//	public void setAutomaticClose(Boolean automaticClose) {
+//		this.automaticClose = automaticClose;
+//	}
+//
+//	public int getCloseAfter() {
+//		return closeAfter;
+//	}
+//
+//	public void setCloseAfter(int closeAfter) {
+//		this.closeAfter = closeAfter;
+//	}
 
 	public Boolean getReadOnly() {
 		return readOnly;
@@ -195,19 +235,6 @@ public class User extends DomainObject {
 		this.passwordRepeated = passwordRepeated;
 	}
 
-
-	@Override
-	public String toString() {
-		return "User [cwid=" + cwid + ", surname=" + surname + ", firstname="
-				+ firstname + ", email=" + email + ", phone=" + phone
-				+ ", type=" + type + ", active=" + active + ", roles="
-				+ roles
-				+ ", locale=" + locale 
-				+ ", readOnly=" + readOnly + ", timeZone=" + timeZone
-				+ ", automaticClose=" + automaticClose + ", closeAfter="
-				+ closeAfter + ", company=" + company + "]";
-	}
-
 	public Locale getLocale() {
 		return locale;
 	}
@@ -216,34 +243,42 @@ public class User extends DomainObject {
 		this.locale = locale;
 	}
 	
-	public boolean isBusinessAdmin() {
-		return roles.contains(ROLE_BUSINESS_ADMIN);
+//	public boolean isBusinessAdmin() {
+//		return roles.contains(ROLE_BUSINESS_ADMIN);
+//	}
+//
+//	public boolean isTechnicalAdmin() {
+//		return roles.contains(ROLE_TECH_ADMIN);
+//	}
+//
+//	public boolean isCarrier() {
+//		return roles.contains(ROLE_CARRIER);
+//	}
+//	
+//	public boolean isCustomsBroker() {
+//		return roles.contains(ROLE_CUSTOMS_BROKER);
+//	}
+//	
+//	public boolean isLayoutSupplier() {
+//		return roles.contains(ROLE_LAYOUT_SUPPLIER);
+//	}
+//	
+//	public boolean isPmSupplier() {
+//		return roles.contains(ROLE_PM_SUPPLIER);
+//	}
+//	
+//	public boolean isObserver() {
+//		return roles.contains(ROLE_OBSERVER);
+//	}
+	
+	public List<String> getPermissions() {
+		return permissions;
 	}
 
-	public boolean isTechnicalAdmin() {
-		return roles.contains(ROLE_TECH_ADMIN);
+	public void setPermissions(List<String> permissions) {
+		this.permissions = permissions;
 	}
 
-	public boolean isCarrier() {
-		return roles.contains(ROLE_CARRIER);
-	}
-	
-	public boolean isCustomsBroker() {
-		return roles.contains(ROLE_CUSTOMS_BROKER);
-	}
-	
-	public boolean isLayoutSupplier() {
-		return roles.contains(ROLE_LAYOUT_SUPPLIER);
-	}
-	
-	public boolean isPmSupplier() {
-		return roles.contains(ROLE_PM_SUPPLIER);
-	}
-	
-	public boolean isObserver() {
-		return roles.contains(ROLE_OBSERVER);
-	}
-	
 	private String company = "";
 
 
@@ -271,6 +306,16 @@ public class User extends DomainObject {
 	public String[] getALL_ROLES() {
 		return User.ALL_ROLES;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "User [cwid=" + cwid + ", surname=" + surname + ", firstname="
+				+ firstname + ", email=" + email + ", phone=" + phone
+				+ ", type=" + type + ", active=" + active + ", password="
+				+ password + ", passwordRepeated=" + passwordRepeated
+				+ ", locale=" + locale + ", readOnly=" + readOnly
+				+ ", timeZone=" + timeZone + ", permissions=" + permissions
+				+ ", company=" + company + "]";
+	}
 	
 }

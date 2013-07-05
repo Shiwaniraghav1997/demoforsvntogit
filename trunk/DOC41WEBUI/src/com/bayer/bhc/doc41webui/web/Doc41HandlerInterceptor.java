@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.Doc41SessionKeys;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
@@ -139,7 +140,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 		}
 		if(realHandler instanceof AbstractDoc41Controller){
 			AbstractDoc41Controller d41Controller = (AbstractDoc41Controller) realHandler;
-			return d41Controller.hasRolePermission(usr);
+			return d41Controller.hasPermission(usr);
 		}
 		return true;
 	}
@@ -241,7 +242,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 				user = userManagementUC.findUser(cwid.toUpperCase());
 				
 				if (null != user && null != user.getCwid()) {
-					if (!user.getRoles().contains(User.ROLE_OBSERVER)) {
+					if (!user.hasPermission(Doc41Constants.PERMISSION_READ_ONLY)) {
 						user.setReadOnly(Boolean.FALSE);
 					}
 				}

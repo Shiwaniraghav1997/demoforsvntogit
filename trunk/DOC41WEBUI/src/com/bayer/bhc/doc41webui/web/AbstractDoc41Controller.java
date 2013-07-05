@@ -29,7 +29,7 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
 	 * @param usr
 	 * @return
 	 */
-	protected boolean hasRolePermission(User usr) {
+	protected boolean hasPermission(User usr) {
     	return true;
     }
 

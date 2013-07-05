@@ -8,6 +8,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
 public class TopNavigationEntryTag extends TagSupport {
@@ -52,10 +53,13 @@ public class TopNavigationEntryTag extends TagSupport {
 	private boolean hasPermission() {
 		if (StringUtils.isBlank(permission)) {
 			return true;
+		} else if (UserInSession.get() == null) {
+			return false;
 		} else {
-			// TODO implement permission check
-			System.err.println("TODO implement permission check");
-			return true;
+			String tmpPermission = StringUtils.replace(permission, ",", " ");
+			String[] permissions = StringUtils.split(tmpPermission);
+			boolean hasPermission = UserInSession.get().hasPermission(permissions);
+			return hasPermission;
 		}
 	}
 	
@@ -70,11 +74,13 @@ public class TopNavigationEntryTag extends TagSupport {
 		try {
 	    	   if (hasPermission()) {
 	    		   displayStartTag();
+	    		   return EVAL_PAGE;
+	    	   } else {
+	    		   return SKIP_BODY;
 	    	   }
 	        } catch (Exception e) {
 	            throw new JspException("unable to render navigation entry "+e.getMessage());
 	        }
-		return EVAL_PAGE;
 	}
 	
 	@Override
