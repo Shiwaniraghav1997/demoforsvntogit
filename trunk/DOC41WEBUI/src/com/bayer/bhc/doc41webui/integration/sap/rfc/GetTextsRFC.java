@@ -19,7 +19,7 @@ public class GetTextsRFC extends AbstractDoc41RFC<KeyValue> {
 	private static final String OUT_RETURNCODE = "EV_RETURNCODE";
 	private static final String OUT_TABLE = "TS_TEXTS";
 	private static final String OUT_NAME = "OBJECT_KEY";
-	private static final String OUT_VALUE = "OBJECT_VALUE";
+	private static final String OUT_VALUE = "OBJECT_TEXT";
 
 	@Override
 	public void prepareCall(JCoFunction pFunction, List<?> pInputParms)

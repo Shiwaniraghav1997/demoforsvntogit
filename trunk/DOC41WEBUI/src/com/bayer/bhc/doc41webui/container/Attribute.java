@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.container;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +13,9 @@ public class Attribute implements Serializable {
 	private Integer seqNumber;
 	private String desc;
 	private Boolean mandatory;
-	private Map<String,String> translations;
+	private Map<String,String> translations = new HashMap<String, String>();
 	private List<String> values;
+	private String tempLabel;
 	
 	public String getName() {
 		return name;
@@ -47,12 +49,12 @@ public class Attribute implements Serializable {
 		this.mandatory = mandatory;
 	}
 	
-	public void setTranslations(Map<String, String> translations) {
-		this.translations = translations;
+	public void addTranslation(String label,String language){
+		translations.put(language, label);
 	}
 	
 	public String getTranslation(String language){
-		if(translations!=null){
+		if(translations!=null && translations.containsKey(language)){
 			return translations.get(language);
 		}
 		return "["+name+"]";
@@ -64,5 +66,12 @@ public class Attribute implements Serializable {
 	
 	public void setValues(List<String> values) {
 		this.values = values;
+	}
+	
+	public String getTempLabel() {
+		return tempLabel;
+	}
+	public void setTempLabel(String tempLabel) {
+		this.tempLabel = tempLabel;
 	}
 }

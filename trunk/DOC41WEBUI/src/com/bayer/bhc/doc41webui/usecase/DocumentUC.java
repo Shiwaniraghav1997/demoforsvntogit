@@ -1,10 +1,10 @@
 package com.bayer.bhc.doc41webui.usecase;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,10 +15,11 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.container.Attribute;
 import com.bayer.bhc.doc41webui.container.Delivery;
 import com.bayer.bhc.doc41webui.container.DocMetadata;
-import com.bayer.bhc.doc41webui.integration.sap.rfc.GetDeliveriesWithoutDocumentRFC;
+import com.bayer.bhc.doc41webui.container.DocTypeDef;
 import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 @Component
 public class DocumentUC {
@@ -37,7 +38,7 @@ public class DocumentUC {
 	public DocMetadata getMetadata(String type) throws Doc41BusinessException{
 		try {
 			if(docMetadataContainer==null){
-				Collection<String> languageCodes = translationsRepository.getLanguageCodes().values();
+				Set<String> languageCodes = translationsRepository.getLanguageCodes().keySet();
 				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes);
 			}
 			DocMetadata docMetadata = docMetadataContainer.get(getSapDocType(type));
@@ -56,6 +57,20 @@ public class DocumentUC {
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("checkCoaDeliveryNumberMaterial",e);
 		}
+	}
+	
+	public String getTypeLabel(String doctype,String language) throws Doc41BusinessException{
+		DocMetadata metadata = getMetadata(doctype);
+		if(metadata!=null){
+			DocTypeDef docDef = metadata.getDocDef();
+			if(docDef!=null){
+				String label = docDef.getTranslation(language);
+				if(!StringTool.isTrimmedEmptyOrNull(label)){
+					return label;
+				}
+			}
+		}
+		return "["+doctype+"]";
 	}
 	
 	

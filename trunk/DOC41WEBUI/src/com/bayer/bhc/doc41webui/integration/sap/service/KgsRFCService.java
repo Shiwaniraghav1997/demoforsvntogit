@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,42 +34,41 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_GET_TEXTS = "GetTexts";
 	
 
-	public Map<String, DocMetadata> getDocMetadata(Collection<String> languageCodes) throws Doc41ServiceException {
+	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes) throws Doc41ServiceException {
 		Map<String, DocMetadata> metadataMap = new HashMap<String, DocMetadata>();
+		//get doctypes
 		List<DocTypeDef> docTypeDefs = getDocTypeDefs();
 		Set<String> textKeysToTranslate = new HashSet<String>();
         for (DocTypeDef docTypeDef : docTypeDefs) {
         	String d41id = docTypeDef.getD41id();
-//        	textKeysToTranslate.add(d41id);
         	if(isTypeSupported(d41id)){
         		Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "start Metadata loading for doc type "+d41id);
         		DocMetadata metadata = new DocMetadata(docTypeDef);
-
+        		//content repo
         		metadata.setContentRepository(getContentRepo(d41id));
-
-        		List<Attribute> attributes = getAttributes(d41id);
+        		//attributes for all languages
+        		List<Attribute> attributes = getAttributes(d41id,languageCodes);
         		metadata.setAttributes(attributes);
+        		//predefined attrib values
         		Map<String,List<String>> attrValues = getAttrValues(d41id);
         		for (Attribute attribute : attributes) {
-        			textKeysToTranslate.add(attribute.getName());
         			List<String> values = attrValues.get(attribute.getName());
         			attribute.setValues(values);
         		}
 
+        		textKeysToTranslate.add(docTypeDef.getSapObj());
         		metadataMap.put(d41id, metadata);
         		Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "Metadata for doc type "+d41id+" loaded");
         	}
 		}
+        //translations for doc type names
         //key -> language -> label
-        Map<String,Map<String,String>> translations = getTranslations(textKeysToTranslate,languageCodes);
+        Map<String,Map<String,String>> translations = getDocTypeTranslations(textKeysToTranslate,languageCodes);
         for (DocMetadata metadata : metadataMap.values()) {
-			metadata.getAttributes();
-			for (Attribute attr : metadata.getAttributes()) {
-				String key = attr.getName();
-				Map<String,String> translationForLanguages = translations.get(key);
-				attr.setTranslations(translationForLanguages);
-			}
-		}
+			String sapObj = metadata.getDocDef().getSapObj();
+			Map<String,String> translationForLanguages = translations.get(sapObj);
+			metadata.getDocDef().setTranslations(translationForLanguages);
+        }
 		
 		return metadataMap;
 	}
@@ -82,12 +82,12 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		return false;
 	}
 
-	private Map<String, Map<String, String>> getTranslations(
+	private Map<String, Map<String, String>> getDocTypeTranslations(
 			Set<String> textKeysToTranslate, Collection<String> languageCodes) throws Doc41ServiceException {
 		// /BAY0/GZ_D41_BO_GET_TEXTS for attr labels
 		Map<String, Map<String, String>> map = new HashMap<String, Map<String,String>>();
 		for (String language : languageCodes) {
-			List<KeyValue> translationsOneLanguage = getTranslations(textKeysToTranslate, language);
+			List<KeyValue> translationsOneLanguage = getDocTypeTranslations(textKeysToTranslate, language);
 			for (KeyValue attrValue : translationsOneLanguage) {
 				String attrName = attrValue.getKey();
 				Map<String, String> languageToValue = map.get(attrName);
@@ -101,7 +101,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		return map;
 	}
 	
-	private List<KeyValue> getTranslations(Set<String> textKeysToTranslate,String language) throws Doc41ServiceException{
+	private List<KeyValue> getDocTypeTranslations(Set<String> textKeysToTranslate,String language) throws Doc41ServiceException{
 		List<Object> params = new ArrayList<Object>();
 		params.add(textKeysToTranslate);
 		params.add(language);
@@ -125,11 +125,33 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		}
 		return valueMap ;
 	}
+	private List<Attribute> getAttributes(String d41id, Set<String> languageCodes) throws Doc41ServiceException {
+		LinkedHashMap<String, Attribute> attribMap = new LinkedHashMap<String, Attribute>();
+		
+		for (String language : languageCodes) {
+			List<Attribute> attributesOneLanguage = getAttributes(d41id, language);
+			for (Attribute newAttrib : attributesOneLanguage) {
+				String key = newAttrib.getName();
+				String label = newAttrib.getTempLabel();
+				newAttrib.setTempLabel(null);
+				
+				Attribute oldAttrib = attribMap.get(key);
+				if(oldAttrib==null){
+					oldAttrib = newAttrib;
+					attribMap.put(key, oldAttrib);
+				}
+				oldAttrib.addTranslation(label, language);
+			}
+		}
+		
+		return new ArrayList<Attribute>(attribMap.values());
+	}
 
-	private List<Attribute> getAttributes(String d41id) throws Doc41ServiceException {
+	private List<Attribute> getAttributes(String d41id,String language) throws Doc41ServiceException {
 		// /BAY0/GZ_D41_GET_ATTR_DEF_LIST
 		List<Object> params = new ArrayList<Object>();
 		params.add(d41id);
+		params.add(language);
 		List<Attribute> attr = performRFC(params,RFC_NAME_GET_ATTRIBUTES);
 		return attr;
 	}

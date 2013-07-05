@@ -15,8 +15,10 @@ public class GetDocDefRFC extends AbstractDoc41RFC<DocTypeDef> {
 	private static final String OUT_D41ID = "D41ID";
 	private static final String OUT_TECH_ID = "DOCTY";
 	private static final String OUT_DESC = "DTEXT";
+	private static final String OUT_SAPOBJ = "BUSOB";
 	
 	private static final String TR_DOCTYPES = "TR_DOCTYPES";
+	
 	
 
 	@Override
@@ -59,6 +61,7 @@ public class GetDocDefRFC extends AbstractDoc41RFC<DocTypeDef> {
             		def.setD41id(table.getString(OUT_D41ID));
             		def.setTechnicalId(table.getString(OUT_TECH_ID));
             		def.setDescription(table.getString(OUT_DESC));
+            		def.setSapObj(table.getString(OUT_SAPOBJ));
 
             		table.nextRow();
             		mResult.add(def);

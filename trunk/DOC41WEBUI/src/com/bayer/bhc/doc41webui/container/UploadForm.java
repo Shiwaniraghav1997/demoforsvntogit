@@ -9,13 +9,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class UploadForm {
 	
+	private static final Object SHIPPING_UNIT_NUMBER = "ShippingUnitNumber";
+
 	private String deliveryNumber;
-	private String shippingUnitNumber;
 
 	private Map<String,String> attributeLabels;
 	private Map<String, String> attributeValues;
 	private String fileId;
 	private String type;
+	private String typeLabel;
 	private transient MultipartFile file;
 	
 	
@@ -55,11 +57,11 @@ public class UploadForm {
 	public void setDeliveryNumber(String deliveryNumber) {
 		this.deliveryNumber = deliveryNumber;
 	}
-	public String getShippingUnitNumber() {
-		return shippingUnitNumber;
+	public String getTypeLabel() {
+		return typeLabel;
 	}
-	public void setShippingUnitNumber(String shippingUnitNumber) {
-		this.shippingUnitNumber = shippingUnitNumber;
+	public void setTypeLabel(String typeLabel) {
+		this.typeLabel = typeLabel;
 	}
 	
 	public void initAttributes(List<Attribute> attributeDefinitions,String languageCode) {
@@ -74,6 +76,9 @@ public class UploadForm {
 		}
 
 		
+	}
+	public String getShippingUnitNumber() {
+		return attributeValues.get(SHIPPING_UNIT_NUMBER);
 	}
 	
 }
