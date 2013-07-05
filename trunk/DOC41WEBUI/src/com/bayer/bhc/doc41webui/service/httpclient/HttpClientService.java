@@ -34,7 +34,7 @@ public class HttpClientService {
 			};
 			final HttpMessageConverterExtractor<String> responseExtractor =
 			    new HttpMessageConverterExtractor<String>(String.class, restTemplate.getMessageConverters());
-			restTemplate.execute("http://localhost:4000", HttpMethod.POST, requestCallback, responseExtractor);
+			restTemplate.execute("http://localhost:4000", HttpMethod.PUT, requestCallback, responseExtractor);
 		} catch (IOException e) {
 			throw new Doc41ServiceException("uploadDocumentToUrl", e);
 		}
