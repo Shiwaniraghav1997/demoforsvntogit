@@ -68,5 +68,20 @@
 		<beans:entry key="ES" value="Spain" />
 		<beans:entry key="PT" value="Portugal" />
 	</util:map>
+
+	<beans:bean id="httpClient" class="org.apache.commons.httpclient.HttpClient">
+		<!-- <beans:constructor-arg ref="httpClientParams"/> -->
+	</beans:bean>
+
+	<beans:bean id="httpClientFactory"
+		class="org.springframework.http.client.CommonsClientHttpRequestFactory">
+		<beans:constructor-arg ref="httpClient" />
+	</beans:bean>
+
+	<beans:bean id="restTemplate" name="restTemplate"
+		class="org.springframework.web.client.RestTemplate"
+		autowire-candidate="true">
+		<beans:constructor-arg ref="httpClientFactory" />
+	</beans:bean>
     
 </beans:beans>

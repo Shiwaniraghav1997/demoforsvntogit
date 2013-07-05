@@ -1,7 +1,6 @@
 package com.bayer.bhc.doc41webui.web.documents;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,7 +45,7 @@ public class UploadController extends AbstractDoc41Controller {
 	}
 	
 	@RequestMapping(value="/documents/upload",method = RequestMethod.POST)
-	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result,@RequestParam(value="file",required=false) MultipartFile file){ //ggf. kein modelattribute wegen sessionattribute
+	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result,@RequestParam(value="file",required=false) MultipartFile file) throws Doc41BusinessException{ //ggf. kein modelattribute wegen sessionattribute
 		if((file==null||file.getSize()==0) && StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
 			result.reject("uploadFileMissing");
 		} if((file!=null&&file.getSize()>0) && !StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
@@ -55,19 +54,15 @@ public class UploadController extends AbstractDoc41Controller {
 			//TODO use Carrier field instead of Company
 			result.reject("DeliveryNotAllowedForCarrier");
 		} else {
-			//TODO
 			if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-				//create guid
-				String guid = UUID.randomUUID().toString();
-//			get put url
-//			upload document to put url
-//			test docstatus
-				uploadForm.setFileId(guid);
+				String fileId = documentUC.uploadDocument(uploadForm.getType(),uploadForm.getFile());
+				uploadForm.setFileId(fileId);
 			}
 			if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
 				result.reject("UploadFailed");
 			} else {
-//				set attributes in sap
+				//set attributes in sap
+				documentUC.setAttributesForNewDocument(uploadForm.getType(),uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getDeliveryNumber());
 			}
 		}
 		

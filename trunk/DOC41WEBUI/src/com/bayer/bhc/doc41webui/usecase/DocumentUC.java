@@ -1,23 +1,28 @@
 package com.bayer.bhc.doc41webui.usecase;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.container.Attribute;
+import com.bayer.bhc.doc41webui.container.ContentRepositoryInfo;
 import com.bayer.bhc.doc41webui.container.Delivery;
 import com.bayer.bhc.doc41webui.container.DocMetadata;
 import com.bayer.bhc.doc41webui.container.DocTypeDef;
 import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
+import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -32,6 +37,9 @@ public class DocumentUC {
 	
 	@Autowired
 	private TranslationsRepository translationsRepository;
+	
+	@Autowired
+	private HttpClientService httpClientService;
 	
 	private Map<String, DocMetadata> docMetadataContainer;
 	
@@ -118,5 +126,46 @@ public class DocumentUC {
 	public boolean checkDeliveryForPartner(String carrier,String deliveryNumber,String shippingUnitNumber){
 		//TODO use RFC CheckDeliveryForPartnerRFC
 		return true;
+	}
+
+
+
+	public String uploadDocument(String type, MultipartFile file) throws Doc41BusinessException {
+		try{
+			DocMetadata metadata = getMetadata(type);
+			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
+			String crep = crepInfo.getContentRepository();
+			//		String d41id = metadata.getDocDef().getD41id();
+
+			//create guid
+			String guid = UUID.randomUUID().toString();
+			//get put url
+			URL putUrl = kgsRFCService.getPutUrl(guid,crep);
+			//upload document to put url
+			httpClientService.uploadDocumentToUrl(putUrl,file);
+			//test docstatus
+			boolean docPresent = kgsRFCService.testDocStatus(guid,crep);
+			if(docPresent){
+				return guid;
+			} else {
+				return null;
+			}
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("uploadDocument",e);
+		}
+	}
+
+
+	public void setAttributesForNewDocument(String type, String fileId,
+			Map<String, String> attributeValues, String deliveryNumber) throws Doc41BusinessException {
+		try{
+			DocMetadata metadata = getMetadata(type);
+			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
+			DocTypeDef docDef = metadata.getDocDef();
+			String d41id = docDef.getD41id();
+			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),deliveryNumber,docDef.getSapObj(),attributeValues);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("setAttributesForNewDocument",e);
+		}
 	}
 }

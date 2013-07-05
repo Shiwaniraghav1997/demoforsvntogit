@@ -11,7 +11,6 @@ import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
 public class GetDocStatusRFC extends AbstractDoc41RFC<DocumentStatus>{
-	//TODO
 	private static final String IN_COREP = "IV_COREP";
 	private static final String IN_DOCID = "IV_DOCID";
 	

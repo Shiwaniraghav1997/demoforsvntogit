@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.integration.sap.service;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import com.bayer.bhc.doc41webui.container.Attribute;
 import com.bayer.bhc.doc41webui.container.ContentRepositoryInfo;
 import com.bayer.bhc.doc41webui.container.DocMetadata;
 import com.bayer.bhc.doc41webui.container.DocTypeDef;
+import com.bayer.bhc.doc41webui.container.DocumentStatus;
 import com.bayer.bhc.doc41webui.container.KeyValue;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -32,6 +34,9 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_GET_ATTRIBUTES = "GetAttributes";
 	private static final String RFC_NAME_GET_ATTR_VALUES = "GetAttrValues";
 	private static final String RFC_NAME_GET_TEXTS = "GetTexts";
+	private static final String RFC_NAME_CREATE_HTTP_PUT = "CreateHttpPut";
+	private static final String RFC_NAME_GET_DOC_STATUS = "GetDocStatus";
+	private static final String RFC_NAME_PROCESS_DR_REQ = "ProcessDrReq";
 	
 
 	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes) throws Doc41ServiceException {
@@ -177,6 +182,58 @@ public class KgsRFCService extends AbstractSAPJCOService {
         
         List<DocTypeDef> docTypeDefs = performRFC(params,RFC_NAME_GET_DOC_DEF);
 		return docTypeDefs;
+	}
+
+	public URL getPutUrl(String guid, String contentRepository) throws Doc41ServiceException {
+		// /BAY0/GZ_D41_CREATE_HTTPPUT
+		List<Object> params = new ArrayList<Object>();
+		params.add(contentRepository);
+		params.add(guid);
+		List<URL> result = performRFC(params,RFC_NAME_CREATE_HTTP_PUT);
+		if(result ==null || result.isEmpty()){
+			return null;
+		} else if(result.size()>1){
+			throw new Doc41ServiceException("more than one PutURL returned");
+		} else {
+			return result.get(0);
+		}
+	}
+
+	public boolean testDocStatus(String guid, String contentRepository) throws Doc41ServiceException {
+		// /BAY0/GZ_D41_GET_DOCSTATUS
+		List<Object> params = new ArrayList<Object>();
+		params.add(contentRepository);
+		params.add(guid);
+		List<DocumentStatus> result = performRFC(params,RFC_NAME_GET_DOC_STATUS);
+		if(result ==null || result.isEmpty()){
+			throw new Doc41ServiceException("no status for document "+guid+" and contentRepository "+contentRepository+" returned");
+		} else if(result.size()>1){
+			throw new Doc41ServiceException("more than one status for document "+guid+" and contentRepository "+contentRepository+" returned");
+		} else {
+			String status = result.get(0).getStatus();
+			return StringTool.equals(status, "1");
+		}
+	}
+
+	public int setAttributesForNewDocument(String d41id, String fileId,
+			String contentRepository, String deliveryNumber, String sapObj,
+			Map<String, String> attributeValues) throws Doc41ServiceException {
+		List<Object> params = new ArrayList<Object>();
+		params.add(d41id);
+		params.add(fileId);
+		params.add(contentRepository);
+		params.add(deliveryNumber);
+		params.add(sapObj);
+		params.add(attributeValues);
+		
+		List<Integer> result = performRFC(params, RFC_NAME_PROCESS_DR_REQ);
+		if(result ==null || result.isEmpty()){
+			throw new Doc41ServiceException("no return count for file "+fileId);
+		} else if(result.size()>1){
+			throw new Doc41ServiceException("more than one return count for file "+fileId);
+		} else {
+			return result.get(0);
+		}
 	}
 
 }
