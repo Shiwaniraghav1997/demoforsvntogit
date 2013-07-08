@@ -1,6 +1,6 @@
 package com.bayer.bhc.doc41webui.usecase;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -140,7 +140,7 @@ public class DocumentUC {
 			//create guid
 			String guid = UUID.randomUUID().toString();
 			//get put url
-			URL putUrl = kgsRFCService.getPutUrl(guid,crep);
+			URI putUrl = kgsRFCService.getPutUrl(guid,crep);
 			//upload document to put url
 			httpClientService.uploadDocumentToUrl(putUrl,file);
 			//test docstatus

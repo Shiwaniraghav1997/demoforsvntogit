@@ -107,16 +107,6 @@ title="My Profile">
 					</td>
 				</tr>		
 				
-				<tr class="portlet-table-alternate">
-					<th><doc41:translate label="tabClosing"/></th>
-					<td>
-					   <form:checkbox  path="automaticClose" size="8"/>
-					</td>
-					<th><doc41:translate label="closeAfter"/></th>
-					<td>
-						<form:input path="closeAfter" cssClass="portlet-form-input-field"  maxlength="20"/> <doc41:translate label="seconds"/>
-					</td>
-				</tr>	
 						
 			</tbody>
 		</table>

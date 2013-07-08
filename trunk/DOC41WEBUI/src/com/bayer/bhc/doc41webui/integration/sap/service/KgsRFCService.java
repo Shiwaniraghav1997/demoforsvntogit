@@ -1,6 +1,6 @@
 package com.bayer.bhc.doc41webui.integration.sap.service;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -184,12 +184,12 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		return docTypeDefs;
 	}
 
-	public URL getPutUrl(String guid, String contentRepository) throws Doc41ServiceException {
+	public URI getPutUrl(String guid, String contentRepository) throws Doc41ServiceException {
 		// /BAY0/GZ_D41_CREATE_HTTPPUT
 		List<Object> params = new ArrayList<Object>();
 		params.add(contentRepository);
 		params.add(guid);
-		List<URL> result = performRFC(params,RFC_NAME_CREATE_HTTP_PUT);
+		List<URI> result = performRFC(params,RFC_NAME_CREATE_HTTP_PUT);
 		if(result ==null || result.isEmpty()){
 			return null;
 		} else if(result.size()>1){
@@ -211,7 +211,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 			throw new Doc41ServiceException("more than one status for document "+guid+" and contentRepository "+contentRepository+" returned");
 		} else {
 			String status = result.get(0).getStatus();
-			return StringTool.equals(status, "1");
+			return StringTool.equals(status, "ONLINE");
 		}
 	}
 

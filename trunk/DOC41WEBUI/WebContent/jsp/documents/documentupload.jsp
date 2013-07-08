@@ -18,6 +18,7 @@ function setDeliveryNumber(delNumber,shipunit){
 	<div id="div-body" class="portlet-body">
 		<form:form commandName="uploadForm" action="upload"
 			method="post" enctype="multipart/form-data">
+			<form:hidden path="type"/>
 			<div class="portlet-section-header">
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="Upload"/>" />
 			</div>

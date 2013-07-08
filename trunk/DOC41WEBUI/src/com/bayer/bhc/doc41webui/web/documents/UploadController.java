@@ -45,17 +45,19 @@ public class UploadController extends AbstractDoc41Controller {
 	}
 	
 	@RequestMapping(value="/documents/upload",method = RequestMethod.POST)
-	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result,@RequestParam(value="file",required=false) MultipartFile file) throws Doc41BusinessException{ //ggf. kein modelattribute wegen sessionattribute
+	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result) { //ggf. kein modelattribute wegen sessionattribute
+		try{
+		MultipartFile file = uploadForm.getFile();
 		if((file==null||file.getSize()==0) && StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
 			result.reject("uploadFileMissing");
 		} if((file!=null&&file.getSize()>0) && !StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
 			result.reject("FileAndFileId");
-		} else if(documentUC.checkDeliveryForPartner(UserInSession.get().getCompany(), uploadForm.getDeliveryNumber(), uploadForm.getShippingUnitNumber())){
+		} else if(!documentUC.checkDeliveryForPartner(UserInSession.get().getCompany(), uploadForm.getDeliveryNumber(), uploadForm.getShippingUnitNumber())){
 			//TODO use Carrier field instead of Company
 			result.reject("DeliveryNotAllowedForCarrier");
 		} else {
 			if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-				String fileId = documentUC.uploadDocument(uploadForm.getType(),uploadForm.getFile());
+				String fileId = documentUC.uploadDocument(uploadForm.getType(),file);
 				uploadForm.setFileId(fileId);
 			}
 			if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
@@ -65,11 +67,14 @@ public class UploadController extends AbstractDoc41Controller {
 				documentUC.setAttributesForNewDocument(uploadForm.getType(),uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getDeliveryNumber());
 			}
 		}
+		}catch (Doc41BusinessException e) {
+			result.reject(e.getMessage());
+		}
 		
 		if (result.hasErrors()) {
             return "/documents/documentupload";
         } else {
-        	return "redirect:/documents/documentupload";
+        	return "redirect:/documents/documentupload"+"?type="+uploadForm.getType();
         }
 	}
 	

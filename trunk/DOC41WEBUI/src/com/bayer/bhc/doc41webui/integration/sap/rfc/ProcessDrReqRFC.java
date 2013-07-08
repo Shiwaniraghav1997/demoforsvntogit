@@ -13,10 +13,10 @@ import com.sap.conn.jco.JCoParameterList;
 
 public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
 	
-	private static final String IN_COREP = "ARCHIVE_ID";
+	private static final String IN_COREP = "ARCHIV_ID";
 	private static final String IN_DOCID = "ARC_DOC_ID";
 	private static final String IN_DATE = "AR_DATE";
-	private static final String IN_D41ID = "ARCHIVE_ID";
+	private static final String IN_D41ID = "AR_OBJECT";
 	private static final String IN_OBJ_ID = "OBJECT_ID";
 	private static final String IN_SAP_OBJ = "SAP_OBJECT";
 	private static final String IN_ATTRIBS = "USER_DATA";
@@ -65,6 +65,8 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
 		Set<String> keySet = attribValues.keySet();
 		for (String key : keySet) {
 			String value = attribValues.get(key);
+			sb.append(key);
+			sb.append('=');
 			sb.append(value);
 			sb.append('|');
 		}

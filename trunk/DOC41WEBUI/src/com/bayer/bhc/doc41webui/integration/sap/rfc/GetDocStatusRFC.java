@@ -15,8 +15,8 @@ public class GetDocStatusRFC extends AbstractDoc41RFC<DocumentStatus>{
 	private static final String IN_DOCID = "IV_DOCID";
 	
 	private static final String OUT_DOCSTATUS = "EV_DOCSTATUS";
-	private static final String OUT_AR_DATE = "EV_AR_DATE";
-	private static final String OUT_AR_TIME = "EV_AR_TIME";
+	private static final String OUT_AR_DATE = "EV_ARDATE";
+	private static final String OUT_AR_TIME = "EV_ARTIME";
 	
 	private static final String OUT_RETURNCODE = "EV_RETURNCODE";
 	
@@ -52,14 +52,14 @@ public class GetDocStatusRFC extends AbstractDoc41RFC<DocumentStatus>{
 		Doc41Log.get().debug(GetDocStatusRFC.class, null, "processResult():ENTRY");
 		ArrayList<DocumentStatus> mResult = new ArrayList<DocumentStatus>();
         if (pFunction != null) {
-            processReturnTable(pFunction);
+//            processReturnTable(pFunction);
             checkReturnCode(pFunction, OUT_RETURNCODE, null);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             DocumentStatus docStat = new DocumentStatus();
             docStat.setStatus(exportParameterList.getString(OUT_DOCSTATUS));
 
             Date artime = exportParameterList.getTime(OUT_AR_TIME);
-            Date ardate = exportParameterList.getTime(OUT_AR_DATE);
+            Date ardate = exportParameterList.getDate(OUT_AR_DATE);
 
             docStat.setArchivingDate(mergeSapDateTime(ardate,artime));
             mResult.add(docStat);
