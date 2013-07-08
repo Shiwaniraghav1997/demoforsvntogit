@@ -216,12 +216,13 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	}
 
 	public int setAttributesForNewDocument(String d41id, String fileId,
-			String contentRepository, String deliveryNumber, String sapObj,
+			String contentRepository,String docClass, String deliveryNumber, String sapObj,
 			Map<String, String> attributeValues) throws Doc41ServiceException {
 		List<Object> params = new ArrayList<Object>();
 		params.add(d41id);
 		params.add(fileId);
 		params.add(contentRepository);
+		params.add(docClass);
 		params.add(deliveryNumber);
 		params.add(sapObj);
 		params.add(attributeValues);

@@ -20,8 +20,10 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
 	private static final String IN_OBJ_ID = "OBJECT_ID";
 	private static final String IN_SAP_OBJ = "SAP_OBJECT";
 	private static final String IN_ATTRIBS = "USER_DATA";
+	private static final String IN_DOC_TYPE = "DOC_TYPE";
 	
 	private static final String OUT_ATTCOUNT = "ATTCOUNT";
+
 
 	@Override
 	public void prepareCall(JCoFunction pFunction, List<?> pInputParms)
@@ -33,10 +35,11 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
             	String d41id = (String) pInputParms.get(0);
             	String docid = (String) pInputParms.get(1);
                 String corep = (String) pInputParms.get(2);
-                String deliveryNumber = (String) pInputParms.get(3);
-                String sapObj = (String) pInputParms.get(4);
+                String docClass = (String) pInputParms.get(3);
+                String deliveryNumber = (String) pInputParms.get(4);
+                String sapObj = (String) pInputParms.get(5);
                 @SuppressWarnings("unchecked")
-				Map<String, String> attribValues = (Map<String, String>) pInputParms.get(5);
+				Map<String, String> attribValues = (Map<String, String>) pInputParms.get(6);
                 
                 JCoParameterList sapInput = pFunction.getImportParameterList();
 				
@@ -46,7 +49,7 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
 				sapInput.setValue(IN_D41ID,d41id);
 				sapInput.setValue(IN_OBJ_ID,deliveryNumber);
 				sapInput.setValue(IN_SAP_OBJ,sapObj);
-//				sapInput.setValue(IN_DOC_TYPE,filetype);
+				sapInput.setValue(IN_DOC_TYPE,docClass);
 				sapInput.setValue(IN_ATTRIBS,getAttribString(attribValues));
             } else {
                 throw new SAPException(

@@ -163,7 +163,7 @@ public class DocumentUC {
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
 			DocTypeDef docDef = metadata.getDocDef();
 			String d41id = docDef.getD41id();
-			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),deliveryNumber,docDef.getSapObj(),attributeValues);
+			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),crepInfo.getDocClass(),deliveryNumber,docDef.getSapObj(),attributeValues);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("setAttributesForNewDocument",e);
 		}
