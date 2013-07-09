@@ -21,6 +21,11 @@ public class ContentRepositoryInfo implements Serializable {
 	public void setDocClass(String docClass) {
 		this.docClass = docClass;
 	}
+	@Override
+	public String toString() {
+		return "ContentRepositoryInfo [contentRepository=" + contentRepository
+				+ ", docClass=" + docClass + "]";
+	}
 	
 	
 }

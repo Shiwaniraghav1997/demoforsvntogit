@@ -17,7 +17,7 @@ public class UploadForm {
 	private Map<String, String> attributeValues;
 	private String fileId;
 	private String type;
-	private String typeLabel;
+//	private String typeLabel;
 	private transient MultipartFile file;
 	
 	
@@ -57,12 +57,12 @@ public class UploadForm {
 	public void setDeliveryNumber(String deliveryNumber) {
 		this.deliveryNumber = deliveryNumber;
 	}
-	public String getTypeLabel() {
-		return typeLabel;
-	}
-	public void setTypeLabel(String typeLabel) {
-		this.typeLabel = typeLabel;
-	}
+//	public String getTypeLabel() {
+//		return typeLabel;
+//	}
+//	public void setTypeLabel(String typeLabel) {
+//		this.typeLabel = typeLabel;
+//	}
 	
 	public void initAttributes(List<Attribute> attributeDefinitions,String languageCode) {
 		attributeLabels = new HashMap<String, String>();

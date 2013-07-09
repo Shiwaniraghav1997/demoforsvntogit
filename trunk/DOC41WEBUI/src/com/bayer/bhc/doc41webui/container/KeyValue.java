@@ -19,6 +19,10 @@ public class KeyValue implements Serializable {
 	public void setValue(String value) {
 		this.value = value;
 	}
+	@Override
+	public String toString() {
+		return "KeyValue [key=" + key + ", value=" + value + "]";
+	}
 	
 	
 }

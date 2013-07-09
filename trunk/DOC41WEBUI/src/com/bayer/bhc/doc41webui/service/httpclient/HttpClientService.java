@@ -23,13 +23,13 @@ public class HttpClientService {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	public void uploadDocumentToUrl(URI putUrl, MultipartFile file) throws Doc41ServiceException {
+	public void uploadDocumentToUrl(URI putUrl, MultipartFile file,final String mimeType) throws Doc41ServiceException {
 		try {
 			final InputStream fis = file.getInputStream();
 			final RequestCallback requestCallback = new RequestCallback() {
 			     @Override
 			    public void doWithRequest(final ClientHttpRequest request) throws IOException {
-			        request.getHeaders().add("Content-type", "application/octet-stream");
+			        request.getHeaders().add("Content-type", mimeType);
 			        IOUtils.copy(fis, request.getBody());
 			     }
 			};

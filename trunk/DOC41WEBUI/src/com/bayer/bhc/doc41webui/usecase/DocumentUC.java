@@ -142,7 +142,7 @@ public class DocumentUC {
 			//get put url
 			URI putUrl = kgsRFCService.getPutUrl(guid,crep);
 			//upload document to put url
-			httpClientService.uploadDocumentToUrl(putUrl,file);
+			httpClientService.uploadDocumentToUrl(putUrl,file,file.getContentType());
 			//test docstatus
 			boolean docPresent = kgsRFCService.testDocStatus(guid,crep);
 			if(docPresent){

@@ -26,7 +26,7 @@ function setDeliveryNumber(delNumber,shipunit){
 				<table class="nohover">
 					<thead class="portlet-table-header">
 						<tr>
-							<th colspan="2"><doc41:translate label="Upload Document" />&nbsp;<c:out value="${uploadForm.typeLabel}"/> </th>
+							<th colspan="2"><doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${uploadForm.type}"/> </th>
 						</tr>
 					</thead>
 					<spring:hasBindErrors name="uploadForm">
@@ -43,12 +43,9 @@ function setDeliveryNumber(delNumber,shipunit){
 					
 					<tr><td colspan="3">
 					<pre>
-					TODO Delivery Nummer
-					TODO Button "Available Delivery Numbers"
 					TODO Creditor
 					TODO Rechnungsnummer je Lieferung
 					TODO Version
-					TODO dynamische Attribute
 					TODO predefined values
 					</pre>
 					</td></tr>

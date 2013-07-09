@@ -21,6 +21,11 @@ public class DocumentStatus implements Serializable {
 	public void setArchivingDate(Date archivingDate) {
 		this.archivingDate = archivingDate;
 	}
+	@Override
+	public String toString() {
+		return "DocumentStatus [status=" + status + ", archivingDate="
+				+ archivingDate + "]";
+	}
 	
 	
 }

@@ -38,7 +38,7 @@ public class UploadController extends AbstractDoc41Controller {
 		UploadForm uploadForm = new UploadForm();
 		uploadForm.setType(type);
 		uploadForm.setFileId(fileid);
-		uploadForm.setTypeLabel(documentUC.getTypeLabel(type, language));
+//		uploadForm.setTypeLabel(documentUC.getTypeLabel(type, language));
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type);
 		uploadForm.initAttributes(attributeDefinitions,language);
 		return uploadForm;

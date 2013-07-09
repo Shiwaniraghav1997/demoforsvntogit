@@ -31,4 +31,12 @@ public class DocMetadata {
 	public DocMetadata(DocTypeDef docDef){
 		this.docDef = docDef;
 	}
+
+	@Override
+	public String toString() {
+		return "DocMetadata [docDef=" + docDef + ", attributes=" + attributes
+				+ ", contentRepository=" + contentRepository + "]";
+	}
+	
+	
 }

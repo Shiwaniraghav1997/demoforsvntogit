@@ -74,4 +74,14 @@ public class Attribute implements Serializable {
 	public void setTempLabel(String tempLabel) {
 		this.tempLabel = tempLabel;
 	}
+
+	@Override
+	public String toString() {
+		return "Attribute [name=" + name + ", seqNumber=" + seqNumber
+				+ ", desc=" + desc + ", mandatory=" + mandatory
+				+ ", translations=" + translations + ", values=" + values
+				+ ", tempLabel=" + tempLabel + "]";
+	}
+	
+	
 }

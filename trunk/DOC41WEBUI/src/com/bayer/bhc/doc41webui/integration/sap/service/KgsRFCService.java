@@ -2,9 +2,7 @@ package com.bayer.bhc.doc41webui.integration.sap.service;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +31,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_GET_CONTENT_REPO = "GetCrepInfo";
 	private static final String RFC_NAME_GET_ATTRIBUTES = "GetAttributes";
 	private static final String RFC_NAME_GET_ATTR_VALUES = "GetAttrValues";
-	private static final String RFC_NAME_GET_TEXTS = "GetTexts";
+//	private static final String RFC_NAME_GET_TEXTS = "GetTexts";
 	private static final String RFC_NAME_CREATE_HTTP_PUT = "CreateHttpPut";
 	private static final String RFC_NAME_GET_DOC_STATUS = "GetDocStatus";
 	private static final String RFC_NAME_PROCESS_DR_REQ = "ProcessDrReq";
@@ -43,7 +41,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		Map<String, DocMetadata> metadataMap = new HashMap<String, DocMetadata>();
 		//get doctypes
 		List<DocTypeDef> docTypeDefs = getDocTypeDefs();
-		Set<String> textKeysToTranslate = new HashSet<String>();
+//		Set<String> textKeysToTranslate = new HashSet<String>();
         for (DocTypeDef docTypeDef : docTypeDefs) {
         	String d41id = docTypeDef.getD41id();
         	if(isTypeSupported(d41id)){
@@ -61,19 +59,19 @@ public class KgsRFCService extends AbstractSAPJCOService {
         			attribute.setValues(values);
         		}
 
-        		textKeysToTranslate.add(docTypeDef.getSapObj());
+//        		textKeysToTranslate.add(docTypeDef.getSapObj());
         		metadataMap.put(d41id, metadata);
         		Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "Metadata for doc type "+d41id+" loaded");
         	}
 		}
         //translations for doc type names
         //key -> language -> label
-        Map<String,Map<String,String>> translations = getDocTypeTranslations(textKeysToTranslate,languageCodes);
-        for (DocMetadata metadata : metadataMap.values()) {
-			String sapObj = metadata.getDocDef().getSapObj();
-			Map<String,String> translationForLanguages = translations.get(sapObj);
-			metadata.getDocDef().setTranslations(translationForLanguages);
-        }
+//        Map<String,Map<String,String>> translations = getDocTypeTranslations(textKeysToTranslate,languageCodes);
+//        for (DocMetadata metadata : metadataMap.values()) {
+//			String sapObj = metadata.getDocDef().getSapObj();
+//			Map<String,String> translationForLanguages = translations.get(sapObj);
+//			metadata.getDocDef().setTranslations(translationForLanguages);
+//        }
 		
 		return metadataMap;
 	}
@@ -87,32 +85,32 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		return false;
 	}
 
-	private Map<String, Map<String, String>> getDocTypeTranslations(
-			Set<String> textKeysToTranslate, Collection<String> languageCodes) throws Doc41ServiceException {
-		// /BAY0/GZ_D41_BO_GET_TEXTS for attr labels
-		Map<String, Map<String, String>> map = new HashMap<String, Map<String,String>>();
-		for (String language : languageCodes) {
-			List<KeyValue> translationsOneLanguage = getDocTypeTranslations(textKeysToTranslate, language);
-			for (KeyValue attrValue : translationsOneLanguage) {
-				String attrName = attrValue.getKey();
-				Map<String, String> languageToValue = map.get(attrName);
-				if(languageToValue==null){
-					languageToValue = new HashMap<String, String>();
-					map.put(attrName,languageToValue);
-				}
-				languageToValue.put(language,attrValue.getValue());
-			}
-		}
-		return map;
-	}
+//	private Map<String, Map<String, String>> getDocTypeTranslations(
+//			Set<String> textKeysToTranslate, Collection<String> languageCodes) throws Doc41ServiceException {
+//		// /BAY0/GZ_D41_BO_GET_TEXTS for attr labels
+//		Map<String, Map<String, String>> map = new HashMap<String, Map<String,String>>();
+//		for (String language : languageCodes) {
+//			List<KeyValue> translationsOneLanguage = getDocTypeTranslations(textKeysToTranslate, language);
+//			for (KeyValue attrValue : translationsOneLanguage) {
+//				String attrName = attrValue.getKey();
+//				Map<String, String> languageToValue = map.get(attrName);
+//				if(languageToValue==null){
+//					languageToValue = new HashMap<String, String>();
+//					map.put(attrName,languageToValue);
+//				}
+//				languageToValue.put(language,attrValue.getValue());
+//			}
+//		}
+//		return map;
+//	}
 	
-	private List<KeyValue> getDocTypeTranslations(Set<String> textKeysToTranslate,String language) throws Doc41ServiceException{
-		List<Object> params = new ArrayList<Object>();
-		params.add(textKeysToTranslate);
-		params.add(language);
-		List<KeyValue> values = performRFC(params,RFC_NAME_GET_TEXTS);
-		return values;
-	}
+//	private List<KeyValue> getDocTypeTranslations(Set<String> textKeysToTranslate,String language) throws Doc41ServiceException{
+//		List<Object> params = new ArrayList<Object>();
+//		params.add(textKeysToTranslate);
+//		params.add(language);
+//		List<KeyValue> values = performRFC(params,RFC_NAME_GET_TEXTS);
+//		return values;
+//	}
 
 	private Map<String, List<String>> getAttrValues(String d41id) throws Doc41ServiceException {
 		// /BAY0/GZ_D41_GET_ATTR_VALUES

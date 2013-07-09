@@ -42,6 +42,13 @@ public class Delivery implements Serializable {
 	public void setGoodsIssueDate(Date goodsIssueDate) {
 		this.goodsIssueDate = goodsIssueDate;
 	}
+	@Override
+	public String toString() {
+		return "Delivery [deliveryNumber=" + deliveryNumber
+				+ ", shippingUnitNumber=" + shippingUnitNumber
+				+ ", shipToNumber=" + shipToNumber + ", SoldToNumber="
+				+ SoldToNumber + ", goodsIssueDate=" + goodsIssueDate + "]";
+	}
 	
 
 }

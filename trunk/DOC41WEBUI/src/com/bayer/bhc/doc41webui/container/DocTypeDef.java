@@ -42,6 +42,12 @@ public class DocTypeDef {
 	public void setTranslations(Map<String, String> translations) {
 		this.translations = translations;
 	}
+	@Override
+	public String toString() {
+		return "DocTypeDef [d41id=" + d41id + ", technicalId=" + technicalId
+				+ ", description=" + description + ", sapObj=" + sapObj
+				+ ", translations=" + translations + "]";
+	}
 
 	
 }
