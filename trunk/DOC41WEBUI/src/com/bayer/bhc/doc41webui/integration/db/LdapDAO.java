@@ -11,6 +11,7 @@ import com.bayer.bbs.aila.model.AILAPerson;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41InvalidPasswordException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.service.Doc41MonitorService;
 import com.bayer.ecim.foundation.basic.ConfigMap;
@@ -41,14 +42,28 @@ public class LdapDAO {
 	private static final String GROUP_LOG_PROD ="boe_log";
 	private static final String GROUP_LOG_QA ="BOE_LOG_QA";
 	
+	//TODO replace with doc41
+//	private static final String GROUP_EXU ="doc41_exu";
+//	private static final String GROUP_INT_PROD ="doc41_int";
+//	private static final String GROUP_INT_QA ="DOC41_INT_QA";
+//	private static final String GROUP_LOG_PROD ="doc41_log";
+//	private static final String GROUP_LOG_QA ="DOC41_LOG_QA";
+	
 
 	private AilaAccess getAilaAccess() throws AilaException {
 		String stageInfo = ConfigMap.get().getHostId().toUpperCase();
 		if (stageInfo.startsWith("PROD")) {
 			return new AilaAccess(AilaAccess.APP_BOE, AilaAccess.ACCESS_PROD); 
 		} else {
+			Doc41Log.get().debug(getClass(), "abc", "app="+AilaAccess.APP_BOE+" access="+AilaAccess.ACCESS_QA);
 			return new AilaAccess(AilaAccess.APP_BOE, AilaAccess.ACCESS_QA); 
 		}
+		//TODO replace with doc41
+//		if (stageInfo.startsWith("PROD")) {
+//			return new AilaAccess(AilaAccess.APP_DOC41, AilaAccess.ACCESS_PROD); 
+//		} else {
+//			return new AilaAccess(AilaAccess.APP_DOC41, AilaAccess.ACCESS_QA); 
+//		}
 	}
 	
 	private boolean isDevSystem(){
@@ -87,7 +102,10 @@ public class LdapDAO {
 	
 	public boolean isInternalUserAuthenticated(String cwid, String password) throws Doc41TechnicalException {
 		try {
-			return getAilaAccess().isAuthenticated(cwid.trim(), password.trim());
+			Doc41Log.get().debug(getClass(), cwid, "cwid="+cwid+", password="+password);
+			boolean result = getAilaAccess().isAuthenticated(cwid.trim(), password.trim());
+			Doc41Log.get().debug(getClass(), cwid, "result="+result);
+			return result;
 		} catch (AilaException e) {
 			return false;
 		}
