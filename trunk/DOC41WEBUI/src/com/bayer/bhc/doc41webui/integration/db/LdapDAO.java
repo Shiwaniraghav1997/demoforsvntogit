@@ -11,7 +11,6 @@ import com.bayer.bbs.aila.model.AILAPerson;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41InvalidPasswordException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
-import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.service.Doc41MonitorService;
 import com.bayer.ecim.foundation.basic.ConfigMap;
@@ -55,7 +54,6 @@ public class LdapDAO {
 		if (stageInfo.startsWith("PROD")) {
 			return new AilaAccess(AilaAccess.APP_BOE, AilaAccess.ACCESS_PROD); 
 		} else {
-			Doc41Log.get().debug(getClass(), "abc", "app="+AilaAccess.APP_BOE+" access="+AilaAccess.ACCESS_QA);
 			return new AilaAccess(AilaAccess.APP_BOE, AilaAccess.ACCESS_QA); 
 		}
 		//TODO replace with doc41
@@ -102,10 +100,7 @@ public class LdapDAO {
 	
 	public boolean isInternalUserAuthenticated(String cwid, String password) throws Doc41TechnicalException {
 		try {
-			Doc41Log.get().debug(getClass(), cwid, "cwid="+cwid+", password="+password.trim().length());
-			boolean result = getAilaAccess().isAuthenticated(cwid.trim(), password.trim());
-			Doc41Log.get().debug(getClass(), cwid, "result="+result);
-			return result;
+			return getAilaAccess().isAuthenticated(cwid.trim(), password.trim());
 		} catch (AilaException e) {
 			return false;
 		}
