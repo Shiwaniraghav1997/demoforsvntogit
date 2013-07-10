@@ -1,9 +1,6 @@
 package com.bayer.bhc.doc41webui.integration.sap.rfc;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
@@ -11,7 +8,6 @@ import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
-import com.sap.conn.jco.JCoStructure;
 
 public class CheckDeliveryNumberExistsRFC extends AbstractDoc41RFC<Boolean>{
 	//TODO
