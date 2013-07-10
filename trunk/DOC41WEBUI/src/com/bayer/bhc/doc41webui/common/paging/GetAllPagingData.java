@@ -11,7 +11,6 @@ public class GetAllPagingData implements PagingData {
 	
 	@Override
 	public int getEndIndex() {
-		if(true)return 50;
 		return -1;
 	}
 
