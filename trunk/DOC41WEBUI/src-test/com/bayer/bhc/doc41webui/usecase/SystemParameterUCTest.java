@@ -13,10 +13,10 @@ public class SystemParameterUCTest extends Doc41TestCase {
 
 	
 	@Test
-	public void testGetBOECorrelationId() throws Exception {
-		String cid	= usecase.getBOECorrelationId();
+	public void testGetDOC41CorrelationId() throws Exception {
+		String cid	= usecase.getDOC41CorrelationId();
 		assertNotNull(cid);
-		assertTrue(cid.startsWith("BOE-"));
+		assertTrue(cid.startsWith("DOC41-"));
 		System.out.println(cid);
 	}
 

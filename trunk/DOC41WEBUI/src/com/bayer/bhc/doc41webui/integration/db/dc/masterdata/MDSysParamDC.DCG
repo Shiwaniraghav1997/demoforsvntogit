@@ -7,7 +7,7 @@ Tablename=[DOC41WEB_MGR].MD_SYSPARAM
 Superclass=com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier
 ImplementedInterfaces=
 Imports=
-ClassComment=DC for MD_SYSPARAM in BOE2_MGR
+ClassComment=DC for MD_SYSPARAM in DOC41WEB_MGR
 
 
 Column.1.Name=ParamName

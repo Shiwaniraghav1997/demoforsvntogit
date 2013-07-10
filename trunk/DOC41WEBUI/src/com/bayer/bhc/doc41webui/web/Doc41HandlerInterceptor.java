@@ -316,7 +316,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 							break;
 						}
 						Object attrib= oIn.readObject();
-//						BoeahLog.get().debug(
+//						Doc41Log.get().debug(
 //								this.getClass(),
 //								pUser.getCwid(),
 //								"Read object from DB:"
@@ -413,7 +413,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 				Object attribute = session.getAttribute(attributName);
 				checkAndStream(attributName, pOutStream);
 				checkAndStream(attribute, pOutStream);
-//				BoeahLog.get().debug(
+//				Doc41Log.get().debug(
 //						this.getClass(),
 //						"System",
 //						"Wrote object from DB:"

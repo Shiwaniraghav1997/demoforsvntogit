@@ -92,7 +92,7 @@ public class Doc41InterfaceLogEntry extends DebugLogEntry {
      * @return java.lang.String the unique shortname of this LogEntry object.
      */
     public String getLogEntryShortName() {
-        return "BOE_ILE";
+        return "DOC41_ILE";
     }
 
     /**

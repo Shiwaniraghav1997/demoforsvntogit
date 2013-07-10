@@ -27,13 +27,13 @@ public class SystemParameterUC {
 	 * @return new unique Correlation-ID
 	 * @throws Doc41BusinessException
 	 */
-	public String getBOECorrelationId() throws Doc41BusinessException {
+	public String getDOC41CorrelationId() throws Doc41BusinessException {
 		Long oid;
 		try {
 			oid = systemParameterRepository.getOID();
 			return ""+oid; // "BOE-" + oid;
 		} catch (Doc41RepositoryException e) {
-			throw new Doc41BusinessException("getBOECorrelationId", e);
+			throw new Doc41BusinessException("getDOC41CorrelationId", e);
 		}
 	}
 	

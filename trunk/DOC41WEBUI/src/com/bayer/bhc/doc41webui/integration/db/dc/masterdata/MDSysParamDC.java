@@ -17,7 +17,7 @@ import com.bayer.ecim.foundation.dbx.*;
 
 
 /**
- * DC for MD_SYSPARAM in BOE2_MGR
+ * DC for MD_SYSPARAM in DOC41WEB_MGR
  */
 public class MDSysParamDC
 	extends com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier

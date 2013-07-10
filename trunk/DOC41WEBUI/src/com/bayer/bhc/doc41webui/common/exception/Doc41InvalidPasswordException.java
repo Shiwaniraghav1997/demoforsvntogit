@@ -6,7 +6,7 @@ package com.bayer.bhc.doc41webui.common.exception;
 
 
 /**
- * BoeaInvalidPasswordException.
+ * Doc41InvalidPasswordException.
  * 
  * @author ezzqc
  */

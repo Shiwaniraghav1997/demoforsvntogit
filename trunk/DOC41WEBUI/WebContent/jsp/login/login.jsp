@@ -20,7 +20,7 @@
 	<form:form action="post" method="post">
 		<table align="center" width="610px" cellpadding=0 cellspacing=0 border=0 class="nohover" style="margin-top: 10px; background-color: #FFFFFF">
 			<tr>
-				<td colspan="2" style="padding: 20px; BACKGROUND-COLOR: #eaf8f8; color: #696866; TEXT-ALIGN: center;"><doc41:translate label="LoginBoe"/></td>
+				<td colspan="2" style="padding: 20px; BACKGROUND-COLOR: #eaf8f8; color: #696866; TEXT-ALIGN: center;"><doc41:translate label="LoginDoc41"/></td>
 			</tr>
 			<tr>
 				<td align="center">
