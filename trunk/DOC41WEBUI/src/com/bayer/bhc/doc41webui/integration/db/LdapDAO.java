@@ -102,7 +102,7 @@ public class LdapDAO {
 	
 	public boolean isInternalUserAuthenticated(String cwid, String password) throws Doc41TechnicalException {
 		try {
-			Doc41Log.get().debug(getClass(), cwid, "cwid="+cwid+", password="+password);
+			Doc41Log.get().debug(getClass(), cwid, "cwid="+cwid+", password="+password.trim().length());
 			boolean result = getAilaAccess().isAuthenticated(cwid.trim(), password.trim());
 			Doc41Log.get().debug(getClass(), cwid, "result="+result);
 			return result;
