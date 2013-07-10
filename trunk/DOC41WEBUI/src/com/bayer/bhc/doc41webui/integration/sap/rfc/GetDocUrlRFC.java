@@ -2,21 +2,13 @@ package com.bayer.bhc.doc41webui.integration.sap.rfc;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
-import com.bayer.bhc.doc41webui.container.ContentRepositoryInfo;
-import com.bayer.bhc.doc41webui.container.Delivery;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
-import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
-import com.sap.conn.jco.JCoStructure;
-import com.sap.conn.jco.JCoTable;
 
 public class GetDocUrlRFC extends AbstractDoc41RFC<URL>{
 	//TODO
@@ -25,7 +17,7 @@ public class GetDocUrlRFC extends AbstractDoc41RFC<URL>{
 	private static final String IN_COMP_ID = "IV_COMP_ID";
 	
 	private static final String OUT_URL = "EV_URL";
-	private static final String OUT_DOC_ID_OUT = "EV_DOC_ID_OUT";
+//	private static final String OUT_DOC_ID_OUT = "EV_DOC_ID_OUT";
 	
 	
 
