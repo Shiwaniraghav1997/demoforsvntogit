@@ -106,7 +106,7 @@ public class DocumentUC {
 		// TODO use RFC GetDeliveriesWithoutDocumentRFC
 		
 		Delivery dummy1 = new Delivery();
-		dummy1.setDeliveryNumber("10001");
+		dummy1.setDeliveryNumber("80400000");
 		dummy1.setGoodsIssueDate(new Date());
 		dummy1.setShippingUnitNumber("20001");
 		dummy1.setShipToNumber("30001");
@@ -114,7 +114,7 @@ public class DocumentUC {
 		deliveries.add(dummy1);
 		
 		Delivery dummy2 = new Delivery();
-		dummy2.setDeliveryNumber("10002");
+		dummy2.setDeliveryNumber("80400005");
 		dummy2.setGoodsIssueDate(new Date());
 		dummy2.setShippingUnitNumber("20002");
 		dummy2.setShipToNumber("30002");

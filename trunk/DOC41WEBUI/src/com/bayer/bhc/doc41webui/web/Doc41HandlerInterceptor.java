@@ -49,6 +49,10 @@ import com.bayer.ecim.foundation.business.sbcommon.SessionDataDC;
  */
 public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implements Doc41SessionKeys {
 	
+	private static final String URI_FORBIDDEN = "/login/forbidden";
+
+	private static final String URI_LOGIN = "/login/login";
+
 	private static final String DB_SESSION_DC_REQ_ATTR ="DB_SESSION_DC_REQ_ATTR";
 	
 	@Autowired
@@ -71,47 +75,15 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			request.setAttribute(DB_SESSION_DC_REQ_ATTR, dbSessionDC);
 			
 			if (usr == null) {
-				// rescue where the original request wanted to go...
-				// due to Spring MVC, one cannot directly send redirect on the HTTP
-				// response :-( so redirecting is quite a bad hack
-				if (request.getSession().getAttribute(DOC41_ORIGIN_URI) == null
-						&& !request.getRequestURI().contains("userprofile")) {
-	
-					request.getSession().setAttribute(DOC41_ORIGIN_URI,request.getRequestURI()+"?"+request.getQueryString());
-					Doc41Log.get().debug(this.getClass(),
-							"No User, saved URI for redirect: ",
-							request.getRequestURI());
-				}
-				response.sendRedirect("login/login");
+				response.sendRedirect(request.getContextPath() +URI_LOGIN);
 				return false;
 	
 			} else {
-				if(!usr.getActive()){
-					response.sendRedirect("login/forbidden");
+				if(!usr.getActive() || !hasRolePermission(usr,handler)){
+					response.sendRedirect(request.getContextPath() +URI_FORBIDDEN);
 					return false;
 				}
 	
-				String originURI = null;
-				try {
-					originURI = (String) request.getSession().getAttribute(
-							DOC41_ORIGIN_URI);
-				} catch (Exception e) {
-					// ignore any eventual cast problems to continue processing
-				}
-				request.getSession().removeAttribute(DOC41_ORIGIN_URI);
-				if (originURI != null) {
-					String prefix = session.getServletContext().getContextPath() + "/";
-					// Doc41Log.get().debug(this.getClass(),"APP Prefix: ",prefix);
-					originURI = originURI.replace(prefix, "redirect:/");
-					Doc41Log.get().debug(this.getClass(),
-							"redirect to saved URI: ", originURI);
-					response.sendRedirect(originURI);
-					return false;
-				}
-				if (!hasRolePermission(usr,handler)) {
-					response.sendRedirect(originURI);
-					return false;
-				}
 				String tmpLanguage = usr.getLocale().getLanguage();
 				if (tmpLanguage == null) {
 					tmpLanguage = request.getLocale().getLanguage();

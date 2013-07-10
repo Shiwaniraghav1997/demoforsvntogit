@@ -10,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bayer.bhc.doc41webui.common.Doc41SessionKeys;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.web.SessionModelAndView;
 import com.bayer.ecim.foundation.basic.Dbg;
 import com.bayer.ecim.foundation.basic.NestingException;
 
@@ -152,14 +151,8 @@ public class Doc41Log {
 			String jspName = null;
 			String usr = UserInSession.getCwid();
 			String logClass = handler.getClass().getName();
-			SessionModelAndView mav = (SessionModelAndView) pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_MAV);
 			String action = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL);
-			
-			if (mav != null) {
-				jspName = mav.getViewName();
-			} else {
-				jspName = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_VIEW);
-			}
+			jspName = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_VIEW);
 			Doc41LogEntry pObj = new Doc41LogEntry(usr, usr, null, action, jspName, null, null, null, null, null, null, null, null);
 			Dbg.get().println(LOGGING, logClass, pRequest.getRemoteUser(),pObj);
 		}
