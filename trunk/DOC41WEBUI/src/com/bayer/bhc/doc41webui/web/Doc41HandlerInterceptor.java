@@ -148,11 +148,13 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
 		// persist HTTPSession into session data in DB:
-		User usr = determineUser(request);
-		HttpSession session= request.getSession();
-		SessionDataDC dbSessionDC = (SessionDataDC) request.getAttribute(DB_SESSION_DC_REQ_ATTR);
-		persistSessionData(usr,session,dbSessionDC);
-		Doc41Log.get().logWebMetrix(request, this, request.getRequestURI());
+		User usr = UserInSession.get();
+		if(usr!=null){
+			HttpSession session= request.getSession();
+			SessionDataDC dbSessionDC = (SessionDataDC) request.getAttribute(DB_SESSION_DC_REQ_ATTR);
+			persistSessionData(usr,session,dbSessionDC);
+			Doc41Log.get().logWebMetrix(request, this, request.getRequestURI());
+		}
 	}
 
 	
