@@ -1,7 +1,12 @@
-<%@include file="../doc41/prolog.jspf" %>
-<doc41:loadTranslations jspName="edit" component="useradmin"/>
+<%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="<%=this.getClass().getSimpleName()%>"
+	activeTopNav="myProfile" activeNav="translations" 
+	jspName="edit" 		component="useradmin"
+	title="Login">
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" 		uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
-<html>
   <script language="JavaScript">
 		function setFocusToCwid() {
 			document.getElementById('cwid').focus();
@@ -9,14 +14,7 @@
 	
 		setTimeout(setFocusToCwid, 300);
   </script>
-  
-  <head><title>Login</title></head>
-  <body>
-    <%@include file="../doc41/header.jspf" %>
-    
-    <div style="border-bottom: 1px solid #009899">
-    </div>
-    
+  <div style="margin: 25px auto; width: 500px;">
 	<form:form action="post" method="post">
 		<table align="center" width="610px" cellpadding=0 cellspacing=0 border=0 class="nohover" style="margin-top: 10px; background-color: #FFFFFF">
 			<tr>
@@ -51,6 +49,5 @@
 			</tr>
 		</table>
 	</form:form>
-
-  </body>
-</html>
+  </div>
+</doc41:layout>

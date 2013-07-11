@@ -25,7 +25,7 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
 	
 
 	/**
-	 * can be overwritten to enforce specific roles
+	 * can be overwritten to enforce specific permission
 	 * @param usr
 	 * @return
 	 */

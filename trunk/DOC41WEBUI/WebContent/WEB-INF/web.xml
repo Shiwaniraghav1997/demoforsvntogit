@@ -31,10 +31,6 @@
   </filter>
   <filter-mapping>
     <filter-name>requestContextFilter</filter-name>
-    <servlet-name>Doc41Logout</servlet-name>
-  </filter-mapping>
-  <filter-mapping>
-    <filter-name>requestContextFilter</filter-name>
     <servlet-name>DocumentServlet</servlet-name>
   </filter-mapping>
   <servlet>
@@ -50,14 +46,6 @@
   <servlet-mapping>
     <servlet-name>doc41</servlet-name>
     <url-pattern>/</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>Doc41Logout</servlet-name>
-    <servlet-class>com.bayer.bhc.doc41webui.servlets.LogoutServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Doc41Logout</servlet-name>
-    <url-pattern>/logout</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>DocumentServlet</servlet-name>
