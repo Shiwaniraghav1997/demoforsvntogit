@@ -1,7 +1,9 @@
-<%@taglib prefix="doc41" uri="doc41-tags" %>
+<%@taglib prefix="doc41" 	uri="doc41-tags" %>
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 			<!--  BEGIN Top Navigation -->
 			<div id="mainNav">
 			 <ul class="hnav main">
+<c:if test="${empty showTopNav or showTopNav}">
 			  <doc41:topNavEntry href="userprofile/myprofile" title="navMyProfile" id="myProfile" cssclass="first home">
 			  	<!-- doc41:navEntry href="userprofile/myprofile" title="My Profile" id="myProfile" cssclass="first-child" /-->
 			  </doc41:topNavEntry>
@@ -22,6 +24,7 @@
 			  	<doc41:navEntry href="monitoring/monitoringOverview" title="Interface Monitoring" id="interfaceMonitoring" permission="CREATE_USER"/>
 			  </doc41:topNavEntry>
 			  
+</c:if>
 			 </ul>
 			</div>
 			<!--  END   Top Navigation -->

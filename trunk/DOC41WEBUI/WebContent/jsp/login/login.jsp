@@ -1,7 +1,7 @@
 <%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="<%=this.getClass().getSimpleName()%>"
 	activeTopNav="myProfile" activeNav="translations" 
 	jspName="edit" 		component="useradmin"
-	title="Login">
+	title="Login" showTopNav="false">
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" 		uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>

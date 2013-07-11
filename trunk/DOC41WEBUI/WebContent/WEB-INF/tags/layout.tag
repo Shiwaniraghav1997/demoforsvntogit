@@ -7,6 +7,8 @@
 <%@attribute name="jspName"			required="true"%>
 <%@attribute name="component"		required="true"%>
 <%@attribute name="title"			required="true"%>
+<%@attribute name="showTopNav"		required="false"%>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <%@include file="/WEB-INF/fragments/layout/head.jspf" %>
 	<body>
