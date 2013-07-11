@@ -35,33 +35,20 @@ public class LdapDAO {
 
 	private static final String SET_PASSWORD = "setPassword";
 
-	private static final String GROUP_EXU ="boe_exu";
-	private static final String GROUP_INT_PROD ="boe_int";
-	private static final String GROUP_INT_QA ="BOE_INT_QA";
-	private static final String GROUP_LOG_PROD ="boe_log";
-	private static final String GROUP_LOG_QA ="BOE_LOG_QA";
-	
-	//TODO replace with doc41
-//	private static final String GROUP_EXU ="doc41_exu";
-//	private static final String GROUP_INT_PROD ="doc41_int";
-//	private static final String GROUP_INT_QA ="DOC41_INT_QA";
-//	private static final String GROUP_LOG_PROD ="doc41_log";
-//	private static final String GROUP_LOG_QA ="DOC41_LOG_QA";
+	private static final String GROUP_EXU ="doc41_exu";
+	private static final String GROUP_INT_PROD ="doc41_int";
+	private static final String GROUP_INT_QA ="DOC41_INT_QA";
+	private static final String GROUP_LOG_PROD ="doc41_log";
+	private static final String GROUP_LOG_QA ="DOC41_LOG_QA";
 	
 
 	private AilaAccess getAilaAccess() throws AilaException {
 		String stageInfo = ConfigMap.get().getHostId().toUpperCase();
 		if (stageInfo.startsWith("PROD")) {
-			return new AilaAccess(AilaAccess.APP_BOE, AilaAccess.ACCESS_PROD); 
+			return new AilaAccess(AilaAccess.APP_DOC41, AilaAccess.ACCESS_PROD); 
 		} else {
-			return new AilaAccess(AilaAccess.APP_BOE, AilaAccess.ACCESS_QA); 
+			return new AilaAccess(AilaAccess.APP_DOC41, AilaAccess.ACCESS_QA); 
 		}
-		//TODO replace with doc41
-//		if (stageInfo.startsWith("PROD")) {
-//			return new AilaAccess(AilaAccess.APP_DOC41, AilaAccess.ACCESS_PROD); 
-//		} else {
-//			return new AilaAccess(AilaAccess.APP_DOC41, AilaAccess.ACCESS_QA); 
-//		}
 	}
 	
 	private boolean isDevSystem(){
