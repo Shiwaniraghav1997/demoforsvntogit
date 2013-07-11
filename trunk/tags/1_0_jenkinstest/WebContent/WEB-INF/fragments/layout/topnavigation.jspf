@@ -1,0 +1,27 @@
+<%@taglib prefix="doc41" uri="doc41-tags" %>
+			<!--  BEGIN Top Navigation -->
+			<div id="mainNav">
+			 <ul class="hnav main">
+			  <doc41:topNavEntry href="userprofile/myprofile" title="navMyProfile" id="myProfile" cssclass="first home">
+			  	<!-- doc41:navEntry href="userprofile/myprofile" title="My Profile" id="myProfile" cssclass="first-child" /-->
+			  </doc41:topNavEntry>
+			  
+			  <doc41:topNavEntry href="documents/documentupload" title="navDocuments" id="documents" permission="CREATE_ADMIN CREATE_USER">
+			  	<doc41:navEntry href="documents/documentupload?type=BOL" title="Bill of Lading" id="bol" cssclass="first-child" />
+			  	<doc41:navEntry href="documents/documentupload?type=AWB" title="Air Waybill" id="awb" cssclass="first-child" />
+			  </doc41:topNavEntry>
+			  
+			  <doc41:topNavEntry href="useradmin/userlist" title="navManagement" id="management" permission="CREATE_USER">
+			  	<doc41:navEntry href="useradmin/userlist" title="User Management" id="myProfile" cssclass="first-child" />
+			  </doc41:topNavEntry>
+			  
+			  <doc41:topNavEntry href="monitoring/monitoringOverview" title="navMaintenance" id="maintenance" permission="CREATE_USER">
+			  	<doc41:navEntry href="SupportConsole" title="Support Console" id="supportConsole" cssclass="first-child" permission="CREATE_ADMIN"/>
+			  	<doc41:navEntry href="translations/translationOverview" title="Translations" id="translations" permission="CREATE_USER"/>
+			  	<!-- doc41:navEntry href="busedit" title="System Administration" id="systemAdministration"/-->
+			  	<doc41:navEntry href="monitoring/monitoringOverview" title="Interface Monitoring" id="interfaceMonitoring" permission="CREATE_USER"/>
+			  </doc41:topNavEntry>
+			  
+			 </ul>
+			</div>
+			<!--  END   Top Navigation -->

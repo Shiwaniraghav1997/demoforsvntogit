@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/beans		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context	http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/tx		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/security	http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<!-- <context:annotation-config />
+	<bean id="handlerMapping"
+          class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <bean class="com.bayer.bhc.doc41webui.web.Doc41HandlerInterceptor"/>
+            </list>
+        </property>
+    </bean> -->
+    
+    <context:component-scan base-package="com.bayer.bhc.doc41webui.tasks.model.*,com.bayer.bhc.doc41webui.web,com.bayer.bhc.doc41webui.web.*"/>
+	<mvc:annotation-driven ignoreDefaultModelOnRedirect="true"/>
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/resources/**" />
+			<mvc:exclude-mapping path="/login/login"/>
+		    <beans:bean class="com.bayer.bhc.doc41webui.web.Doc41HandlerInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+    
+    <!-- maps request URLs to Controller names -->
+    <!-- <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/> -->
+
+    <!-- Controller names are not important when using the above HandlerMapping implementation -->
+ 	
+ 	<!-- this bean with the well known name generates view names for us -->
+    <!-- not strictly required since we just want to accept the defaults-->
+    <beans:bean id="viewNameTranslator" class="org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator"/>
+
+ 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	
+	    <!-- one of the properties available; the maximum file size in bytes -->
+	    <beans:property name="maxUploadSize" value="3000000"/>
+	</beans:bean>
+	
+	
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/view directory -->
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/jsp/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>	
+	
+	
+<!--	<mvc:annotation-driven conversion-service="conversionService"> 
+ 	    <mvc:message-converters>
+	        <bean class="org.example.MyHttpMessageConverter"/>
+	        <bean class="org.example.MyOtherHttpMessageConverter"/>
+	    </mvc:message-converters>
+	</mvc:annotation-driven> 
+	
+ 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	    <property name="formatters">
+	        <list>
+	            <bean class="org.example.MyFormatter"/>
+	            <bean class="org.example.MyOtherFormatter"/>
+	        </list>
+	    </property>
+	</bean> -->
+	
+	 	
+<!--     <bean id="baseController" abstract="true"> -->
+<!--  		<property name="commandName" value="abortForm"/> -->
+ 	
+<!--      	<property name="displaytextUC" ref="displaytextUC"/> -->
+<!--      	<property name="userManagementUC" ref="userManagementUC"/>     	 -->
+<!--      	<property name="systemParameterUC" ref="systemParameterUC"/> -->
+<!--     </bean> -->
+    
+<!-- 	<bean class="com.bayer.bhc.doc41webui.web.UserprofileController" parent="baseController"> -->
+<!-- 	    <property name="commandName" value="user"/> -->
+<!--     	<property name="formView" value="userprofile/myprofile"/> -->
+<!--     	<property name="successView" value="userprofile/myprofile"/> -->
+<!--     </bean> -->
+    
+<!--     <bean class="com.bayer.bhc.doc41webui.web.PrintController" parent="baseController"> -->
+<!--         <property name="formView" value="doc41/print"/> -->
+<!--         <property name="successView" value="doc41/print"/> -->
+<!--     </bean> -->
+    
+   
+    
+<!--     *********************************************************************************-->
+<!--     	User Management Controllers: -->
+<!--    	********************************************************************************* - - > -->
+      
+<!--     <bean class="com.bayer.bhc.doc41webui.web.useradmin.UserlistController" parent="baseController"> -->
+<!--         <property name="commandName" value="userFilter"/> -->
+<!--         <property name="formView" value="useradmin/userlist"/> -->
+<!--         <property name="successView" value="useradmin/userlist"/> -->
+        
+<!--         <property name="abortAction" value="redirect:/userlist.htm"/> -->
+<!--     </bean> -->
+    
+<!--     <bean class="com.bayer.bhc.doc41webui.web.useradmin.UsereditController" parent="baseController"> -->
+<!--         <property name="commandName" value="edituser"/> -->
+<!--         <property name="formView" value="useradmin/useredit"/> -->
+<!--         <property name="successView" value="useradmin/useredit"/> -->
+        
+<!--         <property name="successAction" value="redirect:/userlist.htm"/> -->
+<!--         <property name="abortAction" value="redirect:/userlist.htm"/> -->
+<!--     </bean> -->
+    
+<!--     <bean class="com.bayer.bhc.doc41webui.web.useradmin.UsercreateController" parent="baseController"> -->
+<!--         <property name="commandName" value="createuser"/> -->
+<!--         <property name="formView" value="useradmin/usercreate"/> -->
+<!--         <property name="successView" value="useradmin/usercreate"/> -->
+        
+<!--         <property name="successAction" value="redirect:/userlist.htm"/> -->
+<!--         <property name="abortAction" value="redirect:/userlist.htm"/> -->
+<!--     </bean> -->
+    
+    
+<!--     <bean class="com.bayer.bhc.doc41webui.web.useradmin.UserlookupController" parent="baseController"> -->
+<!-- 		<property name="commandName" value="edituser"/> -->
+<!-- 		<property name="formView" value="useradmin/userlookup"></property> -->
+<!-- 		<property name="successView" value="useradmin/userlookup"></property> -->
+		
+<!-- 		<property name="successAction" value="redirect:/userimport.htm"/> -->
+<!-- 		<property name="abortAction" value="redirect:/userlist.htm"/> -->
+<!-- 	</bean> -->
+	
+<!--     <bean class="com.bayer.bhc.doc41webui.web.useradmin.UserimportController" parent="baseController"> -->
+<!-- 		<property name="commandName" value="edituser"/> -->
+<!-- 		<property name="formView" value="useradmin/userimport"></property> -->
+<!-- 		<property name="successView" value="useradmin/userimport"></property> -->
+		
+<!-- 		<property name="abortAction" value="redirect:/userlist.htm"/> -->
+<!-- 	</bean> -->
+	
+<!--     <bean class="com.bayer.bhc.doc41webui.web.useradmin.UseractivationController" parent="baseController"> -->
+<!--         <property name="commandName" value="userFilter"/> -->
+<!--         <property name="formView" value="useradmin/userlist"/> -->
+<!--         <property name="successView" value="useradmin/userlist"/> -->
+        
+<!--         <property name="successAction" value="redirect:/userlist.htm"/> -->
+<!--         <property name="abortAction" value="redirect:/userlist.htm"/> -->
+<!--     </bean> -->
+    
+   
+<!--     *********************************************************************************-->
+<!--     	Translation Controllers: -->
+<!--    	********************************************************************************* - -> -->
+      
+<!--     <bean id="translationsViewController" class="com.bayer.bhc.doc41webui.web.translations.TranslationsViewController" parent="baseController">   -->
+<!--    	 	<property name="translationsUC" ref="translationsUC"/> -->
+<!--     	<property name="commandName" value="transView"/> -->
+<!--     	<property name="formView" value="translations/translationOverview"></property> -->
+<!-- 		<property name="successView" value="translations/translationOverview"></property> -->
+<!--     </bean> -->
+    
+<!--     <bean id="translationDeleteController" class="com.bayer.bhc.doc41webui.web.translations.TranslationDeleteController" parent="translationsViewController">   -->
+<!--     	<property name="abortAction" value="redirect:/translationsview.htm"/> -->
+<!--     </bean> -->
+    
+<!--     <bean id="translationAddController" class="com.bayer.bhc.doc41webui.web.translations.TranslationAddController" parent="baseController">   -->
+<!--    		<property name="translationsUC" ref="translationsUC"/> -->
+<!--    		<property name="commandName" value="transView"/> -->
+<!-- 		<property name="validator"> -->
+<!-- 			<bean class="com.bayer.bhc.doc41webui.web.translations.TranslationValidator"></bean> -->
+<!-- 		</property> -->
+<!-- 		<property name="formView" value="translations/translationAdd"/> -->
+<!-- 		<property name="successView" value="translations/translationAdd"/> -->
+		
+<!-- 		<property name="abortAction" value="redirect:/translationsview.htm"/> -->
+<!-- 	</bean> -->
+    
+<!--     <bean id="translationEditController" class="com.bayer.bhc.doc41webui.web.translations.TranslationEditController" parent="baseController"> -->
+<!-- 		<property name="translationsUC" ref="translationsUC"/> -->
+<!-- 		<property name="commandName" value="transView"/> -->
+<!-- 		<property name="validator"> -->
+<!-- 			<bean class="com.bayer.bhc.doc41webui.web.translations.TranslationValidator"></bean> -->
+<!-- 		</property> -->
+<!-- 		<property name="formView" value="translations/translationEdit"/> -->
+<!-- 		<property name="successView" value="translations/translationEdit"/> -->
+		
+<!-- 		<property name="abortAction" value="redirect:/translationsview.htm"/> -->
+<!--     </bean> -->
+ 
+<!--     <bean id="translationDistributeController" class="com.bayer.bhc.doc41webui.web.translations.TranslationsDistributeController" parent="baseController">   -->
+<!--    		<property name="translationsUC" ref="translationsUC"/> -->
+<!--    		<property name="commandName" value="transView"/> -->
+<!--     </bean> -->
+    
+ 
+
+	
+<!-- 	********************************************************************************* -->
+<!--     	Interface Monitoring Controllers: -->
+<!--    	********************************************************************************* - -> -->
+<!--    <bean class="com.bayer.bhc.doc41webui.web.monitoring.MonitoringOverviewController" parent="baseController"> -->
+<!--      	<property name="monitoringUC" ref="monitoringUC"/> -->
+<!--      	<property name="formView" value="monitoring/monitoringOverview"/> -->
+<!--          <property name="successView" value="monitoring/monitoringOverview"/> -->
+       
+<!--          <property name="abortAction" value="redirect:/monitoringoverview.htm"/> -->
+<!--      </bean> -->
+     
+<!--      <bean class="com.bayer.bhc.doc41webui.web.monitoring.MonitoringHistoryController" parent="baseController"> -->
+<!--      	<property name="monitoringUC" ref="monitoringUC"/> -->
+<!--      	<property name="formView" value="monitoring/monitoringHistory"/> -->
+<!--          <property name="successView" value="monitoring/monitoringHistory"/> -->
+       
+<!--          <property name="abortAction" value="redirect:/monitoringoverview.htm"/> -->
+<!--      </bean> -->
+<!--      <bean class="com.bayer.bhc.doc41webui.web.monitoring.InterfaceAddController" parent="baseController">   -->
+<!--    		<property name="commandName" value="monitoring"/> -->
+<!--    	 	<property name="monitoringUC" ref="monitoringUC"></property> -->
+<!--    	 	<property name="formView" value="monitoring/addInterface"></property> -->
+<!--    	 	<property name="successView" value="monitoring/addInterface"></property> -->
+   	 	
+<!--    	 	<property name="successAction" value="redirect:/monitoringoverview.htm"/> -->
+<!--    	 	<property name="abortAction" value="redirect:/monitoringoverview.htm"/> -->
+<!--    	</bean> -->
+<!--    		<bean class="com.bayer.bhc.doc41webui.web.monitoring.ContactPersonViewController" parent="baseController">  -->
+<!--    		<property name="monitoringUC" ref="monitoringUC"></property> -->
+<!--    	 	<property name="formView" value="monitoring/viewContactPerson"></property> -->
+<!--    	 	<property name="successView" value="monitoring/viewContactPerson"></property> -->
+   	 	
+<!--    	 	<property name="abortAction" value="redirect:/monitoringoverview.htm"/> -->
+<!--    	</bean> -->
+	
+<!-- 	<bean class="com.bayer.bhc.doc41webui.web.monitoring.ContactPersonAddController" parent="baseController">  -->
+<!--    		<property name="monitoringUC" ref="monitoringUC"></property> -->
+<!--    		<property name="commandName" value="user"/> -->
+<!--    	 	<property name="formView" value="monitoring/addContactPerson"></property> -->
+<!--    	 	<property name="successView" value="monitoring/addContactPerson"></property> -->
+   	 
+<!--    	 	<property name="successAction" value="redirect:/contactpersonview.htm"/> -->
+<!--    	 	<property name="abortAction" value="redirect:/contactpersonview.htm"/> -->
+<!--    	</bean> -->
+<!--    	 	<bean class="com.bayer.bhc.doc41webui.web.monitoring.ContactPersonEditController" parent="baseController">  -->
+<!--    		<property name="monitoringUC" ref="monitoringUC"></property> -->
+<!--    		<property name="commandName" value="user"/> -->
+<!--    	 	<property name="formView" value="monitoring/editContactPerson"></property> -->
+<!--    	 	<property name="successView" value="monitoring/editContactPerson"></property> -->
+   	 	
+<!--    	    <property name="successAction" value="redirect:/contactpersonview.htm"/> -->
+<!--    	 	<property name="abortAction" value="redirect:/contactpersonview.htm"/> -->
+<!--    	</bean> -->
+
+</beans:beans>
