@@ -1,0 +1,22 @@
+#DEFINITION for MDClientDC:
+#--------------------------------
+
+Package=com.bayer.bhc.doc41webui.integration.db.dc
+DCClassName=Doc41DataCarrier
+Tablename=
+Superclass=com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
+ImplementedInterfaces=
+Imports=
+ClassComment=ChangeableDataCarrier
+
+
+
+#Cols ignored, defined by super class:
+#-------------------------------------
+#CHANGED
+#CHANGEDBY
+#CHANGEDON
+#CREATED
+#CREATEDBY
+#CREATEDON
+#OBJECT_ID
