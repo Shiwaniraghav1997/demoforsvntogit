@@ -1,0 +1,48 @@
+
+		<c:if test="${pagingForm.totalSize < 1}">
+				<td style="whitespace: nowrap; text-align: center; border: 0;"><nobr><doc41:translate label="noDataFound"/></nobr></td>
+		</c:if>
+			
+		<c:if test="${pagingForm.totalSize > 0}">
+			<td style="whitespace: nowrap; text-align: left; border: 0;"><nobr><c:out value="${pagingForm.startIndex}-${pagingForm.endIndex} of ${pagingForm.totalSize}"/></nobr></td>
+			<td style="whitespace: nowrap; text-align: center; border: 0;">
+				<nobr>|
+				  <c:if test="${pagingForm.pageSize > 0}">
+					<c:if test="${pagingForm.pageIndex > 1}">
+						<a href="#" onClick="submitPagingAction('${pagingForm.formName}', 'FastRewind')">&lt;&lt;</a>
+						<a href="#" onClick="submitPagingAction('${pagingForm.formName}', 'PrevPage')">&lt;</a>
+					</c:if>
+					<c:if test="${pagingForm.pageIndex > 3}">
+						&nbsp;...
+					</c:if>
+					
+					<c:if test="${pagingForm.pageIndex > 2}">
+						<a href="#"  onClick="submitPagingAction('${pagingForm.formName}', 'PrevPage2')"><c:out value="${pagingForm.pageIndex-2}"/></a>
+					</c:if>
+					<c:if test="${pagingForm.pageIndex > 1}">
+						<a href="#"  onClick="submitPagingAction('${pagingForm.formName}', 'PrevPage')"><c:out value="${pagingForm.pageIndex-1}"/></a>
+					</c:if>
+				</c:if>
+				<span style="color:red">
+					<c:out value="${pagingForm.pageIndex}"/>
+				</span>
+				<c:if test="${pagingForm.pageSize > 0}">
+					<c:if test="${(pagingForm.endIndex) < pagingForm.totalSize}">
+						<a href="#"  onClick="submitPagingAction('${pagingForm.formName}', 'NextPage')"><c:out value="${pagingForm.pageIndex+1}"/></a>
+					</c:if>
+					
+					<c:if test="${(pagingForm.endIndex+1*pagingForm.pageSize) < pagingForm.totalSize}">
+						<a href="#"  onClick="submitPagingAction('${pagingForm.formName}', 'NextPage2')"><c:out value="${pagingForm.pageIndex+2}"/></a>
+					</c:if>
+					
+					<c:if test="${(pagingForm.endIndex+2*pagingForm.pageSize) < pagingForm.totalSize}">
+						...&nbsp;
+					</c:if>
+					<c:if test="${(pagingForm.endIndex) < pagingForm.totalSize}">
+						<a href="#" onClick="submitPagingAction('${pagingForm.formName}', 'NextPage')">&gt;</a>
+						<a href="#" onClick="submitPagingAction('${pagingForm.formName}', 'FastForward')">&gt;&gt;</a>
+					</c:if>
+				</c:if>
+				|</nobr>
+			</td>
+		</c:if>

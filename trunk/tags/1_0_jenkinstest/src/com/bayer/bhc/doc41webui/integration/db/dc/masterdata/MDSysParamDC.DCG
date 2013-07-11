@@ -1,0 +1,56 @@
+#DEFINITION for MDSysParamDC:
+#--------------------------------
+
+Package=com.bayer.bhc.doc41webui.integration.db.dc.masterdata
+DCClassName=MDSysParamDC
+Tablename=[DOC41WEB_MGR].MD_SYSPARAM
+Superclass=com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier
+ImplementedInterfaces=
+Imports=
+ClassComment=DC for MD_SYSPARAM in DOC41WEB_MGR
+
+
+Column.1.Name=ParamName
+Column.1.Type=STRING
+Column.1.Comment=Maps DB-Column: param_Name
+#Column.1.DBDefault="..."/new ...
+
+Column.2.Name=ParamType
+Column.2.Type=STRING
+Column.2.Comment=Maps DB-Column: param_Type
+#Column.2.DBDefault="..."/new ...
+
+Column.3.Name=ParamStringvalue
+Column.3.Type=STRING
+Column.3.Comment=Maps DB-Column: param_Stringvalue
+#Column.3.DBDefault="..."/new ...
+
+Column.4.Name=ParamNumbervalue
+Column.4.Type=ID
+Column.4.Comment=Maps DB-Column: param_Numbervalue
+#Column.4.DBDefault="..."/new ...
+
+Column.5.Name=ParamDecimalvalue
+Column.5.Type=QUANTITY
+Column.5.Comment=Maps DB-Column: param_Decimalvalue
+#Column.5.DBDefault="..."/new ...
+
+Column.6.Name=ParamBooleanvalue
+Column.6.Type=BOOLEAN
+Column.6.Comment=Maps DB-Column: param_Booleanvalue
+#Column.6.DBDefault="..."/new ...
+
+Column.7.Name=IsDeletable
+Column.7.Type=BOOLEAN
+Column.7.Comment=Maps DB-Column: is_Deletable
+Column.7.DBDefault=Boolean.TRUE
+
+#Cols ignored, defined by super class:
+#-------------------------------------
+#CHANGED
+#CHANGEDBY
+#CHANGEDON
+#CREATED
+#CREATEDBY
+#CREATEDON
+#OBJECT_ID
