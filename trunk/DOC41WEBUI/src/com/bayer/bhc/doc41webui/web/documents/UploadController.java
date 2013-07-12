@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
-import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.Attribute;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.domain.User;
@@ -47,26 +46,27 @@ public class UploadController extends AbstractDoc41Controller {
 	@RequestMapping(value="/documents/upload",method = RequestMethod.POST)
 	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result) { //ggf. kein modelattribute wegen sessionattribute
 		try{
-		MultipartFile file = uploadForm.getFile();
-		if((file==null||file.getSize()==0) && StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-			result.reject("uploadFileMissing");
-		} if((file!=null&&file.getSize()>0) && !StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-			result.reject("FileAndFileId");
-		} else if(!documentUC.checkDeliveryForPartner(UserInSession.get().getCompany(), uploadForm.getDeliveryNumber(), uploadForm.getShippingUnitNumber())){
-			//TODO use Carrier field instead of Company
-			result.reject("DeliveryNotAllowedForCarrier");
-		} else {
-			if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-				String fileId = documentUC.uploadDocument(uploadForm.getType(),file);
-				uploadForm.setFileId(fileId);
-			}
-			if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-				result.reject("UploadFailed");
+			MultipartFile file = uploadForm.getFile();
+			if((file==null||file.getSize()==0) && StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
+				result.reject("uploadFileMissing");
+			} else if(StringTool.isTrimmedEmptyOrNull(uploadForm.getPartnerNumber())){
+				result.reject("NoPartnerNumberSelected");
+			} else if((file!=null&&file.getSize()>0) && !StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
+				result.reject("FileAndFileId");
+			} else if(!documentUC.checkDeliveryForPartner(uploadForm.getPartnerNumber(), uploadForm.getDeliveryNumber(), uploadForm.getShippingUnitNumber())){
+				result.reject("DeliveryNotAllowedForCarrier");
 			} else {
-				//set attributes in sap
-				documentUC.setAttributesForNewDocument(uploadForm.getType(),uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getDeliveryNumber());
+				if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
+					String fileId = documentUC.uploadDocument(uploadForm.getType(),file);
+					uploadForm.setFileId(fileId);
+				}
+				if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
+					result.reject("UploadFailed");
+				} else {
+					//set attributes in sap
+					documentUC.setAttributesForNewDocument(uploadForm.getType(),uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getDeliveryNumber());
+				}
 			}
-		}
 		}catch (Doc41BusinessException e) {
 			result.reject(e.getMessage());
 		}

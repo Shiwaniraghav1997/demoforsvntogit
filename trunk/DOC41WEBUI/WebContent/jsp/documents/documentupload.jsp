@@ -43,12 +43,16 @@ function setDeliveryNumber(delNumber,shipunit){
 					
 					<tr><td colspan="3">
 					<pre>
-					TODO Creditor
-					TODO Rechnungsnummer je Lieferung
 					TODO Version
 					TODO predefined values
 					</pre>
 					</td></tr>
+					
+					<tr>
+						<td><doc41:translate label="PartnerNumber" /></td>
+						<td><form:select path="partnerNumber" items="${user.partners}" cssClass="portlet-form-input-field" cssStyle="width:140;"/></td>
+					</tr>
+					
 					<tr>
 						<td><doc41:translate label="DeliveryNumber" /></td>
 						<td><form:input path="deliveryNumber" cssClass="portlet-form-input-field"  maxlength="70"/></td>

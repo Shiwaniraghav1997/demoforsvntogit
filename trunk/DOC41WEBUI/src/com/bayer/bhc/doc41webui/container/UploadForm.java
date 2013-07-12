@@ -19,6 +19,7 @@ public class UploadForm {
 	private String type;
 //	private String typeLabel;
 	private transient MultipartFile file;
+	private String partnerNumber;
 	
 	
 	public Map<String, String> getAttributeLabels() {
@@ -80,5 +81,20 @@ public class UploadForm {
 	public String getShippingUnitNumber() {
 		return attributeValues.get(SHIPPING_UNIT_NUMBER);
 	}
+	
+	public String getPartnerNumber() {
+		return partnerNumber;
+	}
+	public void setPartnerNumber(String partnerNumber) {
+		this.partnerNumber = partnerNumber;
+	}
+	@Override
+	public String toString() {
+		return "UploadForm [deliveryNumber=" + deliveryNumber
+				+ ", attributeLabels=" + attributeLabels + ", attributeValues="
+				+ attributeValues + ", fileId=" + fileId + ", type=" + type
+				+ ", partnerNumber=" + partnerNumber + "]";
+	}
+	
 	
 }
