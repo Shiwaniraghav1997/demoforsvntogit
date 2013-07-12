@@ -73,6 +73,8 @@ public class User extends DomainObject {
 	
 	private List<String> roles = new ArrayList<String>();
 	
+	private List<String> partners = new ArrayList<String>();
+	
 	private Locale locale;
 	
 	// Default: no write permissions
@@ -218,6 +220,14 @@ public class User extends DomainObject {
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
+	
+	public List<String> getPartners() {
+		return partners;
+	}
+	
+	public void setPartners(List<String> partners) {
+		this.partners = partners;
+	}
 
 	public String getPassword() {
 		return password;
@@ -306,6 +316,8 @@ public class User extends DomainObject {
 	public String[] getALL_ROLES() {
 		return User.ALL_ROLES;
 	}
+	
+
 
 	@Override
 	public String toString() {

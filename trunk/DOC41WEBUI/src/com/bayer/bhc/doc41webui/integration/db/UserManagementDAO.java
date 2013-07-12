@@ -6,13 +6,12 @@ import java.util.Locale;
 
 import org.springframework.stereotype.Component;
 
-import com.bayer.bhc.doc41webui.common.exception.Doc41AccessDeniedException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
-import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
+import com.bayer.bhc.doc41webui.integration.db.dc.UserPartnerDC;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.dbx.DeleteException;
@@ -30,17 +29,28 @@ import com.bayer.ecim.foundation.web.usermanagementN.UM_CONSTS_N;
  *
  */
 @Component
-public class UserManagementDAO {
-	/**
-     * Observers do not have permissions to store and delete functions.
-     * 
-     * @throws Doc41AccessDeniedException
-     */
-	private void checkUser() throws Doc41TechnicalException {
-        if (UserInSession.isReadOnly()) {
-            throw new Doc41AccessDeniedException(this.getClass());
-        }
-    }
+public class UserManagementDAO extends AbstractDAOImpl{
+	
+	private static final String TEMPLATE_COMPONENT_NAME	= "userManagement";	
+	
+	private static final String GET_PARTNERS_BY_USER		= "getPartnersByUser";
+	private static final String GET_USER_PARTNER			= "getUserPartner";
+	
+	@Override
+	public String getTemplateComponentName() {		
+		return TEMPLATE_COMPONENT_NAME;
+	}
+	
+//	/**
+//     * Observers do not have permissions to store and delete functions.
+//     * 
+//     * @throws Doc41AccessDeniedException
+//     */
+//	private void checkUser() throws Doc41TechnicalException {
+//        if (UserInSession.isReadOnly()) {
+//            throw new Doc41AccessDeniedException(this.getClass());
+//        }
+//    }
     
 	public UMProfileNDC getProfileByName(String pName, Locale pLocale) throws Doc41TechnicalException {
 		try {
@@ -202,5 +212,60 @@ public class UserManagementDAO {
         if ( pParamValue == null )
             throw new Doc41TechnicalException(this.getClass(), getClass().getSimpleName() + "." + pCallingMethod + ": Obligatory parameter '" + pParamName + "' not available, value is null!", null );
     }
+
+	public List<UserPartnerDC> getPartnersByUser(Long objectID) throws Doc41TechnicalException {
+		try {
+			String[] parameterNames			= { "USER_ID" };
+	        Object[] parameterValues		= { objectID };
+	        String templateName				= GET_PARTNERS_BY_USER;
+	        Class<UserPartnerDC> dcClass	= UserPartnerDC.class;        
+	        
+	        List<UserPartnerDC> dcs = find(parameterNames, parameterValues, templateName, dcClass);	                		
+			
+			return dcs;
+		} catch (Exception e) {
+			throw new Doc41TechnicalException(this.getClass(), "getPartnersByUser", e);
+		}
+	}
+
+	public UserPartnerDC createUserPartner(Locale locale) throws Doc41TechnicalException {
+		checkUser();
+		UserPartnerDC newPartner = new UserPartnerDC();
+		return newPartner;
+	}
+
+	public void saveUserPartner(UserPartnerDC newPartner) throws Doc41TechnicalException {
+		checkUser();
+        try {
+        	newPartner.setClientId(1234L);
+            OTUserManagementN.get().storeDC(newPartner);
+        } catch (StoreException e) {
+            throw new Doc41TechnicalException(this.getClass(), "saveUserPartner", e);
+        }
+	}
+
+	public void deleteUserPartner(UserPartnerDC partner) throws Doc41TechnicalException {
+		checkUser();
+        try {
+            OTUserManagementN.get().deleteDC(partner);
+        } catch (DeleteException e) {
+            throw new Doc41TechnicalException(this.getClass(), "deleteUserPartner", e);
+        }
+	}
+
+	public UserPartnerDC getUserPartner(Long userId, String partnerNumber) throws Doc41TechnicalException {
+		try {
+			String[] parameterNames			= { "USER_ID", "PARTNER_NUMBER" };
+	        Object[] parameterValues		= { userId, partnerNumber };
+	        String templateName				= GET_USER_PARTNER;
+	        Class<UserPartnerDC> dcClass	= UserPartnerDC.class;        
+	        
+	        UserPartnerDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
+			
+			return dc;
+		} catch (Exception e) {
+			throw new Doc41TechnicalException(this.getClass(), "getUserPartner", e);
+		}
+	}
 
 }

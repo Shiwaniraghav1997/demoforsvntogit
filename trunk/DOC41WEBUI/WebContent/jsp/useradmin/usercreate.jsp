@@ -157,6 +157,7 @@ title="User Management">
 			</div>
 		
 			<%@include file="roles.jspf"%>
+			<%@include file="partners.jspf"%>
 		</form:form>
 	</div>
 </doc41:layout>

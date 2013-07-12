@@ -137,6 +137,7 @@ title="User Import">
 			</div>
 			<c:if test="${!empty userEditForm.surname}">
 				<%@include file="roles.jspf"%>
+				<%@include file="partners.jspf"%>
 			</c:if>
 		</form:form>
 	</div>

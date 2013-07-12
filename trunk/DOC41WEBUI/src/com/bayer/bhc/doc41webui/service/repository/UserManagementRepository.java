@@ -2,9 +2,12 @@ package com.bayer.bhc.doc41webui.service.repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 
@@ -27,6 +30,7 @@ import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.db.LdapDAO;
 import com.bayer.bhc.doc41webui.integration.db.UserManagementDAO;
+import com.bayer.bhc.doc41webui.integration.db.dc.UserPartnerDC;
 import com.bayer.bhc.doc41webui.service.mapping.UserMapper;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.SendMail;
@@ -190,6 +194,12 @@ public class UserManagementRepository extends AbstractRepository {
                 			addUserToProfileInDB(userDC, roleName, pUser.getLocale());
                 		}
                 	}
+                	List<String> partners = pUser.getPartners();
+                	if (partners != null) {
+                		for (String partner : partners) {                			
+                			addPartnerToUserInDB(userDC, partner, pUser.getLocale());
+                		}
+                	}
                 }
             } else {
                 // if user already exists, update the activity status:
@@ -243,7 +253,7 @@ public class UserManagementRepository extends AbstractRepository {
 	}
 	
 	
-	public void updateUser(User pUser, boolean updateRoles,boolean updateLdap) throws Doc41RepositoryException, Doc41BusinessException {
+	public void updateUser(User pUser, boolean updateRoles,boolean updateLdap,boolean updatePartner) throws Doc41RepositoryException, Doc41BusinessException {
         checkUser(Doc41ErrorMessageKeys.USR_MGT_UPDATE_USER_FAILED);
         
         Doc41Log.get().debug(this.getClass(), "System", "Entering UserManagementRepositoryImpl.updateUser(): " + pUser);
@@ -324,13 +334,34 @@ public class UserManagementRepository extends AbstractRepository {
 	    		pUser.setRoles(roles);		
 	        }
         	
+        	if (updatePartner) {
+	            List<String> partnersInDB = getPartnersFromDB(userDC.getObjectID());
+	            Set<String> partnersToDelete = new HashSet<String>(partnersInDB);
+	            Set<String> partnersFromInput = new LinkedHashSet<String>(pUser.getPartners());
+	            
+	            for (String partner : partnersFromInput) {
+					if(partnersToDelete.contains(partner)){
+						partnersToDelete.remove(partner);
+					} else {
+						addPartnerToUserInDB(userDC, partner, pUser.getLocale());
+					}
+				}
+	            
+	            for (String partnerToDelete : partnersToDelete) {
+					removePartnerFromUserInDB(userDC, partnerToDelete, pUser.getLocale());
+				}
+	        } else {
+	        	// refresh partners
+	        	List<String> partnersInDB = getPartnersFromDB(userDC.getObjectID());
+	    		pUser.setRoles(partnersInDB);		
+	        }
+        	
         } catch (Doc41TechnicalException e) {
             Doc41Log.get().error(this.getClass(), null, e);
             throw new Doc41RepositoryException(Doc41ErrorMessageKeys.USR_MGT_UPDATE_USER_FAILED, e);
         }
     }
 		
-
 	/**
      * create Map that contains the user's profileNames as key
      * and add the ObjectIds of the UserProfileDC as value
@@ -372,6 +403,44 @@ public class UserManagementRepository extends AbstractRepository {
             throw new Doc41RepositoryException("UserManagementRepositoryImpl.addUserToProfileInDB", e);
         }
     }
+    
+	private List<String> getPartnersFromDB(Long objectID) throws Doc41RepositoryException {
+		try {
+			List<UserPartnerDC> partners = userManagementDAO.getPartnersByUser(objectID);
+			List<String> partnerNumbers = new ArrayList<String>();
+			for (UserPartnerDC userPartnerDC : partners) {
+				partnerNumbers.add(userPartnerDC.getPartnerNumber());
+			}
+			return partnerNumbers;
+		} catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during getPartnersFromDB.", e);
+		}
+	}
+	
+	private void addPartnerToUserInDB(UMUserNDC userDC, String partner,
+			Locale locale) throws Doc41RepositoryException {
+		try{
+			User usr = UserInSession.get();
+            UserPartnerDC newPartner = userManagementDAO.createUserPartner(locale);
+			newPartner.setUserId(userDC.getObjectID());
+			newPartner.setPartnerNumber(partner);
+			newPartner.setChangedBy(usr.getCwid());
+			newPartner.setCreatedBy(usr.getCwid());
+			userManagementDAO.saveUserPartner(newPartner);
+		}catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during addPartnerToUserInDB.", e);
+		}
+	}
+	
+	private void removePartnerFromUserInDB(UMUserNDC userDC,
+			String partnerToDelete, Locale locale) throws Doc41RepositoryException {
+		try{
+			UserPartnerDC partner = userManagementDAO.getUserPartner(userDC.getObjectID(),partnerToDelete);
+			userManagementDAO.deleteUserPartner(partner);
+		} catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during removePartnerFromUserInDB.", e);
+		}
+	}
 			
 	protected User copyDcToDomainUser(UMUserNDC pUserDC) throws Doc41RepositoryException {
 		try{
@@ -388,6 +457,9 @@ public class UserManagementRepository extends AbstractRepository {
 	            roles.add(profile.getProfilename());
 	        }
 			domainUser.setRoles(roles);
+			
+			List<String> partnersInDB = getPartnersFromDB(pUserDC.getObjectID());
+			domainUser.setPartners(partnersInDB);
 			
 			pUserDC.loadResolvedUserPermissions(LocaleInSession.get());
 			@SuppressWarnings("unchecked")

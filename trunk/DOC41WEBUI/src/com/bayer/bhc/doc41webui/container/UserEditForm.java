@@ -28,6 +28,8 @@ public class UserEditForm implements Serializable{
 	private Boolean active;
 	private String type;
 	private List<String> roles;
+	private List<String> partners;
+	
 
 	public void validate(HttpServletRequest request, Errors errors) {
 		if(!StringTool.equals(getPassword(), getPasswordRepeated())){
@@ -55,6 +57,7 @@ public class UserEditForm implements Serializable{
 		setActive			(user.getActive());   
 		setType				(user.getType());     
 		setRoles			(user.getRoles());  
+		setPartners			(user.getPartners());
 		setObjectID(user.getDcId());
 
 	}
@@ -74,6 +77,7 @@ public class UserEditForm implements Serializable{
 		user.setActive		(getActive		());
 		user.setType		(getType		());
 		user.setRoles		(getRoles		());
+		user.setPartners	(getPartners());
 		
 		return user;
 	}
@@ -189,16 +193,23 @@ public class UserEditForm implements Serializable{
 		this.objectID = objectID;
 	}
 	
+	public List<String> getPartners() {
+		return partners;
+	}
+	public void setPartners(List<String> partners) {
+		this.partners = partners;
+	}
+	
 	@Override
 	public String toString() {
-		return "UserEditForm [ cwid=" + cwid + ", surname="
-				+ surname + ", firstname=" + firstname + ", password="
-				+ password + ", passwordRepeated=" + passwordRepeated
-				+ ", company=" + company + ", email=" + email + ", phone="
-				+ phone + ", timeZone=" + timeZone + ", languageCountry="
-				+ languageCountry 
-				+ ", active=" + active
-				+ ", type=" + type + ", roles=" + roles + "]";
+		return "UserEditForm [objectID=" + objectID + ", cwid=" + cwid
+				+ ", surname=" + surname + ", firstname=" + firstname
+				+ ", password=" + password + ", passwordRepeated="
+				+ passwordRepeated + ", company=" + company + ", email="
+				+ email + ", phone=" + phone + ", timeZone=" + timeZone
+				+ ", languageCountry=" + languageCountry + ", active=" + active
+				+ ", type=" + type + ", roles=" + roles + ", partners="
+				+ partners + "]";
 	}
 	
 	
