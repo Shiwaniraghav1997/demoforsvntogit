@@ -31,7 +31,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier;
+import com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier;
+
 
 public class PoiServiceImpl implements PoiService {
 	
@@ -52,7 +53,7 @@ private Map<String,PoiMapper> mappers;
 	}
 
 	@Override
-	public <T extends Doc41DataCarrier> List<T> importExcel(String importName,
+	public <T extends UserChangeableDataCarrier> List<T> importExcel(String importName,
 			InputStream inStream, List<T> existingDCs)
 			throws Doc41ServiceException {
 		try {
@@ -60,7 +61,7 @@ private Map<String,PoiMapper> mappers;
 			Workbook wb = new XSSFWorkbook(inStream);
 			List<T> newDCs = new ArrayList<T>();
 			Sheet sheet = wb.getSheetAt(0);
-			Class<? extends Doc41DataCarrier> dcClass = mapper.getDCClass();
+			Class<? extends UserChangeableDataCarrier> dcClass = mapper.getDCClass();
 			List<Method> setterMethods = getSetterMethods(mapper);
 			int rowsToSkip=1;
 			for (Row row : sheet) {
@@ -133,7 +134,7 @@ private Map<String,PoiMapper> mappers;
 		}
 	}
 	
-	private <T extends Doc41DataCarrier> void setValueFromCell(Cell cell, Method setterMethod, T newInstance) throws Doc41ServiceException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	private <T extends UserChangeableDataCarrier> void setValueFromCell(Cell cell, Method setterMethod, T newInstance) throws Doc41ServiceException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Class<?> type = setterMethod.getParameterTypes()[0];
 		
 		Object value;
@@ -182,7 +183,7 @@ private Map<String,PoiMapper> mappers;
 		
 	}
 	
-	private <T extends Doc41DataCarrier> void copyValues(T fromDC, T toDC,String[] columnNames) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException{
+	private <T extends UserChangeableDataCarrier> void copyValues(T fromDC, T toDC,String[] columnNames) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException{
 		for (int i = 0; i < columnNames.length; i++) {
 			String colname = columnNames[i];
 			Method getMethod = fromDC.getClass().getMethod("get"+Character.toUpperCase(colname.charAt(0))+colname.substring(1));
@@ -193,7 +194,7 @@ private Map<String,PoiMapper> mappers;
 		}
 	}
 	
-	private <T extends Doc41DataCarrier> void setTechnicalValues(T dc,boolean isUpdate) {
+	private <T extends UserChangeableDataCarrier> void setTechnicalValues(T dc,boolean isUpdate) {
 		String cwid = UserInSession.getCwid();
 		Date now = new Date();
 		if(!isUpdate){
@@ -210,7 +211,7 @@ private Map<String,PoiMapper> mappers;
 
 	@Override
 	public void exportExcel(String exportName, OutputStream outStream,
-			List<? extends Doc41DataCarrier> dcs) throws Doc41ServiceException {
+			List<? extends UserChangeableDataCarrier> dcs) throws Doc41ServiceException {
 		try{
 			PoiMapper mapper = getMapper(exportName);
 			Workbook wb = new XSSFWorkbook();
@@ -255,7 +256,7 @@ private Map<String,PoiMapper> mappers;
 			
 
 			for (int r=0;r<dcs.size();r++) {
-				Doc41DataCarrier dc = dcs.get(r);
+				UserChangeableDataCarrier dc = dcs.get(r);
 				Row row = sheet.createRow(r+1);
 				for(int c=0;c<getterMethods.size();c++){
 					Method method = getterMethods.get(c);
@@ -345,7 +346,7 @@ private Map<String,PoiMapper> mappers;
 	
 	private List<Method> getGetterMethods(PoiMapper mapper) throws SecurityException, NoSuchMethodException {
 		String[] columnOrder = mapper.getColumnOrder();
-		Class<? extends Doc41DataCarrier> dcClass = mapper.getDCClass();
+		Class<? extends UserChangeableDataCarrier> dcClass = mapper.getDCClass();
 		List<Method> getterMethods = new ArrayList<Method>();
 		for (String colName : columnOrder) {
 			Method getMethod=dcClass.getMethod(createGetterName(colName));
@@ -356,7 +357,7 @@ private Map<String,PoiMapper> mappers;
 	
 	private List<Method> getSetterMethods(PoiMapper mapper) throws SecurityException, NoSuchMethodException {
 		String[] columnOrder = mapper.getColumnOrder();
-		Class<? extends Doc41DataCarrier> dcClass = mapper.getDCClass();
+		Class<? extends UserChangeableDataCarrier> dcClass = mapper.getDCClass();
 		List<Method> setterMethods = new ArrayList<Method>();
 		for (String colName : columnOrder) {
 			Method getMethod=dcClass.getMethod(createGetterName(colName));

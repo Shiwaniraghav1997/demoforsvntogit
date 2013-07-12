@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
-import com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier;
+import com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier;
+
 
 /**
  * @author MBGHY
@@ -20,13 +21,13 @@ import com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier;
 public class PoiReflectionMapper implements PoiMapper {
 	
 	private static final long OBJECTSTATE_DELETED = 0L;
-	private Class<? extends Doc41DataCarrier> dcClass;
+	private Class<? extends UserChangeableDataCarrier> dcClass;
 	private Set<String> excludeColumns;
 	private Set<String> defaultExcludeColumns;
 	private List<String> keyColumns;
 	private String fixMethodName;
 	
-	public PoiReflectionMapper(Class<? extends Doc41DataCarrier> dcClass,List<String> keyColumns) {
+	public PoiReflectionMapper(Class<? extends UserChangeableDataCarrier> dcClass,List<String> keyColumns) {
 		super();
 		this.dcClass = dcClass;
 		this.keyColumns = keyColumns;
@@ -83,7 +84,7 @@ public class PoiReflectionMapper implements PoiMapper {
 	 * @see com.bayer.bhc.doc41webui.service.poi.PoiMapper#getDCClass()
 	 */
 	@Override
-	public Class<? extends Doc41DataCarrier> getDCClass() {
+	public Class<? extends UserChangeableDataCarrier> getDCClass() {
 		return dcClass;
 	}
 
@@ -95,7 +96,7 @@ public class PoiReflectionMapper implements PoiMapper {
 		return getColumns();
 	}
 
-	private Doc41DataCarrier getDCInstance(){
+	private UserChangeableDataCarrier getDCInstance(){
 		try {
 			return dcClass.newInstance();
 		} catch (Exception e) {
@@ -103,7 +104,7 @@ public class PoiReflectionMapper implements PoiMapper {
 		} 
 	}
 	
-	public <T extends Doc41DataCarrier> boolean markAsDeleted(T dc) throws Doc41ServiceException {
+	public <T extends UserChangeableDataCarrier> boolean markAsDeleted(T dc) throws Doc41ServiceException {
 		try {
 			//check old status
 			Method getMethod = dcClass.getMethod("getObjectstateId");
@@ -125,7 +126,7 @@ public class PoiReflectionMapper implements PoiMapper {
 		} 
 	}
 	
-	public <T extends Doc41DataCarrier> String getObjectKey(T dc)  throws Doc41ServiceException {
+	public <T extends UserChangeableDataCarrier> String getObjectKey(T dc)  throws Doc41ServiceException {
 		try {
 			StringBuilder sb = new StringBuilder();
 			for (String column : keyColumns) {

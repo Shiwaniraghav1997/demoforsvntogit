@@ -4,7 +4,7 @@
 Package=com.bayer.bhc.doc41webui.integration.db.dc
 DCClassName=InterfaceDetailDC
 Tablename=[DOC41WEB_MGR].IM_INTERFACE_DETAIL
-Superclass=com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier
+Superclass=com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
 ImplementedInterfaces=
 Imports=
 ClassComment=<my description of the dc>

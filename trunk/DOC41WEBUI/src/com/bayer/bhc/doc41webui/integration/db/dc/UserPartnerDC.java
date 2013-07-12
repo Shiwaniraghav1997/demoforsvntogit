@@ -20,7 +20,7 @@ import com.bayer.ecim.foundation.dbx.*;
  * <my description of the dc>
  */
 public class UserPartnerDC
-	extends com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier
+	extends com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
 {
 
 	/** Maps DB-Column: user_Id */
@@ -43,12 +43,13 @@ public class UserPartnerDC
 		setDBTablename( UserPartnerDC.class, "[DOC41WEB_MGR].D41_USER_PARTNER" );
 	}
 
-	private static final long serialVersionUID = 20130712012040320L;
+	private static final long serialVersionUID = 20130712052915796L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_USERPARTNERDC = java.math.BigDecimal.class;
 
-	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier.localGetFieldMetaMap() );
+	@SuppressWarnings("unchecked")
+	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
 	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_USERID, FIELD_PARTNERNUMBER, FIELD_CLIENTID};
-	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
+	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
 
 	static {
 		try {
@@ -124,7 +125,7 @@ public class UserPartnerDC
 //		return (((Object)this) instanceof com.bayer.ecim.foundation.dbx.DataCarrier) ? (com.bayer.ecim.foundation.dbx.DataCarrier)(Object)this : null;
 //	}
 	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
-	public static final int CHECK_USERPARTNERDC = com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier.CHECK_DOC41DATACARRIER;
+	public static final int CHECK_USERPARTNERDC = com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.CHECK_USERCHANGEABLEDATACARRIER;
 
 	/**
 	 * Copy the parameter DC pOther into this.
@@ -172,7 +173,7 @@ public class UserPartnerDC
 		return new BasicDCGeneratorMeta(
 			"com.bayer.bhc.doc41webui.integration.db.dc",
 			"UserPartnerDC",
-			"com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier",
+			"com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier",
 			"Date: 2012/10/05 12:22:39 ",
 			"Revision: 1.82 ",
 			"Author: evfpu ",

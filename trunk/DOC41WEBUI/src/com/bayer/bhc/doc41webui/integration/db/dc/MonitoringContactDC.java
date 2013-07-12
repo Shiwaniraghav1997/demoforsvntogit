@@ -20,7 +20,7 @@ import com.bayer.ecim.foundation.dbx.*;
  * <my description of the dc>
  */
 public class MonitoringContactDC
-	extends com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier
+	extends com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
 {
 
 	/** Maps DB-Column: interface_Name */
@@ -63,12 +63,13 @@ public class MonitoringContactDC
 		setDBTablename( MonitoringContactDC.class, "[DOC41WEB_MGR].IM_MONITORING_CONTACT" );
 	}
 
-	private static final long serialVersionUID = 20130410014923029L;
+	private static final long serialVersionUID = 20130712052904081L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_MONITORINGCONTACTDC = java.math.BigDecimal.class;
 
-	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier.localGetFieldMetaMap() );
+	@SuppressWarnings("unchecked")
+	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
 	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_INTERFACENAME, FIELD_CONTACTTYPE, FIELD_CWID, FIELD_FIRSTNAME, FIELD_LASTNAME, FIELD_EMAIL, FIELD_PHONE1, FIELD_PHONE2};
-	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
+	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
 
 	static {
 		try {
@@ -149,7 +150,7 @@ public class MonitoringContactDC
 //		return (((Object)this) instanceof com.bayer.ecim.foundation.dbx.DataCarrier) ? (com.bayer.ecim.foundation.dbx.DataCarrier)(Object)this : null;
 //	}
 	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
-	public static final int CHECK_MONITORINGCONTACTDC = com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier.CHECK_DOC41DATACARRIER;
+	public static final int CHECK_MONITORINGCONTACTDC = com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.CHECK_USERCHANGEABLEDATACARRIER;
 
 	/**
 	 * Copy the parameter DC pOther into this.
@@ -197,7 +198,7 @@ public class MonitoringContactDC
 		return new BasicDCGeneratorMeta(
 			"com.bayer.bhc.doc41webui.integration.db.dc",
 			"MonitoringContactDC",
-			"com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier",
+			"com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier",
 			"Date: 2012/10/05 12:22:39 ",
 			"Revision: 1.82 ",
 			"Author: evfpu ",

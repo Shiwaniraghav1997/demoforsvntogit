@@ -10,7 +10,6 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryException;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.DomainObject;
 import com.bayer.bhc.doc41webui.domain.VersionizedDomainObject;
-import com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier;
 import com.bayer.ecim.foundation.dbx.ChangeableDataCarrier;
 import com.bayer.ecim.foundation.dbx.StorableDataCarrier;
 
@@ -112,17 +111,17 @@ public abstract class AbstractMapper {
         return pDomainObject;
     }
     
-	/* Doc41DataCarrier */
-	protected <T extends Doc41DataCarrier> T mapToDataCarrier(final DomainObject pDomainObject, T pDataCarrier) {
-		if(null == pDomainObject || null == pDataCarrier) {
-			return pDataCarrier;
-		}
-		
-		
-		mapToDataCarrier(pDomainObject, (ChangeableDataCarrier) pDataCarrier);
-		
-		return pDataCarrier;
-	}
+//	/* Doc41DataCarrier */
+//	protected <T extends UserChangeableDataCarrier> T mapToDataCarrier(final DomainObject pDomainObject, T pDataCarrier) {
+//		if(null == pDomainObject || null == pDataCarrier) {
+//			return pDataCarrier;
+//		}
+//		
+//		
+//		mapToDataCarrier(pDomainObject, (ChangeableDataCarrier) pDataCarrier);
+//		
+//		return pDataCarrier;
+//	}
 	
 //	protected <T extends Doc41DataCarrier> T mapToDataCarrier(final VersionizedDomainObject pDomainObject, T pDataCarrier) throws Doc41RepositoryException {
 //		if(null == pDomainObject || null == pDataCarrier) {
@@ -135,14 +134,14 @@ public abstract class AbstractMapper {
 //		return pDataCarrier;
 //	}
 	
-	protected <T extends DomainObject> T mapToDomainObject(final Doc41DataCarrier pDataCarrier, T pDomainObject) {
-		if(null == pDomainObject || null == pDataCarrier) {
-			return pDomainObject;
-		}
-		mapToDomainObject((ChangeableDataCarrier) pDataCarrier,  pDomainObject);
-		
-		return pDomainObject;
-	}
+//	protected <T extends DomainObject> T mapToDomainObject(final UserChangeableDataCarrier pDataCarrier, T pDomainObject) {
+//		if(null == pDomainObject || null == pDataCarrier) {
+//			return pDomainObject;
+//		}
+//		mapToDomainObject((ChangeableDataCarrier) pDataCarrier,  pDomainObject);
+//		
+//		return pDomainObject;
+//	}
 	
 //	protected <T extends VersionizedDomainObject> T mapToDomainObject(final Doc41DataCarrier pDataCarrier, T pDomainObject) throws Doc41RepositoryException {
 //		if(null == pDomainObject || null == pDataCarrier) {

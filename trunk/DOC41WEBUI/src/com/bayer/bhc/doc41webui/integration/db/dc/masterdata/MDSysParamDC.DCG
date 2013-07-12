@@ -4,7 +4,7 @@
 Package=com.bayer.bhc.doc41webui.integration.db.dc.masterdata
 DCClassName=MDSysParamDC
 Tablename=[DOC41WEB_MGR].MD_SYSPARAM
-Superclass=com.bayer.bhc.doc41webui.integration.db.dc.Doc41DataCarrier
+Superclass=com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
 ImplementedInterfaces=
 Imports=
 ClassComment=DC for MD_SYSPARAM in DOC41WEB_MGR

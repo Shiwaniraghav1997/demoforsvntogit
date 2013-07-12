@@ -68,6 +68,6 @@ public class LogoutController extends AbstractDoc41Controller {
     			return "redirect:"+url;
     		}
     	}
-    	return "";
+    	return "/login/login";
 	}
 }
