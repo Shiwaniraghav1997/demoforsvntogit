@@ -1,3 +1,4 @@
+<%@page import="com.bayer.bhc.doc41webui.common.Doc41Constants"%>
 <%@taglib prefix="doc41" uri="doc41-tags" %>
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
@@ -7,8 +8,21 @@ function addPartner(partner){
 	if(!partner){
 		return false;
 	}
+	partner=$.trim(partner);
+	if(!partner){
+		return false;
+	}
+	if(partner.length > <%=Doc41Constants.FIELD_SIZE_PARTNER_NUMBER %>){
+		alert('<doc41:translate label="PartnerNumberTooLong"/>');
+		return false;
+	}
+	if(/\D/g.test(partner)){
+		alert('<doc41:translate label="OnlyNumbersInPartnerNumber"/>');
+		return false;
+	}
+	var paddedPartner = strPad(partner, <%=Doc41Constants.FIELD_SIZE_PARTNER_NUMBER %>);
 	var id = Math.floor( Math.random()*999999999 );
-	$("#partnerlist").append("<tr id='"+id+"'><td>"+partner+"</td><td><input name='partners' type='hidden' value='"+partner+"'/><span class='portlet-form-button' style='cursor: pointer;' onclick='javascript:removePartner(&quot;"+id+"&quot;)'><doc41:translate label='Remove'/></span></td></tr>");
+	$("#partnerlist").append("<tr id='"+id+"'><td>"+paddedPartner+"</td><td><input name='partners' type='hidden' value='"+paddedPartner+"'/><span class='portlet-form-button' style='cursor: pointer;' onclick='javascript:removePartner(&quot;"+id+"&quot;)'><doc41:translate label='Remove'/></span></td></tr>");
 }
 function removePartner(id){
 	$("#"+id).remove();
