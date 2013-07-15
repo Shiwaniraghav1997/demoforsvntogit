@@ -46,43 +46,47 @@ public class UploadController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/documents/upload",method = RequestMethod.POST)
 	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result) { //ggf. kein modelattribute wegen sessionattribute
+		String error=postUpdateInternal(uploadForm);
+		if(StringTool.isTrimmedEmptyOrNull(error)){
+			return "redirect:/documents/documentupload"+"?type="+uploadForm.getType();
+		} else {
+			result.reject(error);
+			return "/documents/documentupload";
+		}
+	}
+
+	private String postUpdateInternal(UploadForm uploadForm) {
 		try{
 			MultipartFile file = uploadForm.getFile();
 			if((file==null||file.getSize()==0) && StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-				result.reject("uploadFileMissing");
-			} else if(StringTool.isTrimmedEmptyOrNull(uploadForm.getPartnerNumber())){
-				result.reject("NoPartnerNumberSelected");
-			} else if((file!=null&&file.getSize()>0) && !StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-				result.reject("FileAndFileId");
-			} else if(!documentUC.checkDeliveryForPartner(uploadForm.getPartnerNumber(), uploadForm.getDeliveryNumber(), uploadForm.getShippingUnitNumber())){
-				result.reject("DeliveryNotAllowedForCarrier");
-			} else {
-					if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-						File localFile = documentUC.checkForVirus(file);
-						
-						if(localFile!=null){
-							String fileId = documentUC.uploadDocument(uploadForm.getType(),localFile,file.getContentType());
-							uploadForm.setFileId(fileId);
-						} else {
-							result.reject("VirusDetected");
-						}
-					}
-					if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-						result.reject("UploadFailed");
-					} else {
-						//set attributes in sap
-						documentUC.setAttributesForNewDocument(uploadForm.getType(),uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getDeliveryNumber());
-					}
+				return "uploadFileMissing";
 			}
-		}catch (Doc41BusinessException e) {
-			result.reject(e.getMessage());
+			if(StringTool.isTrimmedEmptyOrNull(uploadForm.getPartnerNumber())){
+				return "NoPartnerNumberSelected";
+			}
+			if((file!=null&&file.getSize()>0) && !StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
+				return "FileAndFileId";
+			}
+			if(!documentUC.checkDeliveryForPartner(uploadForm.getPartnerNumber(), uploadForm.getDeliveryNumber(), uploadForm.getShippingUnitNumber())){
+				return "DeliveryNotAllowedForCarrier";
+			} 
+			if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
+				File localFile = documentUC.checkForVirus(file);
+				if(localFile==null){
+					return "VirusDetected";
+				}
+				String fileId = documentUC.uploadDocument(uploadForm.getType(),localFile,file.getContentType());
+				uploadForm.setFileId(fileId);
+			}
+			if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
+				return "UploadFailed";
+			} 
+			//set attributes in sap
+			documentUC.setAttributesForNewDocument(uploadForm.getType(),uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getDeliveryNumber());
+		} catch (Doc41BusinessException e) {
+			return e.getMessage();
 		}
-		
-		if (result.hasErrors()) {
-            return "/documents/documentupload";
-        } else {
-        	return "redirect:/documents/documentupload"+"?type="+uploadForm.getType();
-        }
+		return null;
 	}
 	
 }
