@@ -194,7 +194,6 @@ public class DocumentUC {
 				suffix = originalFilename.substring(lastIndexOf);
 			}
 			localFile = File.createTempFile(TEMP_FILE_PREFIX, suffix);
-			System.out.println("+++++++++++++0 "+localFile.getAbsolutePath());
 			Doc41Log.get().debug(this.getClass(),UserInSession.getCwid(),"write uploaded file to temp file: "+localFile.getAbsolutePath());
 			out = new FileOutputStream(localFile);
 	        filecontent = file.getInputStream();
@@ -205,7 +204,6 @@ public class DocumentUC {
 	        while ((read = filecontent.read(bytes)) != -1) {
 	            out.write(bytes, 0, read);
 	        }
-	        System.out.println("+++++++++++++1 "+localFile.exists());
 		} catch (IOException e) {
 			throw new Doc41BusinessException("checkForVirus",e);
 		} finally {
@@ -220,12 +218,11 @@ public class DocumentUC {
 				throw new Doc41BusinessException("checkForVirus",e);
 			}
 		}
+		//infected file is killed by virusscanner after stream is closed
 	    if(localFile!=null && localFile.exists()){
-	    	System.out.println("+++++++++++++1a "+localFile.exists());
 			Doc41Log.get().debug(this.getClass(),UserInSession.getCwid(),"virusscan passed");
 			return localFile;
 		} else {
-			System.out.println("+++++++++++++1b "+localFile.exists());
 			Doc41Log.get().error(this.getClass(),UserInSession.getCwid(),"SECURITY WARNING: virusscan failed!");
 			return null;
 		}
