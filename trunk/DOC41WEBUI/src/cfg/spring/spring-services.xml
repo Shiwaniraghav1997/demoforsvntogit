@@ -73,9 +73,14 @@
 		<!-- <beans:constructor-arg ref="httpClientParams"/> -->
 	</beans:bean>
 
-	<beans:bean id="httpClientFactory"
+	<!-- <beans:bean id="httpClientFactory"
 		class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory">
 		<beans:constructor-arg ref="httpClient" />
+	</beans:bean> -->
+	
+	<beans:bean id="httpClientFactory"
+		class="org.springframework.http.client.SimpleClientHttpRequestFactory">
+		<beans:property name="bufferRequestBody" value="false"/>
 	</beans:bean>
 
 	<beans:bean id="restTemplate" name="restTemplate"
