@@ -67,17 +67,17 @@ function setDeliveryNumber(delNumber,shipunit){
 				            <td>
 				            <c:choose>
 					            <c:when test="${fn:length(uploadForm.attributePredefValues[attributeValue.key])>0}">
-					            	<select id="${attributeValues.key}" class="portlet-form-input-field"  name="attributeValues['${attributeValues.key}']">
+					            	<select id="${attributeValue.key}" class="portlet-form-input-field"  name="attributeValues['${attributeValue.key}']">
 										<c:forEach items="${uploadForm.attributePredefValues[attributeValue.key]}" var="predefValue" varStatus="pdstatus">
 											<c:choose>
-												<c:when test="${attributeValues.value ==  predefValue}"><option selected="selected">${predefValue}</option></c:when>
+												<c:when test="${attributeValue.value ==  predefValue}"><option selected="selected">${predefValue}</option></c:when>
 												<c:otherwise><option>${predefValue}</option></c:otherwise>
 											</c:choose>		            	
 					            		</c:forEach>
 					            	</select>
 					            </c:when>
 					            <c:otherwise>
-						            <input id="${attributeValues.key}" class="portlet-form-input-field"  maxlength="70" name="attributeValues['${attributeValues.key}']" value="${attributeValues.value}"/>
+						            <input id="${attributeValue.key}" class="portlet-form-input-field"  maxlength="70" name="attributeValues['${attributeValue.key}']" value="${attributeValue.value}"/>
 					            </c:otherwise>
 				            </c:choose>
 				            </td>
