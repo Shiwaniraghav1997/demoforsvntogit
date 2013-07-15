@@ -193,7 +193,6 @@ public class DocumentUC {
 				suffix = originalFilename.substring(lastIndexOf);
 			}
 			File localFile = File.createTempFile(TEMP_FILE_PREFIX, suffix);
-			System.out.println("++++++++++++++  "+localFile.getAbsolutePath());
 			Doc41Log.get().debug(this.getClass(),UserInSession.getCwid(),"write uploaded file to temp file: "+localFile.getAbsolutePath());
 			out = new FileOutputStream(localFile);
 	        filecontent = file.getInputStream();
