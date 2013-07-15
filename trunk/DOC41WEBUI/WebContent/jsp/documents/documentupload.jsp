@@ -3,6 +3,7 @@ jspName="documentupload" 	component="documents"
 activeTopNav="documents" 	activeNav="documentType1"
 title="Upload Document">
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn"		uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
@@ -58,12 +59,28 @@ function setDeliveryNumber(delNumber,shipunit){
 						<td><p><a href="opendeliveries?type=${uploadForm.type}" id="openPopupLink" target="open_delivery_dialog">Open Deliveries</a></p></td>
 					</tr>
 					
-					 <c:forEach items="${uploadForm.attributeValues}" var="attributeValues" varStatus="status">
+					 <c:forEach items="${uploadForm.attributeValues}" var="attributeValue" varStatus="status">
 				        <tr>
-				            <td><c:out value="${uploadForm.attributeLabels[attributeValues.key]}"/>
-				            <input type="hidden" name="attributeLabels['${attributeValues.key}']" value="${uploadForm.attributeLabels[attributeValues.key]}"/>
+				            <td><c:out value="${uploadForm.attributeLabels[attributeValue.key]}"/>
+				            <input type="hidden" name="attributeLabels['${attributeValue.key}']" value="${uploadForm.attributeLabels[attributeValue.key]}"/>
 				            </td>
-				            <td><input id="${attributeValues.key}" class="portlet-form-input-field"  maxlength="70" name="attributeValues['${attributeValues.key}']" value="${attributeValues.value}"/></td>
+				            <td>
+				            <c:choose>
+					            <c:when test="${fn:length(uploadForm.attributePredefValues[attributeValue.key])>0}">
+					            	<select id="${attributeValues.key}" class="portlet-form-input-field"  name="attributeValues['${attributeValues.key}']">
+										<c:forEach items="${uploadForm.attributePredefValues[attributeValue.key]}" var="predefValue" varStatus="pdstatus">
+											<c:choose>
+												<c:when test="${attributeValues.value ==  predefValue}"><option selected="selected">${predefValue}</option></c:when>
+												<c:otherwise><option>${predefValue}</option></c:otherwise>
+											</c:choose>		            	
+					            		</c:forEach>
+					            	</select>
+					            </c:when>
+					            <c:otherwise>
+						            <input id="${attributeValues.key}" class="portlet-form-input-field"  maxlength="70" name="attributeValues['${attributeValues.key}']" value="${attributeValues.value}"/>
+					            </c:otherwise>
+				            </c:choose>
+				            </td>
 				        </tr>
 				    </c:forEach>
 					

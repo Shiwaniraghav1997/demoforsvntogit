@@ -15,6 +15,7 @@ public class UploadForm {
 
 	private Map<String,String> attributeLabels;
 	private Map<String, String> attributeValues;
+	private Map<String, List<String>> attributePredefValues;
 	private String fileId;
 	private String type;
 //	private String typeLabel;
@@ -33,6 +34,13 @@ public class UploadForm {
 	}
 	public void setAttributeValues(Map<String, String> attributeValues) {
 		this.attributeValues = attributeValues;
+	}
+	public Map<String, List<String>> getAttributePredefValues() {
+		return attributePredefValues;
+	}
+	public void setAttributePredefValues(
+			Map<String, List<String>> attributePredefValues) {
+		this.attributePredefValues = attributePredefValues;
 	}
 	public String getFileId() {
 		return fileId;
@@ -68,12 +76,14 @@ public class UploadForm {
 	public void initAttributes(List<Attribute> attributeDefinitions,String languageCode) {
 		attributeLabels = new HashMap<String, String>();
 		attributeValues = new LinkedHashMap<String, String>();
+		attributePredefValues = new HashMap<String, List<String>>();
 		for (Attribute attribute : attributeDefinitions) {
 			String key = attribute.getName();
 			String label = attribute.getTranslation(languageCode);
-			//TODO attribute.getValues()
 			attributeLabels.put(key, label);
 			attributeValues.put(key, "");
+			List<String> predefValues = attribute.getValues();
+			attributePredefValues.put(key,predefValues);
 		}
 
 		
@@ -88,6 +98,7 @@ public class UploadForm {
 	public void setPartnerNumber(String partnerNumber) {
 		this.partnerNumber = partnerNumber;
 	}
+	
 	@Override
 	public String toString() {
 		return "UploadForm [deliveryNumber=" + deliveryNumber
