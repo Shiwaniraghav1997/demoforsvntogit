@@ -1,1 +1,0 @@
-<%@include file="edit_profile.jsp" %>
