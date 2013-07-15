@@ -21,4 +21,6 @@ public interface Doc41Constants {
     public static final String[] SUPPORTED_DOC_TYPES ={SAP_DOC_TYPE_AIRWAY,SAP_DOC_TYPE_BOL};
     public static final String DOC_TYPE_AIRWAY ="AWB";
     public static final String DOC_TYPE_BOL ="BOL";
+    
+    public static final int FIELD_SIZE_PARTNER_NUMBER = 10;
 }
