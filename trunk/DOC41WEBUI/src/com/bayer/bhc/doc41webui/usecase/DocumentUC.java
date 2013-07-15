@@ -185,14 +185,15 @@ public class DocumentUC {
 	public File checkForVirus(MultipartFile file) throws Doc41BusinessException {
 		OutputStream out = null;
 		InputStream filecontent = null;
-	    try {
+		File localFile = null;
+		try {
 			String originalFilename = file.getOriginalFilename();
 			int lastIndexOf = originalFilename.lastIndexOf('.');
 			String suffix = null;
 			if(lastIndexOf>=0 && lastIndexOf<originalFilename.length()){
 				suffix = originalFilename.substring(lastIndexOf);
 			}
-			File localFile = File.createTempFile(TEMP_FILE_PREFIX, suffix);
+			localFile = File.createTempFile(TEMP_FILE_PREFIX, suffix);
 			System.out.println("+++++++++++++0 "+localFile.getAbsolutePath());
 			Doc41Log.get().debug(this.getClass(),UserInSession.getCwid(),"write uploaded file to temp file: "+localFile.getAbsolutePath());
 			out = new FileOutputStream(localFile);
@@ -205,13 +206,6 @@ public class DocumentUC {
 	            out.write(bytes, 0, read);
 	        }
 	        System.out.println("+++++++++++++1 "+localFile.exists());
-			if(localFile.exists()){
-				Doc41Log.get().debug(this.getClass(),UserInSession.getCwid(),"virusscan passed");
-				return localFile;
-			} else {
-				Doc41Log.get().error(this.getClass(),UserInSession.getCwid(),"SECURITY WARNING: virusscan failed!");
-				return null;
-			}
 		} catch (IOException e) {
 			throw new Doc41BusinessException("checkForVirus",e);
 		} finally {
@@ -225,6 +219,15 @@ public class DocumentUC {
 			} catch (IOException e) {
 				throw new Doc41BusinessException("checkForVirus",e);
 			}
+		}
+	    if(localFile!=null && localFile.exists()){
+	    	System.out.println("+++++++++++++1a "+localFile.exists());
+			Doc41Log.get().debug(this.getClass(),UserInSession.getCwid(),"virusscan passed");
+			return localFile;
+		} else {
+			System.out.println("+++++++++++++1b "+localFile.exists());
+			Doc41Log.get().error(this.getClass(),UserInSession.getCwid(),"SECURITY WARNING: virusscan failed!");
+			return null;
 		}
 	}
 }
