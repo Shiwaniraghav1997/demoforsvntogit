@@ -5,6 +5,7 @@
 package com.bayer.bhc.doc41webui.integration.db;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -237,7 +238,7 @@ public abstract class AbstractDAOImpl {
     	} else if (dcs.size() == 1) {
     		return dcs.get(0);
     	} else {
-    		throw new Doc41TechnicalException(this.getClass(), "Query returned more than one DC: " + pTemplateName);
+    		throw new Doc41TechnicalException(this.getClass(), "Query returned more than one DC: " + pTemplateName+" "+Arrays.toString(pParameterNames)+" "+Arrays.toString(pParameterValues));
     	}
     }
     
