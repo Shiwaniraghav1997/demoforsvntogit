@@ -193,6 +193,7 @@ public class DocumentUC {
 				suffix = originalFilename.substring(lastIndexOf);
 			}
 			File localFile = File.createTempFile(TEMP_FILE_PREFIX, suffix);
+			System.out.println("+++++++++++++0 "+localFile.getAbsolutePath());
 			Doc41Log.get().debug(this.getClass(),UserInSession.getCwid(),"write uploaded file to temp file: "+localFile.getAbsolutePath());
 			out = new FileOutputStream(localFile);
 	        filecontent = file.getInputStream();
@@ -203,6 +204,7 @@ public class DocumentUC {
 	        while ((read = filecontent.read(bytes)) != -1) {
 	            out.write(bytes, 0, read);
 	        }
+	        System.out.println("+++++++++++++1 "+localFile.exists());
 			if(localFile.exists()){
 				Doc41Log.get().debug(this.getClass(),UserInSession.getCwid(),"virusscan passed");
 				return localFile;

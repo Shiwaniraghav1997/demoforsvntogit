@@ -59,6 +59,13 @@ public class UploadController extends AbstractDoc41Controller {
 			} else {
 					if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
 						File localFile = documentUC.checkForVirus(file);
+						System.out.println("+++++++++++++2 "+localFile.exists());
+						System.out.println("+++++++++++++3 "+localFile.length());
+						File testFile = new File(localFile.getAbsolutePath());
+						System.out.println("+++++++++++++2 "+testFile.exists());
+						System.out.println("+++++++++++++3 "+testFile.length());
+						localFile=null;
+						
 						if(localFile!=null){
 							String fileId = documentUC.uploadDocument(uploadForm.getType(),localFile,file.getContentType());
 							uploadForm.setFileId(fileId);
