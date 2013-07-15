@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.web.documents;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,16 +57,21 @@ public class UploadController extends AbstractDoc41Controller {
 			} else if(!documentUC.checkDeliveryForPartner(uploadForm.getPartnerNumber(), uploadForm.getDeliveryNumber(), uploadForm.getShippingUnitNumber())){
 				result.reject("DeliveryNotAllowedForCarrier");
 			} else {
-				if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-					String fileId = documentUC.uploadDocument(uploadForm.getType(),file);
-					uploadForm.setFileId(fileId);
-				}
-				if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-					result.reject("UploadFailed");
-				} else {
-					//set attributes in sap
-					documentUC.setAttributesForNewDocument(uploadForm.getType(),uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getDeliveryNumber());
-				}
+					if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
+						File localFile = documentUC.checkForVirus(file);
+						if(localFile!=null){
+							String fileId = documentUC.uploadDocument(uploadForm.getType(),localFile,file.getContentType());
+							uploadForm.setFileId(fileId);
+						} else {
+							result.reject("VirusDetected");
+						}
+					}
+					if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
+						result.reject("UploadFailed");
+					} else {
+						//set attributes in sap
+						documentUC.setAttributesForNewDocument(uploadForm.getType(),uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getDeliveryNumber());
+					}
 			}
 		}catch (Doc41BusinessException e) {
 			result.reject(e.getMessage());

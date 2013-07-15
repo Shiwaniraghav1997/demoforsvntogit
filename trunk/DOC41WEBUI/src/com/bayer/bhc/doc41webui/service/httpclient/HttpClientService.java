@@ -1,5 +1,8 @@
 package com.bayer.bhc.doc41webui.service.httpclient;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -13,7 +16,6 @@ import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 
@@ -23,14 +25,16 @@ public class HttpClientService {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	public void uploadDocumentToUrl(URI putUrl, MultipartFile file,final String mimeType) throws Doc41ServiceException {
+	public void uploadDocumentToUrl(URI putUrl, File localFile,final String mimeType) throws Doc41ServiceException {
+		InputStream fis = null;
 		try {
-			final InputStream fis = file.getInputStream();
+			fis = new BufferedInputStream(new FileInputStream(localFile));
+			final InputStream ffis = fis;
 			final RequestCallback requestCallback = new RequestCallback() {
 			     @Override
 			    public void doWithRequest(final ClientHttpRequest request) throws IOException {
 			        request.getHeaders().add("Content-type", mimeType);
-			        IOUtils.copy(fis, request.getBody());
+			        IOUtils.copy(ffis, request.getBody());
 			     }
 			};
 			final ResponseExtractor<String> responseExtractor =
@@ -38,6 +42,14 @@ public class HttpClientService {
 			restTemplate.execute(putUrl, HttpMethod.PUT, requestCallback, responseExtractor);
 		} catch (IOException e) {
 			throw new Doc41ServiceException("uploadDocumentToUrl", e);
+		} finally {
+			try {
+				if(fis!=null){
+					fis.close();
+				}
+			} catch (IOException e) {
+				throw new Doc41ServiceException("uploadDocumentToUrl", e);
+			}
 		}
 	}
 

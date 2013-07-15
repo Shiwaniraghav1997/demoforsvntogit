@@ -1,5 +1,10 @@
 package com.bayer.bhc.doc41webui.usecase;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +33,8 @@ import com.bayer.ecim.foundation.basic.StringTool;
 
 @Component
 public class DocumentUC {
+
+	private static final String TEMP_FILE_PREFIX = "D41-";
 
 	@Autowired
 	private AuthorizationRFCService authorizationRFCService;
@@ -130,7 +137,7 @@ public class DocumentUC {
 
 
 
-	public String uploadDocument(String type, MultipartFile file) throws Doc41BusinessException {
+	public String uploadDocument(String type, File localFile, String contentType) throws Doc41BusinessException {
 		try{
 			DocMetadata metadata = getMetadata(type);
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
@@ -142,7 +149,7 @@ public class DocumentUC {
 			//get put url
 			URI putUrl = kgsRFCService.getPutUrl(guid,crep);
 			//upload document to put url
-			httpClientService.uploadDocumentToUrl(putUrl,file,file.getContentType());
+			httpClientService.uploadDocumentToUrl(putUrl,localFile,contentType);
 			//test docstatus
 			boolean docPresent = kgsRFCService.testDocStatus(guid,crep);
 			if(docPresent){
@@ -152,6 +159,8 @@ public class DocumentUC {
 			}
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("uploadDocument",e);
+		} finally {
+			localFile.delete();
 		}
 	}
 
@@ -166,6 +175,49 @@ public class DocumentUC {
 			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),crepInfo.getDocClass(),deliveryNumber,docDef.getSapObj(),attributeValues);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("setAttributesForNewDocument",e);
+		}
+	}
+
+
+
+	public File checkForVirus(MultipartFile file) throws Doc41BusinessException {
+		OutputStream out = null;
+		InputStream filecontent = null;
+	    try {
+			String originalFilename = file.getOriginalFilename();
+			int lastIndexOf = originalFilename.lastIndexOf('.');
+			String suffix = null;
+			if(lastIndexOf>=0 && lastIndexOf<originalFilename.length()){
+				suffix = originalFilename.substring(lastIndexOf);
+			}
+			File localFile = File.createTempFile(TEMP_FILE_PREFIX, suffix);
+			out = new FileOutputStream(localFile);
+	        filecontent = file.getInputStream();
+
+	        int read = 0;
+	        final byte[] bytes = new byte[1024];
+
+	        while ((read = filecontent.read(bytes)) != -1) {
+	            out.write(bytes, 0, read);
+	        }
+			if(localFile.exists()){
+				return localFile;
+			} else {
+				return null;
+			}
+		} catch (IOException e) {
+			throw new Doc41BusinessException("checkForVirus",e);
+		} finally {
+			try {
+				if (out != null) {
+		            out.close();
+		        }
+		        if (filecontent != null) {
+		            filecontent.close();
+		        }
+			} catch (IOException e) {
+				throw new Doc41BusinessException("checkForVirus",e);
+			}
 		}
 	}
 }
