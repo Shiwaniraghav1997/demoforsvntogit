@@ -11,7 +11,7 @@ title="Upload Document">
 function setDeliveryNumber(delNumber,shipunit){
 	$allPopups['open_delivery_dialog'].dialog('close');
 	$('#deliveryNumber').val(delNumber);
-	$('#shippingUnitNumber').val(shipunit);
+	$('#SHIPPINGUNIT').val(shipunit);
 }
 </script>
 
@@ -63,7 +63,7 @@ function setDeliveryNumber(delNumber,shipunit){
 				            <td><c:out value="${uploadForm.attributeLabels[attributeValues.key]}"/>
 				            <input type="hidden" name="attributeLabels['${attributeValues.key}']" value="${uploadForm.attributeLabels[attributeValues.key]}"/>
 				            </td>
-				            <td><input class="portlet-form-input-field"  maxlength="70" name="attributeValues['${attributeValues.key}']" value="${attributeValues.value}"/></td>
+				            <td><input id="${attributeValues.key}" class="portlet-form-input-field"  maxlength="70" name="attributeValues['${attributeValues.key}']" value="${attributeValues.value}"/></td>
 				        </tr>
 				    </c:forEach>
 					
