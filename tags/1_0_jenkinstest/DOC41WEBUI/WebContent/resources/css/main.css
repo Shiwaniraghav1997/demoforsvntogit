@@ -1,0 +1,476 @@
+/***********************************************************************************
+START -- FONT AND COLOR SETTINGS FOR ALL PORTLETS
+***********************************************************************************/
+div.pCover * {
+	FONT-FAMILY:Verdana,Arial,Helvetica,sans-serif;
+	font-size:10px;
+}
+/* Style to enforce non bold text in header*/
+.textHeaderNormal
+{
+	font-weight:normal;
+}
+
+/* Every Portlet should be covered by this Tag */ 
+div.pCover {
+	margin:0px;
+	padding:0px;
+}
+
+/* Colors */
+.bgLight {background-color:#F2F9FC;}
+.bgDark  {background-color:#009899;}
+.bgGreen {background-color:#C3EBEB;}
+.bgWhite {background-color:#FFFFFF;}
+/***********************************************************************************
+END -- FONT SETTINGS FOR ALL PORTLETS
+***********************************************************************************/
+
+
+/***********************************************************************************
+START -- LINK STYLES
+***********************************************************************************/
+.pLink		 		{color:#009999; text-decoration:underline;}
+a.pLink:link 		{color:#009999; text-decoration:underline;}
+a.pLink:visited 	{color:#009999; text-decoration:underline;}
+a.pLink:hover 		{color:#009999; text-decoration:underline;}
+a.pLink:active 		{color:#009999; text-decoration:underline;}
+
+a.pMandatoryField12:link 	{color:#009999; text-decoration:none; font-size:12px;}
+a.pMandatoryField12:visited {color:#009999; text-decoration:none; font-size:12px;}
+a.pMandatoryField12:hover 	{color:#009999; text-decoration:none; font-size:12px;}
+a.pMandatoryField12:active 	{color:#009999; text-decoration:none; font-size:12px;}
+
+a.standard: link {color:#009999; text-decoration:none;}
+a.standard: visited {color:#009999; text-decoration:none;}
+a.standard: active {color:#009999; text-decoration:none;}
+a.standard: hover {color:#009999; text-decoration:none; font-weight:bold;}
+
+a.listHeader:link    {color:#009899; text-decoration:underline; font-size:12px; font-weight:bold;}
+a.listHeader:visited {color:#009899; text-decoration:underline; font-size:12px; font-weight:bold;}
+a.listHeader:active  {color:#009899; text-decoration:underline; font-size:12px; font-weight:bold;}
+a.listHeader:hover   {color:#009899; text-decoration:underline; font-size:12px; font-weight:bold;}
+
+a.pRowHeader:link    {color:#009899; text-decoration:underline; font-size:12px; font-weight:bold;}
+a.pRowHeader:visited {color:#009899; text-decoration:underline; font-size:12px; font-weight:bold;}
+a.pRowHeader:active  {color:#009899; text-decoration:underline; font-size:12px; font-weight:bold;}
+a.pRowHeader:hover   {color:#009899; text-decoration:underline; font-size:12px; font-weight:bold;}
+
+a.pColumnHeader:link    {color:#009899; text-decoration:underline; font-size:12px; font-weight:bold;}
+a.pColumnHeader:visited {color:#009899; text-decoration:underline; font-size:12px; font-weight:bold;}
+a.pColumnHeader:active  {color:#009899; text-decoration:underline; font-size:12px; font-weight:bold;}
+a.pColumnHeader:hover   {color:#009899; text-decoration:underline; font-size:12px; font-weight:bold;}
+
+/* START *** Listen *** START */
+a.paging:link 	{color:#009999; text-decoration:underline;}
+a.paging:visited{color:#009999; text-decoration:underline;}
+a.paging:active {color:#009999; text-decoration:underline;}
+a.paging:hover 	{color:#009999; text-decoration:underline;}
+/* ENDE *** Listen *** ENDE */
+
+a.tiny:link    { color:#336699; text-decoration:none; font-size:8pt;}
+a.tiny:visited { color:#336699; text-decoration:none; font-size:8pt;}
+a.tiny:active  { color:#336699; text-decoration:none; font-size:8pt;}
+/***********************************************************************************
+END -- LINK STYLES
+***********************************************************************************/
+
+
+
+/***********************************************************************************
+START -- HEADER FOR BUTOONS AND BODY LAYER
+***********************************************************************************/
+div.pHead{
+		width:100%;
+		height:30px;
+		margin-bottom:5px;
+		margin-top:0px;
+		border:1px solid #D1DFF2;
+		background-color:#F2F9FC;
+		text-align:right;
+}
+div.pBody{
+		width:100%;
+		height:155px;
+		margin-bottom:0px;
+		margin-top:0px;
+		border:1px solid #D1DFF2;
+		background-color:#F2F9FC;
+		overflow:auto;
+		vertical-align:top;
+}
+/*  H�hen sind relevant {450px oder 565px} */
+div.pListResult{
+		width:100%;
+		height:450px;
+		padding-top:0px;
+		padding-bottom:4px;
+		padding-left:0px;
+		padding-right:0px;
+		margin-bottom:0px;
+		margin-top:0px;
+		overflow:auto;
+		vertical-align:top;
+}
+
+.gBox{
+	width:100%;
+	margin-bottom:5px;
+	margin-top:0px;
+	border:1px solid #D1DFF2;
+	background-color:#F2F9FC;
+}
+html>body .gBox {width: 100%;}
+.gBox span  {}
+.gBox input.btn {margin-right:5px; padding:0px; BORDER:#009899 2px solid; COLOR:#009899; BACKGROUND-COLOR:#FFFFFF; FONT-WEIGHT: bold; CURSOR: hand; }
+.gBox ul	{padding-top:0px; margin-top:0px;margin-bottom:10px}
+.gBox li	{padding-top:0px; margin-top:0px;margin-bottom:0px}
+
+.gl
+{
+	width:100%;
+	height:1px;
+	padding-top:0px;
+	padding-bottom:0px;
+	margin-top:3px;
+	border-bottom:1px solid #009899;
+}
+/***********************************************************************************
+END -- HEADER FOR BUTOONS AND BODY LAYER
+***********************************************************************************/
+
+
+/***********************************************************************************
+START -- STYLES FOR TABLES, TABLE ROWS AND TABLE CELLS
+***********************************************************************************/
+
+div.pCover table.pSkinBorder{
+	width:		100%;
+	border-collapse:collapse;
+	border:		1px solid #009899;
+	border-spacing:	0px;
+	margin:		0px;
+}
+table.pSkinBorder tr.pSkinBorderHead {
+	margin:		0px;
+	background-color:#E5E5E5;
+	background-image:url(../../titlebar_bg.gif);
+	border:		1px solid #009899;
+	border-spacing:	0px;
+}
+table.pSkinBorder tr.pSkinBorderHead td {
+	margin:		0px;
+	border-top:1px solid #009899;
+	border-left:1px solid #009899;
+	border-bottom:1px solid #999;
+	border-right:1px solid #009899
+	border-spacing:	0px;
+}
+
+
+div.pCover table.pTableBorderON{
+	margin:		0px;
+	border-collapse:collapse;
+	width:		100%;
+	border:		0px;
+	border-spacing:	0px;	
+}
+div.pCover table.pTableBorderON td{
+	border:	 	1px solid #009899;
+	padding: 	3px;
+}
+div.pCover table.pTableBorderON th{
+	border:		1px solid #009899;
+	padding: 	3px;
+}
+div.pCover table.pTableBorderOFF{
+	margin:		0px;
+	border-collapse:collapse;
+	width:		100%;
+	border:		0px;
+	border-spacing:	0px;	
+}
+div.pCover table.pTableBorderOFF td{
+	border:		0px;
+	padding: 	3px;
+}
+div.pCover table.pTableBorderOFF th{
+	border:		0px;
+	padding: 	3px;
+}
+div.pCover table.pTableNoPaddingBorderON{
+	margin:		0px;
+	border-collapse:collapse;
+	width:		100%;
+	border:		0px;
+	border-spacing:	0px;	
+}
+div.pCover table.pTableNoPaddingBorderON td{
+	border:		1px solid #009899;
+	padding: 	0px;
+}
+div.pCover table.pTableNoPaddingBorderON th{
+	border:		1px solid #009899;
+	padding: 	0px;
+}
+div.pCover table.pTableNoPaddingBorderOFF{
+	margin:			0px;
+	border-collapse:collapse;
+	width:			100%;
+	border:			0px;
+	border-spacing:	0px;	
+}
+div.pCover table.pTableNoPaddingBorderOFF td{
+	border:		0px;
+	padding: 	0px;
+}
+div.pCover table.pTableNoPaddingBorderOFF th{
+	border:		0px;
+	padding: 	0px;
+}
+
+
+/***********************************************************************************
+END -- STYLES FOR TABLES, TABLE ROWS AND TABLE CELLS
+************************************************************************************/
+
+/***********************************************************************************
+START -- HEADER FOR BUTOONS AND BODY LAYER
+***********************************************************************************/
+form {display:inline}
+input.pBtn, .inputButton 
+{
+		margin-top:0px;
+		margin-bottom:0px;
+		margin-right:0px;
+		padding:0px;
+		BORDER:#009899 2px solid;
+		COLOR:#009899;
+		BACKGROUND-COLOR:#FFFFFF;
+		FONT-WEIGHT: bold;
+		CURSOR: hand;
+}
+
+input.pBtnSmall
+{
+		margin-top:0px;
+		margin-bottom:0px;
+		margin-right:0px;
+		padding:0px;
+		BORDER:#009899 1px solid;
+		COLOR:#009899;
+		BACKGROUND-COLOR:#FFFFFF;
+		FONT-WEIGHT: bold;
+		FONT-SIZE: 10px;
+		CURSOR: hand;
+}
+/***********************************************************************************
+END -- HEADER FOR BUTOONS AND BODY LAYER
+***********************************************************************************/
+
+/***********************************************************************************
+START -- STYLES FOR INPUT FIELDS
+***********************************************************************************/
+
+input.fieldEnabled {background-color:#FFFFFF;}
+input.fieldDisabled {background-color:#EAEAED;}
+
+/***********************************************************************************
+END -- STYLES FOR INPUT FIELDS
+***********************************************************************************/
+
+
+.pHeadline   {color:#009899; font-size:11px; font-weight:bold}
+
+/* START *** ErrorMessage *** START */
+.bgLightError 	{background-color:#FFEBE3; color:#DE2121; font-size:12px; font-weight:normal;text-decoration:none;}
+.bgDarkError 	{background-color:#DE2121; }
+.warningText10  {color:#DE2121; font-weight:normal; font-size:10px;}
+.warningText12  {color:#DE2121; font-weight:normal; font-size:12px;}
+.redText12      {color:#DE2121; font-weight:normal; font-size:12px;}
+.warnTxt 			{color:#FF0000; font-family:arial,helvetica; font-size:11px; font-weight:bold;text-decoration:none;}
+/* ENDE *** ErrorMessage *** ENDE */
+
+/* CIC specific styles */
+.textbox {background-color:#E2E9EC; BORDER:#FFFFFF 1px solid; white-space:nowrap; }
+
+/* Linklabel for Tooltip */
+span.pToolTip 	{font-weight:normal; text-shadow:#FF0000;cursor:Help}
+
+.pInfoText{
+		text-align: left;
+		color:#009899;
+		text-decoration:none;
+}
+
+.pListHeader{
+		background-color:#F2F9FC;
+		text-align: center;
+		color:#009899;
+		text-decoration:none;
+		font-weight:bold;
+}
+
+.pColumnHeader{
+		background-color:#F2F9FC;
+		text-align: center;
+		color:#009899;
+		text-decoration:none;
+		font-weight:bold;
+}
+
+.pRowHeader{
+		background-color:#F2F9FC;
+		text-align: left;
+		color:#009899;
+		text-decoration:none;
+		font-weight:bold;
+
+}
+
+.pListRowHeader{
+		background-color:#F2F9FC;
+		text-align: center;
+		text-decoration:none;
+		color:#009899;
+		border-left:1px solid #009899;
+		border-bottom:1px solid #009899;
+		font-weight:bold;
+}
+.pListRowMiddleHeader{
+		background-color:#F2F9FC;
+		text-align: center;
+		text-decoration:none;
+		color:#009899;
+		border-bottom:1px solid #009899;
+		font-weight:bold;
+}
+.pListRowEndHeader{
+		background-color:#F2F9FC;
+		text-align: center;
+		text-decoration:none;
+		color:#009899;
+		border-left:1px solid #009899;
+		border-bottom:1px solid #009899;
+		border-right:1px solid #009899;
+		font-weight:bold;
+}
+.pListRow{
+		text-decoration:none;
+		border-left:1px solid #009899;
+		border-bottom:1px solid #009899;
+}
+.pListRowMiddle{
+		text-decoration:none;
+		border-bottom:1px solid #009899;
+}
+.pListRowEnd{
+		text-decoration:none;
+		border-left:1px solid #009899;
+		border-bottom:1px solid #009899;
+		border-right:1px solid #009899;
+}
+
+.pDrilldownImage{
+
+}
+
+.listHeader  		{background-color:#F2F9FC; text-align: center; color:#009899; text-decoration:none; font-weight:bold;}
+.listHeaderNormal  	{background-color:#009899; color:#FFFFFF; text-decoration:none;  font-weight:normal;}
+.listEntry11 		{color:#000000; font-weight:normal;text-decoration:none;}
+.listEntry12 		{font-size:12px; font-weight:normal; text-decoration:none;}
+
+.listEntry11White 	{BACKGROUND-COLOR:#FFFFFF; font-weight:normal;text-decoration:none;}
+.listEntry12White 	{BACKGROUND-COLOR:#FFFFFF; font-size:12px; font-weight:normal;text-decoration:none;}
+
+/* Included sprites */
+
+#red {
+background-color:red;
+display:none;
+width:22px;
+height:22px;
+}
+#green {
+background-color:green;
+display:block;
+width:22px;
+height:22px;
+}
+
+td.sprite_btn a{
+height:14px;
+width:14px;
+overflow:hidden;
+cursor:pointer;
+margin:0;
+padding:0;
+border:0;
+}
+td.sprite_btn img{
+background-image:url(../../cic2_iconset.png);
+background-repeat:no-repeat;
+height: 14px;
+width: 14px;
+border:0;
+margin:0;
+padding:0;
+}
+
+.sprite-config img{ background-position: 0 -20px; } 
+.sprite-config:hover img{ background-position: 0 -54px; } 
+.sprite-down img{ background-position: 0 -88px; } 
+.sprite-down:hover img{ background-position: 0 -122px; } 
+.sprite-edit img{ background-position: 0 -156px; } 
+.sprite-edit:hover img{ background-position: 0 -190px; } 
+.sprite-help img{ background-position: 0 -224px; } 
+.sprite-help:hover img{ background-position: 0 -258px; } 
+.sprite-left img{ background-position: 0 -292px; } 
+.sprite-left:hover img{ background-position: 0 -326px; } 
+.sprite-maximize img{ background-position: 0 -360px; } 
+.sprite-maximize:hover img{ background-position: 0 -394px; } 
+.sprite-minimize img{ background-position: 0 -428px; } 
+.sprite-minimize:hover img{ background-position: 0 -462px; }
+.sprite-plus img{ background-position: 0 -527px; } 
+.sprite-plus:hover img{ background-position: 0 -561px; } 
+.sprite-restore img{ background-position: 0 -595px; } 
+.sprite-restore:hover img{ background-position: 0 -629px; } 
+.sprite-right img{ background-position: 0 -663px; } 
+.sprite-right:hover img{ background-position: 0 -697px; } 
+
+.navpfeil {
+height:16px;
+width:21px;
+overflow:hidden;
+cursor:pointer;
+background-image:url(../../navpfeil.gif);
+background-position: 4px 3px;
+background-repeat:no-repeat;
+margin:0;
+padding:0;
+}
+
+/* Kalender */
+.calhead {color:#009899; text-decoration:none; font-size:12px; font-weight:bold;}
+
+.screenHeadline10   {color:#009899; font-size:10px;}
+.normalText    {}
+.activeText10 {font-weight:bold; font-style:normal;color:#FF6600; text-decoration:none;}
+
+.activeText10 {font-weight:bold; font-style:normal;color:#FF6600; text-decoration:none;}
+/* To be checked if the followinf css's are in use 
+.blackText10   {color:#000000; font-family:Arial,Helvetica,sans-serif; font-weight:normal; font-size:10px;}
+.orangeText10  {color:#FF6600; font-family:Arial,Helvetica,sans-serif; font-weight:normal; font-size:10px;}
+.orangeText12  {color:#FF6600; font-family:Arial,Helvetica,sans-serif; font-weight:normal; font-size:12px;}
+.orangeText11  {color:#FF6600; font-family:Arial,Helvetica,sans-serif; font-weight:normal; font-size:11px;}
+.greenText10   {color:#009899; font-family:Arial,Helvetica,sans-serif; font-weight:normal; font-size:10px;}
+.greenText12   {color:#009899; font-family:Arial,Helvetica,sans-serif; font-weight:normal; font-size:12px;}
+.redText12     {color:#DE2121; font-family:Arial,Helvetica,sans-serif; font-weight:normal; font-size:12px;}
+
+
+.containerHL {background-color:#009899; color:#FFFFFF; font-family:Arial,Helvetica,sans-serif; font-weight:bold; text-decoration:none; font-size:12px;}
+.containerContent {background-color:#FFFFFF; color:#000000; font-family:Arial,Helvetica,sans-serif; font-weight:normal; text-decoration:none; font-size:12px;}
+
+.footer     {background-color:#F2F9FC; color:#333333; font-family:Arial,Helvetica,sans-serif; font-weight:normal; text-decoration:none; font-size:10px;}
+.footerLine {background-color:#009899; color:#FFFFFF; font-family:Arial,Helvetica,sans-serif; font-weight:normal; text-decoration:none; font-size:10px;}
+*/
