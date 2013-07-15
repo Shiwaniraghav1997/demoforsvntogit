@@ -43,7 +43,6 @@ function setDeliveryNumber(delNumber,shipunit){
 					
 					<tr><td colspan="3">
 					<pre>
-					TODO Version
 					TODO predefined values
 					</pre>
 					</td></tr>
