@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.validation.Errors;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -34,6 +35,18 @@ public class UserEditForm implements Serializable{
 	public void validate(HttpServletRequest request, Errors errors) {
 		if(!StringTool.equals(getPassword(), getPasswordRepeated())){
 			errors.rejectValue("passwordRepeated", "pwDifferent", "password and passwordRepeated do not match.");
+		}
+		if(partners!=null){
+			for (String partner : partners) {
+				if(partner!=null && partner.length()>Doc41Constants.FIELD_SIZE_PARTNER_NUMBER){
+					errors.rejectValue("partners", "partnerNumberTooLong", "partner number too long");
+				}
+				try {
+					Integer.parseInt(partner);
+				} catch (NumberFormatException e) {
+					errors.rejectValue("partners", "OnlyNumbersInPartnerNumber", "only number in partner number allowed");
+				}
+			}
 		}
 	}
 	
