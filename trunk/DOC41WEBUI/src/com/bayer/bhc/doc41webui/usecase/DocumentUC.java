@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.Attribute;
 import com.bayer.bhc.doc41webui.container.ContentRepositoryInfo;
 import com.bayer.bhc.doc41webui.container.Delivery;
@@ -191,6 +193,8 @@ public class DocumentUC {
 				suffix = originalFilename.substring(lastIndexOf);
 			}
 			File localFile = File.createTempFile(TEMP_FILE_PREFIX, suffix);
+			System.out.println("++++++++++++++  "+localFile.getAbsolutePath());
+			Doc41Log.get().debug(this.getClass(),UserInSession.getCwid(),"write uploaded file to temp file: "+localFile.getAbsolutePath());
 			out = new FileOutputStream(localFile);
 	        filecontent = file.getInputStream();
 
@@ -201,8 +205,10 @@ public class DocumentUC {
 	            out.write(bytes, 0, read);
 	        }
 			if(localFile.exists()){
+				Doc41Log.get().debug(this.getClass(),UserInSession.getCwid(),"virusscan passed");
 				return localFile;
 			} else {
+				Doc41Log.get().error(this.getClass(),UserInSession.getCwid(),"SECURITY WARNING: virusscan failed!");
 				return null;
 			}
 		} catch (IOException e) {
