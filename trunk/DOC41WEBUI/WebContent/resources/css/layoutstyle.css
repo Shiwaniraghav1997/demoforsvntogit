@@ -32,6 +32,7 @@ body {
 
 #namingArea {
 	height:				70px;
+	background-repeat: no-repeat;
 }
 
 #headRight {
@@ -61,7 +62,7 @@ body {
 
 /* Top Navigation */
 #mainNav {
-	background-color:	#1A478A;
+	background-color:	#0099CC;
 	border-bottom:		1px solid #FFFFFF;
 	height:				20px;
 	position: 			relative;
@@ -103,7 +104,7 @@ body {
 }
 
 #mainNav li.active {
-	background-color: 	#339933;
+	background-color: 	#FF5500;
 }
 
 /* Top Navigation Hover Menu*/
@@ -122,7 +123,7 @@ body {
 	width: 				150px;
 	padding: 			0;
 	margin: 			0;
-	background-color:	#F0F5E4;	
+	background-color:	#0099CC;	
 }
 
 #mainNav ul li ul li {
@@ -136,8 +137,8 @@ body {
 }
 
 #mainNav ul li ul li a {
-	background-color:	#F0F5E4;
-	color:				#339933;
+	background-color:	#0099CC;
+	color:				#FFFFFF;
 	display:			block;
 	font-size:			12px;
 	font-weight:		normal;
@@ -149,7 +150,7 @@ body {
 }
 
 #mainNav ul li ul li a.active, #mainNav ul li ul li a:hover {
-	background-color:	#339933;
+	background-color:	#FF5500;
 	background-image: 	url("http://intranet.cnb/db/uk/HoldingPortal.nsf/BCSdefault/NAV_Arrow_FFFFFF.gif");
 	background-repeat:	no-repeat;
 	background-position:left;

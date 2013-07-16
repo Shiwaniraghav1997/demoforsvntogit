@@ -117,11 +117,6 @@ title="User Import">
 										<form:options items="${languageCountryList}" itemValue="code" itemLabel="label"/>
 									</form:select>
 								</td>
-								<th>&nbsp;</th>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>
-							<tr>
 								<th><doc41:translate label="Status"/></th>
 								<td>
 									<form:select path="active" cssClass="portlet-form-input-field">
@@ -129,8 +124,8 @@ title="User Import">
 										<form:option value="true"><doc41:translate label="Active"/></form:option>
 								   </form:select>
 								</td>
-
-							</tr>				
+							</tr>
+					
 						</c:if>
 					</tbody>
 				</table>

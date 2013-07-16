@@ -21,7 +21,7 @@ td.pager {
 
 /*** loading ajax indeterminate progress indicator ***/
 #tablesorterPagerLoading {
-  background: rgba(255,255,255,0.8) url(resources/img/tablesorter/loading.gif) center center no-repeat;
+  background: rgba(255,255,255,0.8) url(/doc41/resources/img/tablesorter/loading.gif) center center no-repeat;
   position: absolute;
   z-index: 1000;
 }

@@ -28,7 +28,7 @@
 					</c:if>
 				</td>
 			</tr>
-			<tr>
+			<tr class="portlet-table-alternate">
 				<th style="width: 15%"><img src="${pageContext.request.contextPath}/resources/img/usermanagement/symbol_<%=User.ROLE_CARRIER %>.gif" alt="<doc41:translate label="<%=User.ROLE_CARRIER %>"/>" style="border: 0px;"/>&nbsp;<doc41:translate label="<%=User.ROLE_CARRIER %>"/></th>
 				<td style="width: 35%">
 					<c:if test="${userEditForm.type eq 'external'}">
@@ -70,12 +70,14 @@
 				</td>
 			</tr>
 			
-			<tr>
+			<tr class="portlet-table-alternate">
 				
 				<th><img src="${pageContext.request.contextPath}/resources/img/usermanagement/symbol_OBSV.gif" alt="<doc41:translate label="<%=User.ROLE_OBSERVER %>"/>" style="border: 0px;"/>&nbsp;<doc41:translate label="<%=User.ROLE_OBSERVER %>"/></th>
 				<td>
 					<form:checkbox path="roles" value="<%=User.ROLE_OBSERVER %>"/>
 				</td>
+				<th>&nbsp;</th>
+				<td>&nbsp;</td>
 			</tr>
 		</tbody>
 	</table>

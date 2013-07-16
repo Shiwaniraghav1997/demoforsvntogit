@@ -33,7 +33,7 @@ $(function(){
   // ***********************
   $("#doc41table")
     .tablesorter({
-      theme: 'green',
+      theme: 'bhc',
       headerTemplate : '{content} {icon}', // new in v2.7. Needed to add the bootstrap icon!
       widthFixed: true,
       widgets: ['zebra', 'filter']

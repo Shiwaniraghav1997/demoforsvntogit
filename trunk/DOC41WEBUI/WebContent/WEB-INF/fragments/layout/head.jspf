@@ -21,7 +21,7 @@
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.10.3.custom.min.js"></script>
 		
 		<!-- Tablesorter: required -->
-		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/theme.tablesorter.green.css" />
+		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/theme.tablesorter.bhc.css" />
 		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/doc41tablesorter.css" />
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.tablesorter.min.js"></script>
 

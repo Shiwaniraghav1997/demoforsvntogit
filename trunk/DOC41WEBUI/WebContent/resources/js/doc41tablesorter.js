@@ -13,7 +13,7 @@ $(function(){
   // ***********************
   $("#doc41table")
     .tablesorter({
-      theme: 'green',
+      theme: 'bhc',
       widthFixed: true,
       sortLocaleCompare: true, // needed for accented characters in the data
       widgets: ['zebra', 'filter'],

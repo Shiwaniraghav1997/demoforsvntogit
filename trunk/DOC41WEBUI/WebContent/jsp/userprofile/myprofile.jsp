@@ -62,7 +62,7 @@ title="My Profile">
 					</td>
 				</tr>
 				
-				<tr>
+				<tr class="portlet-table-alternate">
 					<th><doc41:translate label="Cwid"/></th>
 					<td>
 						<c:out value="${user.cwid}"/> <form:hidden path="cwid"/>
@@ -79,7 +79,7 @@ title="My Profile">
 					</td>
 				</tr>
 				
-				<tr class="portlet-table-alternate">
+				<tr>
 					<th><doc41:translate label="Language"/></th>
 					<td>
 					    <form:select path="languageCountry" cssClass="portlet-form-input-field">
@@ -94,17 +94,18 @@ title="My Profile">
 					</td>
 				</tr>	
 				
+				<c:if test="${user.type eq 'external' && !user.readOnly}">
 				<tr class="portlet-table-alternate">
 					<th></th>
 					<td>&nbsp;</td>
 					<th><doc41:translate label="RepeatPassword"/></th>
 					<td>
-						<c:if test="${user.type eq 'external' && !user.readOnly}">
+						
 							<form:password path="passwordRepeated" cssClass="portlet-form-input-field" />
-						</c:if>
+						
 					</td>
 				</tr>		
-				
+				</c:if>
 						
 			</tbody>
 		</table>
