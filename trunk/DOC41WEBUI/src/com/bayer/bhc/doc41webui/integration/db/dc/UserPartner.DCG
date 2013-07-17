@@ -20,11 +20,6 @@ Column.2.Type=STRING
 Column.2.Comment=Maps DB-Column: partner_Number
 #Column.2.DBDefault="..."/new ...
 
-Column.3.Name=ClientId
-Column.3.Type=ID
-Column.3.Comment=Maps DB-Column: client_Id
-#should be deleted after the db column is dropped
-
 #Cols ignored, defined by super class:
 #-------------------------------------
 #CHANGED

@@ -237,7 +237,6 @@ public class UserManagementDAO extends AbstractDAOImpl{
 	public void saveUserPartner(UserPartnerDC newPartner) throws Doc41TechnicalException {
 		checkUser();
         try {
-        	newPartner.setClientId(1234L);
             OTUserManagementN.get().storeDC(newPartner);
         } catch (StoreException e) {
             throw new Doc41TechnicalException(this.getClass(), "saveUserPartner", e);

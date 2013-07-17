@@ -31,10 +31,6 @@ public class UserPartnerDC
 	String cPartnerNumber;
 	public static final String FIELD_PARTNERNUMBER = "PartnerNumber";
 
-	/** Maps DB-Column: client_Id */
-	Long cClientId;
-	public static final String FIELD_CLIENTID = "ClientId";
-
 	/** The master Class of this class. */
 	public final Class<DataCarrier> MASTER_CLASS = DataCarrier.class;
 
@@ -43,19 +39,18 @@ public class UserPartnerDC
 		setDBTablename( UserPartnerDC.class, "[DOC41WEB_MGR].D41_USER_PARTNER" );
 	}
 
-	private static final long serialVersionUID = 20130712052915796L;
+	private static final long serialVersionUID = 20130717104114343L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_USERPARTNERDC = java.math.BigDecimal.class;
 
 	@SuppressWarnings("unchecked")
 	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_USERID, FIELD_PARTNERNUMBER, FIELD_CLIENTID};
+	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_USERID, FIELD_PARTNERNUMBER};
 	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
 
 	static {
 		try {
 			FIELD_META.put( FIELD_USERID,	new BasicDCFieldMeta( "IDS",	"ID",	Long.class,	null ) );
 			FIELD_META.put( FIELD_PARTNERNUMBER,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
-			FIELD_META.put( FIELD_CLIENTID,	new BasicDCFieldMeta( "IDS",	"ID",	Long.class,	null ) );
 		} catch ( Exception e ) {
 			throw new InitException( "Failed to detect return types of the getter methods of UserPartnerDC!", null );
 		}
@@ -405,100 +400,6 @@ public class UserPartnerDC
 		return getBasicDCColumnMetaData( FIELD_PARTNERNUMBER );
 	}
 	// END Method getColumnMetaDataPartnerNumber
-
-
-	// START Method getClientId generated
-	/**
-	 * Maps DB-Column: client_Id
-	 * Logical type: Id
-	 */
-	public Long getClientId() {
-		return cClientId;
-	}
-	// END Method getClientId
-
-
-	// START Method setClientId generated
-	/**
-	 * Maps DB-Column: client_Id
-	 * Logical type: Id
-	 */
-	public void setClientId( Long pClientId ) {
-		cClientId = pClientId;
-		forgetOriginalValue( FIELD_CLIENTID );
-		touchField( FIELD_CLIENTID );
-	}
-	// END Method setClientId
-
-
-	// START Method getFormattedClientId generated
-	/**
-	 * Maps DB-Column: client_Id
-	 * Logical type: Id
-	 */
-	public String getFormattedClientId() {
-		return hasInvalidValue( FIELD_CLIENTID ) ? getOriginalValue( FIELD_CLIENTID ) : getPool().formatId( "Id", "#", getClientId() );
-	}
-	// END Method getFormattedClientId
-
-
-	// START Method setFormattedClientId generated
-	/**
-	 * Maps DB-Column: client_Id
-	 * Logical type: Id
-	 */
-	public void setFormattedClientId( String pClientId )
-		throws java.text.ParseException
-	{
-		setClientId( null );
-		memorizeOriginalValue( FIELD_CLIENTID, pClientId );
-		setClientId( getPool().parseId( "Id", "#", pClientId ) );
-	}
-	// END Method setFormattedClientId
-
-
-	// START Method getFormattedHTMLClientId generated
-	/**
-	 * Maps DB-Column: client_Id
-	 * Logical type: Id
-	 */
-	public String getFormattedHTMLClientId() {
-		return StringTool.escapeHTML( getFormattedClientId() );
-	}
-	// END Method getFormattedHTMLClientId
-
-
-	// START Method getToStringClientId generated
-	/**
-	 * Maps DB-Column: client_Id
-	 * Logical type: Id
-	 */
-	public String getClientIdToString() {
-		return StringTool.nullToEmpty(getClientId());
-	}
-	// END Method getToStringClientId
-
-
-	// START Method setFromStringClientId generated
-	/**
-	 * Maps DB-Column: client_Id
-	 * Logical type: Id
-	 */
-	public void setClientIdFromString( String pClientId ) {
-		setClientId( NumberTool.parseLong( pClientId, null ) );
-	}
-	// END Method setFromStringClientId
-
-
-	// START Method getColumnMetaDataClientId generated
-	/**
-	 * Maps DB-Column: client_Id
-	 * Logical type: Id
-	 */
-	public BasicDCColumnMetaData getColumnMetaDataForClientId() {
-		return getBasicDCColumnMetaData( FIELD_CLIENTID );
-	}
-	// END Method getColumnMetaDataClientId
 
 
 	// START Protected ( insert your personal code here ) -- do not modify this line!!
