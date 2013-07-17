@@ -198,7 +198,15 @@
 	color: black;
 	border: 2px solid #0099CC;	
 	background-color: white;
+	text-decoration: none;
+	padding-left: 6px;
+	padding-right: 6px;
 }
+
+a.portlet-form-button {
+	padding-top: 1px;
+	padding-bottom: 1px;
+} 
 
 .portlet-form-input-field {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -208,17 +216,6 @@
 	font-variant: normal;
 	color: black;
 	border: 1px solid #0099CC;
-}
-
-.portlet-form-button {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	color: black;
-	border: 2px solid #0099CC;	
-	background-color: white;
 }
 
 .portlet-form-field-label {
