@@ -8,20 +8,20 @@
 			  	<!-- doc41:navEntry href="userprofile/myprofile" title="My Profile" id="myProfile" cssclass="first-child" /-->
 			  </doc41:topNavEntry>
 			  
-			  <doc41:topNavEntry href="documents/documentupload" title="navDocuments" id="documents" permission="CREATE_ADMIN CREATE_USER">
+			  <doc41:topNavEntry href="documents/documentupload" title="navDocuments" id="documents" permission="TOPNAV_DOCUMENTS">
 			  	<doc41:navEntry href="documents/documentupload?type=BOL" title="Bill of Lading" id="BOL" cssclass="first-child" />
 			  	<doc41:navEntry href="documents/documentupload?type=AWB" title="Air Waybill" id="AWB" cssclass="first-child" />
 			  </doc41:topNavEntry>
 			  
-			  <doc41:topNavEntry href="useradmin/userlist" title="navManagement" id="management" permission="CREATE_USER">
+			  <doc41:topNavEntry href="useradmin/userlist" title="navManagement" id="management" permission="TOPNAV_MANAGEMENT">
 			  	<doc41:navEntry href="useradmin/userlist" title="User Management" id="userManagement" cssclass="first-child" />
 			  </doc41:topNavEntry>
 			  
-			  <doc41:topNavEntry href="monitoring/monitoringOverview" title="navMaintenance" id="maintenance" permission="CREATE_USER">
-			  	<doc41:navEntry href="SupportConsole" title="Support Console" id="supportConsole" cssclass="first-child" permission="CREATE_ADMIN"/>
-			  	<doc41:navEntry href="translations/translationOverview" title="Translations" id="translations" permission="CREATE_USER"/>
+			  <doc41:topNavEntry href="monitoring/monitoringOverview" title="navMaintenance" id="maintenance" permission="TOPNAV_MAINTENANCE">
+			  	<doc41:navEntry href="SupportConsole" title="Support Console" id="supportConsole" cssclass="first-child" permission="NAV_SUPPORTCONSOLE"/>
+			  	<doc41:navEntry href="translations/translationOverview" title="Translations" id="translations" permission="NAV_TRANSLATIONS"/>
 			  	<!-- doc41:navEntry href="busedit" title="System Administration" id="systemAdministration"/-->
-			  	<doc41:navEntry href="monitoring/monitoringOverview" title="Interface Monitoring" id="interfaceMonitoring" permission="CREATE_USER"/>
+			  	<doc41:navEntry href="monitoring/monitoringOverview" title="Interface Monitoring" id="interfaceMonitoring" permission="NAV_MONITORING"/>
 			  </doc41:topNavEntry>
 			  
 </c:if>
