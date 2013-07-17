@@ -48,9 +48,10 @@ public class LogoutController extends AbstractDoc41Controller {
         			sessionDataDAO.delete(dbSessionDC);
         		}
         		UserInSession.put(null);
+        		request.getSession().removeAttribute(Doc41SessionKeys.DOC41_USER);
     		} catch (Doc41TechnicalException e1) {
     			Doc41Log.get().error(this.getClass(), user.getCwid(), "DB SessionData access failed:"+e1.getMessage());
-    		e1.printStackTrace();
+    			e1.printStackTrace();
     		}
     		boolean externalUser = user.isExternalUser();
     		@SuppressWarnings("unchecked")
