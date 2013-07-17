@@ -9,13 +9,16 @@
 <%@attribute name="title"			required="true"%>
 <%@attribute name="showTopNav"		required="false"%>
 <%@attribute name="showHeader"		required="false"%>
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <%@include file="/WEB-INF/fragments/layout/head.jspf" %>
 	<body>
 		<div id="container">
+<c:if test="${empty showHeader or showHeader}">
 <%@include file="/WEB-INF/fragments/layout/header.jspf" %>
 <%@include file="/WEB-INF/fragments/layout/topnavigation.jspf" %>
+</c:if>
 			<div id="page">
 				  <div id="content"><jsp:doBody></jsp:doBody>
 				  </div>

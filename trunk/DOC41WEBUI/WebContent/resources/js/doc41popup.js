@@ -6,8 +6,12 @@ $('a#openPopupLink').each(function() {
 var $link = $(this);
 var $href=$link.attr('href');
 var $target = $link.attr('target');
+var $title = $link.text();
+if( $title === ""){
+	$title='';
+}
         
-var $dialog = $('<div id="'+$target+'">&nbsp;</div>')
+var $dialog = $('<div id="'+$target+'" title="'+$title+'">&nbsp;</div>')
 .dialog({
 autoOpen: false,
 

@@ -1,6 +1,4 @@
 <%@taglib prefix="doc41" uri="doc41-tags" %>
-<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
-<c:if test="${empty showHeader or showHeader}">
 			<!--  BEGIN Header -->
 			<div id="head">
 			 <div id="headLeft">
@@ -12,4 +10,3 @@
 			 </div>
 			</div>
 			<!--  END   Header -->
-</c:if>
