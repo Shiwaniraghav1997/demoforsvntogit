@@ -323,8 +323,7 @@ public class User extends DomainObject {
 	public String toString() {
 		return "User [cwid=" + cwid + ", surname=" + surname + ", firstname="
 				+ firstname + ", email=" + email + ", phone=" + phone
-				+ ", type=" + type + ", active=" + active + ", password="
-				+ password + ", passwordRepeated=" + passwordRepeated
+				+ ", type=" + type + ", active=" + active
 				+ ", locale=" + locale + ", readOnly=" + readOnly
 				+ ", timeZone=" + timeZone + ", permissions=" + permissions
 				+ ", company=" + company + "]";
