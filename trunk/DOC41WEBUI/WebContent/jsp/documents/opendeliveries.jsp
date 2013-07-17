@@ -7,11 +7,6 @@ showHeader="false">
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41tablesorterclient.js")"></script>
 
-<html>
-  <head>
-  	<title>Open Deliveries</title></head>
-  <body>
-    
     <div class="portlet-body">
 		
 		<div class="portlet-section-body">
@@ -75,8 +70,6 @@ showHeader="false">
 					<option value="30">30</option>
 					<option value="40">40</option>
 		        </select>
-		      </div>
 		</div>
-  </body>
-</html>
+	</div>
 </doc41:layout>
