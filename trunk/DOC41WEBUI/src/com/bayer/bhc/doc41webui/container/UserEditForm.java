@@ -217,8 +217,7 @@ public class UserEditForm implements Serializable{
 	public String toString() {
 		return "UserEditForm [objectID=" + objectID + ", cwid=" + cwid
 				+ ", surname=" + surname + ", firstname=" + firstname
-				+ ", password=" + password + ", passwordRepeated="
-				+ passwordRepeated + ", company=" + company + ", email="
+				+ ", company=" + company + ", email="
 				+ email + ", phone=" + phone + ", timeZone=" + timeZone
 				+ ", languageCountry=" + languageCountry + ", active=" + active
 				+ ", type=" + type + ", roles=" + roles + ", partners="
