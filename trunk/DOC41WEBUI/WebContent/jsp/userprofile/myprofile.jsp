@@ -110,5 +110,29 @@ title="My Profile">
 			</tbody>
 		</table>
 	</div>
+	
+	<div class="portlet-section-body">
+		<table cellpadding="4" cellspacing="0" class="nohover">
+			<thead class="portlet-table-header">
+				<tr>
+					<th colspan="4"><doc41:translate label="TitelPartners"/></th>
+				</tr>
+			</thead>
+			<tbody class="portlet-table-body">		
+				
+				<tr>
+					
+					<th style="width: 15%"><doc41:translate label="PartnerNumbers"/></th>
+					<td style="width: 35%">
+						<c:forEach items="${user.partners}" var="partner" varStatus="partnerStatus">
+							<c:out value="${partner}"/><br/>
+						</c:forEach>
+					</td>
+					<th style="width: 15%">&nbsp;</th>
+					<td style="width: 35%">&nbsp;</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </form:form>
 </doc41:layout>
