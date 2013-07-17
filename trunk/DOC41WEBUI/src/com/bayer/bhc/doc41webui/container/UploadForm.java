@@ -5,11 +5,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.bayer.ecim.foundation.basic.StringTool;
 
 public class UploadForm {
 	
-	private static final Object SHIPPING_UNIT_NUMBER = "ShippingUnitNumber";
+	private static final Object SHIPPING_UNIT_NUMBER = "SHIPPINGUNIT";
 
 	private String deliveryNumber;
 
@@ -105,6 +108,26 @@ public class UploadForm {
 				+ ", attributeLabels=" + attributeLabels + ", attributeValues="
 				+ attributeValues + ", fileId=" + fileId + ", type=" + type
 				+ ", partnerNumber=" + partnerNumber + "]";
+	}
+	
+	public void validate(Errors errors) {
+		boolean isfileEmpty = (file==null||file.getSize()==0);
+		if(isfileEmpty && StringTool.isTrimmedEmptyOrNull(fileId)){
+			errors.rejectValue("file", "uploadFileMissing", "upload file is missing");
+		}
+		if(StringTool.isTrimmedEmptyOrNull(partnerNumber)){
+			errors.rejectValue("partnerNumber", "PartnerNumberMissing", "partner number is missing");
+		}
+		if(StringTool.isTrimmedEmptyOrNull(deliveryNumber)){
+			errors.rejectValue("deliveryNumber", "DeliveryNumberMissing", "delivery number is missing");
+		}
+		if(StringTool.isTrimmedEmptyOrNull(getShippingUnitNumber())){
+			errors.rejectValue("attributeValues['SHIPPINGUNIT']", "ShippingUnitNumberMissing", "shipment unit number is missing");
+		}
+		if(!isfileEmpty && !StringTool.isTrimmedEmptyOrNull(fileId)){
+			errors.rejectValue("file", "FileAndFileId", "both file and fileId filled");
+		}
+		
 	}
 	
 	

@@ -54,12 +54,12 @@ function setDeliveryNumber(delNumber,shipunit){
 						
 						<tr>
 							<td><doc41:translate label="PartnerNumber" /></td>
-							<td><form:select path="partnerNumber" items="${user.partners}" cssClass="portlet-form-input-field" cssStyle="width:140;"/></td>
+							<td><form:select path="partnerNumber" items="${user.partners}" cssClass="portlet-form-input-field" cssStyle="width:140;"/><doc41:error path="partnerNumber" /></td>
 						</tr>
 						
 						<tr class="portlet-table-alternate">
 							<td><doc41:translate label="DeliveryNumber" /></td>
-							<td><form:input path="deliveryNumber" cssClass="portlet-form-input-field"  maxlength="70"/></td>
+							<td><form:input path="deliveryNumber" cssClass="portlet-form-input-field"  maxlength="70"/><doc41:error path="deliveryNumber" /></td>
 						</tr>
 						
 						 <c:forEach items="${uploadForm.attributeValues}" var="attributeValue" varStatus="status">
@@ -83,6 +83,7 @@ function setDeliveryNumber(delNumber,shipunit){
 							            <input id="${attributeValue.key}" class="portlet-form-input-field"  maxlength="70" name="attributeValues['${attributeValue.key}']" value="${attributeValue.value}"/>
 						            </c:otherwise>
 					            </c:choose>
+					            <doc41:error path="attributeValues['${attributeValue.key}']" />
 					            </td>
 					        </tr>
 					    </c:forEach>

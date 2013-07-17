@@ -46,6 +46,11 @@ public class UploadController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/documents/upload",method = RequestMethod.POST)
 	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result) { //ggf. kein modelattribute wegen sessionattribute
+		String failedURL = "/documents/documentupload";
+		uploadForm.validate(result);
+		if(result.hasErrors()){
+			return failedURL;
+		}
 		String error=postUpdateInternal(uploadForm);
 		if(StringTool.isTrimmedEmptyOrNull(error)){
 			return "redirect:/documents/documentupload"+"?type="+uploadForm.getType();
@@ -58,18 +63,6 @@ public class UploadController extends AbstractDoc41Controller {
 	private String postUpdateInternal(UploadForm uploadForm) {
 		try{
 			MultipartFile file = uploadForm.getFile();
-			if((file==null||file.getSize()==0) && StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-				return "uploadFileMissing";
-			}
-			if(StringTool.isTrimmedEmptyOrNull(uploadForm.getPartnerNumber())){
-				return "NoPartnerNumberSelected";
-			}
-			if((file!=null&&file.getSize()>0) && !StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
-				return "FileAndFileId";
-			}
-			if(!documentUC.checkDeliveryForPartner(uploadForm.getPartnerNumber(), uploadForm.getDeliveryNumber(), uploadForm.getShippingUnitNumber())){
-				return "DeliveryNotAllowedForCarrier";
-			} 
 			if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
 				File localFile = documentUC.checkForVirus(file);
 				if(localFile==null){
