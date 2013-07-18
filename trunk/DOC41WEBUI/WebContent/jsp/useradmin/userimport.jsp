@@ -18,7 +18,7 @@ title="User Import">
 				<input type="button" class="portlet-form-button" onclick="sendGet('useradmin/userlist')" value="<doc41:translate label="ButtonCancel"/>"/>
 				<input type="button" class="portlet-form-button" onclick="sendGet('useradmin/userlookup');" value="<doc41:translate label="ButtonLookup"/>" />
 				<c:if test="${!empty userEditForm.surname}">
-					<input type="submit" class="portlet-form-button" value="<doc41:translate label="Save"/>" />
+					<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
 				</c:if>
 			</div>
 		

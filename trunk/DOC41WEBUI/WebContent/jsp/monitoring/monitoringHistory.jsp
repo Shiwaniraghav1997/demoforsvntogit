@@ -38,7 +38,7 @@ title="MonitoringHistory">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41tablesorter.js"></script>
 		<!--Buttons Bar: Start-->
 		<div class="portlet-section-header">
-			<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="Back"/>"/>
+			<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="ButtonBack"/>"/>
 		</div>
 		<!--Buttons Bar :End-->
 	
@@ -65,7 +65,7 @@ title="MonitoringHistory">
 			<table class="nohover" cellpadding="4" cellspacing="0">
 				<thead class="portlet-table-header">
 					<tr>
-						<th colspan="5"><doc41:translate label="MonitoringHistrory" /></th>
+						<th colspan="5"><doc41:translate label="MonitoringHistory" /></th>
 					</tr>
 				</thead>
 			</table>

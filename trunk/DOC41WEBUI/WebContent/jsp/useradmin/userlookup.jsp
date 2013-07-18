@@ -14,7 +14,7 @@ title="User Import">
 					<th><doc41:translate label="UserImport"/></th>
 				</table>
 				
-				<input type="button" class="portlet-form-button" onclick="sendGet('useradmin/userlist')" value="<doc41:translate label="Cancel"/>"/>
+				<input type="button" class="portlet-form-button" onclick="sendGet('useradmin/userlist')" value="<doc41:translate label="ButtonCancel"/>"/>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonLookup"/>" />
 			</div>
 		

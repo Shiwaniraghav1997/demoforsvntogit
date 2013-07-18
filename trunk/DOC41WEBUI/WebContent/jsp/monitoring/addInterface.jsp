@@ -21,7 +21,7 @@ title="AddInterface">
 			<table cellpadding="4" cellspacing="0" class="nohover">
 				<thead class="portlet-table-header">
 					<tr>
-						<th colspan="5"><doc41:translate label="Interface Details" /></th>
+						<th colspan="5"><doc41:translate label="InterfaceDetails" /></th>
 					</tr>
 				</thead>
 				<tbody class="portlet-table-body">

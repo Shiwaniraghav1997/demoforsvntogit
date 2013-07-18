@@ -7,6 +7,10 @@ title="">
 <!--
 
 	tsheaders = {
+		0 : {
+			sorter : true,
+			filter : false
+		},
 		5 : {
 			sorter : true,
 			filter : false

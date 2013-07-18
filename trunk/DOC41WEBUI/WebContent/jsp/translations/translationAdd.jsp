@@ -13,8 +13,8 @@ title="Translations">
 				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
 					<tr><th><doc41:translate label="TranslationAdd"/></th></tr>
 				</table>
-				<input type="button" class="portlet-form-button" onclick="sendGet('translations/translationOverview')" value="<doc41:translate label="Cancel"/>"/>
-				<input type="submit" class="portlet-form-button" value="<doc41:translate label="Save"/>" />
+				<input type="button" class="portlet-form-button" onclick="sendGet('translations/translationOverview')" value="<doc41:translate label="ButtonCancel"/>"/>
+				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
 			
 			</div>
 					
@@ -46,7 +46,7 @@ title="Translations">
 						<tr>
 						<th><doc41:translate label="Mandant" /></th>
 						<th><doc41:translate label="Component" /></th>
-						<th><doc41:translate label="PageName" /></th>
+						<th><doc41:translate label="Page" /></th>
 					</tr>
 					<tr>
 						<td><form:input path="mandant" readonly="true" size="30" cssClass="portlet-form-input-field" /></td>
@@ -55,8 +55,8 @@ title="Translations">
 					</tr>
 					<tr>
 						<th><doc41:translate label="TagName" /></th>
-						<th><doc41:translate label="LanguageCode" /></th>
-						<th><doc41:translate label="CountryCode" /></th>
+						<th><doc41:translate label="Language" /></th>
+						<th><doc41:translate label="Country" /></th>
 		
 					</tr>
 					<tr>

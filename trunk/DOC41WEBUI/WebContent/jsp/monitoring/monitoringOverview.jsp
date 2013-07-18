@@ -11,8 +11,8 @@ title="MonitoringOverview">
 			<tr><th><doc41:translate label="MonitoringOverview"/></th></tr>
 		</table>
 	
-		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="Refresh"/>"/>
-		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/addInterface')" value="<doc41:translate label="AddInterface"/>"/>
+		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="ButtonRefresh"/>"/>
+		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/addInterface')" value="<doc41:translate label="ButtonAddInterface"/>"/>
 	</div>
 	
 	<div class="portlet-section-body">

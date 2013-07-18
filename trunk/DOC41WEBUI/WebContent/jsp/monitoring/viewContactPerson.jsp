@@ -37,12 +37,12 @@ title="ViewContactPerson">
 			<c:when test="${ebcUser.dcId==null}">
 				<td><input type="button" class="portlet-form-button"
 					onclick="sendGet('monitoring/addContactPerson', 'contactType=EBC&amp;serviceName=${service.name}')"
-					value="<doc41:translate label="Add"/>" /></td>
+					value="<doc41:translate label="ButtonAdd"/>" /></td>
 			</c:when>
 			<c:otherwise>
 				<td><input type="button" class="portlet-form-button"
 					onclick="sendGet('monitoring/editContactPerson', 'objectId=${ebcUser.dcId}&amp;serviceName=${service.name}')"
-					value="<doc41:translate label="Edit"/>" /></td>
+					value="<doc41:translate label="ButtonEdit"/>" /></td>
 			</c:otherwise>
 		</c:choose>
 	</tr>
@@ -82,12 +82,12 @@ title="ViewContactPerson">
 			<c:when test="${backendUser.dcId==null}">
 				<td><input type="button" class="portlet-form-button"
 					onclick="sendGet('monitoring/addContactPerson', 'contactType=BACKEND&amp;serviceName=${service.name}')"
-					value="<doc41:translate label="Add"/>" /></td>
+					value="<doc41:translate label="ButtonAdd"/>" /></td>
 			</c:when>
 			<c:otherwise>
 				<td><input type="button" class="portlet-form-button"
 					onclick="sendGet('monitoring/editContactPerson', 'objectId=${backendUser.dcId}&amp;serviceName=${service.name}')"
-								value="<doc41:translate label="Edit"/>" /></td>
+								value="<doc41:translate label="ButtonEdit"/>" /></td>
 			</c:otherwise>
 		</c:choose>
 	</tr>

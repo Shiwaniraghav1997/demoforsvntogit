@@ -22,7 +22,7 @@ function addPartner(partner){
 	}
 	var paddedPartner = strPad(partner, <%=Doc41Constants.FIELD_SIZE_PARTNER_NUMBER %>);
 	var id = Math.floor( Math.random()*999999999 );
-	$("#partnerlist").append("<tr id='"+id+"'><td>"+paddedPartner+"</td><td><input name='partners' type='hidden' value='"+paddedPartner+"'/><span class='portlet-form-button' style='cursor: pointer;' onclick='javascript:removePartner(&quot;"+id+"&quot;)'><doc41:translate label='Remove'/></span></td></tr>");
+	$("#partnerlist").append("<tr id='"+id+"'><td>"+paddedPartner+"</td><td><input name='partners' type='hidden' value='"+paddedPartner+"'/><span class='portlet-form-button' style='cursor: pointer;' onclick='javascript:removePartner(&quot;"+id+"&quot;)'><doc41:translate label='ButtonRemove'/></span></td></tr>");
 }
 function removePartner(id){
 	$("#"+id).remove();
@@ -54,7 +54,7 @@ $(function() {
 					</colgroup>
 						<tr>
 							<td><input class="portlet-form-input-field" style="width:100%;" id="newPartner"/></td>
-							<td><span class="portlet-form-button" style="cursor: pointer;" onclick="javascript:addPartner($.trim($('#newPartner').val()));$('#newPartner').val('')"><doc41:translate label="Add"/></span></td>
+							<td><span class="portlet-form-button" style="cursor: pointer;" onclick="javascript:addPartner($.trim($('#newPartner').val()));$('#newPartner').val('')"><doc41:translate label="ButtonAdd"/></span></td>
 						</tr>
 					</table>
 				</td>
