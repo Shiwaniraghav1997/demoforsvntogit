@@ -1,7 +1,7 @@
 <%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
 jspName="list" 				component="useradmin"
 activeTopNav="management" 	activeNav="userManagement"
-title="">
+title="User Management">
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript">
 <!--

@@ -25,7 +25,7 @@ function setDeliveryNumber(delNumber,shipunit){
 					<tr><th><doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${uploadForm.type}"/></th></tr>
 				</table>
 				<a  class="portlet-form-button" href="opendeliveries?type=${uploadForm.type}" id="openPopupLink" target="open_delivery_dialog"><doc41:translate label="DeliveriesWithout" />&nbsp;<doc41:translate label="${uploadForm.type}"/></a>
-				<input type="submit" class="portlet-form-button" value="<doc41:translate label="Upload"/>" />
+				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonUpload"/>" />
 			</div>
 			<div class="portlet-section-body">
 				<table cellpadding="4" cellspacing="0" class="nohover">

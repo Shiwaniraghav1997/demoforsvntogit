@@ -7,7 +7,7 @@ title="ViewContactPerson">
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 <!--Buttons Bar: Start-->
 <div class="portlet-section-header">
-	<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="Back"/>"/>
+	<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="ButtonBack"/>"/>
 </div>
 <!--Buttons Bar :End-->
 <div class="portlet-section-body">

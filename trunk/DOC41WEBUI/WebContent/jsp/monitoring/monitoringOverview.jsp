@@ -69,14 +69,5 @@ title="MonitoringOverview">
 					</c:forEach>
 				</tbody>
 			</table>
-	<table class="nohover" cellpadding="3">
-
-	<tr align="right">
-	<td>
-		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="Refresh"/>"/>
-		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/addInterface')" value="<doc41:translate label="AddInterface"/>"/>
-	</td>
-	</tr>
-	</table>
 			</div>
 </doc41:layout>
