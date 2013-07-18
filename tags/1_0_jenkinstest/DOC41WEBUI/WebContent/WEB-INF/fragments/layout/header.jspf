@@ -1,0 +1,12 @@
+<%@taglib prefix="doc41" uri="doc41-tags" %>
+			<!--  BEGIN Header -->
+			<div id="head">
+			 <div id="headLeft">
+			  <div id="namingArea" style="background-image: url('${pageContext.request.contextPath}/resources/img/gradient.png')"><img src="${pageContext.request.contextPath}/resources/img/bhc.gif" alt="Doc41" title="Document for one"/></div>
+			  <div class="support"><doc41:stageInfo/><br/><a href="${pageContext.request.contextPath}/logout">Logout</a></div>
+			 </div>
+			 <div id="headRight">
+			  <div id="bayerLogo"><a href="http://www.bayer.com"><img src="${pageContext.request.contextPath}/resources/img/bayer_logo.gif" alt="The Bayer Cross" title="To the Bayer Group Internet"/></a></div>
+			 </div>
+			</div>
+			<!--  END   Header -->
