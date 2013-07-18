@@ -218,6 +218,9 @@ public class User extends DomainObject {
 	}
 
 	public void setRoles(List<String> roles) {
+		if(roles==null){
+			roles = new ArrayList<String>();
+		}
 		this.roles = roles;
 	}
 	
@@ -226,6 +229,9 @@ public class User extends DomainObject {
 	}
 	
 	public void setPartners(List<String> partners) {
+		if(partners ==null){
+			partners = new ArrayList<String>();
+		}
 		this.partners = partners;
 	}
 

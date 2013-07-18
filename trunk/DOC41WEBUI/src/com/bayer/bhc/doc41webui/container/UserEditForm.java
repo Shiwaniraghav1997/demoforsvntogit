@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.container;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -196,6 +197,9 @@ public class UserEditForm implements Serializable{
 	}
 	
 	public void setRoles(List<String> roles) {
+		if(roles==null){
+			roles = new ArrayList<String>();
+		}
 		this.roles = roles;
 	}
 	
@@ -210,6 +214,9 @@ public class UserEditForm implements Serializable{
 		return partners;
 	}
 	public void setPartners(List<String> partners) {
+		if(partners==null){
+			partners = new ArrayList<String>();
+		}
 		this.partners = partners;
 	}
 	
