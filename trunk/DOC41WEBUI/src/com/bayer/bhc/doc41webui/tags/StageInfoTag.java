@@ -27,7 +27,7 @@ public class StageInfoTag extends TagSupport {
 			cwidString 	= user.getCwid() + " / ";
 			welcome		= String.format("<b>%s %s %s</b>  ", getTranslation("welcome"), user.getFirstname(), user.getSurname()); 
 		}
-		welcome += "</br>";
+		welcome += "<br/>";
 		String stageInfo = welcome + " <<< " + cwidString + ConfigMap.get().getHostId() +" / "+ConfigMap.get().get("common.all.version")+" >>>";
 		
 		JspWriter printer = pageContext.getOut();

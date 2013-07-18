@@ -5,7 +5,7 @@ title="Open Deliveries" showTopNav="false"
 showHeader="false">
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41tablesorterclient.js")"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41tablesorterclient.js"></script>
 
     <div class="portlet-body">
 		

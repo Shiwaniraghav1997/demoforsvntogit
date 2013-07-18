@@ -11,6 +11,7 @@ import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
+import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPartnerDC;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -29,12 +30,13 @@ import com.bayer.ecim.foundation.web.usermanagementN.UM_CONSTS_N;
  *
  */
 @Component
-public class UserManagementDAO extends AbstractDAOImpl{
+public class UserManagementDAO extends AbstractDAOImpl {
 	
 	private static final String TEMPLATE_COMPONENT_NAME	= "userManagement";	
 	
 	private static final String GET_PARTNERS_BY_USER		= "getPartnersByUser";
 	private static final String GET_USER_PARTNER			= "getUserPartner";
+	private static final String GET_PROFILE_PERMISSIONS		= "getProfilePermissions";
 	
 	@Override
 	public String getTemplateComponentName() {		
@@ -264,6 +266,21 @@ public class UserManagementDAO extends AbstractDAOImpl{
 			return dc;
 		} catch (Exception e) {
 			throw new Doc41TechnicalException(this.getClass(), "getUserPartner", e);
+		}
+	}
+	
+	public List<ProfilePermissionDC> getProfilePermissions() throws Doc41TechnicalException {
+		try {
+			String[] parameterNames				= { };
+	        Object[] parameterValues			= { };
+	        String templateName					= GET_PROFILE_PERMISSIONS;
+	        Class<ProfilePermissionDC> dcClass	= ProfilePermissionDC.class;        
+	        
+	        List<ProfilePermissionDC> dcs = find(parameterNames, parameterValues, templateName, dcClass);	                		
+			
+			return dcs;
+		} catch (Exception e) {
+			throw new Doc41TechnicalException(this.getClass(), "getProfilePermissions", e);
 		}
 	}
 

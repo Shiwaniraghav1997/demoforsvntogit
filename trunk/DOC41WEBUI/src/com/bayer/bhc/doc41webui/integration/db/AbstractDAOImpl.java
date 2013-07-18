@@ -27,6 +27,7 @@ import com.bayer.ecim.foundation.basic.SQLStringTool;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.dbx.ChangeableDataCarrier;
 import com.bayer.ecim.foundation.dbx.DBObjectAccess;
+import com.bayer.ecim.foundation.dbx.DataCarrier;
 import com.bayer.ecim.foundation.dbx.DatabaseException;
 import com.bayer.ecim.foundation.dbx.DeleteException;
 import com.bayer.ecim.foundation.dbx.MappingException;
@@ -242,7 +243,7 @@ public abstract class AbstractDAOImpl {
     	}
     }
     
-    protected <T extends StorableDataCarrier> List<T> find(String[] pParameterNames, Object[] pParameterValues, String pTemplateName,
+    protected <T extends DataCarrier> List<T> find(String[] pParameterNames, Object[] pParameterValues, String pTemplateName,
             Class<T> pClazz) throws Doc41TechnicalException {
 
         int transactionID = -1;
@@ -271,7 +272,7 @@ public abstract class AbstractDAOImpl {
     /*
      * 
      */
-    protected <T extends StorableDataCarrier> List<T> find(int pTransactionId, String[] pParameterNames, Object[] paramValues,
+    protected <T extends DataCarrier> List<T> find(int pTransactionId, String[] pParameterNames, Object[] paramValues,
             String pTemplateName, Class<T> pClazz) throws Doc41TechnicalException {
 
     	paramValues = SQLStringTool.escape(paramValues);
