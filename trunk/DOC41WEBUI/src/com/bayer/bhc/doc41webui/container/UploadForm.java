@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -115,15 +116,9 @@ public class UploadForm {
 		if(isfileEmpty && StringTool.isTrimmedEmptyOrNull(fileId)){
 			errors.rejectValue("file", "uploadFileMissing", "upload file is missing");
 		}
-		if(StringTool.isTrimmedEmptyOrNull(partnerNumber)){
-			errors.rejectValue("partnerNumber", "PartnerNumberMissing", "partner number is missing");
-		}
-		if(StringTool.isTrimmedEmptyOrNull(deliveryNumber)){
-			errors.rejectValue("deliveryNumber", "DeliveryNumberMissing", "delivery number is missing");
-		}
-		if(StringTool.isTrimmedEmptyOrNull(getShippingUnitNumber())){
-			errors.rejectValue("attributeValues['SHIPPINGUNIT']", "ShippingUnitNumberMissing", "shipment unit number is missing");
-		}
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "partnerNumber", "PartnerNumberMissing", "partner number is missing");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "DeliveryNumberMissing", "delivery number is missing");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "attributeValues['SHIPPINGUNIT']", "ShippingUnitNumberMissing", "shipment unit number is missing");
 		if(!isfileEmpty && !StringTool.isTrimmedEmptyOrNull(fileId)){
 			errors.rejectValue("file", "FileAndFileId", "both file and fileId filled");
 		}
