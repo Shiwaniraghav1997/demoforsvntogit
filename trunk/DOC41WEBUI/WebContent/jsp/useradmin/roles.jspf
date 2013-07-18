@@ -9,7 +9,7 @@
 		</thead>
 		<tbody class="portlet-table-body">		
 			<tr>
-				<th style="width: 15%"><img src="${pageContext.request.contextPath}/resources/img/usermanagement/symbol_<%=User.ROLE_BUSINESS_ADMIN %>.gif" alt="<doc41:translate label="<%=User.ROLE_BUSINESS_ADMIN %>"/>" style="border: 0px;"/>&nbsp;<doc41:translate label="<%=User.ROLE_BUSINESS_ADMIN %>"/></th>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_BUSINESS_ADMIN %>"/></th>
 				<td style="width: 35%">
 					<c:if test="${userEditForm.type eq 'external'}">
 						<form:checkbox path="roles" value="<%=User.ROLE_BUSINESS_ADMIN %>" disabled="true"/>
@@ -18,7 +18,7 @@
 						<form:checkbox path="roles" value="<%=User.ROLE_BUSINESS_ADMIN %>"/>
 					</c:if>
 				</td>
-				<th style="width: 15%"><img src="${pageContext.request.contextPath}/resources/img/usermanagement/symbol_<%=User.ROLE_TECH_ADMIN %>.gif" alt="<doc41:translate label="<%=User.ROLE_TECH_ADMIN %>"/>" style="border: 0px;"/>&nbsp;<doc41:translate label="<%=User.ROLE_TECH_ADMIN %>"/></th>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_TECH_ADMIN %>"/></th>
 				<td style="width: 35%">
 					<c:if test="${userEditForm.type eq 'external'}">
 						<form:checkbox path="roles" value="<%=User.ROLE_TECH_ADMIN %>" disabled="true"/>
@@ -29,7 +29,7 @@
 				</td>
 			</tr>
 			<tr class="portlet-table-alternate">
-				<th style="width: 15%"><img src="${pageContext.request.contextPath}/resources/img/usermanagement/symbol_<%=User.ROLE_CARRIER %>.gif" alt="<doc41:translate label="<%=User.ROLE_CARRIER %>"/>" style="border: 0px;"/>&nbsp;<doc41:translate label="<%=User.ROLE_CARRIER %>"/></th>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_CARRIER %>"/></th>
 				<td style="width: 35%">
 					<c:if test="${userEditForm.type eq 'external'}">
 						<form:checkbox path="roles" value="<%=User.ROLE_CARRIER %>"/>
@@ -38,7 +38,7 @@
 						<form:checkbox path="roles" value="<%=User.ROLE_CARRIER %>" disabled="true"/>
 					</c:if>
 				</td>
-				<th style="width: 15%"><img src="${pageContext.request.contextPath}/resources/img/usermanagement/symbol_<%=User.ROLE_CUSTOMS_BROKER %>.gif" alt="<doc41:translate label="<%=User.ROLE_CUSTOMS_BROKER %>"/>" style="border: 0px;"/>&nbsp;<doc41:translate label="<%=User.ROLE_CUSTOMS_BROKER %>"/></th>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_CUSTOMS_BROKER %>"/></th>
 				<td style="width: 35%">
 					<c:if test="${userEditForm.type eq 'external'}">
 						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMS_BROKER %>"/>
@@ -50,7 +50,7 @@
 			</tr>
 			
 			<tr>
-				<th style="width: 15%"><img src="${pageContext.request.contextPath}/resources/img/usermanagement/symbol_<%=User.ROLE_LAYOUT_SUPPLIER %>.gif" alt="<doc41:translate label="<%=User.ROLE_LAYOUT_SUPPLIER %>"/>" style="border: 0px;"/>&nbsp;<doc41:translate label="<%=User.ROLE_LAYOUT_SUPPLIER %>"/></th>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_LAYOUT_SUPPLIER %>"/></th>
 				<td style="width: 35%">
 					<c:if test="${userEditForm.type eq 'external'}">
 						<form:checkbox path="roles" value="<%=User.ROLE_LAYOUT_SUPPLIER %>"/>
@@ -59,7 +59,7 @@
 						<form:checkbox path="roles" value="<%=User.ROLE_LAYOUT_SUPPLIER %>" disabled="true"/>
 					</c:if>
 				</td>
-				<th style="width: 15%"><img src="${pageContext.request.contextPath}/resources/img/usermanagement/symbol_<%=User.ROLE_PM_SUPPLIER %>.gif" alt="<doc41:translate label="<%=User.ROLE_PM_SUPPLIER %>"/>" style="border: 0px;"/>&nbsp;<doc41:translate label="<%=User.ROLE_PM_SUPPLIER %>"/></th>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_PM_SUPPLIER %>"/></th>
 				<td style="width: 35%">
 					<c:if test="${userEditForm.type eq 'external'}">
 						<form:checkbox path="roles" value="<%=User.ROLE_PM_SUPPLIER %>"/>
@@ -72,7 +72,7 @@
 			
 			<tr class="portlet-table-alternate">
 				
-				<th><img src="${pageContext.request.contextPath}/resources/img/usermanagement/symbol_OBSV.gif" alt="<doc41:translate label="<%=User.ROLE_OBSERVER %>"/>" style="border: 0px;"/>&nbsp;<doc41:translate label="<%=User.ROLE_OBSERVER %>"/></th>
+				<th><doc41:translate label="<%=User.ROLE_OBSERVER %>"/></th>
 				<td>
 					<form:checkbox path="roles" value="<%=User.ROLE_OBSERVER %>"/>
 				</td>

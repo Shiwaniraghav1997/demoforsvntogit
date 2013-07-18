@@ -22,30 +22,6 @@ title="">
 		9 : {
 			sorter : false,
 			filter : false
-		},
-		10 : {
-			sorter : false,
-			filter : false
-		},
-		11 : {
-			sorter : false,
-			filter : false
-		},
-		12 : {
-			sorter : false,
-			filter : false
-		},
-		13 : {
-			sorter : false,
-			filter : false
-		},
-		14 : {
-			sorter : false,
-			filter : false
-		},
-		15 : {
-			sorter : false,
-			filter : false
 		}
 	};
 //-->
@@ -87,13 +63,7 @@ title="">
 		    	<col width="15%"/>
 		    	<col width="10%"/>
 		    	<col width="5%"/>
-		    	<col width="2%"/>
-		    	<col width="2%"/>
-		    	<col width="2%"/>
-		    	<col width="2%"/>
-		    	<col width="2%"/>
-		    	<col width="2%"/>
-		    	<col width="2%"/>
+		    	<col width="14%"/>
 		    	<col width="2%"/>
 		    	<col width="2%"/>
 		    </colgroup>		
@@ -106,9 +76,7 @@ title="">
 				<th><doc41:translate label="Email"/></th>
 				<th><doc41:translate label="Phone"/></th>						
 				<th data-placeholder="exact only"><doc41:translate label="Type"/></th>
-				<c:forEach items="${user.ALL_ROLES}" var="role">
-				<th><img src="${pageContext.request.contextPath}/resources/img/usermanagement/symbol_${role}.gif" title="<doc41:translate label="${role}"/>" alt="<doc41:translate label="${role}"/>" style="border: 0px;"/></th>
-				</c:forEach>
+				<th><doc41:translate label="Roles"/></th>
 				<th>&nbsp;</th>
 				<th>&nbsp;</th>
 			</tr>

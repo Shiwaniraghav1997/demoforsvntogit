@@ -70,7 +70,7 @@ public class UserlistController extends AbstractDoc41Controller {
 			rows.add(row);
 		} else {
 			for (User user : list) {
-				String[] row = new String[16];
+				String[] row = new String[10];
 				row[0]= displayStatus(request,user.getActive(),tags);
 				row[1]= StringTool.nullToEmpty(user.getSurname());
 				row[2]= StringTool.nullToEmpty(user.getFirstname());
@@ -78,16 +78,10 @@ public class UserlistController extends AbstractDoc41Controller {
 				row[4]= StringTool.nullToEmpty(user.getEmail());
 				row[5]= StringTool.nullToEmpty(user.getPhone());
 				row[6]= StringTool.nullToEmpty(user.getType());
-				row[7]= displayRole(request,user.hasRole(User.ROLE_CARRIER),tags); 
-				row[8]= displayRole(request,user.hasRole(User.ROLE_CUSTOMS_BROKER),tags);
-				row[9]= displayRole(request,user.hasRole(User.ROLE_LAYOUT_SUPPLIER),tags);
-				row[10]= displayRole(request,user.hasRole(User.ROLE_PM_SUPPLIER),tags);
-				row[11]= displayRole(request,user.hasRole(User.ROLE_BUSINESS_ADMIN),tags);
-				row[12]= displayRole(request,user.hasRole(User.ROLE_TECH_ADMIN),tags);
-				row[13]= displayRole(request,user.hasRole(User.ROLE_OBSERVER),tags);
+				row[7]= displayRoles(request,user.getRoles(),tags); 
 				//TODO move HTML to JSP
-				row[14]= displayEditButton(request,user.getCwid(),tags);
-				row[15]= displayToggleButton(request,user,tags);
+				row[8]= displayEditButton(request,user.getCwid(),tags);
+				row[9]= displayToggleButton(request,user,tags);
 				rows.add(row);
 			}
 		}
@@ -122,12 +116,19 @@ public class UserlistController extends AbstractDoc41Controller {
 		return "<a href='#' onclick=\"sendGet('useradmin/useredit', 'editcwid="+cwid+"')\"><img src='"+request.getContextPath()+"/resources/img/common/page_edit.gif' alt='"+tags.getTag("ButtonEdit")+"' title='"+tags.getTag("ButtonEdit")+"' style=\"border: 0px;\"></a>";
 	}
 
-	private String displayRole(HttpServletRequest request,boolean isRole, Tags tags) {
-		if(isRole){
-			return "<img src='"+request.getContextPath()+"/resources/img/common/check_green.gif' alt='"+tags.getTag("CheckGreen")+"' style='border: 0px;'>";
-		} else {
-			return "&nbsp;";
+	
+	private String displayRoles(HttpServletRequest request, List<String> roles,
+			Tags tags) {
+		StringBuilder sb = new StringBuilder();
+		if(roles!=null){
+			for (String role : roles) {
+				if(sb.length()>0){
+					sb.append(", ");
+				}
+				sb.append(tags.getTag(role));
+			}
 		}
+		return sb.toString();
 	}
 
 	@RequestMapping(value="/useradmin/toggleuser",method=RequestMethod.POST)
