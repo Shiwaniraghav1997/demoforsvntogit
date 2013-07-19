@@ -8,7 +8,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import com.bayer.ecim.foundation.basic.NestingException;
 import com.bayer.ecim.foundation.basic.StringTool;
-
+//TODO do not output stacktrace for external users because of security concerns (at least not on prod)
 public class ExceptionRendererTag extends TagSupport {
 	
 	private static final long serialVersionUID = 2139821757034053006L;
