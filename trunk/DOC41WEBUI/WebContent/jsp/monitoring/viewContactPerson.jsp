@@ -9,6 +9,8 @@ title="ViewContactPerson">
 <div class="portlet-section-header">
 	<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="ButtonBack"/>"/>
 </div>
+<c:choose>
+<c:when test="${!empty service.name }">
 <!--Buttons Bar :End-->
 <div class="portlet-section-body">
 <table cellpadding="4" cellspacing="0" class="nohover">
@@ -119,4 +121,11 @@ title="ViewContactPerson">
 	</tbody>
 </table>
 </div>
+</c:when>
+<c:otherwise>
+<div class="portlet-section-body" style="color: red">
+	<doc41:translate label="AddInterfaceFirst"/>
+</div>
+</c:otherwise>
+</c:choose>
 </doc41:layout>
