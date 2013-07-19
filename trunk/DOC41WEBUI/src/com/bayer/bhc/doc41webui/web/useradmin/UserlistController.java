@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +42,11 @@ public class UserlistController extends AbstractDoc41Controller {
 		return usr.hasPermission(Doc41Constants.PERMISSION_BUSINESS_ADMIN, Doc41Constants.PERMISSION_TECHNICAL_ADMIN);
     }
 	
+	@ModelAttribute("allRoles")
+	public String[] getAllRoles(){
+		return User.ALL_ROLES;
+	}
+	
 	@RequestMapping(value="/useradmin/userlist",method=RequestMethod.GET)
     protected void get() throws Exception {
         
@@ -58,6 +64,7 @@ public class UserlistController extends AbstractDoc41Controller {
 		userListFilter.setEmail(params.getFilter(4));
 //		userListFilter.setPhone(params.getFilter(5));
 		userListFilter.setType(params.getFilter(6));
+		userListFilter.setRole(params.getFilter(7));
 		
 		userListFilter.setOrderBy(params.getSortColumn(DB_COL_NAMES));
 		

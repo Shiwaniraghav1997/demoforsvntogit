@@ -15,10 +15,6 @@ title="User Management">
 			sorter : true,
 			filter : false
 		},
-		7 : {
-			sorter : false,
-			filter : false
-		},
 		8 : {
 			sorter : false,
 			filter : false
@@ -27,6 +23,19 @@ title="User Management">
 			sorter : false,
 			filter : false
 		}
+	};
+	
+	tsfilters = {
+			6: {
+				internal:{},
+				external:{}
+			},
+			7: {
+				<c:forEach items="${allRoles}" var="role"
+					varStatus="status">
+				 <c:out value="${role} : {},"/>
+		          </c:forEach>
+			}
 	};
 //-->
 </script>
@@ -51,7 +60,6 @@ title="User Management">
 				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/next.png" class="next" alt="Next" title="Next page" />
 				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/last.png" class="last" alt="Last" title= "Last page" />
 		        <select class="pagesize">
-		        	<option value="1">1</option>
 		         	<option selected="selected" value="10">10</option>
 					<option value="20">20</option>
 					<option value="30">30</option>
@@ -79,7 +87,7 @@ title="User Management">
 			    <th data-placeholder="exact only"><doc41:translate label="Cwid"/></th>
 				<th><doc41:translate label="Email"/></th>
 				<th><doc41:translate label="Phone"/></th>						
-				<th data-placeholder="exact only"><doc41:translate label="Type"/></th>
+				<th><doc41:translate label="Type"/></th>
 				<th><doc41:translate label="Roles"/></th>
 				<th>&nbsp;</th>
 				<th>&nbsp;</th>
@@ -96,7 +104,6 @@ title="User Management">
 				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/next.png" class="next" alt="Next" title="Next page" />
 				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/last.png" class="last" alt="Last" title= "Last page" />
 		        <select class="pagesize">
-		        	<option value="1">1</option>
 		         	<option selected="selected" value="10">10</option>
 					<option value="20">20</option>
 					<option value="30">30</option>

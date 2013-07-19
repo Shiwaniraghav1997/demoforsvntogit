@@ -8,6 +8,11 @@ $(function(){
 	if(typeof addparams === "undefined"){
 		addparams='';
 	}
+	
+	//tsfilters can be used to configure special filters like select boxes
+	if(typeof tsfilters === "undefined"){
+		tsfilters={};
+	}
 
   // Initialize tablesorter
   // ***********************
@@ -17,6 +22,9 @@ $(function(){
       widthFixed: true,
       sortLocaleCompare: true, // needed for accented characters in the data
       widgets: ['zebra', 'filter'],
+      widgetOptions: {
+    	  filter_functions : tsfilters
+      },
       headers: tsheaders,
       filter_searchDelay: 1000,
       filter_serversideFiltering : false
