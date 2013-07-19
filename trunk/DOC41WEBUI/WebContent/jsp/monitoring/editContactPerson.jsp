@@ -6,12 +6,12 @@ title="EditContactPerson">
 <%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
-<form:form commandName="user" method="post" action="editContactPersonPost">
+<form:form commandName="contactPerson" method="post" action="editContactPersonPost">
 <form:hidden path="dcId"/>
 <form:hidden path="type"/>
 <form:hidden path="company"/>
 	<div class="portlet-section-header">
-		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/viewContactPerson','serviceName=${user.company}')" value="<doc41:translate label="ButtonCancel"/>"/>
+		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/viewContactPerson','serviceName=${contactPerson.company}')" value="<doc41:translate label="ButtonCancel"/>"/>
 		<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
 	</div>
 
@@ -23,6 +23,18 @@ title="EditContactPerson">
 			</tr>
 		</thead>
 		<tbody class="portlet-table-body">
+			<spring:hasBindErrors name="contactPerson">
+				<tr>
+					<td colspan="4">
+						<c:forEach items="${errors.fieldErrors}" var="error">
+							<tr>
+								<td onmouseover="style.cursor='pointer';" onclick="$('#${error.field}').focus();" style="color: blue"> <doc41:translate label="${error.field}"/> </td>
+				    			<td style="color: red;"><doc41:translate label="${error.field}.${error.code}" /></td>
+							</tr>
+						</c:forEach>
+					</td>
+				</tr>
+			</spring:hasBindErrors>
 			<tr>
 				<th style="width: 15%"><doc41:translate label="Surname" /></th>
 				<td style="width: 35%"><form:input path="surname" cssClass="portlet-form-input-field" maxlength="40"/>

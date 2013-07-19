@@ -32,14 +32,14 @@ public class ContactPersonEditController extends AbstractDoc41Controller {
 	}
     
 	@RequestMapping(value="monitoring/editContactPerson",method = RequestMethod.GET)
-	public User get(@RequestParam String serviceName,@RequestParam String objectId) throws Doc41BusinessException{
+	public @ModelAttribute("contactPerson") User get(@RequestParam String serviceName,@RequestParam String objectId) throws Doc41BusinessException{
 		User user = monitoringUC.findUserById(VersionizedDomainObject.getDcId(objectId));
 		user.setCompany(serviceName);
 		return user;
 	}
 	
 	@RequestMapping(value="/monitoring/editContactPersonPost",method = RequestMethod.POST)
-    public String save(@ModelAttribute User user, BindingResult result) throws Doc41ExceptionBase{
+    public String save(@ModelAttribute("contactPerson") User user, BindingResult result) throws Doc41ExceptionBase{
 		ValidationUtils.rejectIfEmptyOrWhitespace(result, "surname", "surname.required","surname is required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(result, "firstname", "firstname.required","firstname is required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(result, "cwid", "cwid.required","cwid is required");
