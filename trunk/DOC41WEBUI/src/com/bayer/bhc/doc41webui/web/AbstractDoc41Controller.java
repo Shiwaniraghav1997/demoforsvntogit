@@ -55,6 +55,6 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
 			altText = tags.getTag("Inactive");
 			iconName = "ball_red.gif";
 		}
-		return "<img src='"+request.getContextPath()+"/resources/img/common/"+iconName+"' alt='"+altText+"' style='border: 0px;'>";
+		return "<img src='../resources/img/common/"+iconName+"' alt='"+altText+"' style='border: 0px;'>";
 	}
 }

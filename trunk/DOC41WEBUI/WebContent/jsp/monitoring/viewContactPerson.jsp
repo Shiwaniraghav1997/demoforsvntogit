@@ -7,7 +7,7 @@ title="ViewContactPerson">
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 <!--Buttons Bar: Start-->
 <div class="portlet-section-header">
-	<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="ButtonBack"/>"/>
+	<a class="portlet-form-button" href='monitoringOverview'><doc41:translate label="ButtonBack"/></a>
 </div>
 <c:choose>
 <c:when test="${!empty service.name }">
@@ -37,14 +37,14 @@ title="ViewContactPerson">
 		<td colspan="4"><doc41:translate label="EBCContactPerson" /></td>
 		<c:choose>
 			<c:when test="${ebcUser.dcId==null}">
-				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('monitoring/addContactPerson', 'contactType=EBC&amp;serviceName=${service.name}')"
-					value="<doc41:translate label="ButtonAdd"/>" /></td>
+				<td><a class="portlet-form-button"
+					href='addContactPerson?contactType=EBC&amp;serviceName=${service.name}'><doc41:translate label="ButtonAdd"/></a>
+				</td>
 			</c:when>
 			<c:otherwise>
-				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('monitoring/editContactPerson', 'objectId=${ebcUser.dcId}&amp;serviceName=${service.name}')"
-					value="<doc41:translate label="ButtonEdit"/>" /></td>
+				<td><a class="portlet-form-button"
+					href='editContactPerson?objectId=${ebcUser.dcId}&amp;serviceName=${service.name}'>
+					<doc41:translate label="ButtonEdit"/></a></td>
 			</c:otherwise>
 		</c:choose>
 	</tr>
@@ -82,14 +82,14 @@ title="ViewContactPerson">
 		<td colspan="4"><doc41:translate label="BackendContactPerson" /></td>
 		<c:choose>
 			<c:when test="${backendUser.dcId==null}">
-				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('monitoring/addContactPerson', 'contactType=BACKEND&amp;serviceName=${service.name}')"
-					value="<doc41:translate label="ButtonAdd"/>" /></td>
+				<td><a class="portlet-form-button"
+					href='addContactPerson?contactType=BACKEND&amp;serviceName=${service.name}'>
+					<doc41:translate label="ButtonAdd"/></a></td>
 			</c:when>
 			<c:otherwise>
-				<td><input type="button" class="portlet-form-button"
-					onclick="sendGet('monitoring/editContactPerson', 'objectId=${backendUser.dcId}&amp;serviceName=${service.name}')"
-								value="<doc41:translate label="ButtonEdit"/>" /></td>
+				<td><a class="portlet-form-button"
+					href='editContactPerson?objectId=${backendUser.dcId}&amp;serviceName=${service.name}'>
+								<doc41:translate label="ButtonEdit"/></a></td>
 			</c:otherwise>
 		</c:choose>
 	</tr>

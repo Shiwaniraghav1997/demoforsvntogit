@@ -24,7 +24,7 @@ tsheaders = {
     <div class="portlet-body">
 		<c:if test="${editable}">
 			<div class="portlet-section-header">
-		    	<input type="button" class="portlet-form-button" onclick="sendGet('translations/translationAdd', '')" value="<doc41:translate label="ButtonCreate"/>" />
+		    	<a class="portlet-form-button" href='translationAdd'><doc41:translate label="ButtonCreate"/></a>
 			</div>
 		</c:if>
 

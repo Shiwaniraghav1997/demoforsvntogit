@@ -11,7 +11,7 @@ title="AddInterface">
 
 		<!--Buttons Bar: Start-->
 		<div class="portlet-section-header">
-				<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="ButtonCancel"/>"/>
+				<a class="portlet-form-button" href='monitoringOverview'><doc41:translate label="ButtonCancel"/></a>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
 		</div>
 

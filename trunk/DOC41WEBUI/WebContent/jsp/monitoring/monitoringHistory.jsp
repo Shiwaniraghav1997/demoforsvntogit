@@ -38,7 +38,7 @@ title="MonitoringHistory">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41tablesorter.js"></script>
 		<!--Buttons Bar: Start-->
 		<div class="portlet-section-header">
-			<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="ButtonBack"/>"/>
+			<a class="portlet-form-button" href='monitoringOverview'><doc41:translate label="ButtonBack"/></a>
 		</div>
 		<!--Buttons Bar :End-->
 	

@@ -18,7 +18,7 @@ title="User Management">
 				<tr><th><doc41:translate label="EditUser"/></th></tr>
 			</table>
 			
-			<input type="button" class="portlet-form-button" onclick="sendGet('useradmin/userlist')" value="<doc41:translate label="ButtonCancel"/>"/>
+			<a class="portlet-form-button" href='userlist'><doc41:translate label="ButtonCancel"/></a>
 			<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
 		</div>
 	

@@ -11,8 +11,8 @@ title="MonitoringOverview">
 			<tr><th><doc41:translate label="MonitoringOverview"/></th></tr>
 		</table>
 	
-		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/monitoringOverview')" value="<doc41:translate label="ButtonRefresh"/>"/>
-		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/addInterface')" value="<doc41:translate label="ButtonAddInterface"/>"/>
+		<a class="portlet-form-button" href='monitoringOverview'><doc41:translate label="ButtonRefresh"/></a>
+		<a class="portlet-form-button" href='addInterface'><doc41:translate label="ButtonAddInterface"/></a>
 	</div>
 	
 	<div class="portlet-section-body">
@@ -58,11 +58,11 @@ title="MonitoringOverview">
 							<td><c:out value="${view.remarks}"/></td>
 							<td><c:out value="${view.responseTime}"/></td>
 							<td style="background-color: #FFFFFF;">
-							 <a href="#" onclick="sendGet('monitoring/monitoringHistory', 'serviceName=${view.name}')"><img
+							 <a href="monitoringHistory?serviceName=${view.name}"><img
 								src="${pageContext.request.contextPath}/resources/img/common/clock.png" title="<doc41:translate label="History"/>"
 								alt="<doc41:translate label="History"/>" style="border: 0px;"/></a></td>
 							<td style="background-color: #FFFFFF;">
-							 <a href="#" onclick="sendGet('monitoring/viewContactPerson', 'serviceName=${view.name}')"><img
+							 <a href="viewContactPerson?serviceName=${view.name}"><img
 								src="${pageContext.request.contextPath}/resources/img/common/report_user.png" title="<doc41:translate label="ContactPerson"/>"
 								alt="<doc41:translate label="ContactPerson"/>" style="border: 0px;"/></a></td>
 						</tr>

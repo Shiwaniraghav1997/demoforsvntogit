@@ -1,7 +1,3 @@
-function sendGet(target, params) {
-	var CONTEXT_PATH = readCookie("IV_JCT") + ctx + "/";
-	window.location.href= CONTEXT_PATH + target + "?" + params;
-}
 
 function sendPost(target, params) {
 	var paramArray = new Array();
@@ -63,25 +59,6 @@ function readCookie(name) {
 	return "";
 }
 
-function sendGetAfterPopup(infoText, target, params) {
-	alert(infoText);
-	sendGet(target, params);
-}
-
-function sendGetAfterCheck(infoText, target, params) {
-	var confirmed = confirm(infoText);
-	if (confirmed == true) {
-		sendGet(target, params);
-	}
-}
-
-function sendGetAfterCheckAndDisable(infoText, target, params, button) {
-	var confirmed = confirm(infoText);
-	if (confirmed == true) {
-		button.disabled = true;
-		sendGet(target, params);
-	}
-}
 
 function sendPostAfterCheck(infoText, target, params) 
 {

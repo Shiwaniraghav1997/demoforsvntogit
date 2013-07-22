@@ -206,7 +206,11 @@
 a.portlet-form-button {
 	padding-top: 1px;
 	padding-bottom: 1px;
-} 
+}
+
+input.portlet-form-button{
+	cursor: pointer;
+}
 
 .portlet-form-input-field {
 	font-family: Verdana, Arial, Helvetica, sans-serif;

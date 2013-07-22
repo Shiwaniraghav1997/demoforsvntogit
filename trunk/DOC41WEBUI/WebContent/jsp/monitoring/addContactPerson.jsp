@@ -11,7 +11,7 @@ title="AddContactPerson">
 	<form:hidden path="company"/>
 	
 	<div class="portlet-section-header">
-		<input type="button" class="portlet-form-button" onclick="sendGet('monitoring/viewContactPerson','serviceName=${contactPerson.company}')" value="<doc41:translate label="ButtonCancel"/>"/>
+		<a class="portlet-form-button" href='viewContactPerson?serviceName=${contactPerson.company}'><doc41:translate label="ButtonCancel"/></a>
 		<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
 	</div>
 

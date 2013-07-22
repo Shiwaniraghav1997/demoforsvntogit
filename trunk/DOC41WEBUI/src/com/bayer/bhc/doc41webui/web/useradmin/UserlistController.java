@@ -114,13 +114,13 @@ public class UserlistController extends AbstractDoc41Controller {
 			iconName = "user_activate.gif";
 			buttonLabel = tags.getTag("ButtonActivate");
 		}
-		return "<a href='#' onclick=\"sendPostAfterCheck('"+message+"', 'toggleuser', 'togglecwid="+user.getCwid()+"')\"><img src='"+request.getContextPath()+"/resources/img/usermanagement/"+iconName+"' alt='"+buttonLabel+"' title='"+buttonLabel+"' style=\"border: 0px;\"></a>";
+		return "<a href='#' onclick=\"sendPostAfterCheck('"+message+"', 'toggleuser', 'togglecwid="+user.getCwid()+"')\"><img src='../resources/img/usermanagement/"+iconName+"' alt='"+buttonLabel+"' title='"+buttonLabel+"' style=\"border: 0px;\"></a>";
 		
 	}
 
 	private String displayEditButton(HttpServletRequest request, String cwid,
 			Tags tags) {
-		return "<a href='#' onclick=\"sendGet('useradmin/useredit', 'editcwid="+cwid+"')\"><img src='"+request.getContextPath()+"/resources/img/common/page_edit.gif' alt='"+tags.getTag("ButtonEdit")+"' title='"+tags.getTag("ButtonEdit")+"' style=\"border: 0px;\"></a>";
+		return "<a href='useredit?editcwid="+cwid+"'><img src='../resources/img/common/page_edit.gif' alt='"+tags.getTag("ButtonEdit")+"' title='"+tags.getTag("ButtonEdit")+"' style=\"border: 0px;\"></a>";
 	}
 
 	

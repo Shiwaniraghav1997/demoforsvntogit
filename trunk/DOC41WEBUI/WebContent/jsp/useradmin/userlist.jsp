@@ -47,8 +47,8 @@ title="User Management">
 					<tr><th><doc41:translate label="UserOverview"/></th></tr>
 				</table>
 				
-				<input class="portlet-form-button" type="button" onclick="sendGet('useradmin/userlookup', '')" value="<doc41:translate label="ButtonLookup"/>" />
-				<input class="portlet-form-button" type="button" onclick="sendGet('useradmin/usercreate', '')" value="<doc41:translate label="ButtonCreate"/>" />
+				<a type="button" href='userlookup'><doc41:translate label="ButtonLookup"/></a>
+				<a type="button" href='usercreate'><doc41:translate label="ButtonCreate"/></a>
 			</div>
 		
 		
