@@ -1,0 +1,31 @@
+#DEFINITION for InterfaceDetailDC:
+#--------------------------------
+
+Package=com.bayer.bhc.doc41webui.integration.db.dc
+DCClassName=UserPartnerDC
+Tablename=[DOC41WEB_MGR].D41_USER_PARTNER
+Superclass=com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
+ImplementedInterfaces=
+Imports=
+ClassComment=<my description of the dc>
+
+
+Column.1.Name=UserId
+Column.1.Type=ID
+Column.1.Comment=Maps DB-Column: user_Id
+#Column.1.DBDefault="..."/new ...
+
+Column.2.Name=PartnerNumber
+Column.2.Type=STRING
+Column.2.Comment=Maps DB-Column: partner_Number
+#Column.2.DBDefault="..."/new ...
+
+#Cols ignored, defined by super class:
+#-------------------------------------
+#CHANGED
+#CHANGEDBY
+#CHANGEDON
+#CREATED
+#CREATEDBY
+#CREATEDON
+#OBJECT_ID
