@@ -47,8 +47,8 @@ title="User Management">
 					<tr><th><doc41:translate label="UserOverview"/></th></tr>
 				</table>
 				
-				<a type="button" href='userlookup'><doc41:translate label="ButtonLookup"/></a>
-				<a type="button" href='usercreate'><doc41:translate label="ButtonCreate"/></a>
+				<a class="portlet-form-button" type="button" href='userlookup'><doc41:translate label="ButtonLookup"/></a>
+				<a class="portlet-form-button" type="button" href='usercreate'><doc41:translate label="ButtonCreate"/></a>
 			</div>
 		
 		
