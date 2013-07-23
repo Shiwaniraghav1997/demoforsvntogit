@@ -74,6 +74,9 @@ public class UploadController extends AbstractDoc41Controller {
 
 	private String postUpdateInternal(UploadForm uploadForm) {
 		try{
+			if(!documentUC.checkDeliveryForPartner(uploadForm.getPartnerNumber(), uploadForm.getDeliveryNumber(), uploadForm.getShippingUnitNumber())){
+				return "DeliveryNotAllowedForCarrier";
+			} 
 			MultipartFile file = uploadForm.getFile();
 			if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
 				File localFile = documentUC.checkForVirus(file);
