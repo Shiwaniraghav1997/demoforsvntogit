@@ -11,7 +11,6 @@ import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
 public class CreateHttpPutRFC extends AbstractDoc41RFC<URI>{
-	//TODO
 	private static final String IN_CREP_ID = "CREP_ID";
 	private static final String IN_DOC_ID = "DOC_ID";
 	
