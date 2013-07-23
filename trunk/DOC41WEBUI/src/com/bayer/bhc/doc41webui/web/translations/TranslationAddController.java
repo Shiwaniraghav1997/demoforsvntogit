@@ -8,6 +8,8 @@ package com.bayer.bhc.doc41webui.web.translations;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -45,7 +47,8 @@ public class TranslationAddController extends AbstractDoc41Controller {
 		return translationsUC.getCountryCodes();
 	}
     
-    protected boolean hasPermission(User usr) {
+    @Override
+    protected boolean hasPermission(User usr, HttpServletRequest request) {
     	return usr.hasPermission(Doc41Constants.PERMISSION_BUSINESS_ADMIN, Doc41Constants.PERMISSION_TECHNICAL_ADMIN);
     }
     

@@ -87,7 +87,8 @@ public class TranslationsListController extends AbstractDoc41Controller {
     	return this.translationsUC.getPageList(null);
     }
     
-	protected boolean hasPermission(User usr) {
+    @Override
+	protected boolean hasPermission(User usr, HttpServletRequest request) {
     	return usr.hasPermission(Doc41Constants.PERMISSION_BUSINESS_ADMIN, Doc41Constants.PERMISSION_TECHNICAL_ADMIN);
     }
 	

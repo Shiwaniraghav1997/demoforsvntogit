@@ -79,7 +79,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 				return false;
 	
 			} else {
-				if(!usr.getActive() || !hasRolePermission(usr,handler)){
+				if(!usr.getActive() || !hasRolePermission(usr,handler,request)){
 					response.sendRedirect(request.getContextPath() +URI_FORBIDDEN);
 					return false;
 				}
@@ -104,7 +104,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 	}
 	
 	
-	private boolean hasRolePermission(User usr, Object handler) {
+	private boolean hasRolePermission(User usr, Object handler, HttpServletRequest request) {
 		Object realHandler = handler;
 		if(handler instanceof HandlerMethod){
 			HandlerMethod hm = (HandlerMethod) handler;
@@ -112,7 +112,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 		}
 		if(realHandler instanceof AbstractDoc41Controller){
 			AbstractDoc41Controller d41Controller = (AbstractDoc41Controller) realHandler;
-			return d41Controller.hasPermission(usr);
+			return d41Controller.hasPermission(usr,request);
 		}
 		return true;
 	}

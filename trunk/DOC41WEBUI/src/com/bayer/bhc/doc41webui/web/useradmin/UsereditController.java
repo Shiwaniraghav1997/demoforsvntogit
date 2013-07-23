@@ -24,7 +24,8 @@ import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 @Controller
 public class UsereditController extends AbstractDoc41Controller {
 	
-	protected boolean hasPermission(User usr) {
+	@Override
+	protected boolean hasPermission(User usr, HttpServletRequest request) {
 		return usr.hasPermission(Doc41Constants.PERMISSION_BUSINESS_ADMIN, Doc41Constants.PERMISSION_TECHNICAL_ADMIN);
     }
 	

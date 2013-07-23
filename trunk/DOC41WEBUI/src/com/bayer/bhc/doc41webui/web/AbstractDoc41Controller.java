@@ -27,9 +27,10 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
 	/**
 	 * can be overwritten to enforce specific permission
 	 * @param usr
+	 * @param request 
 	 * @return
 	 */
-	protected boolean hasPermission(User usr) {
+	protected boolean hasPermission(User usr, HttpServletRequest request) {
     	return true;
     }
 

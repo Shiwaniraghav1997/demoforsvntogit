@@ -3,6 +3,8 @@ package com.bayer.bhc.doc41webui.web.documents;
 import java.io.File;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -28,8 +30,18 @@ public class UploadController extends AbstractDoc41Controller {
 	@Autowired
 	private DocumentUC documentUC;
 	
-	protected boolean hasPermission(User usr) {
-		return usr.hasPermission(Doc41Constants.PERMISSION_CARRIER);
+	@Override
+	protected boolean hasPermission(User usr, HttpServletRequest request) {
+		String type = request.getParameter("type");
+		if(StringTool.isTrimmedEmptyOrNull(type)){
+			return false;
+		} else if(type.equals(Doc41Constants.DOC_TYPE_BOL)){
+			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_BOL_UP);
+		} else if(type.equals(Doc41Constants.DOC_TYPE_AIRWAY)){
+			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_AWB_UP);
+		} else {
+			throw new IllegalArgumentException("unknown type: "+type);
+		}
     }
 
 	@RequestMapping(value="/documents/documentupload",method = RequestMethod.GET)

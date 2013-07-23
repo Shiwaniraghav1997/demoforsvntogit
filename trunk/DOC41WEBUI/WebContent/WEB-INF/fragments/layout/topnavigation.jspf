@@ -9,8 +9,8 @@
 			  </doc41:topNavEntry>
 			  
 			  <doc41:topNavEntry href="documents/documentupload" title="navDocuments" id="documents" permission="TOPNAV_DOCUMENTS">
-			  	<doc41:navEntry href="documents/documentupload?type=BOL" title="Bill of Lading" id="BOL" cssclass="first-child" />
-			  	<doc41:navEntry href="documents/documentupload?type=AWB" title="Air Waybill" id="AWB" cssclass="first-child" />
+			  	<doc41:navEntry href="documents/documentupload?type=BOL" title="Bill of Lading" id="BOL" cssclass="first-child" permission="DOC_BOL_UP"/>
+			  	<doc41:navEntry href="documents/documentupload?type=AWB" title="Air Waybill" id="AWB" cssclass="first-child" permission="DOC_AWB_UP"/>
 			  </doc41:topNavEntry>
 			  
 			  <doc41:topNavEntry href="useradmin/userlist" title="navManagement" id="management" permission="TOPNAV_MANAGEMENT">

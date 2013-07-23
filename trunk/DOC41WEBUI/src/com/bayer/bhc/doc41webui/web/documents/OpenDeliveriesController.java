@@ -8,6 +8,8 @@ package com.bayer.bhc.doc41webui.web.documents;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,7 @@ import com.bayer.bhc.doc41webui.container.Delivery;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 /**
  * Controller to manage Translations view related requests using Translations Usecase.
@@ -31,8 +34,18 @@ public class OpenDeliveriesController extends AbstractDoc41Controller {
 	@Autowired
 	private DocumentUC documentUC;
 	
-	protected boolean hasPermission(User usr) {
-		return usr.hasPermission(Doc41Constants.PERMISSION_CARRIER);
+	@Override
+	protected boolean hasPermission(User usr, HttpServletRequest request) {
+		String type = request.getParameter("type");
+		if(StringTool.isTrimmedEmptyOrNull(type)){
+			return false;
+		} else if(type.equals(Doc41Constants.DOC_TYPE_BOL)){
+			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_BOL_UP);
+		} else if(type.equals(Doc41Constants.DOC_TYPE_AIRWAY)){
+			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_AWB_UP);
+		} else {
+			throw new IllegalArgumentException("unknown type: "+type);
+		}
     }
 	
 	@RequestMapping(value="/documents/opendeliveries",method = RequestMethod.GET)

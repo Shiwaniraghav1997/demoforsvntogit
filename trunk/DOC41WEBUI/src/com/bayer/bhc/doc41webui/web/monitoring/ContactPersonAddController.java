@@ -3,6 +3,8 @@
  */
 package com.bayer.bhc.doc41webui.web.monitoring;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -26,7 +28,7 @@ public class ContactPersonAddController extends AbstractDoc41Controller {
 	private MonitoringUC monitoringUC;
 
 	@Override
-	protected boolean hasPermission(User usr) {
+	protected boolean hasPermission(User usr, HttpServletRequest request) {
 		return usr.hasPermission(Doc41Constants.PERMISSION_BUSINESS_ADMIN, Doc41Constants.PERMISSION_TECHNICAL_ADMIN);
 	}
 	

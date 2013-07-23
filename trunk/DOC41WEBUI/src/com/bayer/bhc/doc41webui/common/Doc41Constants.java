@@ -9,7 +9,8 @@ public interface Doc41Constants {
     public static final String PERMISSION_TECHNICAL_ADMIN	= "CREATE_USER";
     public static final String PERMISSION_BUSINESS_ADMIN	= "CREATE_USER";
     public static final String PERMISSION_READ_ONLY			= "READ_ONLY";
-    public static final String PERMISSION_CARRIER			= "CREATE_USER";
+    public static final String PERMISSION_DOC_BOL_UP		= "DOC_BOL_UP";
+    public static final String PERMISSION_DOC_AWB_UP		= "DOC_AWB_UP";
     
 
     public static final String MONITORING_SUCCESS = "Success";
