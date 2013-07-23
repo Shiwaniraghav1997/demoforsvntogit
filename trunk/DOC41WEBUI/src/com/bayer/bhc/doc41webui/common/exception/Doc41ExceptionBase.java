@@ -4,6 +4,8 @@
  */
 package com.bayer.bhc.doc41webui.common.exception;
 
+import com.bayer.ecim.foundation.basic.NestingException;
+
 //import com.bayer.ecim.foundation.basic.NestingException;
 
 /**
@@ -11,7 +13,7 @@ package com.bayer.bhc.doc41webui.common.exception;
  * 
  * @author ezzqc
  */
-public class Doc41ExceptionBase extends Exception {	
+public class Doc41ExceptionBase extends NestingException {	
 	private static final long serialVersionUID = 1015878206364831295L;
 
 	/**
@@ -25,7 +27,7 @@ public class Doc41ExceptionBase extends Exception {
      * Constructor with message.
      */
     public Doc41ExceptionBase(final String message) {
-        super(message);  //,null);
+        super(message,null);  //,null);
     }
 
 }

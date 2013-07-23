@@ -15,7 +15,7 @@
 					<table cellpadding="0" cellspacing="0" style="border-width: 0px;" class="nohover">
 						<tr style="color: red"> 
 							<td style="border-width: 0px;" valign="baseline"><img alt="Exception" src="${pageContext.request.contextPath}/resources/img/common/exclamation.png" align="top" />&nbsp;</td>
-							<td style="border-width: 0px;" align="top"><div style="font: bold;"><doc41:translate label="${doc41exception.message}"/></div><doc41:exception exception="${doc41exception}"/></td>
+							<td style="border-width: 0px;" align="top"><doc41:exception exception="${doc41exception}"/></td>
 						</tr>
 					</table>
 				</td>

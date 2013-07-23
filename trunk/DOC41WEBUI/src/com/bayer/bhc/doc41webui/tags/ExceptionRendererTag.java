@@ -6,12 +6,17 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
+import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.ecim.foundation.basic.NestingException;
 import com.bayer.ecim.foundation.basic.StringTool;
-//TODO do not output stacktrace for external users because of security concerns (at least not on prod)
+import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
+
 public class ExceptionRendererTag extends TagSupport {
 	
 	private static final long serialVersionUID = 2139821757034053006L;
+	
+	public static final String TAGS = "tags";
 	
 	private Exception exception;
 	
@@ -25,7 +30,16 @@ public class ExceptionRendererTag extends TagSupport {
 	@Override
 	public int doEndTag() throws JspException {
 		JspWriter printer = pageContext.getOut();
-        try {
+		User user = UserInSession.get();
+    	boolean internalUser =( user!=null && !user.isExternalUser());
+		try {
+        	if(internalUser){
+	        	Tags translations = (Tags) pageContext.getRequest().getAttribute(TAGS);
+	        	if(translations!=null){
+	        		String tag = translations.getTag(exception.getMessage());
+	        		printer.println(tag+"<br>");
+	        	}
+        	}
         	StringBuilder ticketNumbers = new StringBuilder();
         	StringBuilder messages = new StringBuilder();
         	
@@ -53,7 +67,11 @@ public class ExceptionRendererTag extends TagSupport {
         	if(ticketNumbers.length()>0){
         		printer.println(ticketNumbers+"<br>");
         	}
-        	printer.println(messages);
+        	if(internalUser){
+        		printer.println(messages);
+        	} else {
+        		printer.println("unexpected exception, please contact support");
+        	}
         	
         } catch (IOException e) {
             throw new JspException("unable to render the time "+e.getMessage());

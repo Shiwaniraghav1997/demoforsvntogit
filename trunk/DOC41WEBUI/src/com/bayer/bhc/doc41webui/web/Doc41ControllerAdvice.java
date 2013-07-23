@@ -12,8 +12,10 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41AccessDeniedException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41OptimisticLockingException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.DateRenderer;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 
 
 /**
@@ -56,19 +58,21 @@ public class Doc41ControllerAdvice {
 			ex = new Doc41TechnicalException(this.getClass(), "fatal error: "+ex.getStackTrace()[0], ex);
 		}
 
-		request.setAttribute(DOC41_EXCEPTION, ex);
-
+		Exception relevantException = ex;
+		
 		// search for Doc41OptimisticLockingException or Doc41AccessDeniedException:
 		while (ex.getCause() instanceof Exception) {
 			ex = (Exception)ex.getCause();
 
 			if (ex instanceof Doc41OptimisticLockingException) {
-				request.setAttribute(DOC41_EXCEPTION, ex);
+				relevantException = ex;
 			}
 			if (ex instanceof Doc41AccessDeniedException) {
-				request.setAttribute(DOC41_EXCEPTION, ex);
+				relevantException = ex;
 			}
 		}
+		request.setAttribute(DOC41_EXCEPTION, relevantException);
+		Doc41Log.get().error(getClass(), UserInSession.getCwid(), relevantException);
 		return "exception";
 	}
 	
