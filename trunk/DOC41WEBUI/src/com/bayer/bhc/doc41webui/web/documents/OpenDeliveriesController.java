@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
-import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.Delivery;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
@@ -49,9 +48,8 @@ public class OpenDeliveriesController extends AbstractDoc41Controller {
     }
 	
 	@RequestMapping(value="/documents/opendeliveries",method = RequestMethod.GET)
-	public List<Delivery> get(@RequestParam String type)  {
-		String carrier = UserInSession.get().getCompany();//TODO use real carrier field
-		List<Delivery> list = documentUC.getOpenDeliveries(type, carrier);
+	public List<Delivery> get(@RequestParam String type,@RequestParam String partnerNumber)  {
+		List<Delivery> list = documentUC.getOpenDeliveries(type, partnerNumber);
 		return list;
     }
 	

@@ -14,6 +14,11 @@ function setDeliveryNumber(delNumber,shipunit){
 	$('#deliveryNumber').val(delNumber);
 	$('#SHIPPINGUNIT').val(shipunit);
 }
+
+function popupAppendFunction(){
+	var pn = $("#partnerNumber").val();
+	return '&partnerNumber='+pn;
+}
 </script>
 
 	<div id="div-body" class="portlet-body">
