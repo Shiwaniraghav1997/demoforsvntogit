@@ -25,8 +25,6 @@ import com.bayer.ecim.foundation.basic.StringTool;
 @Component
 public class KgsRFCService extends AbstractSAPJCOService {
 	
-	//TODO Filter for doctypes
-
 	private static final String RFC_NAME_GET_DOC_DEF = "GetDocDef";
 	private static final String RFC_NAME_GET_CONTENT_REPO = "GetCrepInfo";
 	private static final String RFC_NAME_GET_ATTRIBUTES = "GetAttributes";
