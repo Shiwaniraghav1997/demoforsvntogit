@@ -1,0 +1,56 @@
+#DEFINITION for ProfilePermissionDC:
+#--------------------------------
+
+Package=com.bayer.bhc.doc41webui.integration.db.dc
+DCClassName=ProfilePermissionDC
+Tablename=
+Superclass=com.bayer.ecim.foundation.dbx.DataCarrier
+ImplementedInterfaces=
+Imports=
+ClassComment=<my description of the dc>
+
+
+Column.1.Name=Permissionname
+Column.1.Type=STRING
+Column.1.Comment=Maps DB-Column: permissionname
+#Column.1.DBDefault="..."/new ...
+
+Column.2.Name=Permissiondescription
+Column.2.Type=STRING
+Column.2.Comment=Maps DB-Column: permissiondescription
+#Column.2.DBDefault="..."/new ...
+
+Column.3.Name=Doc41Carr
+Column.3.Type=BOOLEAN
+Column.3.Comment=Maps DB-Column: doc41_Carr
+#Column.3.DBDefault="..."/new ...
+
+Column.4.Name=Doc41Cusbr
+Column.4.Type=BOOLEAN
+Column.4.Comment=Maps DB-Column: doc41_Cusbr
+#Column.4.DBDefault="..."/new ...
+
+Column.5.Name=Doc41Laysup
+Column.5.Type=BOOLEAN
+Column.5.Comment=Maps DB-Column: doc41_Laysup
+#Column.5.DBDefault="..."/new ...
+
+Column.6.Name=Doc41Pmsup
+Column.6.Type=BOOLEAN
+Column.6.Comment=Maps DB-Column: doc41_Pmsup
+#Column.6.DBDefault="..."/new ...
+
+Column.7.Name=Doc41Badm
+Column.7.Type=BOOLEAN
+Column.7.Comment=Maps DB-Column: doc41_Badm
+#Column.7.DBDefault="..."/new ...
+
+Column.8.Name=Doc41Tadm
+Column.8.Type=BOOLEAN
+Column.8.Comment=Maps DB-Column: doc41_Tadm
+#Column.8.DBDefault="..."/new ...
+
+Column.9.Name=Doc41Obsv
+Column.9.Type=BOOLEAN
+Column.9.Comment=Maps DB-Column: doc41_Obsv
+#Column.9.DBDefault="..."/new ...
