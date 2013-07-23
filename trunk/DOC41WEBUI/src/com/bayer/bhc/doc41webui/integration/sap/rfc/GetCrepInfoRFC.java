@@ -10,7 +10,6 @@ import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
 public class GetCrepInfoRFC extends AbstractDoc41RFC<ContentRepositoryInfo>{
-	//TODO
 //	private static final String IN_OBJECT_TYPE = "IV_OBJECT_TYPE";
 //	private static final String IN_DOCTYPE = "IV_DOCTYPE";
 	private static final String IN_DOC41ID = "IV_DOC41ID";
