@@ -117,7 +117,7 @@ public class UploadForm {
 			errors.rejectValue("file", "uploadFileMissing", "upload file is missing");
 		}
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "partnerNumber", "PartnerNumberMissing", "partner number is missing");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "DeliveryNumberMissing", "delivery number is missing");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "deliverNumber", "DeliveryNumberMissing", "delivery number is missing");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "attributeValues['SHIPPINGUNIT']", "ShippingUnitNumberMissing", "shipment unit number is missing");
 		if(!isfileEmpty && !StringTool.isTrimmedEmptyOrNull(fileId)){
 			errors.rejectValue("file", "FileAndFileId", "both file and fileId filled");
