@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.Attribute;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.domain.User;
@@ -74,6 +75,9 @@ public class UploadController extends AbstractDoc41Controller {
 
 	private String postUpdateInternal(UploadForm uploadForm) {
 		try{
+			if(!checkParterFromFormWithUser(uploadForm.getPartnerNumber())){
+				return "PartnerNotAssignedToUser";
+			}
 			if(!documentUC.checkDeliveryForPartner(uploadForm.getPartnerNumber(), uploadForm.getDeliveryNumber(), uploadForm.getShippingUnitNumber())){
 				return "DeliveryNotAllowedForCarrier";
 			} 
@@ -95,6 +99,11 @@ public class UploadController extends AbstractDoc41Controller {
 			return e.getMessage();
 		}
 		return null;
+	}
+
+	private boolean checkParterFromFormWithUser(String partnerNumber) {
+		List<String> partners = UserInSession.get().getPartners();
+		return partners!=null && partners.contains(partnerNumber);
 	}
 	
 }
