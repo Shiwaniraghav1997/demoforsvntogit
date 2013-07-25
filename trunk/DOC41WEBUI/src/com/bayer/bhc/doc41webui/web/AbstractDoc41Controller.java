@@ -46,7 +46,7 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
 	}
 
 
-	protected String displayStatus(HttpServletRequest request, boolean status, Tags tags) {
+	protected String displayStatus(boolean status, Tags tags) {
 		String altText;
 		String iconName;
 		if(status){

@@ -18,6 +18,7 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserListFilter;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.domain.User;
+import com.bayer.bhc.doc41webui.domain.UserPartner;
 import com.bayer.bhc.doc41webui.service.repository.UserManagementRepository;
 
 /**
@@ -181,6 +182,19 @@ public class UserManagementUC {
     // GETTER
     public UserManagementRepository getUserManagementRepository() {
         return userMgmtRepo;
+    }
+    
+    public UserPartner checkPartner(String partnerNumber){
+    	//TODO use RFC
+    	//just a dummy implementation
+    	if(partnerNumber.endsWith("9")){
+    		return null;
+    	}
+    	UserPartner up = new UserPartner();
+    	up.setPartnerNumber(partnerNumber);
+    	up.setPartnerName1("Name1");
+    	up.setPartnerName2("Name2");
+		return up ;
     }
 
 }

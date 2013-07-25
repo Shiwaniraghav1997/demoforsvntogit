@@ -10,6 +10,7 @@ import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.domain.User;
+import com.bayer.bhc.doc41webui.domain.UserPartner;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 public class UserEditForm implements Serializable{
@@ -30,7 +31,7 @@ public class UserEditForm implements Serializable{
 	private Boolean active;
 	private String type;
 	private List<String> roles;
-	private List<String> partners;
+	private List<UserPartner> partners;
 	
 
 	public void validate(HttpServletRequest request, Errors errors) {
@@ -38,14 +39,18 @@ public class UserEditForm implements Serializable{
 			errors.rejectValue("passwordRepeated", "pwDifferent", "password and passwordRepeated do not match.");
 		}
 		if(partners!=null){
-			for (String partner : partners) {
-				if(partner!=null && partner.length()>Doc41Constants.FIELD_SIZE_PARTNER_NUMBER){
-					errors.rejectValue("partners", "partnerNumberTooLong", "partner number too long");
+			for (UserPartner partner : partners) {
+				if(partner==null || partner.getPartnerNumber()==null){
+					errors.rejectValue("partners", "partnerNumberNull", "partner number null");
 				}
-				try {
-					Integer.parseInt(partner);
-				} catch (NumberFormatException e) {
-					errors.rejectValue("partners", "OnlyNumbersInPartnerNumber", "only number in partner number allowed");
+				if(partner!=null && partner.getPartnerNumber()!=null && partner.getPartnerNumber().length()>Doc41Constants.FIELD_SIZE_PARTNER_NUMBER){
+					errors.rejectValue("partners", "partnerNumberTooLong", "partner number too long");
+				} else {
+					try {
+						Integer.parseInt(partner.getPartnerNumber());
+					} catch (NumberFormatException e) {
+						errors.rejectValue("partners", "OnlyNumbersInPartnerNumber", "only number in partner number allowed");
+					}
 				}
 			}
 		}
@@ -210,12 +215,12 @@ public class UserEditForm implements Serializable{
 		this.objectID = objectID;
 	}
 	
-	public List<String> getPartners() {
+	public List<UserPartner> getPartners() {
 		return partners;
 	}
-	public void setPartners(List<String> partners) {
+	public void setPartners(List<UserPartner> partners) {
 		if(partners==null){
-			partners = new ArrayList<String>();
+			partners = new ArrayList<UserPartner>();
 		}
 		this.partners = partners;
 	}
@@ -231,6 +236,22 @@ public class UserEditForm implements Serializable{
 				+ partners + "]";
 	}
 	
-	
+	public void setPartnerStrings(List<String> partnerStrings){
+		List<UserPartner> partnerList = new ArrayList<UserPartner>();
+		for (String partnerString : partnerStrings) {
+			String[] split = partnerString.split("###");
+			UserPartner up = new UserPartner();
+			up.setPartnerNumber(split[0]);
+			if(split.length>1){
+				up.setPartnerName1(split[1]);
+				if(split.length>2){
+					up.setPartnerName2(split[2]);
+				}
+			}
+			
+			partnerList.add(up);
+		}
+		setPartners(partnerList );
+	}
 	
 }

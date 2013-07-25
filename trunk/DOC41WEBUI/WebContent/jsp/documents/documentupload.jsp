@@ -59,7 +59,7 @@ function popupAppendFunction(){
 						
 						<tr>
 							<td><doc41:translate label="PartnerNumber" /></td>
-							<td><form:select path="partnerNumber" items="${user.partners}" cssClass="portlet-form-input-field" cssStyle="width:140;"/><doc41:error path="partnerNumber" /></td>
+							<td><form:select path="partnerNumber" items="${user.partners}" cssClass="portlet-form-input-field" cssStyle="width:240px;" itemLabel="partnerLabel" itemValue="partnerNumber"/><doc41:error path="partnerNumber" /></td>
 						</tr>
 						
 						<tr class="portlet-table-alternate">

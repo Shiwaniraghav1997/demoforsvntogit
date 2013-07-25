@@ -55,7 +55,7 @@ public class UserlistController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/useradmin/jsontable", method=RequestMethod.GET,produces="application/json") 
     @ResponseBody
-    public Map<String, Object> getTable(HttpServletRequest request,TableSorterParams params) throws Doc41ExceptionBase, BATranslationsException {
+    public Map<String, Object> getTable(TableSorterParams params) throws Doc41ExceptionBase, BATranslationsException {
 		Tags tags = new Tags(TranslationsDAO.SYSTEM_ID, "useradmin", "list", LocaleInSession.get());
 		UserListFilter userListFilter = new UserListFilter();
 		userListFilter.setStatus(params.getFilter(0));
@@ -79,17 +79,17 @@ public class UserlistController extends AbstractDoc41Controller {
 		} else {
 			for (User user : list) {
 				String[] row = new String[10];
-				row[0]= displayStatus(request,user.getActive(),tags);
+				row[0]= displayStatus(user.getActive(),tags);
 				row[1]= StringTool.nullToEmpty(user.getSurname());
 				row[2]= StringTool.nullToEmpty(user.getFirstname());
 				row[3]= StringTool.nullToEmpty(user.getCwid());
 				row[4]= StringTool.nullToEmpty(user.getEmail());
 				row[5]= StringTool.nullToEmpty(user.getPhone());
 				row[6]= StringTool.nullToEmpty(user.getType());
-				row[7]= displayRoles(request,user.getRoles(),tags); 
+				row[7]= displayRoles(user.getRoles(),tags); 
 				//TODO move HTML to JSP
-				row[8]= displayEditButton(request,user.getCwid(),tags);
-				row[9]= displayToggleButton(request,user,tags);
+				row[8]= displayEditButton(user.getCwid(),tags);
+				row[9]= displayToggleButton(user,tags);
 				rows.add(row);
 			}
 		}
@@ -102,7 +102,7 @@ public class UserlistController extends AbstractDoc41Controller {
         return map;
     }
 	
-	private String displayToggleButton(HttpServletRequest request, User user,Tags tags) {
+	private String displayToggleButton(User user,Tags tags) {
 		String message;
 		String iconName;
 		String buttonLabel;
@@ -119,13 +119,13 @@ public class UserlistController extends AbstractDoc41Controller {
 		
 	}
 
-	private String displayEditButton(HttpServletRequest request, String cwid,
+	private String displayEditButton(String cwid,
 			Tags tags) {
 		return "<a href='useredit?editcwid="+cwid+"'><img src='../resources/img/common/page_edit.gif' alt='"+tags.getTag("ButtonEdit")+"' title='"+tags.getTag("ButtonEdit")+"' style=\"border: 0px;\"></a>";
 	}
 
 	
-	private String displayRoles(HttpServletRequest request, List<String> roles,
+	private String displayRoles(List<String> roles,
 			Tags tags) {
 		StringBuilder sb = new StringBuilder();
 		if(roles!=null){

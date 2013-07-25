@@ -125,7 +125,7 @@ title="My Profile">
 					<th style="width: 15%"><doc41:translate label="PartnerNumbers"/></th>
 					<td style="width: 35%">
 						<c:forEach items="${user.partners}" var="partner" varStatus="partnerStatus">
-							<c:out value="${partner}"/><br/>
+							<c:out value="${partner.partnerNumber}"/>&nbsp;<c:out value="${partner.partnerName1}"/>&nbsp;<c:out value="${partner.partnerName2}"/><br/>
 						</c:forEach>
 					</td>
 					<th style="width: 15%">&nbsp;</th>

@@ -20,6 +20,16 @@ Column.2.Type=STRING
 Column.2.Comment=Maps DB-Column: partner_Number
 #Column.2.DBDefault="..."/new ...
 
+Column.3.Name=PartnerName1
+Column.3.Type=STRING
+Column.3.Comment=Maps DB-Column: partner_Name1
+#Column.3.DBDefault="..."/new ...
+
+Column.4.Name=PartnerName2
+Column.4.Type=STRING
+Column.4.Comment=Maps DB-Column: partner_Name2
+#Column.4.DBDefault="..."/new ...
+
 #Cols ignored, defined by super class:
 #-------------------------------------
 #CHANGED

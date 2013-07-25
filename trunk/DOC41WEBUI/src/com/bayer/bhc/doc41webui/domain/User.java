@@ -73,7 +73,7 @@ public class User extends DomainObject {
 	
 	private List<String> roles = new ArrayList<String>();
 	
-	private List<String> partners = new ArrayList<String>();
+	private List<UserPartner> partners = new ArrayList<UserPartner>();
 	
 	private Locale locale;
 	
@@ -224,13 +224,13 @@ public class User extends DomainObject {
 		this.roles = roles;
 	}
 	
-	public List<String> getPartners() {
+	public List<UserPartner> getPartners() {
 		return partners;
 	}
 	
-	public void setPartners(List<String> partners) {
+	public void setPartners(List<UserPartner> partners) {
 		if(partners ==null){
-			partners = new ArrayList<String>();
+			partners = new ArrayList<UserPartner>();
 		}
 		this.partners = partners;
 	}

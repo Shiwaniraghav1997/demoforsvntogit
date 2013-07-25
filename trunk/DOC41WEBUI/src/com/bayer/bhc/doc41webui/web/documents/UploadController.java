@@ -21,6 +21,7 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.Attribute;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.domain.User;
+import com.bayer.bhc.doc41webui.domain.UserPartner;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -102,8 +103,15 @@ public class UploadController extends AbstractDoc41Controller {
 	}
 
 	private boolean checkParterFromFormWithUser(String partnerNumber) {
-		List<String> partners = UserInSession.get().getPartners();
-		return partners!=null && partners.contains(partnerNumber);
+		List<UserPartner> partners = UserInSession.get().getPartners();
+		if(partners!=null){
+			for (UserPartner userPartner : partners) {
+				if(StringTool.equals(partnerNumber, userPartner.getPartnerNumber())){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 }

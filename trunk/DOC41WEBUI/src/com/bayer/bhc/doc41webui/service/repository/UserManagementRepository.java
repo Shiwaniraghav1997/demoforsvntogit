@@ -28,6 +28,7 @@ import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.domain.User;
+import com.bayer.bhc.doc41webui.domain.UserPartner;
 import com.bayer.bhc.doc41webui.integration.db.LdapDAO;
 import com.bayer.bhc.doc41webui.integration.db.UserManagementDAO;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPartnerDC;
@@ -194,9 +195,9 @@ public class UserManagementRepository extends AbstractRepository {
                 			addUserToProfileInDB(userDC, roleName, pUser.getLocale());
                 		}
                 	}
-                	List<String> partners = pUser.getPartners();
+                	List<UserPartner> partners = pUser.getPartners();
                 	if (partners != null) {
-                		for (String partner : partners) {                			
+                		for (UserPartner partner : partners) {                			
                 			addPartnerToUserInDB(userDC, partner, pUser.getLocale());
                 		}
                 	}
@@ -335,14 +336,15 @@ public class UserManagementRepository extends AbstractRepository {
 	        }
         	
         	if (updatePartner) {
-	            List<String> partnersInDB = getPartnersFromDB(userDC.getObjectID());
-	            Set<String> partnersToDelete = new HashSet<String>(partnersInDB);
-	            Set<String> partnersFromInput = new LinkedHashSet<String>(pUser.getPartners());
+	            List<UserPartnerDC> partnersInDB = getPartnersFromDB(userDC.getObjectID());
+	            Set<String> partnersToDelete = new HashSet<String>();
+	            for (UserPartnerDC userPartnerDC : partnersInDB) {
+	            	partnersToDelete.add(userPartnerDC.getPartnerNumber());
+				}
+	            Set<UserPartner> partnersFromInput = new LinkedHashSet<UserPartner>(pUser.getPartners());
 	            
-	            for (String partner : partnersFromInput) {
-					if(partnersToDelete.contains(partner)){
-						partnersToDelete.remove(partner);
-					} else {
+	            for (UserPartner partner : partnersFromInput) {
+					if(!partnersToDelete.remove(partner.getPartnerNumber())){
 						addPartnerToUserInDB(userDC, partner, pUser.getLocale());
 					}
 				}
@@ -352,8 +354,8 @@ public class UserManagementRepository extends AbstractRepository {
 				}
 	        } else {
 	        	// refresh partners
-	        	List<String> partnersInDB = getPartnersFromDB(userDC.getObjectID());
-	    		pUser.setRoles(partnersInDB);		
+	        	List<UserPartnerDC> partnersInDB = getPartnersFromDB(userDC.getObjectID());
+	    		pUser.setPartners(copyDcToDomainPartners(partnersInDB) );		
 	        }
         	
         } catch (Doc41TechnicalException e) {
@@ -361,6 +363,18 @@ public class UserManagementRepository extends AbstractRepository {
             throw new Doc41RepositoryException(Doc41ErrorMessageKeys.USR_MGT_UPDATE_USER_FAILED, e);
         }
     }
+	private List<UserPartner> copyDcToDomainPartners(
+			List<UserPartnerDC> partnersInDB) {
+		List<UserPartner> newPartnerList = new ArrayList<UserPartner>();
+		for (UserPartnerDC userPartnerDC : partnersInDB) {
+			UserPartner newPartner = new UserPartner();
+			newPartner.setPartnerNumber(userPartnerDC.getPartnerNumber());
+			newPartner.setPartnerName1(userPartnerDC.getPartnerName1());
+			newPartner.setPartnerName2(userPartnerDC.getPartnerName2());
+			newPartnerList.add(newPartner );
+		}
+		return newPartnerList;
+	}
 		
 	/**
      * create Map that contains the user's profileNames as key
@@ -404,26 +418,24 @@ public class UserManagementRepository extends AbstractRepository {
         }
     }
     
-	private List<String> getPartnersFromDB(Long objectID) throws Doc41RepositoryException {
+	private List<UserPartnerDC> getPartnersFromDB(Long objectID) throws Doc41RepositoryException {
 		try {
 			List<UserPartnerDC> partners = userManagementDAO.getPartnersByUser(objectID);
-			List<String> partnerNumbers = new ArrayList<String>();
-			for (UserPartnerDC userPartnerDC : partners) {
-				partnerNumbers.add(userPartnerDC.getPartnerNumber());
-			}
-			return partnerNumbers;
+			return partners;
 		} catch (Doc41TechnicalException e) {
 			throw new Doc41RepositoryException("Error during getPartnersFromDB.", e);
 		}
 	}
 	
-	private void addPartnerToUserInDB(UMUserNDC userDC, String partner,
+	private void addPartnerToUserInDB(UMUserNDC userDC, UserPartner partner,
 			Locale locale) throws Doc41RepositoryException {
 		try{
 			User usr = UserInSession.get();
             UserPartnerDC newPartner = userManagementDAO.createUserPartner(locale);
 			newPartner.setUserId(userDC.getObjectID());
-			newPartner.setPartnerNumber(partner);
+			newPartner.setPartnerNumber(partner.getPartnerNumber());
+			newPartner.setPartnerName1(partner.getPartnerName1());
+			newPartner.setPartnerName2(partner.getPartnerName2());
 			newPartner.setChangedBy(usr.getCwid());
 			newPartner.setCreatedBy(usr.getCwid());
 			userManagementDAO.saveUserPartner(newPartner);
@@ -458,8 +470,8 @@ public class UserManagementRepository extends AbstractRepository {
 	        }
 			domainUser.setRoles(roles);
 			
-			List<String> partnersInDB = getPartnersFromDB(pUserDC.getObjectID());
-			domainUser.setPartners(partnersInDB);
+			List<UserPartnerDC> partnersInDB = getPartnersFromDB(pUserDC.getObjectID());
+			domainUser.setPartners(copyDcToDomainPartners(partnersInDB));
 			
 			pUserDC.loadResolvedUserPermissions(LocaleInSession.get());
 			@SuppressWarnings("unchecked")

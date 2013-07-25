@@ -55,7 +55,7 @@ public class MonitoringHistoryController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/monitoring/jsontable", method=RequestMethod.GET,produces="application/json") 
     @ResponseBody
-    public Map<String, Object> getTable(HttpServletRequest request,TableSorterParams params,@RequestParam String serviceName) throws Doc41ExceptionBase, BATranslationsException {
+    public Map<String, Object> getTable(TableSorterParams params,@RequestParam String serviceName) throws Doc41ExceptionBase, BATranslationsException {
 		Tags tags = new Tags(TranslationsDAO.SYSTEM_ID, "tAdmin", "monitoringHistory", LocaleInSession.get());
 		
 		String orderBy = params.getSortColumn(DB_COL_NAMES);
@@ -72,7 +72,7 @@ public class MonitoringHistoryController extends AbstractDoc41Controller {
 				row[0]= monitor.getId();
 				row[1]= monitor.getAction();
 				row[2]= ""+monitor.getCreated();
-				row[3]= displayStatus(request,monitor.isStatus(),tags);
+				row[3]= displayStatus(monitor.isStatus(),tags);
 				row[4]= monitor.getDetails();
 				row[5]= monitor.getRemarks();
 				row[6]= ""+monitor.getResponseTime();
