@@ -52,6 +52,7 @@ public class DocumentUC {
 	
 	private Map<String, DocMetadata> docMetadataContainer;
 	
+	//TODO maybe synchronize or make member final and call from constructor
 	public DocMetadata getMetadata(String type) throws Doc41BusinessException{
 		try {
 			if(docMetadataContainer==null){
