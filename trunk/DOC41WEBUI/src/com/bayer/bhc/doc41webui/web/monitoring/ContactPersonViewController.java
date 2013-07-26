@@ -34,7 +34,7 @@ public class ContactPersonViewController extends AbstractDoc41Controller {
 
 	@Override
 	protected boolean hasPermission(User usr, HttpServletRequest request) {
-		return usr.hasPermission(Doc41Constants.PERMISSION_BUSINESS_ADMIN, Doc41Constants.PERMISSION_TECHNICAL_ADMIN);
+		return usr.hasPermission(Doc41Constants.PERMISSION_MONITORING);
 	}
 	
 	@RequestMapping(value="monitoring/viewContactPerson",method = RequestMethod.GET)

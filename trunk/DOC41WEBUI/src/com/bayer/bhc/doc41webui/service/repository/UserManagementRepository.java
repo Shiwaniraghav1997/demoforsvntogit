@@ -237,7 +237,7 @@ public class UserManagementRepository extends AbstractRepository {
 	        	} else {
 	        		if(pUser.getActive()){
 	        			getLdapDAO().addInternalUserToGroup(pUser.getCwid());
-	        			if(pUser.hasPermission(Doc41Constants.PERMISSION_TECHNICAL_ADMIN)){
+	        			if(pUser.hasPermission(Doc41Constants.PERMISSION_ADDINTERNALUSERTOLOGGROUP)){
 	        				getLdapDAO().addInternalUserToLogGroup(pUser.getCwid());
 	        			} else {
 	        				getLdapDAO().removeInternalUserFromLogGroup(pUser.getCwid());
