@@ -20,8 +20,9 @@ public class SapRfcDumper extends Doc41TestCase{
 //		String rfcName="simulateOrder";
 //		String rfcName="getCustHistory";
 //		String rfcName="getOrderDetails";
-		String rfcName="getInvLocationTransactionHistory";
+		String rfcName="GetCrepInfo";
 		String dump = SAPSingleton.get().dumpMetadata(rfcName);
 		System.out.println(dump);
+		System.out.println(SAPSingleton.get());
 	}
 }

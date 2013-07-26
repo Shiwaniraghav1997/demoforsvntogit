@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import com.bayer.ecim.foundation.basic.ConfigMap;
@@ -397,6 +398,10 @@ public class SAPSingleton extends Singleton {
 				.toUpperCase());
 		JCoFunction bFunction = bTemplate.getFunction();
 		return RFCMetaDataDumper.dumpFunction(bFunction);
+	}
+	
+	public Set<String> getRFCNames() {
+		return cRFCs.keySet();
 	}
 	
 	@Override
