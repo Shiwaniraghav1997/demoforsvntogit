@@ -1,4 +1,4 @@
-package com.bayer.bhc.doc41webui.container;
+package com.bayer.bhc.doc41webui.domain;
 
 import java.io.Serializable;
 import java.util.Date;

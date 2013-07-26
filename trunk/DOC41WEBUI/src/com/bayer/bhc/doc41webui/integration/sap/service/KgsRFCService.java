@@ -14,12 +14,12 @@ import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.container.Attribute;
-import com.bayer.bhc.doc41webui.container.ContentRepositoryInfo;
-import com.bayer.bhc.doc41webui.container.DocMetadata;
-import com.bayer.bhc.doc41webui.container.DocTypeDef;
-import com.bayer.bhc.doc41webui.container.DocumentStatus;
-import com.bayer.bhc.doc41webui.container.KeyValue;
+import com.bayer.bhc.doc41webui.domain.Attribute;
+import com.bayer.bhc.doc41webui.domain.ContentRepositoryInfo;
+import com.bayer.bhc.doc41webui.domain.DocMetadata;
+import com.bayer.bhc.doc41webui.domain.DocTypeDef;
+import com.bayer.bhc.doc41webui.domain.DocumentStatus;
+import com.bayer.bhc.doc41webui.domain.KeyValue;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 @Component
@@ -233,4 +233,5 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		}
 	}
 
+//	public List<HitListEntry>
 }

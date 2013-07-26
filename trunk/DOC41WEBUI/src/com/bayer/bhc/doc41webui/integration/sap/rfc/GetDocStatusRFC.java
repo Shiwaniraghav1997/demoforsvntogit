@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
-import com.bayer.bhc.doc41webui.container.DocumentStatus;
+import com.bayer.bhc.doc41webui.domain.DocumentStatus;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;

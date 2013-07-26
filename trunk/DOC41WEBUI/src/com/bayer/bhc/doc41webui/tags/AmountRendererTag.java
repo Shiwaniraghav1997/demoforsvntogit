@@ -13,7 +13,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import com.bayer.bhc.doc41webui.container.SAPPrice;
+import com.bayer.bhc.doc41webui.domain.SAPPrice;
 
 /**
  * AmountRendererTag.

@@ -1,5 +1,6 @@
-package com.bayer.bhc.doc41webui.container;
+package com.bayer.bhc.doc41webui.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
  * @author EVAYD, EZZQC
  *
  */
-public class SAPPrice extends ItemObject {
+public class SAPPrice implements Serializable {
 	private static final long serialVersionUID = -2907550427431793792L;
 	
 	private BigDecimal rate;

@@ -9,6 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 public class UploadForm {
