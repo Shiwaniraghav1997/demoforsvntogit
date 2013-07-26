@@ -1,5 +1,7 @@
 package com.bayer.bhc.doc41webui.domain;
 
+import com.bayer.ecim.foundation.basic.StringTool;
+
 public class UserPartner extends DomainObject {
 
 	private static final long serialVersionUID = 2511145389307051601L;
@@ -33,7 +35,7 @@ public class UserPartner extends DomainObject {
 	}
 	
 	public String getPartnerLabel(){
-		return ""+partnerNumber+" "+partnerName1+" "+partnerName2;
+		return ""+partnerNumber+" "+StringTool.nullToEmpty(partnerName1)+" "+StringTool.nullToEmpty(partnerName2);
 	}
 	
 	
