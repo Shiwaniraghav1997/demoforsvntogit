@@ -48,7 +48,7 @@ public class LoadTranslationsTag extends TagSupport {
         Doc41Log.get().debug(
                 LoadTranslationsTag.class,
                 null,
-                "Loading Translations for Compnent " + component + "and Page " + jspName
+                "Loading Translations for Component " + component + " and Page " + jspName
                         + " of  Locale  " + pLocale);
         try {
             Tags tags = new Tags(MANDANT, component, jspName, pLocale);
