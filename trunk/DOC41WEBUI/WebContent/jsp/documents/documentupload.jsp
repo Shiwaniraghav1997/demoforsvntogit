@@ -58,20 +58,20 @@ function popupAppendFunction(){
 						</spring:hasBindErrors>
 						
 						<tr>
-							<td><doc41:translate label="PartnerNumber" /></td>
+							<th><doc41:translate label="PartnerNumber" /></th>
 							<td><form:select path="partnerNumber" items="${user.partners}" cssClass="portlet-form-input-field" cssStyle="width:240px;" itemLabel="partnerLabel" itemValue="partnerNumber"/><doc41:error path="partnerNumber" /></td>
 						</tr>
 						
 						<tr class="portlet-table-alternate">
-							<td><doc41:translate label="DeliveryNumber" /></td>
+							<th><doc41:translate label="DeliveryNumber" /></th>
 							<td><form:input path="deliveryNumber" cssClass="portlet-form-input-field"  maxlength="70"/><doc41:error path="deliveryNumber" /></td>
 						</tr>
 						
 						 <c:forEach items="${uploadForm.attributeValues}" var="attributeValue" varStatus="status">
 					        <tr	<c:if test="${lovStatus.count % 2 != 0}">class="portlet-table-alternate"</c:if>>
-					            <td><c:out value="${uploadForm.attributeLabels[attributeValue.key]}"/>
+					            <th><c:out value="${uploadForm.attributeLabels[attributeValue.key]}"/>
 					            <input type="hidden" name="attributeLabels['${attributeValue.key}']" value="${uploadForm.attributeLabels[attributeValue.key]}"/>
-					            </td>
+					            </th>
 					            <td>
 					            <c:choose>
 						            <c:when test="${fn:length(uploadForm.attributePredefValues[attributeValue.key])>0}">
