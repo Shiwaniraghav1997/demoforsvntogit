@@ -235,7 +235,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		}
 	}
 
-	public List<HitListEntry> findDocs(String d41id,Map<String, String> attributeValues,int maxResults,boolean maxVersionOnly)
+	public List<HitListEntry> findDocs(String d41id,String sapObj,String objectId,Map<String, String> attributeValues,int maxResults,boolean maxVersionOnly)
 	 throws Doc41ServiceException{
 		//TODO
 		return new ArrayList<HitListEntry>();
