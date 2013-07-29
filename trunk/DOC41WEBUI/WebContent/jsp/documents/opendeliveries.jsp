@@ -11,19 +11,7 @@ showHeader="false">
 		
 		<div class="portlet-section-body">
 		
-		      <div class="pager">
-		        <img src="${pageContext.request.contextPath}/resources/img/tablesorter/first.png" class="first" alt="First" title="First page" />
-				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/prev.png" class="prev" alt="Prev" title="Previous page" />
-				<span class="pagedisplay"></span> <!-- this can be any element, including an input -->
-				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/next.png" class="next" alt="Next" title="Next page" />
-				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/last.png" class="last" alt="Last" title= "Last page" />
-		        <select class="pagesize">
-		         	<option selected="selected" value="10">10</option>
-					<option value="20">20</option>
-					<option value="30">30</option>
-					<option value="40">40</option>
-		        </select>
-		      </div>
+		<doc41:pager/>
 		<table class="tablesorter" id="doc41table">
 		  <thead class="portlet-table-header" >
 		    <tr>
@@ -58,18 +46,6 @@ showHeader="false">
 			</c:forEach>
 		  </tbody>
 		</table>
-		<div class="pager">
-		        <img src="${pageContext.request.contextPath}/resources/img/tablesorter/first.png" class="first" alt="First" title="First page" />
-				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/prev.png" class="prev" alt="Prev" title="Previous page" />
-				<span class="pagedisplay"></span> <!-- this can be any element, including an input -->
-				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/next.png" class="next" alt="Next" title="Next page" />
-				<img src="${pageContext.request.contextPath}/resources/img/tablesorter/last.png" class="last" alt="Last" title= "Last page" />
-		        <select class="pagesize">
-		         	<option selected="selected" value="10">10</option>
-					<option value="20">20</option>
-					<option value="30">30</option>
-					<option value="40">40</option>
-		        </select>
-		</div>
+		<doc41:pager/>
 	</div>
 </doc41:layout>

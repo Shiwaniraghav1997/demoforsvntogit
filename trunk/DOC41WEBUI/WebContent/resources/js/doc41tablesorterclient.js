@@ -1,4 +1,9 @@
 $(function(){
+	
+	//tsfilters can be used to configure special filters like select boxes
+	if(typeof tswidgets === "undefined"){
+		tswidgets=['zebra', 'filter'];
+	}
 
   // define pager options
   var pagerOptions = {
@@ -36,7 +41,7 @@ $(function(){
       theme: 'bhc',
       headerTemplate : '{content} {icon}', // new in v2.7. Needed to add the bootstrap icon!
       widthFixed: true,
-      widgets: ['zebra', 'filter']
+      widgets: tswidgets
     })
 
     // initialize the pager plugin

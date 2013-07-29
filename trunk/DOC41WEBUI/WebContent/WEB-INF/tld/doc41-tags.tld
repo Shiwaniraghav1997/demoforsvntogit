@@ -408,4 +408,12 @@
 		<display-name>Stage Info</display-name>
 		<description>Stage Info</description>
 	</tag>
+	
+	<tag id="pager">
+		<name>pager</name>
+		<tag-class>com.bayer.bhc.doc41webui.tags.PagerTag</tag-class>
+		<body-content>empty</body-content>
+		<display-name>Pager</display-name>
+		<description>Pager</description>
+	</tag>
 </taglib>
