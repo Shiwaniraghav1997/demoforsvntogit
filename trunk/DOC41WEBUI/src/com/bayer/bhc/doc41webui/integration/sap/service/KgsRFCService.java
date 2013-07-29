@@ -3,7 +3,6 @@ package com.bayer.bhc.doc41webui.integration.sap.service;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,6 +35,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_CREATE_HTTP_PUT = "CreateHttpPut";
 	private static final String RFC_NAME_GET_DOC_STATUS = "GetDocStatus";
 	private static final String RFC_NAME_PROCESS_DR_REQ = "ProcessDrReq";
+	private static final String RFC_NAME_FIND_DOCS = "FindDocs";
 	
 
 	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes) throws Doc41ServiceException {
@@ -238,19 +238,16 @@ public class KgsRFCService extends AbstractSAPJCOService {
 
 	public List<HitListEntry> findDocs(String d41id,String sapObj,String objectId,Map<String, String> attributeValues,int maxResults,boolean maxVersionOnly)
 	 throws Doc41ServiceException{
-		//TODO
+		List<Object> params = new ArrayList<Object>();
+		params.add(d41id);
+		params.add(sapObj);
+		params.add(objectId);
+		params.add(maxResults);
+		params.add(maxVersionOnly);
+		params.add(attributeValues);
 		
-		List<HitListEntry> list = new ArrayList<HitListEntry>();
-		HitListEntry dummyDoc = new HitListEntry();
-		dummyDoc.setDocId("docId");
-		dummyDoc.setObjectId("objectId");
-		dummyDoc.setStorageDate(new Date());
-		dummyDoc.setLogDate(new Date());
-		dummyDoc.setArchiveLinkDate(new Date());
-		dummyDoc.setObjectType("objectType");
-		dummyDoc.setDocumentClass("documentClass");
-		list.add(dummyDoc);
-		return list ;
+		List<HitListEntry> result = performRFC(params, RFC_NAME_FIND_DOCS);
+		return result;
 	}
 	
 	public URI getDocURL(String contentRepository,String docId)

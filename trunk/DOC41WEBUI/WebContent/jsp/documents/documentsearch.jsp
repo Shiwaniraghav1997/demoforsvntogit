@@ -128,19 +128,18 @@
 					<th><doc41:translate label="DocId" /></th>
 					<th><doc41:translate label="ObjectId" /></th>
 					<th><doc41:translate label="StorageDate" /></th>
-					<th><doc41:translate label="LogDate" /></th>
 					<th><doc41:translate label="ArchiveLinkDate" /></th>
 					<th><doc41:translate label="ObjectType" /></th>
 					<th><doc41:translate label="DocumentClass" /></th>
 				</tr>
 			<colgroup>
+				<col width="20%" />
 				<col width="15%" />
 				<col width="15%" />
 				<col width="15%" />
 				<col width="15%" />
 				<col width="15%" />
 				<col width="15%" />
-				<col width="10%" />
 			</colgroup>
 			</thead>
 
@@ -152,7 +151,6 @@
 						<td><c:out value="${document.docId}" /></td>
 						<td><c:out value="${document.objectId}" /></td>
 						<td><c:out value="${document.storageDate}" /></td>
-						<td><c:out value="${document.logDate}" /></td>
 						<td><c:out value="${document.archiveLinkDate}" /></td>
 						<td><c:out value="${document.objectType}" /></td>
 						<td><c:out value="${document.documentClass}" /></td>

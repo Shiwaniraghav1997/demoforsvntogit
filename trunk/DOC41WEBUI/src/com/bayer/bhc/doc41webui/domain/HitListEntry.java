@@ -1,8 +1,9 @@
 package com.bayer.bhc.doc41webui.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class HitListEntry extends DomainObject {
+public class HitListEntry implements Serializable {
 
 	private static final long serialVersionUID = 6767482424597660047L;
 	
@@ -10,7 +11,6 @@ public class HitListEntry extends DomainObject {
 	private String docId;
 	private String objectId;
 	private Date storageDate;
-	private Date logDate;
 	private Date archiveLinkDate;
 	private String objectType;
 	private String documentClass;
@@ -31,12 +31,6 @@ public class HitListEntry extends DomainObject {
 	}
 	public void setStorageDate(Date storageDate) {
 		this.storageDate = storageDate;
-	}
-	public Date getLogDate() {
-		return logDate;
-	}
-	public void setLogDate(Date logDate) {
-		this.logDate = logDate;
 	}
 	public Date getArchiveLinkDate() {
 		return archiveLinkDate;
