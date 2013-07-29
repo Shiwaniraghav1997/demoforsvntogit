@@ -27,6 +27,7 @@ import com.bayer.bhc.doc41webui.domain.ContentRepositoryInfo;
 import com.bayer.bhc.doc41webui.domain.Delivery;
 import com.bayer.bhc.doc41webui.domain.DocMetadata;
 import com.bayer.bhc.doc41webui.domain.DocTypeDef;
+import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
@@ -226,6 +227,19 @@ public class DocumentUC {
 		} else {
 			Doc41Log.get().error(this.getClass(),UserInSession.getCwid(),"SECURITY WARNING: virusscan failed!");
 			return null;
+		}
+	}
+	
+	public List<HitListEntry> searchDocuments(String type, String objectId, Map<String, String> attributeValues, int maxResults, boolean maxVersionOnly) throws Doc41BusinessException {
+		try{
+			DocMetadata metadata = getMetadata(type);
+//			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
+			DocTypeDef docDef = metadata.getDocDef();
+			String d41id = docDef.getD41id();
+			String sapObj = docDef.getSapObj();
+			return kgsRFCService.findDocs(d41id, sapObj, objectId, attributeValues, maxResults, maxVersionOnly);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("searchDocuments",e);
 		}
 	}
 }

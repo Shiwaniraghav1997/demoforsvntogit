@@ -10,18 +10,21 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.container.SearchForm;
 import com.bayer.bhc.doc41webui.domain.Attribute;
+import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 @Controller
 public class SearchController extends AbstractDoc41Controller {
+	
+	private static final int MAX_RESULTS = 100;
 
 	@Autowired
 	private DocumentUC documentUC;
@@ -43,28 +46,25 @@ public class SearchController extends AbstractDoc41Controller {
     }
 	
 	@RequestMapping(value="/documents/documentsearch",method = RequestMethod.GET)
-	public SearchForm get(@RequestParam() String type) throws Doc41BusinessException{
+	public SearchForm get(@ModelAttribute SearchForm searchForm,BindingResult result) throws Doc41BusinessException{
 		String language = LocaleInSession.get().getLanguage();
-		SearchForm searchForm = new SearchForm();
-		searchForm.setType(type);
+		String type = searchForm.getType();
+		if(StringTool.isTrimmedEmptyOrNull(type)){
+			throw new Doc41BusinessException("typeIsMissing");
+		}
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type);
 		searchForm.initAttributes(attributeDefinitions,language);
+		
+		if(!StringTool.isTrimmedEmptyOrNull(searchForm.getPartnerNumber())){
+			List<HitListEntry> documents = documentUC.searchDocuments(type, StringTool.emptyToNull(searchForm.getObjectId()), searchForm.getAttributeValues(), MAX_RESULTS+1, true);
+			if(documents.size()>MAX_RESULTS){
+				result.rejectValue("table", "ToManyResults");
+			} else {
+				searchForm.setDocuments(documents);
+			}
+		}
+		
 		return searchForm;
 	}
-	
-	@RequestMapping(value="/documents/search",method = RequestMethod.POST)
-	public String search(@ModelAttribute SearchForm searchForm,BindingResult result) {
-		//TODO
-		System.err.println("search");
-		return "/documents/documentsearch";
-	}
-	
-	@RequestMapping(value="/documents/search",method = RequestMethod.POST, params="reset")
-	public String reset(@ModelAttribute SearchForm searchForm,BindingResult result) {
-		//TODO
-		System.err.println("reset");
-		return "/documents/documentsearch";
-	}
-	
 	
 }

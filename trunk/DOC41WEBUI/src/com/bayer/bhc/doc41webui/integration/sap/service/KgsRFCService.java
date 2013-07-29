@@ -3,6 +3,7 @@ package com.bayer.bhc.doc41webui.integration.sap.service;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -238,7 +239,18 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	public List<HitListEntry> findDocs(String d41id,String sapObj,String objectId,Map<String, String> attributeValues,int maxResults,boolean maxVersionOnly)
 	 throws Doc41ServiceException{
 		//TODO
-		return new ArrayList<HitListEntry>();
+		
+		List<HitListEntry> list = new ArrayList<HitListEntry>();
+		HitListEntry dummyDoc = new HitListEntry();
+		dummyDoc.setDocId("docId");
+		dummyDoc.setObjectId("objectId");
+		dummyDoc.setStorageDate(new Date());
+		dummyDoc.setLogDate(new Date());
+		dummyDoc.setArchiveLinkDate(new Date());
+		dummyDoc.setObjectType("objectType");
+		dummyDoc.setDocumentClass("documentClass");
+		list.add(dummyDoc);
+		return list ;
 	}
 	
 	public URI getDocURL(String contentRepository,String docId)

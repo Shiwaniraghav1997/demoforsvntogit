@@ -64,13 +64,17 @@ public abstract class CustomizedDocumentForm {
 	
 	public void initAttributes(List<Attribute> attributeDefinitions,String languageCode) {
 		attributeLabels = new HashMap<String, String>();
-		attributeValues = new LinkedHashMap<String, String>();
+		if(attributeValues==null){
+			attributeValues = new LinkedHashMap<String, String>();
+		}
 		attributePredefValues = new HashMap<String, List<String>>();
 		for (Attribute attribute : attributeDefinitions) {
 			String key = attribute.getName();
 			String label = attribute.getTranslation(languageCode);
 			attributeLabels.put(key, label);
-			attributeValues.put(key, "");
+			if(!attributeValues.containsKey(key)){
+				attributeValues.put(key, "");
+			}
 			List<String> predefValues = attribute.getValues();
 			attributePredefValues.put(key,predefValues);
 		}
