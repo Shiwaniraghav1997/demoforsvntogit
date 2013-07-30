@@ -2,6 +2,11 @@ package com.bayer.bhc.doc41webui.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 public class HitListEntry implements Serializable {
 
@@ -15,6 +20,7 @@ public class HitListEntry implements Serializable {
 	private String objectType;
 	private String documentClass;
 	private String[] customizedValues;
+	private Map<String, String> customizedValuesByKey;
 	public String getDocId() {
 		return docId;
 	}
@@ -56,6 +62,21 @@ public class HitListEntry implements Serializable {
 	}
 	public void setCustomizedValues(String[] customizedValues) {
 		this.customizedValues = customizedValues;
+	}
+	public Map<String, String> getCustomizedValuesByKey() {
+		return customizedValuesByKey;
+	}
+	
+	
+	public void initCustValuesMap(Map<Integer, String> seqToKey){
+		customizedValuesByKey = new HashMap<String, String>();
+		for(int i=0;i<Doc41Constants.CUSTOMIZATION_VALUES_COUNT;i++){
+			String key = seqToKey.get(i+1);
+			if(!StringTool.isTrimmedEmptyOrNull(key)){
+				String value = customizedValues[i];
+				customizedValuesByKey.put(key, value);
+			}
+		}
 	}
 
 }

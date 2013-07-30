@@ -17,6 +17,7 @@ public abstract class CustomizedDocumentForm {
 	private Map<String,String> attributeLabels;
 	private Map<String, String> attributeValues;
 	private Map<String, List<String>> attributePredefValues;
+	private Map<Integer, String> attributeSeqToKey;
 	
 	private String partnerNumber;
 	
@@ -62,6 +63,9 @@ public abstract class CustomizedDocumentForm {
 	public void setPartnerNumber(String partnerNumber) {
 		this.partnerNumber = partnerNumber;
 	}
+	protected Map<Integer, String> getAttributeSeqToKey() {
+		return attributeSeqToKey;
+	}
 
 	
 	public void initAttributes(List<Attribute> attributeDefinitions,String languageCode) {
@@ -70,6 +74,7 @@ public abstract class CustomizedDocumentForm {
 			attributeValues = new LinkedHashMap<String, String>();
 		}
 		attributePredefValues = new HashMap<String, List<String>>();
+		attributeSeqToKey = new HashMap<Integer, String>();
 		for (Attribute attribute : attributeDefinitions) {
 			String key = attribute.getName();
 			String label = attribute.getTranslation(languageCode);
@@ -79,6 +84,7 @@ public abstract class CustomizedDocumentForm {
 			}
 			List<String> predefValues = attribute.getValues();
 			attributePredefValues.put(key,predefValues);
+			attributeSeqToKey.put(attribute.getSeqNumber(), key);
 		}
 	}
 

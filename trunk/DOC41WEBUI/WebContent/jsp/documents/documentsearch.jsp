@@ -162,11 +162,9 @@
 						<td><c:out value="${document.storageDate}" /></td>
 						<td><c:out value="${document.archiveLinkDate}" /></td>
 						<td><c:out value="${document.documentClass}" /></td>
-						<c:forEach items="${document.customizedValues}"
-							var="custValue" varStatus="status">
-						<c:if test="${status.count <= searchForm.custAttributeCount}">
-						<td><c:out value="${custValue}" /></td>
-						</c:if>
+						<c:forEach items="${searchForm.attributeLabels}"
+							var="attribLabel" varStatus="status">
+						<td><c:out value="${document.customizedValuesByKey[attribLabel.key]}" /></td>
 						</c:forEach>
 					</tr>
 				</c:forEach>
