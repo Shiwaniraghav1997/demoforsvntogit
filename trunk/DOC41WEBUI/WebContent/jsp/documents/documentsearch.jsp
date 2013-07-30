@@ -14,6 +14,8 @@
 			window.location ="download?type="+type+"&docId="+docId;
 		}
 	</script>
+	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41tablesorterclient.js"></script>
 
 	<div id="div-body" class="portlet-body">
 		<form:form commandName="searchForm" action="documentsearch"
