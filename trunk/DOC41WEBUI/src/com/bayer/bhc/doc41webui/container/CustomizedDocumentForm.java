@@ -1,5 +1,7 @@
 package com.bayer.bhc.doc41webui.container;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -63,7 +65,7 @@ public abstract class CustomizedDocumentForm {
 
 	
 	public void initAttributes(List<Attribute> attributeDefinitions,String languageCode) {
-		attributeLabels = new HashMap<String, String>();
+		attributeLabels = new LinkedHashMap<String, String>();
 		if(attributeValues==null){
 			attributeValues = new LinkedHashMap<String, String>();
 		}
@@ -87,5 +89,18 @@ public abstract class CustomizedDocumentForm {
 				+ ", attributeValues=" + attributeValues
 				+ ", attributePredefValues=" + attributePredefValues
 				+ ", partnerNumber=" + partnerNumber + "]";
+	}
+	
+	public List<String> getCustomizedValuesLabels(){
+		Collection<String> labels = attributeLabels.values();
+		List<String> labelList = new ArrayList<String>(labels);
+		return labelList;
+	}
+	public int getCustColPercent(){
+		int colCount = getCustAttributeCount();
+		return 50/colCount;
+	}
+	public int getCustAttributeCount() {
+		return attributeLabels.size();
 	}
 }

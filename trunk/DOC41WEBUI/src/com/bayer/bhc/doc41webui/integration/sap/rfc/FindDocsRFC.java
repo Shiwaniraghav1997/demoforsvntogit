@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
@@ -35,7 +36,8 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	private static final String OUT_AL_TIME = "LTIME";
 	private static final String OUT_OBJ_TYPE = "OBJTY";
 	private static final String OUT_DOC_CLASS = "CLASS";
-
+	private static final String OUT_VAL = "VAL0";
+	
 	@Override
 	public void prepareCall(JCoFunction pFunction, List<?> pInputParms)
 			throws SAPException {
@@ -125,6 +127,12 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 					doc.setArchiveLinkDate(mergeSapDateTime(arDate, arTime));
             		doc.setObjectType(table.getString(OUT_OBJ_TYPE));
             		doc.setDocumentClass(table.getString(OUT_DOC_CLASS));
+            		
+            		String[] custValues = new String[Doc41Constants.CUSTOMIZATION_VALUES_COUNT];
+            		for(int v=0;v<Doc41Constants.CUSTOMIZATION_VALUES_COUNT;v++){
+            			custValues[v]=table.getString(OUT_VAL+(v+1));
+            		}
+            		doc.setCustomizedValues(custValues);
             		
             		table.nextRow();
             		mResult.add(doc);

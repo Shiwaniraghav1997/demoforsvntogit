@@ -14,6 +14,7 @@ public class HitListEntry implements Serializable {
 	private Date archiveLinkDate;
 	private String objectType;
 	private String documentClass;
+	private String[] customizedValues;
 	public String getDocId() {
 		return docId;
 	}
@@ -50,12 +51,11 @@ public class HitListEntry implements Serializable {
 	public void setDocumentClass(String documentClass) {
 		this.documentClass = documentClass;
 	} 
-	
-	
-	
-	
-	
-	
-	//TODO Custom Attributes
+	public String[] getCustomizedValues() {
+		return customizedValues;
+	}
+	public void setCustomizedValues(String[] customizedValues) {
+		this.customizedValues = customizedValues;
+	}
 
 }

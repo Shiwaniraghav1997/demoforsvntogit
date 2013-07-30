@@ -65,7 +65,7 @@
 									cssStyle="width:240px;" itemLabel="partnerLabel"
 									itemValue="partnerNumber" />
 								<doc41:error path="partnerNumber" /></td>
-							<th><doc41:translate label="ObjectId" /></th>
+							<th><doc41:translate label="ObjectId${searchForm.type}" /></th>
 							<td><form:input path="objectId"
 									cssClass="portlet-form-input-field" maxlength="70" />
 								<doc41:error path="objectId" /></td>
@@ -129,21 +129,25 @@
 
 					<!-- thead text will be updated from the JSON; make sure the number of columns matches the JSON data -->
 					<!-- header update currently disabled to put names in the jsp instead of in java  -->
-					<th><doc41:translate label="DocId" /></th>
-					<th><doc41:translate label="ObjectId" /></th>
+					<th><doc41:translate label="ObjectId${searchForm.type}" /></th>
 					<th><doc41:translate label="StorageDate" /></th>
 					<th><doc41:translate label="ArchiveLinkDate" /></th>
-					<th><doc41:translate label="ObjectType" /></th>
 					<th><doc41:translate label="DocumentClass" /></th>
+					<c:forEach items="${searchForm.customizedValuesLabels}"
+							var="custValueLabel" varStatus="status">
+					<th><c:out value="${custValueLabel}" /></th>
+					</c:forEach>
+					
 				</tr>
 			<colgroup>
-				<col width="20%" />
+				<col width="10%" />
 				<col width="15%" />
 				<col width="15%" />
-				<col width="15%" />
-				<col width="15%" />
-				<col width="15%" />
-				<col width="15%" />
+				<col width="10%" />
+				<c:forEach items="${searchForm.customizedValuesLabels}"
+							var="custValueLabel" varStatus="status">
+				<col width="${searchForm.custColPercent}%" />
+				</c:forEach>
 			</colgroup>
 			</thead>
 
@@ -152,12 +156,16 @@
 					varStatus="status">
 					<tr style="cursor: pointer;"
 						onclick="openDocument('${document.docId}','${searchForm.type}')">
-						<td><c:out value="${document.docId}" /></td>
 						<td><c:out value="${document.objectId}" /></td>
 						<td><c:out value="${document.storageDate}" /></td>
 						<td><c:out value="${document.archiveLinkDate}" /></td>
-						<td><c:out value="${document.objectType}" /></td>
 						<td><c:out value="${document.documentClass}" /></td>
+						<c:forEach items="${document.customizedValues}"
+							var="custValue" varStatus="status">
+						<c:if test="${status.count <= searchForm.custAttributeCount}">
+						<td><c:out value="${custValue}" /></td>
+						</c:if>
+						</c:forEach>
 					</tr>
 				</c:forEach>
 			</tbody>
