@@ -1,7 +1,6 @@
 package com.bayer.bhc.doc41webui.integration.sap.service;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -36,6 +35,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_GET_DOC_STATUS = "GetDocStatus";
 	private static final String RFC_NAME_PROCESS_DR_REQ = "ProcessDrReq";
 	private static final String RFC_NAME_FIND_DOCS = "FindDocs";
+	private static final String RFC_NAME_GET_DOC_URL = "GetDocUrl";
 	
 
 	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes) throws Doc41ServiceException {
@@ -252,11 +252,16 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	
 	public URI getDocURL(String contentRepository,String docId)
 			 throws Doc41ServiceException{
-		//TODO
-		try {
-			return new URI("http://www.bayer.com/");
-		} catch (URISyntaxException e) {
-			throw new Doc41ServiceException("findDocs",e);
+		List<Object> params = new ArrayList<Object>();
+		params.add(contentRepository);
+		params.add(docId);
+		List<URI> result = performRFC(params,RFC_NAME_GET_DOC_URL);
+		if(result ==null || result.isEmpty()){
+			return null;
+		} else if(result.size()>1){
+			throw new Doc41ServiceException("more than one GetURL returned");
+		} else {
+			return result.get(0);
 		}
 		
 	}

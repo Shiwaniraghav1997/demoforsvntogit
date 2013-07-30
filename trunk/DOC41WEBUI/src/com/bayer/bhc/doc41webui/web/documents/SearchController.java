@@ -3,6 +3,7 @@ package com.bayer.bhc.doc41webui.web.documents;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
@@ -65,6 +67,11 @@ public class SearchController extends AbstractDoc41Controller {
 		}
 		
 		return searchForm;
+	}
+	
+	@RequestMapping(value="/documents/download",method = RequestMethod.GET)
+	public void download(@RequestParam String type, @RequestParam String docId,HttpServletResponse response) throws Doc41BusinessException{
+		documentUC.downloadDocument(response,type,docId);
 	}
 	
 }

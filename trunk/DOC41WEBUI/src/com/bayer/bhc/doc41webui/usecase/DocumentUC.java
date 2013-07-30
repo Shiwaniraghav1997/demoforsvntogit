@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -242,4 +244,24 @@ public class DocumentUC {
 			throw new Doc41BusinessException("searchDocuments",e);
 		}
 	}
+
+
+
+	public String downloadDocument(HttpServletResponse targetResponse, String type,
+			String docId) throws Doc41BusinessException {
+		try{
+			DocMetadata metadata = getMetadata(type);
+			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
+//			DocTypeDef docDef = metadata.getDocDef();
+		
+			URI docURL = kgsRFCService.getDocURL(crepInfo.getContentRepository(), docId);
+		
+			String statusText = httpClientService.downloadDocumentToResponse(docURL,targetResponse,docId);
+		
+			return statusText;
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("downloadDocument",e);
+		}
+	}
+	
 }

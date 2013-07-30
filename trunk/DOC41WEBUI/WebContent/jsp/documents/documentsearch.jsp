@@ -9,6 +9,10 @@
 
 	<script type="text/javascript">
 		tswidgets = [ 'zebra' ];
+		
+		function openDocument(docId,type){
+			window.location ="download?type="+type+"&docId="+docId;
+		}
 	</script>
 
 	<div id="div-body" class="portlet-body">

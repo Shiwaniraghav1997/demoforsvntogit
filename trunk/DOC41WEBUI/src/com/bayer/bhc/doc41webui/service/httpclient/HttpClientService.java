@@ -7,10 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequest;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.RequestCallback;
@@ -52,5 +57,38 @@ public class HttpClientService {
 			}
 		}
 	}
+	
+	public String downloadDocumentToResponse(URI getUrl, final HttpServletResponse targetResponse,final String docId) throws Doc41ServiceException{
+		final ResponseExtractor<String> responseExtractor = new ResponseExtractor<String>() {
+			
+			@Override
+			public String extractData(ClientHttpResponse response) throws IOException {
+				HttpHeaders headers = response.getHeaders();
+				
+				MediaType contentType = headers.getContentType();
+				targetResponse.setHeader("Content-Type", ""+contentType);
+				targetResponse.setHeader("Content-Disposition", "attachment; filename="+generateFileName(docId,contentType));
+//		      targetResponse.setHeader("Cache-Control", "no-cache");
+//				targetResponse.setHeader("Pragma", "no-cache");
+				targetResponse.setDateHeader("Expires", 0);
+				targetResponse.setCharacterEncoding("cp1252");
+				targetResponse.setContentLength((int)headers.getContentLength());
+				
+				InputStream inputStream = response.getBody();
+				
+				IOUtils.copy(inputStream,targetResponse.getOutputStream());
+				
+				return response.getStatusText();
+			}
 
+			private String generateFileName(String docId, MediaType contentType) {
+				String extension="";
+				if(contentType.isCompatibleWith(MediaType.valueOf("application/pdf"))){
+					extension=".pdf";
+				}
+				return docId+extension;
+			}
+		};
+		return restTemplate.execute(getUrl, HttpMethod.GET, null, responseExtractor);
+	}
 }
