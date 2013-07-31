@@ -33,7 +33,7 @@ public class TopNavigationEntryTag extends TagSupport {
 		sb.append(String.format("<li%s>", tmpActTopNavAttr));
 		sb.append(String.format("<a title=\"%s\" href=\"%s\">%s</a>", tmpTitle, tmpHref, tmpTitle));
 		if (!StringUtils.contains(cssclass, "home")) {
-			sb.append("<ul>");
+			sb.append("<ul class ='ui-front'>");
 		}
 		
 		JspWriter printer = pageContext.getOut();
