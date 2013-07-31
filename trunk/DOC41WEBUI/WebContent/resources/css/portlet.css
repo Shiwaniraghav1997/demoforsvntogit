@@ -9,7 +9,7 @@
 	margin-right: 5px;
 	text-align: right;
 	width: inherit;
-	height: 18px;
+	height: 25px;
 }
 
 .portlet-section-subheader  {
@@ -23,6 +23,7 @@
 
 .portlet-section-header tbody tr th {
 	font-weight: bold;
+	font-size: 14px;
 }
 
 .portlet-section-header tr td {
