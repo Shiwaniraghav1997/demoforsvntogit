@@ -11,6 +11,6 @@
          box-sizing:	border-box;  
 }
 
-.test{
-	color:inherit;
+.inheritcolor{
+	color:inherit !important;
 }

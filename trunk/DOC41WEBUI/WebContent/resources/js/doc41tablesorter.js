@@ -16,7 +16,7 @@ $(function(){
 	
 	
 
-	  /*// Extend the themes to change any of the default class names ** NEW **
+	  // Extend the themes to change any of the default class names ** NEW **
 	  $.extend($.tablesorter.themes.jui, {
 	    // change default jQuery uitheme icons - find the full list of icons here: http://jqueryui.com/themeroller/ (hover over them for their name)
 	    table      : 'ui-widget ui-widget-content ui-corner-all', // table classes
@@ -31,8 +31,8 @@ $(function(){
 	    hover      : 'ui-state-hover',  // hover class
 	    filterRow  : '',
 	    even       : 'ui-widget-content', // odd row zebra striping
-	    odd        : 'ui-state-default'   // even row zebra striping
-	  });*/
+	    odd        : 'ui-state-default inheritcolor'   // even row zebra striping
+	  });
 
   // Initialize tablesorter
   // ***********************
