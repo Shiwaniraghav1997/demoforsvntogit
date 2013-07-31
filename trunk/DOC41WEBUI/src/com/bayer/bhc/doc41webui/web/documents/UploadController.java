@@ -41,6 +41,8 @@ public class UploadController extends AbstractDoc41Controller {
 			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_BOL_UP);
 		} else if(type.equals(Doc41Constants.DOC_TYPE_AIRWAY)){
 			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_AWB_UP);
+		} else if(type.equals(Doc41Constants.DOC_TYPE_TEMPLOG)){
+			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_TEMPLOG_UP);
 		} else {
 			throw new IllegalArgumentException("unknown type: "+type);
 		}

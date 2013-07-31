@@ -107,6 +107,8 @@ public class DocumentUC {
 			return Doc41Constants.SAP_DOC_TYPE_AIRWAY;
 		} else if(docType.equals(Doc41Constants.DOC_TYPE_BOL)){
 			return Doc41Constants.SAP_DOC_TYPE_BOL;
+		} else if(docType.equals(Doc41Constants.DOC_TYPE_TEMPLOG)){
+			return Doc41Constants.SAP_DOC_TYPE_TEMPLOG;
 		} else {
 			throw new Doc41BusinessException("unknown doc type: "+docType);
 		}
