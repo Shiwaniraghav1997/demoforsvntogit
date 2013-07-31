@@ -17,6 +17,7 @@ $(document).ready(function() {
 			
 			width: 800,
 			height: 470,
+			modal: true,
 			open: function(event,ui){
 				var url = $href;
 				if (typeof(popupAppendFunction) == "function") {
