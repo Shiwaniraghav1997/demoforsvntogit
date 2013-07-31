@@ -15,7 +15,7 @@ $(document).ready(function() {
 		.dialog({
 			autoOpen: false,
 			
-			width: 700,
+			width: 800,
 			height: 470,
 			open: function(event,ui){
 				var url = $href;

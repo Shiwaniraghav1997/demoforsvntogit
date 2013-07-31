@@ -23,6 +23,12 @@ title="My Profile">
 				<tr>
 					<th colspan="4"><doc41:translate label="TitelUserData"/></th>
 				</tr>
+				<colcolgroup>
+					<col width="15%" />
+					<col width="35%" />
+					<col width="15%" />
+					<col width="35%" />
+				</colcolgroup>
 			</thead>
 			<tbody class="portlet-table-body">
 				<spring:hasBindErrors name="user">

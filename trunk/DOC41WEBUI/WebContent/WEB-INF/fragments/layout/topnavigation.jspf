@@ -30,3 +30,10 @@
 			 </ul>
 			</div>
 			<!--  END   Top Navigation -->
+			
+					<script type="text/javascript">
+			$(function() {
+				$( ".portlet-form-button" )
+				.button();
+			}); 
+		</script>

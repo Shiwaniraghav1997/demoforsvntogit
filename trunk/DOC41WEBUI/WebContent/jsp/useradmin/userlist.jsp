@@ -67,7 +67,7 @@ title="User Management">
 		    	<col width="2%"/>
 		    	<col width="2%"/>
 		    </colgroup>		
-			<thead class="portlet-table-header" >
+			<thead>
 		    <tr>
 				<th>&nbsp;</th>
 				<th><doc41:translate label="Surname"/></th>
@@ -82,7 +82,7 @@ title="User Management">
 			</tr>
 		  	</thead>
 		
-			<tbody class="portlet-table-body"> <!-- tbody will be loaded via JSON -->
+			<tbody> <!-- tbody will be loaded via JSON -->
 			</tbody>
 		</table>
 		<doc41:pager/>

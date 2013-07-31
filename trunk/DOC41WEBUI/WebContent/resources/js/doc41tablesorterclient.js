@@ -2,7 +2,7 @@ $(function(){
 	
 	//tsfilters can be used to configure special filters like select boxes
 	if(typeof tswidgets === "undefined"){
-		tswidgets=['zebra', 'filter'];
+		tswidgets=['uitheme','zebra', 'filter'];
 	}
 
   // define pager options
@@ -38,7 +38,7 @@ $(function(){
   // ***********************
   $("#doc41table")
     .tablesorter({
-      theme: 'bhc',
+      theme: 'jui',
       headerTemplate : '{content} {icon}', // new in v2.7. Needed to add the bootstrap icon!
       widthFixed: true,
       widgets: tswidgets

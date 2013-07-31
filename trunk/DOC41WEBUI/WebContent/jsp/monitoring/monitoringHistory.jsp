@@ -80,7 +80,7 @@ title="MonitoringHistory">
 			    	<col width="25%"/>
 			    	<col width="5%"/>
 			    </colgroup>
-				<thead class="portlet-table-header">
+				<thead>
 					<tr>
 						<th><doc41:translate label="EntryId" /></th>
 						<th><doc41:translate label="Action" /></th>
@@ -91,7 +91,7 @@ title="MonitoringHistory">
 						<th><doc41:translate label="ResponseTime(ms)" /></th>
 					</tr>
 				</thead>
-				<tbody class="portlet-table-body"> <!-- tbody will be loaded via JSON -->
+				<tbody> <!-- tbody will be loaded via JSON -->
 		  		</tbody>
 			</table>
 			<doc41:pager/>		

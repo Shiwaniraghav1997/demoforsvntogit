@@ -1,9 +1,9 @@
 .portlet-section-header {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	display: block;
-	background-color: #EBF8FF;
-	border: 1px solid #0099CC;
+/* 	background-color: #EBF8FF; */
+/* 	border: 1px solid #0099CC; */
 	padding: 4px 1px;
 	margin-left: 5px;
 	margin-right: 5px;
@@ -14,7 +14,7 @@
 
 .portlet-section-subheader  {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	font-style: normal;
 	font-weight: bold;
 	font-variant: normal;
@@ -27,16 +27,16 @@
 
 .portlet-section-header tr td {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	border-bottom: 1px solid #0099CC;
+	font-size: 12px;
+/* 	border-bottom: 1px solid #0099CC; */
 }
 
 .portlet-section-body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	display: block;
-	background-color: #EBF8FF;
-	border: 1px solid #0099CC;
+/* 	background-color: #EBF8FF; */
+/* 	border: 1px solid #0099CC; */
 	padding: 4px 1px;
 	margin-left: 5px;
 	margin-right: 5px;
@@ -45,41 +45,42 @@
 
 .portlet-section-body table {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	border: 1px solid #0099CC;
+	font-size: 12px;
+/* 	border: 1px solid #0099CC; */
 	width: 100%;
-	border-collapse: collapse;
+/* 	border-collapse: collapse; */
 }
 
 /* Table */
 .portlet-table-header {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	font-style: normal;
 	font-weight: bold;
 	font-variant: normal;
 	color: #0099CC;
-	background-color: F2F9FC;
+/* 	background-color: F2F9FC; */
 	padding: 4px;
 }
 
 .portlet-table-header * th {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	border-color: #0099CC;
-	border-width: 0px 1px 1px 1px;
-	border-style: solid;
+	font-size: 12px;
+/* 	border-color: #0099CC; */
+/* 	border-width: 0px 1px 1px 1px; */
+/* 	border-style: solid; */
 	text-align: left;
 	padding: 4px;
 	font-weight: bold;
+	background-color: #EBF8FF; 
 }
 
 .portlet-table-header * td {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	border-color: #0099CC;
-	border-width: 0px 1px 1px 1px;
-	border-style: solid;
+	font-size: 12px;
+/* 	border-color: #0099CC; */
+/* 	border-width: 0px 1px 1px 1px; */
+/* 	border-style: solid; */
 	color: black;
 	background-color: white;
 	font-weight: normal;	
@@ -89,10 +90,10 @@
 
 .portlet-table-body * td {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	border-color: #0099CC;
-	border-width: 0px 1px 1px 1px;
-	border-style: solid;
+	font-size: 12px;
+/* 	border-color: #0099CC; */
+/* 	border-width: 0px 1px 1px 1px; */
+/* 	border-style: solid; */
 	text-align: left;
 	padding: 4px;
 	vertical-align: middle;
@@ -100,22 +101,22 @@
 
 .portlet-table-body tr.nobottom td {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	border-color: #0099CC;
-	border-width: 0px 1px 0px 1px;
-	border-style: solid;
+	font-size: 12px;
+/* 	border-color: #0099CC; */
+/* 	border-width: 0px 1px 0px 1px; */
+/* 	border-style: solid; */
 	text-align: left;	
 }
 
 .portlet-table-body * th {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	background-color: #EBF8FF; 
+	font-size: 12px;
+/* 	background-color: #EBF8FF;  */
 	border-color: #0099CC;
 	color: #0099CC;	
-	border-width: 0px 1px 1px 1px;
-	border-style: solid;
-	font-weight: bold;
+/* 	border-width: 0px 1px 1px 1px; */
+/* 	border-style: solid; */
+/* 	font-weight: bold; */
 	text-align: right;
 	padding-right: 10px;
 	vertical-align: middle;
@@ -123,20 +124,20 @@
 
 .portlet-table-header tr.nobottom th {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	border-color: #0099CC;
-	border-width: 0px 1px 0px 1px;
-	border-style: solid;
+	font-size: 12px;
+/* 	border-color: #0099CC; */
+/* 	border-width: 0px 1px 0px 1px; */
+/* 	border-style: solid; */
 }
 
 .portlet-table-body tr.nobottom th {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	background-color: #EBF8FF; 
 	border-color: #0099CC;
 	color: #0099CC;	
-	border-width: 0px 1px 0px 1px;
-	border-style: solid;
+/* 	border-width: 0px 1px 0px 1px; */
+/* 	border-style: solid; */
 	font-weight: bold;
 	text-align: right;
 	padding-right: 10px;	
@@ -144,7 +145,7 @@
 
 .portlet-table-body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;
@@ -154,22 +155,22 @@
 
 .portlet-table-alternate {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;
-	background-color: #EBF8FF;	
+/* 	background-color: #EBF8FF;	 */
 }
 
 .portlet-table-selected {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	background-color: #BBE3E3;
 }
 
 .portlet-table-subheader {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;
@@ -181,7 +182,7 @@
 
 .portlet-table-text {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;
@@ -191,12 +192,12 @@
 /* Form */
 .portlet-form-button {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;
 	color: black;
-	border: 2px solid #0099CC;	
+/* 	border: 2px solid #0099CC;	 */
 	background-color: white;
 	text-decoration: none;
 	padding-left: 6px;
@@ -214,17 +215,17 @@ input.portlet-form-button{
 
 .portlet-form-input-field {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;
 	color: black;
-	border: 1px solid #0099CC;
+/* 	border: 1px solid #0099CC; */
 }
 
 .portlet-form-field-label {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	font-weight: bold;
 	color: black;
 }

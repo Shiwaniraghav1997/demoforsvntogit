@@ -16,13 +16,13 @@
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/prolog.js"></script>
 		
 		<!-- jQuery -->
-		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui-1.10.3.custom/custom-theme/jquery-ui-1.10.3.custom.min.css" />
+<%-- 		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui-1.10.3.custom/cupertino/jquery-ui.min.css" /> --%>
+		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui-1.10.3.custom/custom-theme3/jquery-ui-1.10.3.custom.min.css" />
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.10.1.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.10.3.custom.min.js"></script>
 		
 		<!-- Tablesorter: required -->
-		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/theme.tablesorter.bhc.css" />
-		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/doc41tablesorter.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/theme.jui.css">
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.tablesorter.min.js"></script>
 
 		<!-- Tablesorter pager: required -->

@@ -18,6 +18,7 @@ tsheaders = {
 	      	filter: false
 	      }
 };
+
 //-->
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41tablesorter.js"></script>
@@ -46,7 +47,7 @@ tsheaders = {
 		    	<col width="2%"/>
 		    	<col width="2%"/>
 		    </colgroup>		
-			<thead class="portlet-table-header" >
+			<thead>
 		    <tr>
 			      
 			       <!-- thead text will be updated from the JSON; make sure the number of columns matches the JSON data -->
@@ -63,7 +64,7 @@ tsheaders = {
 		    </tr>
 		  	</thead>
 		
-		  <tbody class="portlet-table-body"> <!-- tbody will be loaded via JSON -->
+		  <tbody> <!-- tbody will be loaded via JSON -->
 		  </tbody>
 		</table>
 		<doc41:pager/>

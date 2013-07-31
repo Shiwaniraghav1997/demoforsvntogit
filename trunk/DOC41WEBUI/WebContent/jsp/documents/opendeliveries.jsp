@@ -13,7 +13,7 @@ showHeader="false">
 		
 		<doc41:pager/>
 		<table class="tablesorter" id="doc41table">
-		  <thead class="portlet-table-header" >
+		  <thead>
 		    <tr>
 		      
 		       <!-- thead text will be updated from the JSON; make sure the number of columns matches the JSON data -->

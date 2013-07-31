@@ -8,7 +8,7 @@
 	<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 	<script type="text/javascript">
-		tswidgets = [ 'zebra' ];
+		tswidgets = [ 'uitheme','zebra' ];
 		
 		function openDocument(docId,type){
 			window.location ="download?type="+type+"&docId="+docId;
@@ -126,7 +126,7 @@
 		<doc41:error path="objectId" />
 		<doc41:pager />
 		<table class="tablesorter" id="doc41table">
-			<thead class="portlet-table-header">
+			<thead >
 				<tr>
 
 					<!-- thead text will be updated from the JSON; make sure the number of columns matches the JSON data -->
@@ -153,7 +153,7 @@
 			</colgroup>
 			</thead>
 
-			<tbody class="portlet-table-body">
+			<tbody >
 				<c:forEach items="${searchForm.documents}" var="document"
 					varStatus="status">
 					<tr style="cursor: pointer;"
