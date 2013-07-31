@@ -36,7 +36,7 @@ function popupAppendFunction(){
 				<table cellpadding="4" cellspacing="0" class="nohover">
 					<thead class="portlet-table-header">
 						<tr>
-							<th colspan="2"><doc41:translate label="attributes"/></th>
+							<th colspan="4"><doc41:translate label="attributes"/></th>
 						</tr>
 						<colcolgroup>
 							<col width="15%"/>
