@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,9 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
@@ -34,6 +36,13 @@ import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.AWBDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.BOLDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.COODocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.TempLogDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 @Component
@@ -55,14 +64,29 @@ public class DocumentUC {
 	
 	private Map<String, DocMetadata> docMetadataContainer;
 	
+	private final Map<String,DocumentType> documentTypes;
+	
+	public DocumentUC() {
+		documentTypes = new HashMap<String, DocumentType>();
+		addDocumentType(new BOLDocumentType());
+		addDocumentType(new AWBDocumentType());
+		addDocumentType(new TempLogDocumentType());
+		addDocumentType(new COODocumentType());
+	}
+	
+	private void addDocumentType(DocumentType documentType) {
+		String typeConst = documentType.getTypeConst();
+		documentTypes.put(typeConst, documentType);
+	}
+
 	//TODO maybe synchronize or make member final and call from constructor
 	public DocMetadata getMetadata(String type) throws Doc41BusinessException{
 		try {
 			if(docMetadataContainer==null){
 				Set<String> languageCodes = translationsRepository.getLanguageCodes().keySet();
-				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes);
+				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes,getSupportedSapDocTypes());
 			}
-			String sapDocType = getSapDocType(type);
+			String sapDocType = getDocType(type).getSapTypeId();
 			DocMetadata docMetadata = docMetadataContainer.get(sapDocType);
 			if(docMetadata==null){
 				throw new Doc41BusinessException("document type "+type+"/"+sapDocType+" not found in SAP");
@@ -72,9 +96,15 @@ public class DocumentUC {
 			throw new Doc41BusinessException("getMetadata",e);
 		}
 	}
-	
-	
-	
+
+	private Set<String> getSupportedSapDocTypes() {
+		Set<String> supportedSapTypes = new HashSet<String>();
+		for (DocumentType docType : documentTypes.values()) {
+			supportedSapTypes.add(docType.getSapTypeId());
+		}
+		return supportedSapTypes ;
+	}
+
 	public String checkCoaDeliveryNumberMaterial(String deliveryNumber, String matNo)
 	throws Doc41BusinessException{
 		try {
@@ -104,24 +134,6 @@ public class DocumentUC {
 		return metadata.getAttributes();
 	}
 	
-	private String getSapDocType(String docType) throws Doc41BusinessException{
-		if(docType==null || docType.isEmpty()){
-			return null;
-		} else if(docType.equals(Doc41Constants.DOC_TYPE_AIRWAY)){
-			return Doc41Constants.SAP_DOC_TYPE_AIRWAY;
-		} else if(docType.equals(Doc41Constants.DOC_TYPE_BOL)){
-			return Doc41Constants.SAP_DOC_TYPE_BOL;
-		} else if(docType.equals(Doc41Constants.DOC_TYPE_TEMPLOG)){
-			return Doc41Constants.SAP_DOC_TYPE_TEMPLOG;
-		} else if(docType.equals(Doc41Constants.DOC_TYPE_COO)){
-			return Doc41Constants.SAP_DOC_TYPE_COO;
-		} else {
-			throw new Doc41BusinessException("unknown doc type: "+docType);
-		}
-	}
-
-
-
 	public List<Delivery> getOpenDeliveries(String type, String carrier) {
 		List<Delivery> deliveries = new ArrayList<Delivery>();
 		// TODO use RFC GetDeliveriesWithoutDocumentRFC
@@ -270,6 +282,50 @@ public class DocumentUC {
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("downloadDocument",e);
 		}
+	}
+	
+	public void checkForUpload(Errors errors, String type, MultipartFile file, String fileId, String partnerNumber, String objectId, Map<String, String> attributeValues) throws Doc41BusinessException{
+		getDocTypeForUpload(type).checkForUpload(errors, this, file, fileId, partnerNumber, objectId, attributeValues);
+	}
+	
+	public void checkForDownload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues) throws Doc41BusinessException{
+		getDocTypeForDownload(type).checkForDownload(errors, this, partnerNumber, objectId, attributeValues);
+	}
+	
+	private UploadDocumentType getDocTypeForUpload(String type) throws Doc41BusinessException{
+		DocumentType documentType = getDocType(type);
+		if(!(documentType instanceof UploadDocumentType)){
+			throw new Doc41BusinessException("doctype not enabled for upload: "+type);
+		}
+		return (UploadDocumentType) documentType;
+	}
+	
+	private DownloadDocumentType getDocTypeForDownload(String type) throws Doc41BusinessException{
+		DocumentType documentType = getDocType(type);
+		if(!(documentType instanceof DownloadDocumentType)){
+			throw new Doc41BusinessException("doctype not enabled for download: "+type);
+		}
+		return (DownloadDocumentType) documentType;
+	}
+
+	private DocumentType getDocType(String type) throws Doc41BusinessException {
+		DocumentType documentType = documentTypes.get(type);
+		if(documentType==null){
+			throw new Doc41BusinessException("unknown doctype: "+type);
+		}
+		return documentType;
+	}
+
+	public boolean isPartnerNumberUsed(String type) throws Doc41BusinessException {
+		return getDocType(type).isPartnerNumberUsed();
+	}
+
+	public String getUploadPermission(String type) throws Doc41BusinessException {
+		return getDocTypeForUpload(type).getPermissionUpload();
+	}
+	
+	public String getDownloadPermission(String type) throws Doc41BusinessException {
+		return getDocTypeForDownload(type).getPermissionDownload();
 	}
 	
 }

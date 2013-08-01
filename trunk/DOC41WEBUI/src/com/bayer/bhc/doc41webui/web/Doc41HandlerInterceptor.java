@@ -104,7 +104,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 	}
 	
 	
-	private boolean hasRolePermission(User usr, Object handler, HttpServletRequest request) {
+	private boolean hasRolePermission(User usr, Object handler, HttpServletRequest request) throws Doc41BusinessException{
 		Object realHandler = handler;
 		if(handler instanceof HandlerMethod){
 			HandlerMethod hm = (HandlerMethod) handler;

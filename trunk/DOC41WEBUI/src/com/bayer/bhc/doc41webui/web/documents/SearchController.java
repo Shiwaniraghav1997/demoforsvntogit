@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.container.SearchForm;
@@ -33,18 +32,13 @@ public class SearchController extends AbstractDoc41Controller {
 	private DocumentUC documentUC;
 	
 	@Override
-	protected boolean hasPermission(User usr, HttpServletRequest request) {
-		//TODO remove BOL
+	protected boolean hasPermission(User usr, HttpServletRequest request) throws Doc41BusinessException{
 		String type = request.getParameter("type");
 		if(StringTool.isTrimmedEmptyOrNull(type)){
-			return false;
-		} else if(type.equals(Doc41Constants.DOC_TYPE_BOL)){
-			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_BOL_UP);
-		} else if(type.equals(Doc41Constants.DOC_TYPE_COO)){
-			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_COO_DOWN);
-		} else {
-			throw new IllegalArgumentException("unknown type: "+type);
+			throw new IllegalArgumentException("type is missing");
 		}
+		String permission = documentUC.getDownloadPermission(type);
+		return usr.hasPermission(permission);
     }
 	
 	@RequestMapping(value="/documents/documentsearch",method = RequestMethod.GET)
@@ -54,15 +48,21 @@ public class SearchController extends AbstractDoc41Controller {
 		if(StringTool.isTrimmedEmptyOrNull(type)){
 			throw new Doc41BusinessException("typeIsMissing");
 		}
+		searchForm.setPartnerNumberUsed(documentUC.isPartnerNumberUsed(type));
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type);
 		searchForm.initAttributes(attributeDefinitions,language);
 		
 		if(searchForm.isSearchFilled()){
-			List<HitListEntry> documents = documentUC.searchDocuments(type, StringTool.emptyToNull(searchForm.getObjectId()), searchForm.getAttributeValues(), MAX_RESULTS+1, true);
-			if(documents.size()>MAX_RESULTS){
-				result.rejectValue("table", "ToManyResults");
-			} else {
-				searchForm.setDocuments(documents);
+			documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), searchForm.getObjectId(), searchForm.getAttributeValues());
+			
+			if(!result.hasErrors()){
+				List<HitListEntry> documents = documentUC.searchDocuments(type, StringTool.emptyToNull(
+						searchForm.getObjectId()), searchForm.getAttributeValues(), MAX_RESULTS+1, true);
+				if(documents.size()>MAX_RESULTS){
+					result.rejectValue("table", "ToManyResults");
+				} else {
+					searchForm.setDocuments(documents);
+				}
 			}
 		}
 		

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bayer.bhc.doc41webui.common.Doc41SessionKeys;
+import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DisplaytextUC;
 import com.bayer.bhc.doc41webui.usecase.UserManagementUC;
@@ -29,8 +30,9 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
 	 * @param usr
 	 * @param request 
 	 * @return
+	 * @throws Doc41BusinessException 
 	 */
-	protected boolean hasPermission(User usr, HttpServletRequest request) {
+	protected boolean hasPermission(User usr, HttpServletRequest request) throws Doc41BusinessException {
     	return true;
     }
 

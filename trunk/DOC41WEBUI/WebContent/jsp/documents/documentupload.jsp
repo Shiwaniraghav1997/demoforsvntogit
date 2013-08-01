@@ -67,8 +67,8 @@ function popupAppendFunction(){
 						</c:if>
 						
 						<tr class="portlet-table-alternate">
-							<th><doc41:translate label="DeliveryNumber" /></th>
-							<td><form:input path="deliveryNumber" cssClass="portlet-form-input-field"  maxlength="70"/><doc41:error path="deliveryNumber" /></td>
+							<th><doc41:translate label="ObjectId${uploadForm.type}" /></th>
+							<td><form:input path="objectId" cssClass="portlet-form-input-field"  maxlength="70"/><doc41:error path="objectId" /></td>
 						</tr>
 						
 						 <c:forEach items="${uploadForm.attributeValues}" var="attributeValue" varStatus="status">

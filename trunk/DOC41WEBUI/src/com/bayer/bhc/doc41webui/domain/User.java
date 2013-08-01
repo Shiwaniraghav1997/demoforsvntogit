@@ -335,4 +335,15 @@ public class User extends DomainObject {
 				+ ", company=" + company + "]";
 	}
 	
+	public boolean hasPartner(String partnerNumber){
+		if(partners!=null){
+			for (UserPartner userPartner : partners) {
+				if(StringTool.equals(partnerNumber, userPartner.getPartnerNumber())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 }

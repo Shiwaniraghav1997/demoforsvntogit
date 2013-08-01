@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
-import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -38,14 +37,14 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_GET_DOC_URL = "GetDocUrl";
 	
 
-	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes) throws Doc41ServiceException {
+	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes,Set<String> set) throws Doc41ServiceException {
 		Map<String, DocMetadata> metadataMap = new HashMap<String, DocMetadata>();
 		//get doctypes
 		List<DocTypeDef> docTypeDefs = getDocTypeDefs();
 //		Set<String> textKeysToTranslate = new HashSet<String>();
         for (DocTypeDef docTypeDef : docTypeDefs) {
         	String d41id = docTypeDef.getD41id();
-        	if(isTypeSupported(d41id)){
+        	if(set.contains(d41id)){
         		Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "start Metadata loading for doc type "+d41id);
         		DocMetadata metadata = new DocMetadata(docTypeDef);
         		//content repo
@@ -75,15 +74,6 @@ public class KgsRFCService extends AbstractSAPJCOService {
 //        }
 		
 		return metadataMap;
-	}
-
-	private boolean isTypeSupported(String d41id) {
-		for (String type : Doc41Constants.SUPPORTED_DOC_TYPES) {
-			if(StringTool.equals(type, d41id)){
-				return true;
-			}
-		}
-		return false;
 	}
 
 //	private Map<String, Map<String, String>> getDocTypeTranslations(

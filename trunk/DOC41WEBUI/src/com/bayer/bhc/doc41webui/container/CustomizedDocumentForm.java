@@ -7,9 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.domain.Attribute;
-import com.bayer.ecim.foundation.basic.StringTool;
 
 public abstract class CustomizedDocumentForm {
 
@@ -22,6 +20,8 @@ public abstract class CustomizedDocumentForm {
 	private Map<Integer, String> attributeSeqToKey;
 	
 	private String partnerNumber;
+	
+	private boolean partnerNumberUsed;
 	
 	public String getType() {
 		return type;
@@ -68,6 +68,12 @@ public abstract class CustomizedDocumentForm {
 	protected Map<Integer, String> getAttributeSeqToKey() {
 		return attributeSeqToKey;
 	}
+	public boolean isPartnerNumberUsed() {
+		return partnerNumberUsed;
+	}
+	public void setPartnerNumberUsed(boolean partnerNumberUsed) {
+		this.partnerNumberUsed = partnerNumberUsed;
+	}
 
 	
 	public void initAttributes(List<Attribute> attributeDefinitions,String languageCode) {
@@ -90,15 +96,18 @@ public abstract class CustomizedDocumentForm {
 		}
 	}
 
+	
+	
 	@Override
 	public String toString() {
 		return "CustomizedDocumentForm [type=" + type + ", objectId="
 				+ objectId + ", attributeLabels=" + attributeLabels
 				+ ", attributeValues=" + attributeValues
 				+ ", attributePredefValues=" + attributePredefValues
-				+ ", partnerNumber=" + partnerNumber + "]";
+				+ ", attributeSeqToKey=" + attributeSeqToKey
+				+ ", partnerNumber=" + partnerNumber + ", partnerNumberUsed="
+				+ partnerNumberUsed + "]";
 	}
-	
 	public List<String> getCustomizedValuesLabels(){
 		Collection<String> labels = attributeLabels.values();
 		List<String> labelList = new ArrayList<String>(labels);
@@ -112,15 +121,4 @@ public abstract class CustomizedDocumentForm {
 		return attributeLabels.size();
 	}
 	
-	public boolean isPartnerNumberUsed(){
-		if(type==null){
-			throw new IllegalArgumentException("type is null");
-		}
-		for (String aType : Doc41Constants.DOC_TYPES_WITH_PARTNER) {
-			if(StringTool.equals(aType, type)){
-				return true;
-			}
-		}
-		return false;
-	}
 }

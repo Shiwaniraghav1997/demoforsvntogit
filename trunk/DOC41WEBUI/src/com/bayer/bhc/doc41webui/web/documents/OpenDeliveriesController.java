@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.bayer.bhc.doc41webui.common.Doc41Constants;
+import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.domain.Delivery;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
@@ -34,19 +34,13 @@ public class OpenDeliveriesController extends AbstractDoc41Controller {
 	private DocumentUC documentUC;
 	
 	@Override
-	protected boolean hasPermission(User usr, HttpServletRequest request) {
+	protected boolean hasPermission(User usr, HttpServletRequest request) throws Doc41BusinessException{
 		String type = request.getParameter("type");
 		if(StringTool.isTrimmedEmptyOrNull(type)){
-			return false;
-		} else if(type.equals(Doc41Constants.DOC_TYPE_BOL)){
-			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_BOL_UP);
-		} else if(type.equals(Doc41Constants.DOC_TYPE_AIRWAY)){
-			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_AWB_UP);
-		} else if(type.equals(Doc41Constants.DOC_TYPE_TEMPLOG)){
-			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_TEMPLOG_UP);
-		} else {
-			throw new IllegalArgumentException("unknown type: "+type);
+			throw new IllegalArgumentException("type is missing");
 		}
+		String permission = documentUC.getUploadPermission(type);
+		return usr.hasPermission(permission);
     }
 	
 	@RequestMapping(value="/documents/opendeliveries",method = RequestMethod.GET)
