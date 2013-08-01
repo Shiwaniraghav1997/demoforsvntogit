@@ -39,5 +39,18 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
         }
 		return errorMsg ;
 	}
+
+
+	public boolean checkDeliveryForPartner(String carrier,
+			String deliveryNumber, String shippingUnitNumber) throws Doc41ServiceException{
+		// TODO use real RFC
+		return true;
+	}
+
+
+	public boolean checkDeliveryNumberExists(String deliveryNumber) throws Doc41ServiceException {
+		// TODO use real RFC
+		return true;
+	}
 	
 }

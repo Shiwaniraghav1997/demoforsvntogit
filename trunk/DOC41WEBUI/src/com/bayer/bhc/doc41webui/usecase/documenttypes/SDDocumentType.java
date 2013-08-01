@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -20,7 +21,7 @@ public abstract class SDDocumentType implements UploadDocumentType {
 
 	@Override
 	public void checkForUpload(Errors errors, DocumentUC documentUC, MultipartFile file, String fileId,
-			String partnerNumber, String objectId, Map<String, String> attributeValues) {
+			String partnerNumber, String objectId, Map<String, String> attributeValues) throws Doc41BusinessException {
 		
 		boolean isfileEmpty = (file==null||file.getSize()==0);
 		if(isfileEmpty && StringTool.isTrimmedEmptyOrNull(fileId)){

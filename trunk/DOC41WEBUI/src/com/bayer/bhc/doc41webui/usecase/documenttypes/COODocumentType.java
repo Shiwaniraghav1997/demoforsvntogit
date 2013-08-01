@@ -33,8 +33,10 @@ public class COODocumentType implements DownloadDocumentType {
 	public void checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, String objectId,
 			Map<String, String> attributeValues) throws Doc41BusinessException {
-		// TODO Auto-generated method stub
-		
+		boolean deliveryCheck = documentUC.checkDeliveryNumberExists(objectId);
+		if(!deliveryCheck){
+			errors.reject("DeliveryDoesNotExist");
+		}
 	}
 
 

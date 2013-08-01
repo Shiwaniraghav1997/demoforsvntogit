@@ -156,9 +156,20 @@ public class DocumentUC {
 		return deliveries ;
 	}
 	
-	public boolean checkDeliveryForPartner(String carrier,String deliveryNumber,String shippingUnitNumber){
-		//TODO use RFC CheckDeliveryForPartnerRFC
-		return true;
+	public boolean checkDeliveryForPartner(String carrier,String deliveryNumber,String shippingUnitNumber) throws Doc41BusinessException{
+		try {
+			return authorizationRFCService.checkDeliveryForPartner(carrier, deliveryNumber, shippingUnitNumber);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("checkDeliveryForPartner",e);
+		}
+	}
+	
+	public boolean checkDeliveryNumberExists(String deliveryNumber) throws Doc41BusinessException{
+		try {
+			return authorizationRFCService.checkDeliveryNumberExists(deliveryNumber);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("checkDeliveryNumberExists",e);
+		}
 	}
 
 
