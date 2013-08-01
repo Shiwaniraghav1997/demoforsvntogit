@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.container.SearchForm;
@@ -33,18 +34,17 @@ public class SearchController extends AbstractDoc41Controller {
 	
 	@Override
 	protected boolean hasPermission(User usr, HttpServletRequest request) {
-		return true;
-		//TODO
-//		String type = request.getParameter("type");
-//		if(StringTool.isTrimmedEmptyOrNull(type)){
-//			return false;
-//		} else if(type.equals(Doc41Constants.DOC_TYPE_BOL)){
-//			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_BOL_UP);
-//		} else if(type.equals(Doc41Constants.DOC_TYPE_AIRWAY)){
-//			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_AWB_UP);
-//		} else {
-//			throw new IllegalArgumentException("unknown type: "+type);
-//		}
+		//TODO remove BOL
+		String type = request.getParameter("type");
+		if(StringTool.isTrimmedEmptyOrNull(type)){
+			return false;
+		} else if(type.equals(Doc41Constants.DOC_TYPE_BOL)){
+			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_BOL_UP);
+		} else if(type.equals(Doc41Constants.DOC_TYPE_COO)){
+			return usr.hasPermission(Doc41Constants.PERMISSION_DOC_COO_DOWN);
+		} else {
+			throw new IllegalArgumentException("unknown type: "+type);
+		}
     }
 	
 	@RequestMapping(value="/documents/documentsearch",method = RequestMethod.GET)
@@ -57,7 +57,7 @@ public class SearchController extends AbstractDoc41Controller {
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type);
 		searchForm.initAttributes(attributeDefinitions,language);
 		
-		if(!StringTool.isTrimmedEmptyOrNull(searchForm.getPartnerNumber())){
+		if(searchForm.isSearchFilled()){
 			List<HitListEntry> documents = documentUC.searchDocuments(type, StringTool.emptyToNull(searchForm.getObjectId()), searchForm.getAttributeValues(), MAX_RESULTS+1, true);
 			if(documents.size()>MAX_RESULTS){
 				result.rejectValue("table", "ToManyResults");

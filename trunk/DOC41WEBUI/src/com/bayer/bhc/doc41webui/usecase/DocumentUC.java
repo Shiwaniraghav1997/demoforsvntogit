@@ -62,7 +62,11 @@ public class DocumentUC {
 				Set<String> languageCodes = translationsRepository.getLanguageCodes().keySet();
 				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes);
 			}
-			DocMetadata docMetadata = docMetadataContainer.get(getSapDocType(type));
+			String sapDocType = getSapDocType(type);
+			DocMetadata docMetadata = docMetadataContainer.get(sapDocType);
+			if(docMetadata==null){
+				throw new Doc41BusinessException("document type "+type+"/"+sapDocType+" not found in SAP");
+			}
 			return docMetadata;
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("getMetadata",e);
@@ -109,6 +113,8 @@ public class DocumentUC {
 			return Doc41Constants.SAP_DOC_TYPE_BOL;
 		} else if(docType.equals(Doc41Constants.DOC_TYPE_TEMPLOG)){
 			return Doc41Constants.SAP_DOC_TYPE_TEMPLOG;
+		} else if(docType.equals(Doc41Constants.DOC_TYPE_COO)){
+			return Doc41Constants.SAP_DOC_TYPE_COO;
 		} else {
 			throw new Doc41BusinessException("unknown doc type: "+docType);
 		}

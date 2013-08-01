@@ -1,10 +1,12 @@
 package com.bayer.bhc.doc41webui.container;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 public class SearchForm extends CustomizedDocumentForm {
 	
@@ -24,6 +26,23 @@ public class SearchForm extends CustomizedDocumentForm {
 		for (HitListEntry document : documents) {
 			document.initCustValuesMap(getAttributeSeqToKey());
 		}
+	}
+
+	public boolean isSearchFilled() {
+		if(!StringTool.isTrimmedEmptyOrNull(getObjectId())){
+			return true;
+		}
+		if(!StringTool.isTrimmedEmptyOrNull(getPartnerNumber())){
+			return true;
+		}
+		Collection<String> values = getAttributeValues().values();
+		for (String value : values) {
+			if(!StringTool.isTrimmedEmptyOrNull(value)){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 }

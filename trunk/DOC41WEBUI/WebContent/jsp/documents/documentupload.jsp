@@ -29,7 +29,9 @@ function popupAppendFunction(){
 				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
 					<tr><th><doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${uploadForm.type}"/></th></tr>
 				</table>
+				<c:if test="${uploadForm.partnerNumberUsed }">
 				<a  class="portlet-form-button" href="opendeliveries?type=${uploadForm.type}" id="openPopupLink" target="open_delivery_dialog"><doc41:translate label="DeliveriesWithout" />&nbsp;<doc41:translate label="${uploadForm.type}"/></a>
+				</c:if>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonUpload"/>" />
 			</div>
 			<div class="portlet-section-body">
@@ -57,10 +59,12 @@ function popupAppendFunction(){
 							</tr>
 						</spring:hasBindErrors>
 						
+						<c:if test="${uploadForm.partnerNumberUsed }">
 						<tr>
 							<th><doc41:translate label="PartnerNumber" /></th>
 							<td><form:select path="partnerNumber" items="${user.partners}" cssClass="portlet-form-input-field" cssStyle="width:240px;" itemLabel="partnerLabel" itemValue="partnerNumber"/><doc41:error path="partnerNumber" /></td>
 						</tr>
+						</c:if>
 						
 						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="DeliveryNumber" /></th>

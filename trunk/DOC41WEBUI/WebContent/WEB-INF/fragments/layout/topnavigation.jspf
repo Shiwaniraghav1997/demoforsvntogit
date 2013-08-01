@@ -12,6 +12,10 @@
 			  	<doc41:navEntry href="documents/documentupload?type=BOL" title="Bill of Lading" id="BOL" cssclass="first-child" permission="DOC_BOL_UP"/>
 			  	<doc41:navEntry href="documents/documentupload?type=AWB" title="Air Waybill" id="AWB" cssclass="first-child" permission="DOC_AWB_UP"/>
 			  	<doc41:navEntry href="documents/documentupload?type=TEMPLOG" title="Temperature Logger" id="TEMPLOG" cssclass="first-child" permission="DOC_TEMPLOG_UP"/>
+<%-- TODO replace dummy below 			  	<doc41:navEntry href="documents/documentsearch?type=COO" title="Certificate of Origin" id="COO" cssclass="first-child" permission="DOC_COO_DOWN"/> --%>
+			  	<doc41:navEntry href="documents/documentsearch?type=COO" title="Certificate of Origin" id="COO" cssclass="first-child" permission="DOC_BOL_UP"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=BOL" title="TestBoLDown" id="BOLDOWN" cssclass="first-child" permission="DOC_BOL_UP"/>
+			  	
 			  </doc41:topNavEntry>
 			  
 			  <doc41:topNavEntry href="useradmin/userlist" title="navManagement" id="management" permission="TOPNAV_MANAGEMENT">

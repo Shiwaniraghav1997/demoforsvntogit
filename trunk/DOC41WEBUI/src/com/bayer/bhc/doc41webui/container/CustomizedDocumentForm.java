@@ -7,7 +7,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.domain.Attribute;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 public abstract class CustomizedDocumentForm {
 
@@ -108,5 +110,17 @@ public abstract class CustomizedDocumentForm {
 	}
 	public int getCustAttributeCount() {
 		return attributeLabels.size();
+	}
+	
+	public boolean isPartnerNumberUsed(){
+		if(type==null){
+			throw new IllegalArgumentException("type is null");
+		}
+		for (String aType : Doc41Constants.DOC_TYPES_WITH_PARTNER) {
+			if(StringTool.equals(aType, type)){
+				return true;
+			}
+		}
+		return false;
 	}
 }

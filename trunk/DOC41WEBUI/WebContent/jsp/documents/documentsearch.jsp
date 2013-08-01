@@ -61,12 +61,14 @@
 						</spring:hasBindErrors>
 
 						<tr>
+							<c:if test="${searchForm.partnerNumberUsed }">
 							<th><doc41:translate label="PartnerNumber" /></th>
 							<td><form:select path="partnerNumber"
 									items="${user.partners}" cssClass="portlet-form-input-field"
 									cssStyle="width:240px;" itemLabel="partnerLabel"
 									itemValue="partnerNumber" />
 								<doc41:error path="partnerNumber" /></td>
+							</c:if>
 							<th><doc41:translate label="ObjectId${searchForm.type}" /></th>
 							<td><form:input path="objectId"
 									cssClass="portlet-form-input-field" maxlength="70" />
