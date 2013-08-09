@@ -10,7 +10,7 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.ecim.foundation.basic.StringTool;
 
-public abstract class SDDocumentType implements UploadDocumentType {
+public abstract class SDUploadDocumentType implements UploadDocumentType {
 	
 	private static final Object SHIPPING_UNIT_NUMBER = "SHIPPINGUNIT";
 

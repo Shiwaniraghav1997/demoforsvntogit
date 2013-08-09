@@ -7,26 +7,26 @@ import org.springframework.validation.Errors;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 
-public class BOLDocumentType extends SDUploadDocumentType implements DownloadDocumentType{
+public class FDACertDocumentType implements DownloadDocumentType {
+
+	@Override
+	public boolean isPartnerNumberUsed() {
+		return true;
+	}
 
 	@Override
 	public String getTypeConst() {
-		return "BOL";
+		return "FDACERT";
 	}
 
 	@Override
 	public String getSapTypeId() {
-		return "DOC41.14";
-	}
-
-	@Override
-	public String getPermissionUpload() {
-		return "DOC_BOL_UP";
+		return "DOC41.20";
 	}
 
 	@Override
 	public String getPermissionDownload() {
-		return "DOC_BOL_DOWN";
+		return "DOC_FDACERT_DOWN";
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class BOLDocumentType extends SDUploadDocumentType implements DownloadDoc
 			String partnerNumber, String objectId,
 			Map<String, String> attributeValues) throws Doc41BusinessException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

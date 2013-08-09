@@ -8,14 +8,27 @@
 			  	<!-- doc41:navEntry href="userprofile/myprofile" title="My Profile" id="myProfile" cssclass="first-child" /-->
 			  </doc41:topNavEntry>
 			  
-			  <doc41:topNavEntry href="#" title="navDocuments" id="documents" permission="TOPNAV_DOCUMENTS">
-			  	<doc41:navEntry href="documents/documentupload?type=BOL" title="Bill of Lading" id="BOL" cssclass="first-child" permission="DOC_BOL_UP"/>
-			  	<doc41:navEntry href="documents/documentupload?type=AWB" title="Air Waybill" id="AWB" cssclass="first-child" permission="DOC_AWB_UP"/>
-			  	<doc41:navEntry href="documents/documentupload?type=TEMPLOG" title="Temperature Logger" id="TEMPLOG" cssclass="first-child" permission="DOC_TEMPLOG_UP"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=COO" title="Certificate of Origin" id="COO" cssclass="first-child" permission="DOC_COO_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=COC" title="Certificate of Compliance" id="COC" cssclass="first-child" permission="DOC_COC_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=BOL" title="TestBoLDown" id="BOLDOWN" cssclass="first-child" permission="DOC_BOL_UP"/>
-			  	
+			  <doc41:topNavEntry href="#" title="navDocuments" id="documents" permission="TOPNAV_UPLOAD">
+			  	<doc41:navEntry href="documents/documentupload?type=BOL" title="Bill of Lading" id="BOLUP" cssclass="first-child" permission="DOC_BOL_UP"/>
+			  	<doc41:navEntry href="documents/documentupload?type=AWB" title="Air Waybill" id="AWBUP" cssclass="first-child" permission="DOC_AWB_UP"/>
+			  	<doc41:navEntry href="documents/documentupload?type=SUPCOA" title="Supplier CoA" id="SUPCOAUP" cssclass="first-child" permission="DOC_SUPCOA_UP"/>
+			  	<doc41:navEntry href="documents/documentupload?type=CMR" title="Confirmation of Arrival" id="CMRUP" cssclass="first-child" permission="DOC_CMR_UP"/>
+			  	<doc41:navEntry href="documents/documentupload?type=DELCERT" title="Delivery Certificate" id="DELCERTUP" cssclass="first-child" permission="DOC_DELCERT_UP"/>
+			  	<doc41:navEntry href="documents/documentupload?type=LAYOUT" title="Layout High Res" id="LAYOUTUP" cssclass="first-child" permission="DOC_LAYOUT_UP"/>
+			  </doc41:topNavEntry>
+			  
+			  <doc41:topNavEntry href="#" title="navDocuments" id="documents" permission="TOPNAV_DOWNLOAD">
+			  	<doc41:navEntry href="documents/documentsearch?type=PMS" title="Packaging Material Specification" id="PMSDOWN" cssclass="first-child" permission="DOC_PMS_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=PZ" title="Technical Drawing PZ" id="PZDOWN" cssclass="first-child" permission="DOC_PZ_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=SHIPDECL" title="Shippers Declaration" id="SHIPDECLDOWN" cssclass="first-child" permission="DOC_SHIPDECL_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=BOL" title="Bill of Lading" id="BOLDOWN" cssclass="first-child" permission="DOC_BOL_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=WB" title="Waybill" id="WBDOWN" cssclass="first-child" permission="DOC_WB_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=AWB" title="Air Waybill" id="WBDOWN" cssclass="first-child" permission="DOC_AWB_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=FDACERT" title="FDA Certificate" id="FDACERTDOWN" cssclass="first-child" permission="DOC_FDACERT_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=DELCERT" title="Delivery Certificate" id="DELCERTDOWN" cssclass="first-child" permission="DOC_DELCERT_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=ARTWORK" title="Artwork Low Res" id="ARTWORKDOWN" cssclass="first-child" permission="DOC_ARTWORK_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=LAYOUT" title="Layout High Res" id="LAYOUTDOWN" cssclass="first-child" permission="DOC_LAYOUT_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=TPACKDELREQ" title="Tech. Pack. and Deliv. Requirements" id="TPACKDELREQDOWN" cssclass="first-child" permission="DOC_TPACKDELREQ_DOWN"/>
 			  </doc41:topNavEntry>
 			  
 			  <doc41:topNavEntry href="useradmin/userlist" title="navManagement" id="management" permission="TOPNAV_MANAGEMENT">

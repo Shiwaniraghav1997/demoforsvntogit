@@ -1,20 +1,21 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
-public class TempLogDocumentType extends SDDocumentType{
+
+public class CMRDocumentType extends SDUploadDocumentType {
 
 	@Override
 	public String getTypeConst() {
-		return "TEMPLOG";
+		return "CMR";
 	}
 
 	@Override
 	public String getSapTypeId() {
-		return "DOC41.34";
+		return "DOC41.35";
 	}
 
 	@Override
 	public String getPermissionUpload() {
-		return "DOC_TEMPLOG_UP";
+		return "DOC_CMR_UP";
 	}
 
 }

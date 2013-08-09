@@ -35,13 +35,21 @@ import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.AWBDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ArtworkDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.BOLDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.COCDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.COODocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.CMRDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.TempLogDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.FDACertDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.LayoutDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.PZTecDrawingDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.PackMatSpecDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ShippersDeclDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.SupplierCOADocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.TecPackDelReqDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.WaybillDocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 @Component
@@ -67,11 +75,19 @@ public class DocumentUC {
 	
 	public DocumentUC() {
 		documentTypes = new HashMap<String, DocumentType>();
+		addDocumentType(new PackMatSpecDocumentType());
+		addDocumentType(new PZTecDrawingDocumentType());
+		addDocumentType(new ShippersDeclDocumentType());
 		addDocumentType(new BOLDocumentType());
+		addDocumentType(new WaybillDocumentType());
 		addDocumentType(new AWBDocumentType());
-		addDocumentType(new TempLogDocumentType());
-		addDocumentType(new COODocumentType());
-		addDocumentType(new COCDocumentType());
+		addDocumentType(new FDACertDocumentType());
+		addDocumentType(new SupplierCOADocumentType());
+		addDocumentType(new CMRDocumentType());
+		addDocumentType(new DeliveryCertDocumentType());
+		addDocumentType(new ArtworkDocumentType());
+		addDocumentType(new LayoutDocumentType());
+		addDocumentType(new TecPackDelReqDocumentType());
 	}
 	
 	private void addDocumentType(DocumentType documentType) {
