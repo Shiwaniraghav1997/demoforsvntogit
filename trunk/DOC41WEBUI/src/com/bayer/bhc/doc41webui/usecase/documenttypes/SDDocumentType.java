@@ -41,7 +41,7 @@ public abstract class SDDocumentType implements UploadDocumentType {
 		}
 		String shippingUnitNumber = attributeValues.get(SHIPPING_UNIT_NUMBER);
 		if(StringTool.isTrimmedEmptyOrNull(shippingUnitNumber)){
-			errors.rejectValue("attributeValues['SHIPPINGUNIT']","ShippingUnitNumberMissing");
+			errors.rejectValue("attributeValues['"+SHIPPING_UNIT_NUMBER+"']","ShippingUnitNumberMissing");
 		}
 		if(!isfileEmpty && !StringTool.isTrimmedEmptyOrNull(fileId)){
 			errors.rejectValue("file", "FileAndFileId", "both file and fileId filled");
@@ -51,9 +51,9 @@ public abstract class SDDocumentType implements UploadDocumentType {
 			return;
 		}
 		
-		boolean deliveryCheck = documentUC.checkDeliveryForPartner(partnerNumber, objectId, shippingUnitNumber);
-		if(!deliveryCheck){
-			errors.reject("DeliveryNotAllowedForCarrier");
+		String deliveryCheck = documentUC.checkDeliveryForPartner(partnerNumber, objectId, shippingUnitNumber);
+		if(deliveryCheck != null){
+			errors.reject(""+deliveryCheck);
 		}
 	}
 	

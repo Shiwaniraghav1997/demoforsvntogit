@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.domain.UserPartner;
 import com.bayer.bhc.doc41webui.usecase.UserManagementUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
@@ -21,7 +22,7 @@ public class UserCheckPartnerController extends AbstractDoc41Controller {
 
 	@RequestMapping(value="/useradmin/checkpartner", method=RequestMethod.GET,produces="application/json") 
     @ResponseBody
-    public Map<String, Object> checkPartner(@RequestParam String partnerNumber){
+    public Map<String, Object> checkPartner(@RequestParam String partnerNumber) throws Doc41ExceptionBase{
 		UserPartner partner = userManagementUC.checkPartner(partnerNumber);
 		
 		Map<String, Object> map = new HashMap<String, Object>();

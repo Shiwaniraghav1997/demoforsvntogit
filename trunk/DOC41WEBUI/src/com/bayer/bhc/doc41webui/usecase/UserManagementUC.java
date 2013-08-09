@@ -11,6 +11,7 @@ import com.bayer.bhc.doc41webui.common.Doc41ErrorMessageKeys;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.paging.PagingData;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
@@ -19,6 +20,7 @@ import com.bayer.bhc.doc41webui.container.UserListFilter;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.domain.UserPartner;
+import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.service.repository.UserManagementRepository;
 
 /**
@@ -30,6 +32,8 @@ import com.bayer.bhc.doc41webui.service.repository.UserManagementRepository;
 public class UserManagementUC {
 	@Autowired
     private UserManagementRepository userMgmtRepo;
+	@Autowired
+	private AuthorizationRFCService authorizationRFCService;
     
 	/**
 	 * creates a new user in the usermanagement DB
@@ -184,17 +188,12 @@ public class UserManagementUC {
         return userMgmtRepo;
     }
     
-    public UserPartner checkPartner(String partnerNumber){
-    	//TODO use RFC
-    	//just a dummy implementation
-    	if(partnerNumber.endsWith("9")){
-    		return null;
-    	}
-    	UserPartner up = new UserPartner();
-    	up.setPartnerNumber(partnerNumber);
-    	up.setPartnerName1("Name1");
-    	up.setPartnerName2("Name2");
-		return up ;
+    public UserPartner checkPartner(String partnerNumber) throws Doc41BusinessException{
+    	try {
+			return authorizationRFCService.checkPartner(partnerNumber);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("checkDeliveryForPartner",e);
+		}
     }
 
 }

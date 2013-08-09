@@ -8,18 +8,21 @@ import org.springframework.stereotype.Component;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
+import com.bayer.bhc.doc41webui.domain.Delivery;
+import com.bayer.bhc.doc41webui.domain.UserPartner;
 
 @Component
 public class AuthorizationRFCService extends AbstractSAPJCOService {
 	
-//	private static final String RFC_NAME_CHECK_DELIVERY_FOR_PARTNER						= "CheckDeliveryForPartner";
-//	private static final String RFC_NAME_GET_DELIVERIES_WITHOUT_DOC						="GetDeliveriesWithoutDocument";
+	private static final String RFC_NAME_CHECK_DELIVERY_FOR_PARTNER						= "CheckDeliveryForPartner";
+	private static final String RFC_NAME_GET_DELIVERIES_WITHOUT_DOC						="GetDeliveriesWithoutDocument";
 //	private static final String RFC_NAME_CHECK_DELIVERY_EXISTS							="CheckDeliveryNumberExists";
 	private static final String RFC_NAME_CHECK_DELIVERY_NUMBER_MATERIAL					="CheckDeliveryNumberMaterial";
 //	private static final String RFC_NAME_CHECK_DELIVERY_NUMBER_CONTAINER_PACKING_LIST	="CheckDeliveryNumberContainerPackingList";
 //	private static final String RFC_NAME_CHECK_ARTWORK_FOR_VENDOR						="CheckArtworkForVendor";
 //	private static final String RFC_NAME_CHECK_LAYOUT_FOR_VENDOR						="CheckLayoutForVendor";
 //	private static final String RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR				="CheckPOAndMaterialForVendor";
+	private static final String RFC_NAME_CHECK_PARTNER									="CheckPartner";
 	
 	
 	public String checkCoADeliveryNumberMaterial(String deliveryNumber, String matNo) throws Doc41ServiceException{
@@ -41,10 +44,36 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	}
 
 
-	public boolean checkDeliveryForPartner(String carrier,
+	public String checkDeliveryForPartner(String carrier,
 			String deliveryNumber, String shippingUnitNumber) throws Doc41ServiceException{
-		// TODO use real RFC
-		return true;
+		 Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
+        		"checkDeliveryForPartner() - deliveryNumber="+deliveryNumber+", shippingUnitNumber="+shippingUnitNumber+", carrier="+carrier+".");
+       
+        List<Object> params = new ArrayList<Object>();
+        params.add(carrier);
+        params.add(deliveryNumber);
+        params.add(shippingUnitNumber);
+        
+        List<String> returnTexts = performRFC(params,RFC_NAME_CHECK_DELIVERY_FOR_PARTNER);
+        
+        String errorMsg=null;
+        if(!returnTexts.isEmpty()){
+        	errorMsg = returnTexts.get(0);
+        }
+		return errorMsg ;
+	}
+	
+	public List<Delivery> getOpenDeliveries(String d41id, String carrier) throws Doc41ServiceException{
+		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
+        		"getOpenDeliveries() - d41id="+d41id+", carrier="+carrier+".");
+       
+        List<Object> params = new ArrayList<Object>();
+        params.add(carrier);
+        params.add(d41id);
+        
+        List<Delivery> deliveries = performRFC(params,RFC_NAME_GET_DELIVERIES_WITHOUT_DOC);
+        
+		return deliveries ;
 	}
 
 
@@ -53,4 +82,19 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		return true;
 	}
 	
+	public UserPartner checkPartner(String partner) throws Doc41ServiceException{
+		 Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
+        		"checkPartner() - partner="+partner+".");
+       
+        List<Object> params = new ArrayList<Object>();
+        params.add(partner);
+        
+        List<UserPartner> ups = performRFC(params,RFC_NAME_CHECK_PARTNER);
+        
+        UserPartner up=null;
+        if(!ups.isEmpty()){
+        	up = ups.get(0);
+        }
+		return up ;
+	}
 }

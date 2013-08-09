@@ -6,10 +6,10 @@ import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
-import com.bayer.ecim.foundation.basic.StringTool;
 
-public class COODocumentType implements DownloadDocumentType {
+public class COCDocumentType implements DownloadDocumentType {
 
+	//TODO
 	@Override
 	public boolean isPartnerNumberUsed() {
 		return false;
@@ -17,32 +17,25 @@ public class COODocumentType implements DownloadDocumentType {
 
 	@Override
 	public String getTypeConst() {
-		return "COO";
+		return "COC";
 	}
 
 	@Override
 	public String getSapTypeId() {
-		return "DOC41.06";
+		return "DOC41.39";
 	}
 
 	@Override
 	public String getPermissionDownload() {
-		return "DOC_COO_DOWN";
+		return "DOC_COC_DOWN";
 	}
 
 	@Override
 	public void checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, String objectId,
 			Map<String, String> attributeValues) throws Doc41BusinessException {
-		if(StringTool.isTrimmedEmptyOrNull(objectId)){
-			errors.rejectValue("objectId","DeliveryNumberMissing");
-		}
-		boolean deliveryCheck = documentUC.checkDeliveryNumberExists(objectId);
-		if(!deliveryCheck){
-			errors.reject("DeliveryDoesNotExist");
-		}
+		// TODO Auto-generated method stub
+
 	}
-
-
 
 }

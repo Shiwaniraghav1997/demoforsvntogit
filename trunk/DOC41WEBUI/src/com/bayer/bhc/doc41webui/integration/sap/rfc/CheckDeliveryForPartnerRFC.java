@@ -9,15 +9,16 @@ import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
-public class CheckDeliveryForPartnerRFC extends AbstractDoc41RFC<Boolean>{
-	//TODO
-	private static final String IN_PARTNER = "";
-	private static final String IN_DELIVERY = "";
-	private static final String IN_SHIPMENT = "";
-	private static final String OUT_RETURNCODE = "EV_RETURNCODE";
+public class CheckDeliveryForPartnerRFC extends AbstractDoc41RFC<String>{
+	private static final String IN_PARTNER = "IV_PARNR";
+	private static final String IN_DELIVERY = "IV_DELV_NO";
+	private static final String IN_SHIPMENT = "IV_SHPMT_NO";
+	private static final String OUT_RETURNCODE = "EV_RETURN";
 	
-	//TODO
-	private static final String RETURNCODE_OK = "OK";
+	private static final String RETURNCODE_OK = "0";
+	private static final String RETURNCODE_DELIVERY_UNKNOWN = "1";
+	private static final String RETURNCODE_WRONG_PARTNER = "2";
+	private static final String RETURNCODE_WRONG_SHIPPING_UNIT = "4";
 
 	
 
@@ -49,18 +50,32 @@ public class CheckDeliveryForPartnerRFC extends AbstractDoc41RFC<Boolean>{
 	}
 
 	@Override
-	public List<Boolean> processResult(JCoFunction pFunction)
+	public List<String> processResult(JCoFunction pFunction)
 			throws SAPException {
 		Doc41Log.get().debug(CheckDeliveryForPartnerRFC.class, null, "processResult():ENTRY");
-		ArrayList<Boolean> mResult = new ArrayList<Boolean>();
+		ArrayList<String> mResult = new ArrayList<String>();
         if (pFunction != null) {
             processReturnTable(pFunction);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
-            mResult.add(StringTool.equals(returnCode, RETURNCODE_OK));
+            
+            mResult.add(mapReturnCodeToTag(returnCode));
         }
         Doc41Log.get().debug(CheckDeliveryForPartnerRFC.class, null, "processResult():EXIT");
         return mResult;
+	}
+
+	private String mapReturnCodeToTag(String returnCode) {
+		if(StringTool.equals(returnCode, RETURNCODE_OK)){
+			return null;
+		} else if(StringTool.equals(returnCode, RETURNCODE_DELIVERY_UNKNOWN)){
+			return "DeliveryUnknown";
+		} else if(StringTool.equals(returnCode, RETURNCODE_WRONG_PARTNER)){
+			return "DeliveryNotAssignedToPartner";
+		} else if(StringTool.equals(returnCode, RETURNCODE_WRONG_SHIPPING_UNIT)){
+			return "ShippingUnitNotAssignedToPartner";
+		}
+		return "UnknownReturnCode";
 	}
 
 }

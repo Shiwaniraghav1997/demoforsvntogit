@@ -11,17 +11,16 @@ import com.sap.conn.jco.JCoParameterList;
 import com.sap.conn.jco.JCoTable;
 
 public class GetDeliveriesWithoutDocumentRFC extends AbstractDoc41RFC<Delivery>{
-	//TODO
-	private static final String IN_PARTNER = "";
-	private static final String IN_DOCUMENT_TYPE = "";
-	private static final String OUT_RETURNCODE = "EV_RETURNCODE";
+	private static final String IN_PARTNER = "IV_PARNR";
+	private static final String IN_DOCUMENT_TYPE = "IV_DOCTYPE_ID";
+	private static final String OUT_RETURNCODE = "EV_RETURN";
 	
-	private static final String OT_DELIVERY = "ET_DELIVERY";
-	private static final String OUT_SHIPPING_UNIT = null;
-	private static final String OUT_SHIP_TO = null;
-	private static final String OUT_SOLD_TOY = null;
-	
-	private static final String OUT_DELIVERY = null;
+	private static final String OT_DELIVERY = "TS_DELIVERIES";
+	private static final String OUT_SHIPPING_UNIT = "XXX";
+	private static final String OUT_SHIP_TO = "KUNWE";
+	private static final String OUT_SOLD_TOY = "KUNAG";
+	private static final String OUT_GOODS_ISSUE_DATE = "WADAT_IST";
+	private static final String OUT_DELIVERY = "VBELN";
 	
 
 	@Override
@@ -65,6 +64,7 @@ public class GetDeliveriesWithoutDocumentRFC extends AbstractDoc41RFC<Delivery>{
             		del.setShippingUnitNumber(deliveriesTable.getString(OUT_SHIPPING_UNIT));
             		del.setShipToNumber(deliveriesTable.getString(OUT_SHIP_TO));
             		del.setSoldToNumber(deliveriesTable.getString(OUT_SOLD_TOY));
+            		del.setGoodsIssueDate(deliveriesTable.getDate(OUT_GOODS_ISSUE_DATE));
 
             		mResult.add(del);
             		deliveriesTable.nextRow();

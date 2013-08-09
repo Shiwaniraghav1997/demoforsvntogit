@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +36,7 @@ import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.AWBDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.BOLDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.COCDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.COODocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
@@ -72,6 +71,7 @@ public class DocumentUC {
 		addDocumentType(new AWBDocumentType());
 		addDocumentType(new TempLogDocumentType());
 		addDocumentType(new COODocumentType());
+		addDocumentType(new COCDocumentType());
 	}
 	
 	private void addDocumentType(DocumentType documentType) {
@@ -134,29 +134,19 @@ public class DocumentUC {
 		return metadata.getAttributes();
 	}
 	
-	public List<Delivery> getOpenDeliveries(String type, String carrier) {
-		List<Delivery> deliveries = new ArrayList<Delivery>();
-		// TODO use RFC GetDeliveriesWithoutDocumentRFC
-		
-		Delivery dummy1 = new Delivery();
-		dummy1.setDeliveryNumber("80400000");
-		dummy1.setGoodsIssueDate(new Date());
-		dummy1.setShippingUnitNumber("20001");
-		dummy1.setShipToNumber("30001");
-		dummy1.setSoldToNumber("40001");
-		deliveries.add(dummy1);
-		
-		Delivery dummy2 = new Delivery();
-		dummy2.setDeliveryNumber("80400005");
-		dummy2.setGoodsIssueDate(new Date());
-		dummy2.setShippingUnitNumber("20002");
-		dummy2.setShipToNumber("30002");
-		dummy2.setSoldToNumber("40002");
-		deliveries.add(dummy2);
-		return deliveries ;
+	public List<Delivery> getOpenDeliveries(String type, String carrier) throws Doc41BusinessException {
+		try{
+			DocMetadata metadata = getMetadata(type);
+//			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
+			DocTypeDef docDef = metadata.getDocDef();
+			String d41id = docDef.getD41id();
+			return authorizationRFCService.getOpenDeliveries(d41id,carrier);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("getOpenDeliveries",e);
+		}
 	}
 	
-	public boolean checkDeliveryForPartner(String carrier,String deliveryNumber,String shippingUnitNumber) throws Doc41BusinessException{
+	public String checkDeliveryForPartner(String carrier,String deliveryNumber,String shippingUnitNumber) throws Doc41BusinessException{
 		try {
 			return authorizationRFCService.checkDeliveryForPartner(carrier, deliveryNumber, shippingUnitNumber);
 		} catch (Doc41ServiceException e) {

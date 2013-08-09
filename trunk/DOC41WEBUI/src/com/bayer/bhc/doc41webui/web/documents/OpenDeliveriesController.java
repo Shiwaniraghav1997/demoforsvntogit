@@ -44,7 +44,7 @@ public class OpenDeliveriesController extends AbstractDoc41Controller {
     }
 	
 	@RequestMapping(value="/documents/opendeliveries",method = RequestMethod.GET)
-	public List<Delivery> get(@RequestParam String type,@RequestParam String partnerNumber)  {
+	public List<Delivery> get(@RequestParam String type,@RequestParam String partnerNumber) throws Doc41BusinessException  {
 		List<Delivery> list = documentUC.getOpenDeliveries(type, partnerNumber);
 		return list;
     }
