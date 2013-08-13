@@ -32,9 +32,6 @@ public class SearchForm extends CustomizedDocumentForm {
 		if(!StringTool.isTrimmedEmptyOrNull(getObjectId())){
 			return true;
 		}
-		if(!StringTool.isTrimmedEmptyOrNull(getPartnerNumber())){
-			return true;
-		}
 		Collection<String> values = getAttributeValues().values();
 		for (String value : values) {
 			if(!StringTool.isTrimmedEmptyOrNull(value)){

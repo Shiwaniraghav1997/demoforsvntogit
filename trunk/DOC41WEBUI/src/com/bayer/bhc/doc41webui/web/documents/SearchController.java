@@ -42,7 +42,7 @@ public class SearchController extends AbstractDoc41Controller {
     }
 	
 	@RequestMapping(value="/documents/documentsearch",method = RequestMethod.GET)
-	public SearchForm get(@ModelAttribute SearchForm searchForm,BindingResult result) throws Doc41BusinessException{
+	public SearchForm get(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
 		String language = LocaleInSession.get().getLanguage();
 		String type = searchForm.getType();
 		if(StringTool.isTrimmedEmptyOrNull(type)){
@@ -52,17 +52,21 @@ public class SearchController extends AbstractDoc41Controller {
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type);
 		searchForm.initAttributes(attributeDefinitions,language);
 		
-		if(searchForm.isSearchFilled()){
-			documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), searchForm.getObjectId(), searchForm.getAttributeValues());
-			
-			if(!result.hasErrors()){
-				List<HitListEntry> documents = documentUC.searchDocuments(type, StringTool.emptyToNull(
-						searchForm.getObjectId()), searchForm.getAttributeValues(), MAX_RESULTS+1, true);
-				if(documents.size()>MAX_RESULTS){
-					result.rejectValue("table", "ToManyResults");
-				} else {
-					searchForm.setDocuments(documents);
+		if(!StringTool.isTrimmedEmptyOrNull(ButtonSearch)){
+			if(searchForm.isSearchFilled()){
+				documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), searchForm.getObjectId(), searchForm.getAttributeValues());
+				
+				if(!result.hasErrors()){
+					List<HitListEntry> documents = documentUC.searchDocuments(type, StringTool.emptyToNull(
+							searchForm.getObjectId()), searchForm.getAttributeValues(), MAX_RESULTS+1, true);
+					if(documents.size()>MAX_RESULTS){
+						result.rejectValue("table", "ToManyResults");
+					} else {
+						searchForm.setDocuments(documents);
+					}
 				}
+			} else {
+				result.reject("NoSearchWithoutSearchParameters");
 			}
 		}
 		
