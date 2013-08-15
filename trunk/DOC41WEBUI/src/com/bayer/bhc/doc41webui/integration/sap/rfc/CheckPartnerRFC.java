@@ -48,7 +48,7 @@ public class CheckPartnerRFC extends AbstractDoc41RFC<UserPartner>{
 		Doc41Log.get().debug(CheckPartnerRFC.class, null, "processResult():ENTRY");
 		ArrayList<UserPartner> mResult = new ArrayList<UserPartner>();
         if (pFunction != null) {
-            processReturnTable(pFunction);
+//            processReturnTable(pFunction);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
             if(StringTool.equals(returnCode, RETURNCODE_OK)){

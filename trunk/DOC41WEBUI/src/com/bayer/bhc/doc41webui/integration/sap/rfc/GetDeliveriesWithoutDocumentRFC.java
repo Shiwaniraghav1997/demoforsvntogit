@@ -13,7 +13,7 @@ import com.sap.conn.jco.JCoTable;
 public class GetDeliveriesWithoutDocumentRFC extends AbstractDoc41RFC<Delivery>{
 	private static final String IN_PARTNER = "IV_PARNR";
 	private static final String IN_DOCUMENT_TYPE = "IV_DOCTYPE_ID";
-	private static final String OUT_RETURNCODE = "EV_RETURN";
+//	private static final String OUT_RETURNCODE = "EV_RETURN";
 	
 	private static final String OT_DELIVERY = "TS_DELIVERIES";
 	private static final String OUT_SHIPPING_UNIT = "XXX";
@@ -54,8 +54,8 @@ public class GetDeliveriesWithoutDocumentRFC extends AbstractDoc41RFC<Delivery>{
 		Doc41Log.get().debug(GetDeliveriesWithoutDocumentRFC.class, null, "processResult():ENTRY");
 		ArrayList<Delivery> mResult = new ArrayList<Delivery>();
         if (pFunction != null) {
-            processReturnTable(pFunction);
-            checkReturnCode(pFunction, OUT_RETURNCODE, null);
+//            processReturnTable(pFunction);
+//            checkReturnCode(pFunction, OUT_RETURNCODE, null);
             JCoTable deliveriesTable = pFunction.getTableParameterList().getTable(OT_DELIVERY);
             if(deliveriesTable!=null){
             	for(int i=0;i<deliveriesTable.getNumRows();i++){
