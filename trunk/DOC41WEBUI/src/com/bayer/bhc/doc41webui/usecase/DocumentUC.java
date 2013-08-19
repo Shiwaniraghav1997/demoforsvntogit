@@ -344,5 +344,21 @@ public class DocumentUC {
 	public String getDownloadPermission(String type) throws Doc41BusinessException {
 		return getDocTypeForDownload(type).getPermissionDownload();
 	}
+
+	public String checkArtworkForVendor(String vendorNumber) throws Doc41BusinessException {
+		try {
+			return authorizationRFCService.checkArtworkForVendor(vendorNumber);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("checkArtworkForVendor",e);
+		}
+	}
+
+	public String checkLayoutForVendor(String vendorNumber) throws Doc41BusinessException {
+		try {
+			return authorizationRFCService.checkLayoutForVendor(vendorNumber);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("checkLayoutForVendor",e);
+		}
+	}
 	
 }

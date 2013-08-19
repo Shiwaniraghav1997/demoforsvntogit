@@ -9,7 +9,7 @@ import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
-public class CheckLayoutForVendorRFC extends AbstractDoc41RFC<Boolean>{
+public class CheckLayoutForVendorRFC extends AbstractDoc41RFC<String>{
 	//TODO
 	private static final String IN_VENDOR = "";
 	private static final String OUT_RETURNCODE = "EV_RETURNCODE";
@@ -43,18 +43,31 @@ public class CheckLayoutForVendorRFC extends AbstractDoc41RFC<Boolean>{
 	}
 
 	@Override
-	public List<Boolean> processResult(JCoFunction pFunction)
+	public List<String> processResult(JCoFunction pFunction)
 			throws SAPException {
 		Doc41Log.get().debug(CheckLayoutForVendorRFC.class, null, "processResult():ENTRY");
-		ArrayList<Boolean> mResult = new ArrayList<Boolean>();
+		ArrayList<String> mResult = new ArrayList<String>();
         if (pFunction != null) {
             processReturnTable(pFunction);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
-            mResult.add(StringTool.equals(returnCode, RETURNCODE_OK));
+            mResult.add(mapReturnCodeToTag(returnCode));
         }
         Doc41Log.get().debug(CheckLayoutForVendorRFC.class, null, "processResult():EXIT");
         return mResult;
+	}
+	
+	private String mapReturnCodeToTag(String returnCode) {
+		if(StringTool.equals(returnCode, RETURNCODE_OK)){
+			return null;
+//		} else if(StringTool.equals(returnCode, RETURNCODE_DELIVERY_UNKNOWN)){
+//			return "DeliveryUnknown";
+//		} else if(StringTool.equals(returnCode, RETURNCODE_WRONG_PARTNER)){
+//			return "DeliveryNotAssignedToPartner";
+//		} else if(StringTool.equals(returnCode, RETURNCODE_WRONG_SHIPPING_UNIT)){
+//			return "ShippingUnitNotAssignedToPartner";
+		}
+		return "UnknownReturnCode";
 	}
 
 }
