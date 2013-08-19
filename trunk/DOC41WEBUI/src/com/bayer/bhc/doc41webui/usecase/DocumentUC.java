@@ -361,4 +361,13 @@ public class DocumentUC {
 		}
 	}
 	
+	
+	public String checkPOAndMaterialForVendor(String vendorNumber, String poNumber, String materialNumber) throws Doc41BusinessException {
+		try {
+			return authorizationRFCService.checkPOAndMaterialForVendor(vendorNumber, poNumber, materialNumber);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("checkPOAndMaterialForVendor",e);
+		}
+	}
+	
 }

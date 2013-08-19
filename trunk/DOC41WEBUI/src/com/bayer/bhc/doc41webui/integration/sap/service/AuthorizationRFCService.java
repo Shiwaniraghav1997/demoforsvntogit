@@ -21,7 +21,7 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 //	private static final String RFC_NAME_CHECK_DELIVERY_NUMBER_CONTAINER_PACKING_LIST	="CheckDeliveryNumberContainerPackingList";
 	private static final String RFC_NAME_CHECK_ARTWORK_FOR_VENDOR						="CheckArtworkForVendor";
 	private static final String RFC_NAME_CHECK_LAYOUT_FOR_VENDOR						="CheckLayoutForVendor";
-//	private static final String RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR				="CheckPOAndMaterialForVendor";
+	private static final String RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR				="CheckPOAndMaterialForVendor";
 	private static final String RFC_NAME_CHECK_PARTNER									="CheckPartner";
 	
 	
@@ -124,6 +124,24 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
         params.add(vendorNumber);
         
         List<String> returnTexts = performRFC(params,RFC_NAME_CHECK_LAYOUT_FOR_VENDOR);
+        
+        String errorMsg=null;
+        if(!returnTexts.isEmpty()){
+        	errorMsg = returnTexts.get(0);
+        }
+		return errorMsg ;
+	}
+	
+	public String checkPOAndMaterialForVendor(String vendorNumber, String poNumber, String materialNumber) throws Doc41ServiceException{
+		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
+        		"checkPOAndMaterialForVendor() - vendorNumber="+vendorNumber+".");
+       
+        List<Object> params = new ArrayList<Object>();
+        params.add(vendorNumber);
+        params.add(poNumber);
+        params.add(materialNumber);
+        
+        List<String> returnTexts = performRFC(params,RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR);
         
         String errorMsg=null;
         if(!returnTexts.isEmpty()){
