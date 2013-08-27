@@ -1,9 +1,5 @@
 package com.bayer.bhc.doc41webui.tags;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTag;
@@ -31,11 +27,6 @@ public class ErrorTag extends AbstractHtmlElementBodyTag implements BodyTag {
 	private static final String DEFAULT_CSS_STYLE = "color:red;";
 	
 	
-	/**
-     * The key under which this tag exposes error messages in
-     * the {@link PageContext#PAGE_SCOPE page context scope}.
-     */
-    public static final String MESSAGES_ATTRIBUTE = "messages";
 
     /**
      * The HTML '<code>span</code>' tag.
@@ -50,10 +41,6 @@ public class ErrorTag extends AbstractHtmlElementBodyTag implements BodyTag {
     /**
      * Stores any value that existed in the 'errors messages' before the tag was started.
      */
-    private Object oldMessages;
-
-    private boolean errorMessagesWereExposed;
-
     
     public ErrorTag() {
 		super();
@@ -154,37 +141,5 @@ public class ErrorTag extends AbstractHtmlElementBodyTag implements BodyTag {
         tagWriter.endTag();
     }
 
-    /**
-     * Exposes any bind status error messages under {@link #MESSAGES_ATTRIBUTE this key}
-     * in the {@link PageContext#PAGE_SCOPE}.
-     * <p>Only called if {@link #shouldRender()} returns <code>true</code>.
-     * @see #removeAttributes()
-     */
-    @Override
-    protected void exposeAttributes() throws JspException {
-        List<String> errorMessages = new ArrayList<String>();
-        errorMessages.addAll(Arrays.asList(getBindStatus().getErrorMessages()));
-        this.oldMessages = this.pageContext.getAttribute(MESSAGES_ATTRIBUTE, PageContext.PAGE_SCOPE);
-        this.pageContext.setAttribute(MESSAGES_ATTRIBUTE, errorMessages, PageContext.PAGE_SCOPE);
-        this.errorMessagesWereExposed = true;
-    }
-
-    /**
-     * Removes any bind status error messages that were previously stored under
-     * {@link #MESSAGES_ATTRIBUTE this key} in the {@link PageContext#PAGE_SCOPE}.
-     * @see #exposeAttributes()
-     */
-    @Override
-    protected void removeAttributes() {
-        if (this.errorMessagesWereExposed) {
-            if (this.oldMessages != null) {
-                this.pageContext.setAttribute(MESSAGES_ATTRIBUTE, this.oldMessages, PageContext.PAGE_SCOPE);
-                this.oldMessages = null;
-            }
-            else {
-                this.pageContext.removeAttribute(MESSAGES_ATTRIBUTE, PageContext.PAGE_SCOPE);
-            }
-        }
-    }
     
 }
