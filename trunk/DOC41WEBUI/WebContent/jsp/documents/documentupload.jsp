@@ -21,12 +21,6 @@ function popupAppendFunction(){
 	var pn = $("#partnerNumber").val();
 	return '&partnerNumber='+pn;
 }
-
-function checkBeforeUpload(){
-	return true;
-	return confirm("really");
-}
-
 </script>
 
 	<div id="div-body" class="portlet-body">
@@ -40,7 +34,7 @@ function checkBeforeUpload(){
 				<c:if test="${uploadForm.partnerNumberUsed && uploadForm.showOpenDeliveries }">
 				<a  class="portlet-form-button" href="opendeliveries?type=${uploadForm.type}" id="openPopupLink" target="open_delivery_dialog"><doc41:translate label="DeliveriesWithout" />&nbsp;<doc41:translate label="${uploadForm.type}"/></a>
 				</c:if>
-				<input type="submit" onclick="return checkBeforeUpload();" class="portlet-form-button" value="<doc41:translate label="ButtonUpload"/>" />
+				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonUpload"/>" />
 			</div>
 			<div class="portlet-section-body">
 				<table cellpadding="4" cellspacing="0" class="nohover">
