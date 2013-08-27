@@ -7,21 +7,21 @@ title="Upload Document">
 <%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41popup.js"></script>
-<script>
 <c:if test="${uploadForm.showOpenDeliveries }">
-function setDeliveryNumber(delNumber,shipunit){
-	$allPopups['open_delivery_dialog'].dialog('close');
-	$('#deliveryNumber').val(delNumber);
-	$('#SHIPPINGUNIT').val(shipunit);
-}
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41popup.js"></script>
+	<script>
+	function setDeliveryNumber(delNumber,shipunit){
+		$allPopups['open_delivery_dialog'].dialog('close');
+		$('#deliveryNumber').val(delNumber);
+		$('#SHIPPINGUNIT').val(shipunit);
+	}
+	
+	function popupAppendFunction(){
+		var pn = $("#partnerNumber").val();
+		return '&partnerNumber='+pn;
+	}
+	</script>
 </c:if>
-
-function popupAppendFunction(){
-	var pn = $("#partnerNumber").val();
-	return '&partnerNumber='+pn;
-}
-</script>
 
 	<div id="div-body" class="portlet-body">
 		<form:form commandName="uploadForm" action="upload"
