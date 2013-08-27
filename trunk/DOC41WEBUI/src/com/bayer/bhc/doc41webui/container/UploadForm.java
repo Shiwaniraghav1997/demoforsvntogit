@@ -7,6 +7,7 @@ public class UploadForm extends CustomizedDocumentForm{
 	private String fileId;
 //	private String typeLabel;
 	private transient MultipartFile file;
+	private boolean showOpenDeliveries;
 	
 	
 	
@@ -22,6 +23,14 @@ public class UploadForm extends CustomizedDocumentForm{
 	}
 	public void setFile(MultipartFile file) {
 		this.file = file;
+	}
+	
+	public boolean isShowOpenDeliveries() {
+		return showOpenDeliveries;
+	}
+	
+	public void setShowOpenDeliveries(boolean showOpenDeliveries) {
+		this.showOpenDeliveries = showOpenDeliveries;
 	}
 
 	@Override

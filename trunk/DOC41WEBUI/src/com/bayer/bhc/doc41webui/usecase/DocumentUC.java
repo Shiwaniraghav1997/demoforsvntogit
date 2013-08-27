@@ -336,6 +336,10 @@ public class DocumentUC {
 	public boolean isPartnerNumberUsed(String type) throws Doc41BusinessException {
 		return getDocType(type).isPartnerNumberUsed();
 	}
+	
+	public boolean isShowOpenDeliveries(String type) throws Doc41BusinessException {
+		return getDocTypeForUpload(type).isShowOpenDeliveries();
+	}
 
 	public String getUploadPermission(String type) throws Doc41BusinessException {
 		return getDocTypeForUpload(type).getPermissionUpload();

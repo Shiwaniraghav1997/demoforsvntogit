@@ -52,5 +52,10 @@ public class DeliveryCertDocumentType implements DownloadDocumentType, UploadDoc
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public boolean isShowOpenDeliveries() {
+		return false;
+	}
 
 }

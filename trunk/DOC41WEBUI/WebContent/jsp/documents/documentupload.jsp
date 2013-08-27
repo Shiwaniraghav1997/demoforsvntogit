@@ -9,16 +9,24 @@ title="Upload Document">
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41popup.js"></script>
 <script>
+<c:if test="${uploadForm.showOpenDeliveries }">
 function setDeliveryNumber(delNumber,shipunit){
 	$allPopups['open_delivery_dialog'].dialog('close');
 	$('#deliveryNumber').val(delNumber);
 	$('#SHIPPINGUNIT').val(shipunit);
 }
+</c:if>
 
 function popupAppendFunction(){
 	var pn = $("#partnerNumber").val();
 	return '&partnerNumber='+pn;
 }
+
+function checkBeforeUpload(){
+	return true;
+	return confirm("really");
+}
+
 </script>
 
 	<div id="div-body" class="portlet-body">
@@ -29,10 +37,10 @@ function popupAppendFunction(){
 				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
 					<tr><th><doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${uploadForm.type}"/></th></tr>
 				</table>
-				<c:if test="${uploadForm.partnerNumberUsed }">
+				<c:if test="${uploadForm.partnerNumberUsed && uploadForm.showOpenDeliveries }">
 				<a  class="portlet-form-button" href="opendeliveries?type=${uploadForm.type}" id="openPopupLink" target="open_delivery_dialog"><doc41:translate label="DeliveriesWithout" />&nbsp;<doc41:translate label="${uploadForm.type}"/></a>
 				</c:if>
-				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonUpload"/>" />
+				<input type="submit" onclick="return checkBeforeUpload();" class="portlet-form-button" value="<doc41:translate label="ButtonUpload"/>" />
 			</div>
 			<div class="portlet-section-body">
 				<table cellpadding="4" cellspacing="0" class="nohover">

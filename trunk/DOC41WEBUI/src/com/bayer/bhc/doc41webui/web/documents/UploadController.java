@@ -46,6 +46,7 @@ public class UploadController extends AbstractDoc41Controller {
 		uploadForm.setType(type);
 		uploadForm.setFileId(fileid);
 		uploadForm.setPartnerNumberUsed(documentUC.isPartnerNumberUsed(type));
+		uploadForm.setShowOpenDeliveries(documentUC.isShowOpenDeliveries(type));
 //		uploadForm.setTypeLabel(documentUC.getTypeLabel(type, language));
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type);
 		uploadForm.initAttributes(attributeDefinitions,language);
@@ -56,6 +57,7 @@ public class UploadController extends AbstractDoc41Controller {
 	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result) throws Doc41BusinessException { //ggf. kein modelattribute wegen sessionattribute
 		String failedURL = "/documents/documentupload";
 		uploadForm.setPartnerNumberUsed(documentUC.isPartnerNumberUsed(uploadForm.getType()));
+		uploadForm.setShowOpenDeliveries(documentUC.isShowOpenDeliveries(uploadForm.getType()));
 		documentUC.checkForUpload(result, uploadForm.getType(), uploadForm.getFile(), uploadForm.getFileId(),
 				uploadForm.getPartnerNumber(), uploadForm.getObjectId(), uploadForm.getAttributeValues());
 		if(result.hasErrors()){
