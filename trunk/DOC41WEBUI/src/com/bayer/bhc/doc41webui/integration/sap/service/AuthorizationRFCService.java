@@ -9,6 +9,7 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Delivery;
+import com.bayer.bhc.doc41webui.domain.TestLot;
 import com.bayer.bhc.doc41webui.domain.UserPartner;
 
 @Component
@@ -23,7 +24,8 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_CHECK_LAYOUT_FOR_VENDOR						="CheckLayoutForVendor";
 	private static final String RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR				="CheckPOAndMaterialForVendor";
 	private static final String RFC_NAME_CHECK_PARTNER									="CheckPartner";
-	
+	private static final String RFC_NAME_CHECK_MATERIAL_AND_BATCH_FOR_VENDOR			="CheckMaterialAndBatchForVendor";
+	private static final String RFC_NAME_GET_TEST_LOTS_FOR_VENDOR_BATCH					="GetTestLotsForVendorBatch";
 	
 	public String checkCoADeliveryNumberMaterial(String deliveryNumber, String matNo) throws Doc41ServiceException{
 		// logging
@@ -74,12 +76,6 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
         List<Delivery> deliveries = performRFC(params,RFC_NAME_GET_DELIVERIES_WITHOUT_DOC);
         
 		return deliveries ;
-	}
-
-
-	public boolean checkDeliveryNumberExists(String deliveryNumber) throws Doc41ServiceException {
-		// TODO use real RFC
-		return true;
 	}
 	
 	public UserPartner checkPartner(String partner) throws Doc41ServiceException{
@@ -149,4 +145,36 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
         }
 		return errorMsg ;
 	}
+	
+	public String checkMaterialAndBatchForVendor(String matNumber, String batch, String vendorNumber) throws Doc41ServiceException{
+		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
+        		"checkMaterialAndBatchForVendor() - matNumber="+matNumber+", batch="+batch+", vendorNumber="+vendorNumber+".");
+       
+        List<Object> params = new ArrayList<Object>();
+        params.add(matNumber);
+        params.add(batch);
+        params.add(vendorNumber);
+        
+        List<String> returnTexts = performRFC(params,RFC_NAME_CHECK_MATERIAL_AND_BATCH_FOR_VENDOR);
+        
+        String errorMsg=null;
+        if(!returnTexts.isEmpty()){
+        	errorMsg = returnTexts.get(0);
+        }
+		return errorMsg ;
+	}
+	
+	public List<TestLot> getTestLotsForVendorBatch(String vendor, String batch) throws Doc41ServiceException{
+		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
+        		"getTestLotsForVendorBatch() - vendor="+vendor+", batch="+batch+".");
+       
+        List<Object> params = new ArrayList<Object>();
+        params.add(vendor);
+        params.add(batch);
+        
+        List<TestLot> deliveries = performRFC(params,RFC_NAME_GET_TEST_LOTS_FOR_VENDOR_BATCH);
+        
+		return deliveries ;
+	}
 }
+

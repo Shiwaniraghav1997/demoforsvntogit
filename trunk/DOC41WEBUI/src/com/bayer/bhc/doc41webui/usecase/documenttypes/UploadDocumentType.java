@@ -12,6 +12,6 @@ public interface UploadDocumentType extends DocumentType{
 	
 	public String getPermissionUpload();
 
-	public void checkForUpload(Errors errors, DocumentUC documentUC, MultipartFile file, String fileId, String partnerNumber, String objectId, Map<String, String> attributeValues)throws Doc41BusinessException;
+	public void checkForUpload(Errors errors, DocumentUC documentUC, MultipartFile file, String fileId, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)throws Doc41BusinessException;
 	
 }

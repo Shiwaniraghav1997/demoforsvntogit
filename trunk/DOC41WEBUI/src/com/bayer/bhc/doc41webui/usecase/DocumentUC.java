@@ -30,6 +30,7 @@ import com.bayer.bhc.doc41webui.domain.Delivery;
 import com.bayer.bhc.doc41webui.domain.DocMetadata;
 import com.bayer.bhc.doc41webui.domain.DocTypeDef;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
+import com.bayer.bhc.doc41webui.domain.TestLot;
 import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
@@ -169,16 +170,6 @@ public class DocumentUC {
 			throw new Doc41BusinessException("checkDeliveryForPartner",e);
 		}
 	}
-	
-	public boolean checkDeliveryNumberExists(String deliveryNumber) throws Doc41BusinessException{
-		try {
-			return authorizationRFCService.checkDeliveryNumberExists(deliveryNumber);
-		} catch (Doc41ServiceException e) {
-			throw new Doc41BusinessException("checkDeliveryNumberExists",e);
-		}
-	}
-
-
 
 	public String uploadDocument(String type, File localFile, String contentType) throws Doc41BusinessException {
 		try{
@@ -301,8 +292,8 @@ public class DocumentUC {
 		}
 	}
 	
-	public void checkForUpload(Errors errors, String type, MultipartFile file, String fileId, String partnerNumber, String objectId, Map<String, String> attributeValues) throws Doc41BusinessException{
-		getDocTypeForUpload(type).checkForUpload(errors, this, file, fileId, partnerNumber, objectId, attributeValues);
+	public void checkForUpload(Errors errors, String type, MultipartFile file, String fileId, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException{
+		getDocTypeForUpload(type).checkForUpload(errors, this, file, fileId, partnerNumber, objectId, attributeValues,viewAttributes);
 	}
 	
 	public void checkForDownload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues) throws Doc41BusinessException{
@@ -368,6 +359,23 @@ public class DocumentUC {
 			return authorizationRFCService.checkPOAndMaterialForVendor(vendorNumber, poNumber, materialNumber);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("checkPOAndMaterialForVendor",e);
+		}
+	}
+	
+	public String checkMaterialAndBatchForVendor(String matNumber, String batch, String vendorNumber) throws Doc41BusinessException {
+		try {
+			return authorizationRFCService.checkMaterialAndBatchForVendor(matNumber, batch, vendorNumber);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("checkMaterialAndBatchForVendor",e);
+		}
+	}
+
+	public List<TestLot> getTestLotsForVendorBatch(String vendor,
+			String batch) throws Doc41BusinessException {
+		try{
+			return authorizationRFCService.getTestLotsForVendorBatch(vendor,batch);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("getTestLotsForVendorBatch",e);
 		}
 	}
 

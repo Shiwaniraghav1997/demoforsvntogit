@@ -12,6 +12,7 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.UserCountryDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPartnerDC;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -36,6 +37,8 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	
 	private static final String GET_PARTNERS_BY_USER		= "getPartnersByUser";
 	private static final String GET_USER_PARTNER			= "getUserPartner";
+	private static final String GET_COUNTRIES_BY_USER		= "getCountriesByUser";
+	private static final String GET_USER_COUNTRY			= "getUserCountry";
 	private static final String GET_PROFILE_PERMISSIONS		= "getProfilePermissions";
 	
 	@Override
@@ -268,6 +271,62 @@ public class UserManagementDAO extends AbstractDAOImpl {
 			throw new Doc41TechnicalException(this.getClass(), "getUserPartner", e);
 		}
 	}
+	
+	
+	public List<UserCountryDC> getCountriesByUser(Long objectID) throws Doc41TechnicalException {
+		try {
+			String[] parameterNames			= { "USER_ID" };
+	        Object[] parameterValues		= { objectID };
+	        String templateName				= GET_COUNTRIES_BY_USER;
+	        Class<UserCountryDC> dcClass	= UserCountryDC.class;        
+	        
+	        List<UserCountryDC> dcs = find(parameterNames, parameterValues, templateName, dcClass);	                		
+			
+			return dcs;
+		} catch (Exception e) {
+			throw new Doc41TechnicalException(this.getClass(), "getCountriesByUser", e);
+		}
+	}
+
+	public UserCountryDC createUserCountry(Locale locale) throws Doc41TechnicalException {
+		checkUser();
+		UserCountryDC newCountry = new UserCountryDC();
+		return newCountry;
+	}
+
+	public void saveUserCountry(UserCountryDC newCountry) throws Doc41TechnicalException {
+		checkUser();
+        try {
+            OTUserManagementN.get().storeDC(newCountry);
+        } catch (StoreException e) {
+            throw new Doc41TechnicalException(this.getClass(), "saveUserCountry", e);
+        }
+	}
+
+	public void deleteUserCountry(UserCountryDC country) throws Doc41TechnicalException {
+		checkUser();
+        try {
+            OTUserManagementN.get().deleteDC(country);
+        } catch (DeleteException e) {
+            throw new Doc41TechnicalException(this.getClass(), "deleteUserCountry", e);
+        }
+	}
+
+	public UserCountryDC getUserCountry(Long userId, String countryCode) throws Doc41TechnicalException {
+		try {
+			String[] parameterNames			= { "USER_ID", "COUNTRY_CODE" };
+	        Object[] parameterValues		= { userId, countryCode };
+	        String templateName				= GET_USER_COUNTRY;
+	        Class<UserCountryDC> dcClass	= UserCountryDC.class;        
+	        
+	        UserCountryDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
+			
+			return dc;
+		} catch (Exception e) {
+			throw new Doc41TechnicalException(this.getClass(), "getUserCountry", e);
+		}
+	}
+	
 	
 	public List<ProfilePermissionDC> getProfilePermissions() throws Doc41TechnicalException {
 		try {

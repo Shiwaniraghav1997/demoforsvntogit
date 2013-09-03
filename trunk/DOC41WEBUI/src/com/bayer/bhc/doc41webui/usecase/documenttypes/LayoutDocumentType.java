@@ -36,7 +36,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 	@Override
 	public void checkForUpload(Errors errors, DocumentUC documentUC,
 			MultipartFile file, String fileId, String partnerNumber,
-			String objectId, Map<String, String> attributeValues)
+			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
 		//TODO check mandatory fields
 		

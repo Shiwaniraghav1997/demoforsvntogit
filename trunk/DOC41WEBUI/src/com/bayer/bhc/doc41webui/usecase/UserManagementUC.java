@@ -66,9 +66,9 @@ public class UserManagementUC {
 	 * @param user
 	 * @throws RuntimeException if no type was given
 	 */
-    public void editUser(User pUser, boolean updateRoles,boolean updateLdap,boolean updatePartners) throws Doc41BusinessException {
+    public void editUser(User pUser, boolean updateRoles,boolean updateLdap,boolean updatePartners,boolean updateCountries) throws Doc41BusinessException {
         try {
-            getUserManagementRepository().updateUser(pUser, updateRoles,updateLdap,updatePartners);
+            getUserManagementRepository().updateUser(pUser, updateRoles,updateLdap,updatePartners,updateCountries);
             // logging
             Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(), "editUser() - user cwid '"+pUser.getCwid()+"'.");
             // audit
@@ -168,7 +168,7 @@ public class UserManagementUC {
 	                } else {
 	                    user.setActive(Boolean.TRUE);
 	                }
-	                getUserManagementRepository().updateUser(user, false,true,false);
+	                getUserManagementRepository().updateUser(user, false,true,false,false);
 	                // logging
 	                Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(), "toggleUserActivation() - user cwid '"+pCwid+"'.");
 	                // audit

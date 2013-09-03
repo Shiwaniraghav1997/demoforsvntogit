@@ -121,4 +121,8 @@ public abstract class CustomizedDocumentForm {
 		return attributeLabels.size();
 	}
 	
+	public Map<String, String> getViewAttributes(){
+		return null;
+	}
+	
 }

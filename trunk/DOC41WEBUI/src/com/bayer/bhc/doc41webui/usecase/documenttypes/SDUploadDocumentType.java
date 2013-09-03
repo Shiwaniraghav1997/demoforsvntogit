@@ -21,7 +21,7 @@ public abstract class SDUploadDocumentType implements UploadDocumentType {
 
 	@Override
 	public void checkForUpload(Errors errors, DocumentUC documentUC, MultipartFile file, String fileId,
-			String partnerNumber, String objectId, Map<String, String> attributeValues) throws Doc41BusinessException {
+			String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException {
 		
 		boolean isfileEmpty = (file==null||file.getSize()==0);
 		if(isfileEmpty && StringTool.isTrimmedEmptyOrNull(fileId)){

@@ -75,6 +75,8 @@ public class User extends DomainObject {
 	
 	private List<UserPartner> partners = new ArrayList<UserPartner>();
 	
+	private List<String> countries = new ArrayList<String>();
+	
 	private Locale locale;
 	
 	// Default: no write permissions
@@ -234,6 +236,17 @@ public class User extends DomainObject {
 		}
 		this.partners = partners;
 	}
+	
+	public List<String> getCountries() {
+		return countries;
+	}
+	
+	public void setCountries(List<String> countries) {
+		if(countries ==null){
+			countries = new ArrayList<String>();
+		}
+		this.countries = countries;
+	}
 
 	public String getPassword() {
 		return password;
@@ -339,6 +352,17 @@ public class User extends DomainObject {
 		if(partners!=null){
 			for (UserPartner userPartner : partners) {
 				if(StringTool.equals(partnerNumber, userPartner.getPartnerNumber())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean hasCountry(String countryCode){
+		if(countries!=null){
+			for (String oneCountryCode : countries) {
+				if(StringTool.equals(countryCode, oneCountryCode)){
 					return true;
 				}
 			}

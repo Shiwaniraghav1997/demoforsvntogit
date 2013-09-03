@@ -31,6 +31,7 @@ import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.domain.UserPartner;
 import com.bayer.bhc.doc41webui.integration.db.LdapDAO;
 import com.bayer.bhc.doc41webui.integration.db.UserManagementDAO;
+import com.bayer.bhc.doc41webui.integration.db.dc.UserCountryDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPartnerDC;
 import com.bayer.bhc.doc41webui.service.mapping.UserMapper;
 import com.bayer.ecim.foundation.basic.InitException;
@@ -254,7 +255,7 @@ public class UserManagementRepository extends AbstractRepository {
 	}
 	
 	
-	public void updateUser(User pUser, boolean updateRoles,boolean updateLdap,boolean updatePartner) throws Doc41RepositoryException, Doc41BusinessException {
+	public void updateUser(User pUser, boolean updateRoles,boolean updateLdap,boolean updatePartner,boolean updateCountries) throws Doc41RepositoryException, Doc41BusinessException {
         checkUser(Doc41ErrorMessageKeys.USR_MGT_UPDATE_USER_FAILED);
         
         Doc41Log.get().debug(this.getClass(), "System", "Entering UserManagementRepositoryImpl.updateUser(): " + pUser);
@@ -358,6 +359,29 @@ public class UserManagementRepository extends AbstractRepository {
 	    		pUser.setPartners(copyDcToDomainPartners(partnersInDB) );		
 	        }
         	
+        	if (updateCountries) {
+	            List<UserCountryDC> countriesInDB = getCountriesFromDB(userDC.getObjectID());
+	            Set<String> countriesToDelete = new HashSet<String>();
+	            for (UserCountryDC usercountryDC : countriesInDB) {
+	            	countriesToDelete.add(usercountryDC.getCountryIsoCode());
+				}
+	            Set<String> countriesFromInput = new LinkedHashSet<String>(pUser.getCountries());
+	            
+	            for (String country : countriesFromInput) {
+					if(!countriesToDelete.remove(country)){
+						addCountryToUserInDB(userDC, country, pUser.getLocale());
+					}
+				}
+	            
+	            for (String countryToDelete : countriesToDelete) {
+					removeCountryFromUserInDB(userDC, countryToDelete, pUser.getLocale());
+				}
+	        } else {
+	        	// refresh partners
+	        	List<UserPartnerDC> partnersInDB = getPartnersFromDB(userDC.getObjectID());
+	    		pUser.setPartners(copyDcToDomainPartners(partnersInDB) );		
+	        }
+        	
         } catch (Doc41TechnicalException e) {
             Doc41Log.get().error(this.getClass(), null, e);
             throw new Doc41RepositoryException(Doc41ErrorMessageKeys.USR_MGT_UPDATE_USER_FAILED, e);
@@ -374,6 +398,16 @@ public class UserManagementRepository extends AbstractRepository {
 			newPartnerList.add(newPartner );
 		}
 		return newPartnerList;
+	}
+	
+	private List<String> copyDcToDomainCountries(
+			List<UserCountryDC> countriesInDB) {
+		List<String> newCountryList = new ArrayList<String>();
+		for (UserCountryDC userCountryDC : countriesInDB) {
+			String newCountry = userCountryDC.getCountryIsoCode();
+			newCountryList.add(newCountry );
+		}
+		return newCountryList;
 	}
 		
 	/**
@@ -453,6 +487,41 @@ public class UserManagementRepository extends AbstractRepository {
 			throw new Doc41RepositoryException("Error during removePartnerFromUserInDB.", e);
 		}
 	}
+	
+	
+	private List<UserCountryDC> getCountriesFromDB(Long objectID) throws Doc41RepositoryException {
+		try {
+			List<UserCountryDC> countries = userManagementDAO.getCountriesByUser(objectID);
+			return countries;
+		} catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during getCountriesFromDB.", e);
+		}
+	}
+	
+	private void addCountryToUserInDB(UMUserNDC userDC, String country,
+			Locale locale) throws Doc41RepositoryException {
+		try{
+			User usr = UserInSession.get();
+            UserCountryDC newCountry = userManagementDAO.createUserCountry(locale);
+			newCountry.setUserId(userDC.getObjectID());
+			newCountry.setCountryIsoCode(country);
+			newCountry.setChangedBy(usr.getCwid());
+			newCountry.setCreatedBy(usr.getCwid());
+			userManagementDAO.saveUserCountry(newCountry);
+		}catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during addPartnerToUserInDB.", e);
+		}
+	}
+	
+	private void removeCountryFromUserInDB(UMUserNDC userDC,
+			String countryToDelete, Locale locale) throws Doc41RepositoryException {
+		try{
+			UserCountryDC country = userManagementDAO.getUserCountry(userDC.getObjectID(),countryToDelete);
+			userManagementDAO.deleteUserCountry(country);
+		} catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during removePartnerFromUserInDB.", e);
+		}
+	}
 			
 	protected User copyDcToDomainUser(UMUserNDC pUserDC) throws Doc41RepositoryException {
 		try{
@@ -472,6 +541,9 @@ public class UserManagementRepository extends AbstractRepository {
 			
 			List<UserPartnerDC> partnersInDB = getPartnersFromDB(pUserDC.getObjectID());
 			domainUser.setPartners(copyDcToDomainPartners(partnersInDB));
+			
+			List<UserCountryDC> countriesInDB = getCountriesFromDB(pUserDC.getObjectID());
+			domainUser.setCountries(copyDcToDomainCountries(countriesInDB));
 			
 			pUserDC.loadResolvedUserPermissions(LocaleInSession.get());
 			@SuppressWarnings("unchecked")
