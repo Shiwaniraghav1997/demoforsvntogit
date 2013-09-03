@@ -1,0 +1,25 @@
+<c:forEach items="${uploadForm.attributeValues}" var="attributeValue" varStatus="status">
+    <tr	<c:if test="${lovStatus.count % 2 != 0}">class="portlet-table-alternate"</c:if>>
+        <th><c:out value="${uploadForm.attributeLabels[attributeValue.key]}"/>
+        <input type="hidden" name="attributeLabels['${attributeValue.key}']" value="${uploadForm.attributeLabels[attributeValue.key]}"/>
+        </th>
+        <td>
+        <c:choose>
+         <c:when test="${fn:length(uploadForm.attributePredefValues[attributeValue.key])>0}">
+         	<select id="${attributeValue.key}" class="portlet-form-input-field"  name="attributeValues['${attributeValue.key}']">
+		<c:forEach items="${uploadForm.attributePredefValues[attributeValue.key]}" var="predefValue" varStatus="pdstatus">
+			<c:choose>
+				<c:when test="${attributeValue.value ==  predefValue}"><option selected="selected">${predefValue}</option></c:when>
+				<c:otherwise><option>${predefValue}</option></c:otherwise>
+			</c:choose>		            	
+         		</c:forEach>
+         	</select>
+         </c:when>
+         <c:otherwise>
+          <input id="${attributeValue.key}" class="portlet-form-input-field"  maxlength="70" name="attributeValues['${attributeValue.key}']" value="${attributeValue.value}"/>
+         </c:otherwise>
+        </c:choose>
+        <doc41:error path="attributeValues['${attributeValue.key}']" />
+        </td>
+    </tr>
+</c:forEach></html>

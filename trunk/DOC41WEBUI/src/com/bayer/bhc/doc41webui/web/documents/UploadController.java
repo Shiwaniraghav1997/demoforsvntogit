@@ -6,11 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,11 +20,10 @@ import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.StringTool;
 
-@Controller
-public class UploadController extends AbstractDoc41Controller {
+public abstract class UploadController extends AbstractDoc41Controller {
 	
 	@Autowired
-	private DocumentUC documentUC;
+	protected DocumentUC documentUC;
 	
 	@Override
 	protected boolean hasPermission(User usr, HttpServletRequest request) throws Doc41BusinessException{
@@ -39,26 +35,25 @@ public class UploadController extends AbstractDoc41Controller {
 		return usr.hasPermission(permission);
     }
 
-	@RequestMapping(value="/documents/documentupload",method = RequestMethod.GET)
+	//default implementation
 	public UploadForm get(@RequestParam() String type,@RequestParam(required=false) String fileid) throws Doc41BusinessException{
 		String language = LocaleInSession.get().getLanguage();
 		UploadForm uploadForm = new UploadForm();
 		uploadForm.setType(type);
 		uploadForm.setFileId(fileid);
 		uploadForm.setPartnerNumberUsed(documentUC.isPartnerNumberUsed(type));
-		uploadForm.setShowOpenDeliveries(documentUC.isShowOpenDeliveries(type));
 //		uploadForm.setTypeLabel(documentUC.getTypeLabel(type, language));
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type);
 		uploadForm.initAttributes(attributeDefinitions,language);
 		return uploadForm;
 	}
 	
-	@RequestMapping(value="/documents/upload",method = RequestMethod.POST)
+	//default implementation
 	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result) throws Doc41BusinessException { //ggf. kein modelattribute wegen sessionattribute
-		String failedURL = "/documents/documentupload";
-		uploadForm.setPartnerNumberUsed(documentUC.isPartnerNumberUsed(uploadForm.getType()));
-		uploadForm.setShowOpenDeliveries(documentUC.isShowOpenDeliveries(uploadForm.getType()));
-		documentUC.checkForUpload(result, uploadForm.getType(), uploadForm.getFile(), uploadForm.getFileId(),
+		String failedURL = getFailedURL();
+		String type = uploadForm.getType();
+		uploadForm.setPartnerNumberUsed(documentUC.isPartnerNumberUsed(type));
+		documentUC.checkForUpload(result, type, uploadForm.getFile(), uploadForm.getFileId(),
 				uploadForm.getPartnerNumber(), uploadForm.getObjectId(), uploadForm.getAttributeValues());
 		if(result.hasErrors()){
 			return failedURL;
@@ -71,7 +66,7 @@ public class UploadController extends AbstractDoc41Controller {
 				result.reject("VirusDetected");
 				return failedURL;
 			}
-			String fileId = documentUC.uploadDocument(uploadForm.getType(),localFile,file.getContentType());
+			String fileId = documentUC.uploadDocument(type,localFile,file.getContentType());
 			uploadForm.setFileId(fileId);
 		}
 		if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
@@ -79,11 +74,13 @@ public class UploadController extends AbstractDoc41Controller {
 			return failedURL;
 		} 
 		//set attributes in sap
-		documentUC.setAttributesForNewDocument(uploadForm.getType(),uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getObjectId());
+		documentUC.setAttributesForNewDocument(type,uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getObjectId());
 		
 		
-		return "redirect:/documents/documentupload"+"?type="+uploadForm.getType();
+		return "redirect:"+failedURL+"?type="+type;
 	}
+
+	protected abstract String getFailedURL();
 
 
 }

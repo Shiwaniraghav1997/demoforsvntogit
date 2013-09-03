@@ -1,3 +1,4 @@
+<%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
 jspName="documentupload" 	component="documents"
 activeTopNav="upload" 	activeNav="${uploadForm.type}"
@@ -22,6 +23,8 @@ title="Upload Document">
 	}
 	</script>
 </c:if>
+
+
 
 	<div id="div-body" class="portlet-body">
 		<form:form commandName="uploadForm" action="upload"
@@ -61,75 +64,78 @@ title="Upload Document">
 							</tr>
 						</spring:hasBindErrors>
 						
-						<c:if test="${uploadForm.partnerNumberUsed }">
-						<tr>
-							<th><doc41:translate label="PartnerNumber" /></th>
-							<td><form:select path="partnerNumber" items="${user.partners}" cssClass="portlet-form-input-field" cssStyle="width:240px;" itemLabel="partnerLabel" itemValue="partnerNumber"/><doc41:error path="partnerNumber" /></td>
+						<%@include file="uploadstdattrib.jspf" %>
+						
+						
+						
+						<script>
+	function checktest1(test1,test2){
+		if(typeof test1 == 'undefined'){
+			var test1=$("#test1").val();	
+		}
+		if(test1==""){
+			var test2 = "";
+			$("#test2single").show();
+			$("#test2multi").hide();
+			$("#test2ro").html(test2);
+			$("#test2hidden").val(test2);
+			$("#test2hidden").prop('disabled', false);
+			$("#test2select").prop('disabled', true);
+		} else {
+ 			//TODO AJAX call
+			if(test1=="123"){
+				var test2 = "999";
+				$("#test2single").show();
+				$("#test2multi").hide();
+				$("#test2ro").html(test2);
+				$("#test2hidden").val(test2);
+				$("#test2hidden").prop('disabled', false);
+				$("#test2select").prop('disabled', true);
+			} else {
+				$("#test2single").hide();
+				$("#test2multi").show();
+				$("#test2hidden").prop('disabled', true);
+				$("#test2select").prop('disabled', false);
+				$('#test2select').append('<option value="222" selected="selected">222</option>');
+				$('#test2select').append('<option value="333">333</option>');
+				$('#test2select').append('<option value="444">444</option>');
+				if(typeof test2 != 'undefined'){
+					$('#test2select').val(test2);
+				}
+				setTimeout(function(){
+					$("#test2select").focus();
+				},1);
+			}
+		}
+	}
+	
+	$(function() {
+		checktest1("${uploadForm.test1}","${uploadForm.test2}");
+	});
+</script>
+						
+						<tr id="test2single">
+							<th><doc41:translate label="test2" /></th>
+							<td><span id="test2ro">&nbsp;</span><form:hidden id="test2hidden" path="test2"/></<input></td>
 						</tr>
-						</c:if>
+						
+						<tr id="test2multi">
+							<th><doc41:translate label="test2" /></th>
+							<td><form:select id="test2select" path="test2" cssClass="portlet-form-input-field" cssStyle="width:240px;"/><doc41:error path="test2" /></td>
+						</tr>						
+						
 						
 						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="ObjectId${uploadForm.type}" /></th>
 							<td><form:input path="objectId" cssClass="portlet-form-input-field"  maxlength="70"/><doc41:error path="objectId" /></td>
 						</tr>
 						
-						 <c:forEach items="${uploadForm.attributeValues}" var="attributeValue" varStatus="status">
-					        <tr	<c:if test="${lovStatus.count % 2 != 0}">class="portlet-table-alternate"</c:if>>
-					            <th><c:out value="${uploadForm.attributeLabels[attributeValue.key]}"/>
-					            <input type="hidden" name="attributeLabels['${attributeValue.key}']" value="${uploadForm.attributeLabels[attributeValue.key]}"/>
-					            </th>
-					            <td>
-					            <c:choose>
-						            <c:when test="${fn:length(uploadForm.attributePredefValues[attributeValue.key])>0}">
-						            	<select id="${attributeValue.key}" class="portlet-form-input-field"  name="attributeValues['${attributeValue.key}']">
-											<c:forEach items="${uploadForm.attributePredefValues[attributeValue.key]}" var="predefValue" varStatus="pdstatus">
-												<c:choose>
-													<c:when test="${attributeValue.value ==  predefValue}"><option selected="selected">${predefValue}</option></c:when>
-													<c:otherwise><option>${predefValue}</option></c:otherwise>
-												</c:choose>		            	
-						            		</c:forEach>
-						            	</select>
-						            </c:when>
-						            <c:otherwise>
-							            <input id="${attributeValue.key}" class="portlet-form-input-field"  maxlength="70" name="attributeValues['${attributeValue.key}']" value="${attributeValue.value}"/>
-						            </c:otherwise>
-					            </c:choose>
-					            <doc41:error path="attributeValues['${attributeValue.key}']" />
-					            </td>
-					        </tr>
-					    </c:forEach>
+						 <%@include file="uploadcustattrib.jspf" %>
+						 
 					</tbody>
 				</table>
 			</div>
-			<div class="portlet-section-body">
-				<table cellpadding="4" cellspacing="0" class="nohover">
-					<thead class="portlet-table-header">
-						<tr>
-							<th colspan="2"><doc41:translate label="Document File" /></th>
-						</tr>
-						<colcolgroup>
-							<col width="15%"/>
-							<col width="85%"/>
-						</colcolgroup>
-					</thead>
-					<tbody class="portlet-table-body">
-						<tr>
-							<th><doc41:translate label="SelectFile" /></th>
-							<td>
-							<c:choose>
-								<c:when test="${empty uploadForm.fileId}">
-									<input name="file" type="file" size="40"/><doc41:error path="file" />
-								</c:when>
-								<c:otherwise>
-									<doc41:translate label="FileAlreadyUploaded" />
-									<form:hidden path="fileId"/>
-								</c:otherwise>
-							</c:choose>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+			<%@include file="uploadfile.jspf" %>
 		</form:form>
 	</div>
 </doc41:layout>

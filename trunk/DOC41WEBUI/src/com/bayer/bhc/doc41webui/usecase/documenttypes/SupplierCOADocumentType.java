@@ -38,10 +38,5 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 		// TODO Auto-generated method stub
 
 	}
-	
-	@Override
-	public boolean isShowOpenDeliveries() {
-		return false;
-	}
 
 }

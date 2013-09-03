@@ -9,12 +9,12 @@
 			  </doc41:topNavEntry>
 			  
 			  <doc41:topNavEntry href="#" title="navUpload" id="upload" permission="TOPNAV_UPLOAD">
-			  	<doc41:navEntry href="documents/documentupload?type=BOL" title="Bill of Lading" id="BOLUP" cssclass="first-child" permission="DOC_BOL_UP"/>
-			  	<doc41:navEntry href="documents/documentupload?type=AWB" title="Air Waybill" id="AWBUP" cssclass="first-child" permission="DOC_AWB_UP"/>
-			  	<doc41:navEntry href="documents/documentupload?type=SUPCOA" title="Supplier CoA" id="SUPCOAUP" cssclass="first-child" permission="DOC_SUPCOA_UP"/>
-			  	<doc41:navEntry href="documents/documentupload?type=CMR" title="Confirmation of Arrival" id="CMRUP" cssclass="first-child" permission="DOC_CMR_UP"/>
-			  	<doc41:navEntry href="documents/documentupload?type=DELCERT" title="Delivery Certificate" id="DELCERTUP" cssclass="first-child" permission="DOC_DELCERT_UP"/>
-			  	<doc41:navEntry href="documents/documentupload?type=LAYOUT" title="Layout High Res" id="LAYOUTUP" cssclass="first-child" permission="DOC_LAYOUT_UP"/>
+			  	<doc41:navEntry href="documents/sdupload?type=BOL" title="Bill of Lading" id="BOLUP" cssclass="first-child" permission="DOC_BOL_UP"/>
+			  	<doc41:navEntry href="documents/sdupload?type=AWB" title="Air Waybill" id="AWBUP" cssclass="first-child" permission="DOC_AWB_UP"/>
+			  	<doc41:navEntry href="documents/sdupload?type=CMR" title="Confirmation of Arrival" id="CMRUP" cssclass="first-child" permission="DOC_CMR_UP"/>
+			  	<doc41:navEntry href="documents/supcoaupload?type=SUPCOA" title="Supplier CoA" id="SUPCOAUP" cssclass="first-child" permission="DOC_SUPCOA_UP"/>
+			  	<doc41:navEntry href="documents/delcertupload?type=DELCERT" title="Delivery Certificate" id="DELCERTUP" cssclass="first-child" permission="DOC_DELCERT_UP"/>
+			  	<doc41:navEntry href="documents/ptupload?type=LAYOUT" title="Layout High Res" id="LAYOUTUP" cssclass="first-child" permission="DOC_LAYOUT_UP"/>
 			  </doc41:topNavEntry>
 			  
 			  <doc41:topNavEntry href="#" title="navDownload" id="download" permission="TOPNAV_DOWNLOAD">
@@ -29,6 +29,7 @@
 			  	<doc41:navEntry href="documents/documentsearch?type=ARTWORK" title="Artwork Low Res" id="ARTWORKDOWN" cssclass="first-child" permission="DOC_ARTWORK_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=LAYOUT" title="Layout High Res" id="LAYOUTDOWN" cssclass="first-child" permission="DOC_LAYOUT_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=TPACKDELREQ" title="Tech. Pack. and Deliv. Requirements" id="TPACKDELREQDOWN" cssclass="first-child" permission="DOC_TPACKDELREQ_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=CMROUT" title="CMR Outgoing" id="CMROUTDOWN" cssclass="first-child" permission="DOC_CMROUT_DOWN"/>
 			  </doc41:topNavEntry>
 			  
 			  <doc41:topNavEntry href="useradmin/userlist" title="navManagement" id="management" permission="TOPNAV_MANAGEMENT">

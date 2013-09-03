@@ -70,10 +70,5 @@ public class LayoutDocumentType implements DownloadDocumentType,
 			errors.reject(""+deliveryCheck);
 		}
 	}
-	
-	@Override
-	public boolean isShowOpenDeliveries() {
-		return false;
-	}
 
 }

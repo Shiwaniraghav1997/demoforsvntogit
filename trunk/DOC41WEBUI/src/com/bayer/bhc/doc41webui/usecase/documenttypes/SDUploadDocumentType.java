@@ -57,9 +57,4 @@ public abstract class SDUploadDocumentType implements UploadDocumentType {
 		}
 	}
 	
-	@Override
-	public boolean isShowOpenDeliveries() {
-		return true;
-	}
-	
 }

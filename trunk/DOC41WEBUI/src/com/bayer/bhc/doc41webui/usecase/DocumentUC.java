@@ -337,9 +337,6 @@ public class DocumentUC {
 		return getDocType(type).isPartnerNumberUsed();
 	}
 	
-	public boolean isShowOpenDeliveries(String type) throws Doc41BusinessException {
-		return getDocTypeForUpload(type).isShowOpenDeliveries();
-	}
 
 	public String getUploadPermission(String type) throws Doc41BusinessException {
 		return getDocTypeForUpload(type).getPermissionUpload();
@@ -373,5 +370,5 @@ public class DocumentUC {
 			throw new Doc41BusinessException("checkPOAndMaterialForVendor",e);
 		}
 	}
-	
+
 }
