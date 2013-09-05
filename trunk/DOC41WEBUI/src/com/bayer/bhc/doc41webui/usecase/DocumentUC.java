@@ -200,13 +200,14 @@ public class DocumentUC {
 
 
 	public void setAttributesForNewDocument(String type, String fileId,
-			Map<String, String> attributeValues, String deliveryNumber) throws Doc41BusinessException {
+			Map<String, String> attributeValues, String objId,String fileName) throws Doc41BusinessException {
 		try{
 			DocMetadata metadata = getMetadata(type);
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
 			DocTypeDef docDef = metadata.getDocDef();
 			String d41id = docDef.getD41id();
-			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),crepInfo.getDocClass(),deliveryNumber,docDef.getSapObj(),attributeValues);
+			String fileNameToSet = metadata.getHasFileName()?fileName:null;
+			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),crepInfo.getDocClass(),objId,docDef.getSapObj(),attributeValues,fileNameToSet);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("setAttributesForNewDocument",e);
 		}
@@ -292,8 +293,8 @@ public class DocumentUC {
 		}
 	}
 	
-	public void checkForUpload(Errors errors, String type, MultipartFile file, String fileId, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException{
-		getDocTypeForUpload(type).checkForUpload(errors, this, file, fileId, partnerNumber, objectId, attributeValues,viewAttributes);
+	public void checkForUpload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException{
+		getDocTypeForUpload(type).checkForUpload(errors, this, partnerNumber, objectId, attributeValues,viewAttributes);
 	}
 	
 	public void checkForDownload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues) throws Doc41BusinessException{

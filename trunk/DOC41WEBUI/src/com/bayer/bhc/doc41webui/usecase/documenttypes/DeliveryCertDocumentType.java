@@ -3,7 +3,6 @@ package com.bayer.bhc.doc41webui.usecase.documenttypes;
 import java.util.Map;
 
 import org.springframework.validation.Errors;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -59,31 +58,13 @@ public class DeliveryCertDocumentType implements DownloadDocumentType, UploadDoc
 
 	@Override
 	public void checkForUpload(Errors errors, DocumentUC documentUC,
-			MultipartFile file, String fileId, String partnerNumber,
+			String partnerNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
-		boolean isfileEmpty = (file==null||file.getSize()==0);
-		if(isfileEmpty && StringTool.isTrimmedEmptyOrNull(fileId)){
-			errors.rejectValue("file", "uploadFileMissing", "upload file is missing");
-		}
-		if(isPartnerNumberUsed()){
-			if(StringTool.isTrimmedEmptyOrNull(partnerNumber)){
-				errors.rejectValue("partnerNumber","PartnerNumberMissing");
-			} else {
-				if(!UserInSession.get().hasPartner(partnerNumber)){
-					errors.rejectValue("partnerNumber","PartnerNotAssignedToUser");
-				}
-			}
-		}
-		if(StringTool.isTrimmedEmptyOrNull(objectId)){
-			errors.rejectValue("objectId","DeliveryNumberMissing");
-		}
+
 		String matNumber = attributeValues.get(MATERIAL_NUMBER);
 		if(StringTool.isTrimmedEmptyOrNull(matNumber)){
 			errors.rejectValue("attributeValues['"+MATERIAL_NUMBER+"']","MaterialNumberMissing");
-		}
-		if(!isfileEmpty && !StringTool.isTrimmedEmptyOrNull(fileId)){
-			errors.rejectValue("file", "FileAndFileId", "both file and fileId filled");
 		}
 		
 		if(errors.hasErrors()){

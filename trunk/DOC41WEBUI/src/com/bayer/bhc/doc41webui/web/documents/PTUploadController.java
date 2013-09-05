@@ -15,8 +15,8 @@ public class PTUploadController extends UploadController {
 
 	
 	@RequestMapping(value="/documents/ptupload",method = RequestMethod.GET)
-	public UploadForm get(@RequestParam() String type,@RequestParam(required=false) String fileid) throws Doc41BusinessException{
-		return super.get(type, fileid);
+	public UploadForm get(@RequestParam() String type) throws Doc41BusinessException{
+		return super.get(type);
 	}
 	
 	@RequestMapping(value="/documents/ptuploadpost",method = RequestMethod.POST)
@@ -25,6 +25,11 @@ public class PTUploadController extends UploadController {
 	}
 	
 	protected String getFailedURL() {
+		return "/documents/ptupload";
+	}
+
+	@Override
+	protected String getSuccessURL() {
 		return "/documents/ptupload";
 	}
 }

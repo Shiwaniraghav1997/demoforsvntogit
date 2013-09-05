@@ -3,6 +3,7 @@ package com.bayer.bhc.doc41webui.integration.sap.service;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,8 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_FIND_DOCS = "FindDocs";
 	private static final String RFC_NAME_GET_DOC_URL = "GetDocUrl";
 	
-
+	 public static final String ATTRIB_NAME_FILENAME = "FILENAME";
+	
 	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes,Set<String> set) throws Doc41ServiceException {
 		Map<String, DocMetadata> metadataMap = new HashMap<String, DocMetadata>();
 		//get doctypes
@@ -51,6 +53,8 @@ public class KgsRFCService extends AbstractSAPJCOService {
         		metadata.setContentRepository(getContentRepo(d41id));
         		//attributes for all languages
         		List<Attribute> attributes = getAttributes(d41id,languageCodes);
+        		boolean hasFileName = filterFilename(attributes);
+        		metadata.setHasFileName(hasFileName);
         		metadata.setAttributes(attributes);
         		//predefined attrib values
         		Map<String,List<String>> attrValues = getAttrValues(d41id);
@@ -102,6 +106,18 @@ public class KgsRFCService extends AbstractSAPJCOService {
 //		List<KeyValue> values = performRFC(params,RFC_NAME_GET_TEXTS);
 //		return values;
 //	}
+
+	private boolean filterFilename(List<Attribute> attributes) {
+		boolean filenameFound=false;
+		for (Iterator<Attribute> iterator = attributes.iterator(); iterator.hasNext();) {
+			Attribute attribute = iterator.next();
+			if(StringTool.equals(attribute.getName(), ATTRIB_NAME_FILENAME)){
+				iterator.remove();
+				filenameFound = true;
+			}
+		}
+		return filenameFound;
+	}
 
 	private Map<String, List<String>> getAttrValues(String d41id) throws Doc41ServiceException {
 		// /BAY0/GZ_D41_GET_ATTR_VALUES
@@ -205,16 +221,16 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	}
 
 	public int setAttributesForNewDocument(String d41id, String fileId,
-			String contentRepository,String docClass, String deliveryNumber, String sapObj,
-			Map<String, String> attributeValues) throws Doc41ServiceException {
+			String contentRepository,String docClass, String objId, String sapObj,
+			Map<String, String> attributeValues,String fileName) throws Doc41ServiceException {
 		List<Object> params = new ArrayList<Object>();
 		params.add(d41id);
 		params.add(fileId);
 		params.add(contentRepository);
 		params.add(docClass);
-		params.add(deliveryNumber);
+		params.add(objId);
 		params.add(sapObj);
-		params.add(attributeValues);
+		params.add(addFileNameToAttributeValues(attributeValues,fileName));
 		
 		List<Integer> result = performRFC(params, RFC_NAME_PROCESS_DR_REQ);
 		if(result ==null || result.isEmpty()){
@@ -224,6 +240,15 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		} else {
 			return result.get(0);
 		}
+	}
+
+	private Map<String, String> addFileNameToAttributeValues(
+			Map<String, String> attributeValues, String fileName) {
+		Map<String, String> newMap = new HashMap<String, String>(attributeValues);
+		if(!StringTool.isTrimmedEmptyOrNull(fileName)){
+			newMap.put(ATTRIB_NAME_FILENAME, fileName);
+		}
+		return newMap;
 	}
 
 	public List<HitListEntry> findDocs(String d41id,String sapObj,String objectId,Map<String, String> attributeValues,int maxResults,boolean maxVersionOnly)

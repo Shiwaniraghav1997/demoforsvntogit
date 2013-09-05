@@ -36,7 +36,7 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
             	String docid = (String) pInputParms.get(1);
                 String corep = (String) pInputParms.get(2);
                 String docClass = (String) pInputParms.get(3);
-                String deliveryNumber = (String) pInputParms.get(4);
+                String objId = (String) pInputParms.get(4);
                 String sapObj = (String) pInputParms.get(5);
                 @SuppressWarnings("unchecked")
 				Map<String, String> attribValues = (Map<String, String>) pInputParms.get(6);
@@ -47,7 +47,7 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
 				sapInput.setValue(IN_DOCID,docid);
 				sapInput.setValue(IN_DATE,new Date());
 				sapInput.setValue(IN_D41ID,d41id);
-				sapInput.setValue(IN_OBJ_ID,deliveryNumber);
+				sapInput.setValue(IN_OBJ_ID,objId);
 				sapInput.setValue(IN_SAP_OBJ,sapObj);
 				sapInput.setValue(IN_DOC_TYPE,docClass);
 				sapInput.setValue(IN_ATTRIBS,getAttribString(attribValues));

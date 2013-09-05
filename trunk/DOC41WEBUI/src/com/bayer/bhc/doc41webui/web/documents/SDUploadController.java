@@ -15,8 +15,8 @@ public class SDUploadController extends UploadController {
 
 	
 	@RequestMapping(value="/documents/sdupload",method = RequestMethod.GET)
-	public UploadForm get(@RequestParam() String type,@RequestParam(required=false) String fileid) throws Doc41BusinessException{
-		return super.get(type, fileid);
+	public UploadForm get(@RequestParam() String type) throws Doc41BusinessException{
+		return super.get(type);
 	}
 	
 	@RequestMapping(value="/documents/sduploadpost",method = RequestMethod.POST)
@@ -25,6 +25,11 @@ public class SDUploadController extends UploadController {
 	}
 	
 	protected String getFailedURL() {
+		return "/documents/sdupload";
+	}
+
+	@Override
+	protected String getSuccessURL() {
 		return "/documents/sdupload";
 	}
 }

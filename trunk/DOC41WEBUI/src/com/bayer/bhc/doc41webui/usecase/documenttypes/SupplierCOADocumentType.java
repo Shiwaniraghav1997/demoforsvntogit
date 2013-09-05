@@ -4,10 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.validation.Errors;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
-import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.TestLot;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -38,33 +36,13 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 
 	@Override
 	public void checkForUpload(Errors errors, DocumentUC documentUC,
-			MultipartFile file, String fileId, String partnerNumber,
+			String partnerNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
-		boolean isfileEmpty = (file==null||file.getSize()==0);
-		if(isfileEmpty && StringTool.isTrimmedEmptyOrNull(fileId)){
-			errors.rejectValue("file", "uploadFileMissing", "upload file is missing");
-		}
-		if(isPartnerNumberUsed()){
-			if(StringTool.isTrimmedEmptyOrNull(partnerNumber)){
-				errors.rejectValue("partnerNumber","PartnerNumberMissing");
-			} else {
-				if(!UserInSession.get().hasPartner(partnerNumber)){
-					errors.rejectValue("partnerNumber","PartnerNotAssignedToUser");
-				}
-			}
-		}
+
 		String batch = viewAttributes.get(VIEW_ATTRIB_BATCH);
 		if(StringTool.isTrimmedEmptyOrNull(batch)){
-			errors.rejectValue("objectId","BatchMissing");
-		}
-		
-		if(StringTool.isTrimmedEmptyOrNull(objectId)){
-			errors.reject("TestLotMissing");
-		}
-		
-		if(!isfileEmpty && !StringTool.isTrimmedEmptyOrNull(fileId)){
-			errors.rejectValue("file", "FileAndFileId", "both file and fileId filled");
+			errors.reject("BatchMissing");
 		}
 		
 		if(errors.hasErrors()){

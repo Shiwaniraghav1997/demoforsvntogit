@@ -16,8 +16,8 @@ public class SupCoaUploadController extends UploadController {
 
 	
 	@RequestMapping(value="/documents/supcoaupload",method = RequestMethod.GET)
-	public @ModelAttribute("uploadForm") SupCoaUploadForm get(@RequestParam() String type,@RequestParam(required=false) String fileid) throws Doc41BusinessException{
-		return (SupCoaUploadForm) super.get(type, fileid);
+	public @ModelAttribute("uploadForm") SupCoaUploadForm get(@RequestParam() String type) throws Doc41BusinessException{
+		return (SupCoaUploadForm) super.get(type);
 	}
 	
 	@RequestMapping(value="/documents/supcoauploadpost",method = RequestMethod.POST)
@@ -32,5 +32,10 @@ public class SupCoaUploadController extends UploadController {
 	@Override
 	protected UploadForm createNewForm() {
 		return new SupCoaUploadForm();
+	}
+
+	@Override
+	protected String getSuccessURL() {
+		return "/documents/supcoaupload";
 	}
 }
