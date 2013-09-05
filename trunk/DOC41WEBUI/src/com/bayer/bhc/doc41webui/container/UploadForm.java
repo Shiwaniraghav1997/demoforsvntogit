@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadForm extends CustomizedDocumentForm{
 	
 	private String fileId;
+	private String fileName;
 //	private String typeLabel;
 	private transient MultipartFile file;
 	
@@ -13,6 +14,13 @@ public class UploadForm extends CustomizedDocumentForm{
 	}
 	public void setFileId(String fileId) {
 		this.fileId = fileId;
+	}
+	
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	
 	public MultipartFile getFile() {

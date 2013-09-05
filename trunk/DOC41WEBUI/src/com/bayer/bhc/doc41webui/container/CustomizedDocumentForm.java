@@ -45,6 +45,9 @@ public abstract class CustomizedDocumentForm {
 	}
 
 	public Map<String, String> getAttributeValues() {
+		if(attributeValues==null){
+			attributeValues = new HashMap<String, String>();
+		}
 		return attributeValues;
 	}
 	public void setAttributeValues(Map<String, String> attributeValues) {
