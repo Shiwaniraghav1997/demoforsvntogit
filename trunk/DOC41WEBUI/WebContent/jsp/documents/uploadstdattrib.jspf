@@ -1,6 +1,0 @@
-<%@include file="uploadpartnerattrib.jspf" %>
-
-<tr class="portlet-table-alternate">
-	<th><doc41:translate label="ObjectId${uploadForm.type}" /></th>
-	<td><form:input path="objectId" cssClass="portlet-form-input-field"  maxlength="70"/><doc41:error path="objectId" /></td>
-</tr>

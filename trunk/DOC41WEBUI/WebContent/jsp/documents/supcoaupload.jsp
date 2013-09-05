@@ -54,45 +54,8 @@ title="Upload Document">
 	});
 </script>
 
-
-
-	<div id="div-body" class="portlet-body">
-		<form:form commandName="uploadForm" action="supcoauploadpost"
-			method="post" enctype="multipart/form-data">
-			<form:hidden path="type"/>
-			<div class="portlet-section-header">
-				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
-					<tr><th><doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${uploadForm.type}"/></th></tr>
-				</table>
-				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonUpload"/>" />
-			</div>
-			<div class="portlet-section-body">
-				<table cellpadding="4" cellspacing="0" class="nohover">
-					<thead class="portlet-table-header">
-						<tr>
-							<th colspan="4"><doc41:translate label="attributes"/></th>
-						</tr>
-						<colcolgroup>
-							<col width="15%"/>
-							<col width="35%"/>
-							<col width="50%"/>
-						</colcolgroup>
-					</thead>
-					<tbody class="portlet-table-body">
-						<spring:hasBindErrors name="uploadForm">
-							<tr>
-								<td colspan="2"><c:forEach items="${errors.globalErrors}"
-										var="error">
-										<tr style="color: red">
-											<doc41:translate label="${error.code}" />
-										</tr>
-									</c:forEach>
-								</td>
-							</tr>
-						</spring:hasBindErrors>
-						
-						<%@include file="uploadpartnerattrib.jspf" %>
-						
+	<doc41:uploadtemplate action="supcoauploadpost" showObjectId="false">
+		<jsp:attribute name="fragmentCustomSearchFields">
 						<tr>
 							<th><doc41:translate label="batch" /></th>
 							<td><form:input path="batch" cssClass="portlet-form-input-field"  maxlength="70" onblur="mapBatchToTestLot();"/><doc41:error path="batch" /></td>
@@ -108,14 +71,8 @@ title="Upload Document">
 						<tr id="testlotmulti">
 							<th><doc41:translate label="testlot" /></th>
 							<td><form:select id="testlotselect" path="objectId" cssClass="portlet-form-input-field" cssStyle="width:240px;"/><doc41:error path="objectId" /></td>
-						</tr>						
-						
-						 <%@include file="uploadcustattrib.jspf" %>
-						 
-					</tbody>
-				</table>
-			</div>
-			<%@include file="uploadfile.jspf" %>
-		</form:form>
-	</div>
+						</tr>
+		</jsp:attribute>
+	</doc41:uploadtemplate>
+		
 </doc41:layout>
