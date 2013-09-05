@@ -120,6 +120,7 @@
 								<c:otherwise>
 									<doc41:translate label="FileAlreadyUploaded" />
 									<form:hidden path="fileId"/>
+									<form:hidden path="fileName"/>
 								</c:otherwise>
 							</c:choose>
 							</td>
