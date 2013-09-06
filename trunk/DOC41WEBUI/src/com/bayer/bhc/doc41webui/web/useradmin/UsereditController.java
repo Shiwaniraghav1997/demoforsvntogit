@@ -39,6 +39,11 @@ public class UsereditController extends AbstractDoc41Controller {
 		return getDisplaytextUC().getTimezones();
 	}
 	
+	@ModelAttribute("allCountriesList")
+	public List<SelectionItem> addAllCountriesList(){
+		return getDisplaytextUC().getCountryCodes();
+	}
+	
 	@RequestMapping(value="/useradmin/useredit",method = RequestMethod.GET)
     public UserEditForm get(@RequestParam(value="editcwid") String cwid) throws Doc41ExceptionBase {
 		if(cwid==null){

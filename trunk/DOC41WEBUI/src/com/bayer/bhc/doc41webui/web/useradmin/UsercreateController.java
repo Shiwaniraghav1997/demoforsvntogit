@@ -34,6 +34,11 @@ public class UsercreateController extends AbstractDoc41Controller {
 	public List<SelectionItem> addTimezones(){
 		return getDisplaytextUC().getTimezones();
 	}
+	
+	@ModelAttribute("allCountriesList")
+	public List<SelectionItem> addAllCountriesList(){
+		return getDisplaytextUC().getCountryCodes();
+	}
 		
 	@Override
 	protected boolean hasPermission(User usr, HttpServletRequest request) {

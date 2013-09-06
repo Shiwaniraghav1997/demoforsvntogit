@@ -32,6 +32,7 @@ public class UserEditForm implements Serializable{
 	private String type;
 	private List<String> roles;
 	private List<UserPartner> partners;
+	private List<String> countries;
 	
 
 	public void validate(HttpServletRequest request, Errors errors) {
@@ -77,6 +78,7 @@ public class UserEditForm implements Serializable{
 		setType				(user.getType());     
 		setRoles			(user.getRoles());  
 		setPartners			(user.getPartners());
+		setCountries		(user.getCountries());
 		setObjectID(user.getDcId());
 
 	}
@@ -97,6 +99,7 @@ public class UserEditForm implements Serializable{
 		user.setType		(getType		());
 		user.setRoles		(getRoles		());
 		user.setPartners	(getPartners());
+		user.setCountries	(getCountries());
 		
 		return user;
 	}
@@ -254,4 +257,28 @@ public class UserEditForm implements Serializable{
 		setPartners(partnerList );
 	}
 	
+	public List<String> getCountries() {
+		return countries;
+	}
+	public void setCountries(List<String> countries) {
+		this.countries = countries;
+	}
+	
+	public void setCountryStrings(List<String> countryStrings){
+		List<String> countryList = new ArrayList<String>();
+		for (String countryString : countryStrings) {
+			String[] split = countryString.split("###");
+			String country = split[0];
+//			if(split.length>1){
+//				up.setPartnerName1(split[1]);
+//				if(split.length>2){
+//					up.setPartnerName2(split[2]);
+//				}
+//			}
+			
+			countryList.add(country);
+		}
+		setCountries(countryList );
+	}
+
 }
