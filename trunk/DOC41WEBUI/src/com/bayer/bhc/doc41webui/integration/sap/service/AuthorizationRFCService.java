@@ -9,7 +9,7 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Delivery;
-import com.bayer.bhc.doc41webui.domain.TestLot;
+import com.bayer.bhc.doc41webui.domain.InspectionLot;
 import com.bayer.bhc.doc41webui.domain.UserPartner;
 
 @Component
@@ -25,7 +25,7 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR				="CheckPOAndMaterialForVendor";
 	private static final String RFC_NAME_CHECK_PARTNER									="CheckPartner";
 	private static final String RFC_NAME_CHECK_MATERIAL_AND_BATCH_FOR_VENDOR			="CheckMaterialAndBatchForVendor";
-	private static final String RFC_NAME_GET_TEST_LOTS_FOR_VENDOR_BATCH					="GetTestLotsForVendorBatch";
+	private static final String RFC_NAME_GET_INSPECTION_LOTS_FOR_VENDOR_BATCH			="GetInspectionLotsForVendorBatch";
 	
 	public String checkCoADeliveryNumberMaterial(String deliveryNumber, String matNo) throws Doc41ServiceException{
 		// logging
@@ -164,15 +164,15 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		return errorMsg ;
 	}
 	
-	public List<TestLot> getTestLotsForVendorBatch(String vendor, String batch) throws Doc41ServiceException{
+	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor, String batch) throws Doc41ServiceException{
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
-        		"getTestLotsForVendorBatch() - vendor="+vendor+", batch="+batch+".");
+        		"getInspectionLotsForVendorBatch() - vendor="+vendor+", batch="+batch+".");
        
         List<Object> params = new ArrayList<Object>();
         params.add(vendor);
         params.add(batch);
         
-        List<TestLot> deliveries = performRFC(params,RFC_NAME_GET_TEST_LOTS_FOR_VENDOR_BATCH);
+        List<InspectionLot> deliveries = performRFC(params,RFC_NAME_GET_INSPECTION_LOTS_FOR_VENDOR_BATCH);
         
 		return deliveries ;
 	}

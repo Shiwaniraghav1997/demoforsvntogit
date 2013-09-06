@@ -30,7 +30,7 @@ import com.bayer.bhc.doc41webui.domain.Delivery;
 import com.bayer.bhc.doc41webui.domain.DocMetadata;
 import com.bayer.bhc.doc41webui.domain.DocTypeDef;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
-import com.bayer.bhc.doc41webui.domain.TestLot;
+import com.bayer.bhc.doc41webui.domain.InspectionLot;
 import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
@@ -371,12 +371,12 @@ public class DocumentUC {
 		}
 	}
 
-	public List<TestLot> getTestLotsForVendorBatch(String vendor,
+	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor,
 			String batch) throws Doc41BusinessException {
 		try{
-			return authorizationRFCService.getTestLotsForVendorBatch(vendor,batch);
+			return authorizationRFCService.getInspectionLotsForVendorBatch(vendor,batch);
 		} catch (Doc41ServiceException e) {
-			throw new Doc41BusinessException("getTestLotsForVendorBatch",e);
+			throw new Doc41BusinessException("getInspectionLotsForVendorBatch",e);
 		}
 	}
 

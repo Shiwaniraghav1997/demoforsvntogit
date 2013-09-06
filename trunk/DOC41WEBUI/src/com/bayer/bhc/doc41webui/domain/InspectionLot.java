@@ -1,6 +1,6 @@
 package com.bayer.bhc.doc41webui.domain;
 
-public class TestLot extends DomainObject {
+public class InspectionLot extends DomainObject {
 
 	private static final long serialVersionUID = -1857956837235743559L;
 	
@@ -34,7 +34,7 @@ public class TestLot extends DomainObject {
 	}
 	@Override
 	public String toString() {
-		return "TestLot [number=" + number + ", materialNumber="
+		return "InspectionLot [number=" + number + ", materialNumber="
 				+ materialNumber + ", batch=" + batch + ", plant=" + plant
 				+ "]";
 	}

@@ -92,7 +92,7 @@
 .portlet-table-body * td {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 12px;
-/* 	border-color: #0099CC; */
+ 	border-color: #0099CC; 
 /* 	border-width: 0px 1px 1px 1px; */
 /* 	border-style: solid; */
 	text-align: left;
