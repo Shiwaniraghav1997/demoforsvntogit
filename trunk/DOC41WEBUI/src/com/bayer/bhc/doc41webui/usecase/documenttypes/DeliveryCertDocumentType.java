@@ -71,10 +71,7 @@ public class DeliveryCertDocumentType implements DownloadDocumentType, UploadDoc
 			return;
 		}
 		
-		String deliveryCheck = documentUC.checkMaterialAndBatchForVendor(matNumber, objectId, partnerNumber);
-		if(deliveryCheck != null){
-			errors.reject(""+deliveryCheck);
-		}
+		//TODO getBatchObjectsForSupplier
 	}
 
 }

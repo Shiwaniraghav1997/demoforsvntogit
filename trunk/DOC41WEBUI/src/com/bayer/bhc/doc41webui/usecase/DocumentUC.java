@@ -123,15 +123,6 @@ public class DocumentUC {
 		}
 		return supportedSapTypes ;
 	}
-
-	public String checkCoaDeliveryNumberMaterial(String deliveryNumber, String matNo)
-	throws Doc41BusinessException{
-		try {
-			return authorizationRFCService.checkCoADeliveryNumberMaterial(deliveryNumber, matNo);
-		} catch (Doc41ServiceException e) {
-			throw new Doc41BusinessException("checkCoaDeliveryNumberMaterial",e);
-		}
-	}
 	
 	public String getTypeLabel(String doctype,String language) throws Doc41BusinessException{
 		DocMetadata metadata = getMetadata(doctype);
@@ -365,14 +356,6 @@ public class DocumentUC {
 		}
 	}
 	
-	public String checkMaterialAndBatchForVendor(String matNumber, String batch, String vendorNumber) throws Doc41BusinessException {
-		try {
-			return authorizationRFCService.checkMaterialAndBatchForVendor(matNumber, batch, vendorNumber);
-		} catch (Doc41ServiceException e) {
-			throw new Doc41BusinessException("checkMaterialAndBatchForVendor",e);
-		}
-	}
-
 	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor,
 			String vendorBatch, String plant) throws Doc41BusinessException {
 		try{
