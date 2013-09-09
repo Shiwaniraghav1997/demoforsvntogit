@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
-import com.bayer.bhc.doc41webui.domain.Delivery;
+import com.bayer.bhc.doc41webui.domain.DeliveryOrShippingUnit;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
@@ -44,8 +44,8 @@ public class OpenDeliveriesController extends AbstractDoc41Controller {
     }
 	
 	@RequestMapping(value="/documents/opendeliveries",method = RequestMethod.GET)
-	public List<Delivery> get(@RequestParam String type,@RequestParam String partnerNumber) throws Doc41BusinessException  {
-		List<Delivery> list = documentUC.getOpenDeliveries(type, partnerNumber);
+	public List<DeliveryOrShippingUnit> get(@RequestParam String type,@RequestParam String partnerNumber) throws Doc41BusinessException  {
+		List<DeliveryOrShippingUnit> list = documentUC.getOpenDeliveries(type, partnerNumber);
 		return list;
     }
 	

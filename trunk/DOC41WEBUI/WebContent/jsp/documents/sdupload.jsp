@@ -10,10 +10,9 @@ title="Upload SD Document">
 <!-- open delivery popup -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41popup.js"></script>
 <script>
-function setDeliveryNumber(delNumber,shipunit){
+function setDeliveryNumber(refNumber,shipunit){
 	$allPopups['open_delivery_dialog'].dialog('close');
-	$('#deliveryNumber').val(delNumber);
-	$('#SHIPPINGUNIT').val(shipunit);
+	$('#objectId').val(refNumber);
 }
 
 function popupAppendFunction(){

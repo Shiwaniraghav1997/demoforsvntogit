@@ -4,23 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
-import com.bayer.bhc.doc41webui.domain.Delivery;
+import com.bayer.bhc.doc41webui.domain.DeliveryOrShippingUnit;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 import com.sap.conn.jco.JCoTable;
 
-public class GetDeliveriesWithoutDocumentRFC extends AbstractDoc41RFC<Delivery>{
+public class GetDeliveriesWithoutDocumentRFC extends AbstractDoc41RFC<DeliveryOrShippingUnit>{
 	private static final String IN_PARTNER = "IV_PARNR";
 	private static final String IN_DOCUMENT_TYPE = "IV_DOCTYPE_ID";
 //	private static final String OUT_RETURNCODE = "EV_RETURN";
 	
+	//TODO
 	private static final String OT_DELIVERY = "TS_DELIVERIES";
-	private static final String OUT_SHIPPING_UNIT = "XXX";
+	private static final String OUT_REFERENCE = "???";
+	private static final String OUT_FLAG = "???";
 	private static final String OUT_SHIP_TO = "KUNWE";
 	private static final String OUT_SOLD_TOY = "KUNAG";
+	private static final String OUT_FROM = "???";
+	private static final String OUT_TO = "???";
 	private static final String OUT_GOODS_ISSUE_DATE = "WADAT_IST";
-	private static final String OUT_DELIVERY = "VBELN";
+	private static final String OUT_ORDERING_PARTY = "???";
+	
 	
 
 	@Override
@@ -49,22 +54,25 @@ public class GetDeliveriesWithoutDocumentRFC extends AbstractDoc41RFC<Delivery>{
 	}
 
 	@Override
-	public List<Delivery> processResult(JCoFunction pFunction)
+	public List<DeliveryOrShippingUnit> processResult(JCoFunction pFunction)
 			throws SAPException {
 		Doc41Log.get().debug(GetDeliveriesWithoutDocumentRFC.class, null, "processResult():ENTRY");
-		ArrayList<Delivery> mResult = new ArrayList<Delivery>();
+		ArrayList<DeliveryOrShippingUnit> mResult = new ArrayList<DeliveryOrShippingUnit>();
         if (pFunction != null) {
 //            processReturnTable(pFunction);
 //            checkReturnCode(pFunction, OUT_RETURNCODE, null);
             JCoTable deliveriesTable = pFunction.getTableParameterList().getTable(OT_DELIVERY);
             if(deliveriesTable!=null){
             	for(int i=0;i<deliveriesTable.getNumRows();i++){
-            		Delivery del = new Delivery();
-            		del.setDeliveryNumber(deliveriesTable.getString(OUT_DELIVERY));
-            		del.setShippingUnitNumber(deliveriesTable.getString(OUT_SHIPPING_UNIT));
+            		DeliveryOrShippingUnit del = new DeliveryOrShippingUnit();
+            		del.setReferenceNumber(deliveriesTable.getString(OUT_REFERENCE));
+            		del.setFlag(deliveriesTable.getString(OUT_FLAG));
             		del.setShipToNumber(deliveriesTable.getString(OUT_SHIP_TO));
             		del.setSoldToNumber(deliveriesTable.getString(OUT_SOLD_TOY));
+            		del.setFrom(deliveriesTable.getString(OUT_FROM));
+            		del.setTo(deliveriesTable.getString(OUT_TO));
             		del.setGoodsIssueDate(deliveriesTable.getDate(OUT_GOODS_ISSUE_DATE));
+            		del.setOrderingParty(deliveriesTable.getString(OUT_ORDERING_PARTY));
 
             		mResult.add(del);
             		deliveriesTable.nextRow();

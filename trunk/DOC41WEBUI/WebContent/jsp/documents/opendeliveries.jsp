@@ -36,12 +36,15 @@ showHeader="false">
 		  <tbody class="portlet-table-body">
 		  	<c:forEach items="${deliveryList}" var="delivery"
 				varStatus="status">
-				<tr style="cursor: pointer;" onclick="setDeliveryNumber('${delivery.deliveryNumber}','${delivery.shippingUnitNumber}')">
-					<td><c:out value="${delivery.deliveryNumber}"/></td>
-					<td><c:out value="${delivery.shippingUnitNumber}"/></td>
+				<tr style="cursor: pointer;" onclick="setDeliveryNumber('${delivery.referenceNumber}')">
+					<td><c:out value="${delivery.referenceNumber}"/></td>
+					<td><c:out value="${delivery.flag}"/></td>
 					<td><c:out value="${delivery.shipToNumber}"/></td>
 					<td><c:out value="${delivery.soldToNumber}"/></td>
+					<td><c:out value="${delivery.from}"/></td>
+					<td><c:out value="${delivery.to}"/></td>
 					<td><c:out value="${delivery.goodsIssueDate}"/></td>
+					<td><c:out value="${delivery.orderingParty}"/></td>
 				</tr>
 			</c:forEach>
 		  </tbody>

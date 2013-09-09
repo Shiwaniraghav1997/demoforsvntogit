@@ -26,7 +26,7 @@ import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.ContentRepositoryInfo;
-import com.bayer.bhc.doc41webui.domain.Delivery;
+import com.bayer.bhc.doc41webui.domain.DeliveryOrShippingUnit;
 import com.bayer.bhc.doc41webui.domain.DocMetadata;
 import com.bayer.bhc.doc41webui.domain.DocTypeDef;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
@@ -152,7 +152,7 @@ public class DocumentUC {
 		return metadata.getAttributes();
 	}
 	
-	public List<Delivery> getOpenDeliveries(String type, String carrier) throws Doc41BusinessException {
+	public List<DeliveryOrShippingUnit> getOpenDeliveries(String type, String carrier) throws Doc41BusinessException {
 		try{
 			DocMetadata metadata = getMetadata(type);
 //			ContentRepositoryInfo crepInfo = metadata.getContentRepository();

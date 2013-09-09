@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.domain.Delivery;
+import com.bayer.bhc.doc41webui.domain.DeliveryOrShippingUnit;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
 import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.domain.UserPartner;
@@ -65,7 +65,7 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
         }
 	}
 	
-	public List<Delivery> getOpenDeliveries(String d41id, String carrier) throws Doc41ServiceException{
+	public List<DeliveryOrShippingUnit> getOpenDeliveries(String d41id, String carrier) throws Doc41ServiceException{
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
         		"getOpenDeliveries() - d41id="+d41id+", carrier="+carrier+".");
        
@@ -73,7 +73,7 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
         params.add(carrier);
         params.add(d41id);
         
-        List<Delivery> deliveries = performRFC(params,RFC_NAME_GET_DELIVERIES_WITHOUT_DOC);
+        List<DeliveryOrShippingUnit> deliveries = performRFC(params,RFC_NAME_GET_DELIVERIES_WITHOUT_DOC);
         
 		return deliveries ;
 	}
