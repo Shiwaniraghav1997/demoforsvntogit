@@ -390,6 +390,14 @@ public class DocumentUC {
 			throw new Doc41BusinessException("getBatchObjectsForSupplier",e);
 		}
 	}
-
+	
+	public List<QMBatchObject> getBatchObjectsForCustomer(String customer, String delivery, String material,
+			String batch, String country) throws Doc41BusinessException {
+		try{
+			return authorizationRFCService.getBatchObjectsForCustomer(customer, delivery, material, batch, country);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("getBatchObjectsForCustomer",e);
+		}
+	}
 
 }

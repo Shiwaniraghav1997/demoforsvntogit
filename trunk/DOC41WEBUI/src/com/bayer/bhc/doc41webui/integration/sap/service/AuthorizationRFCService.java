@@ -29,6 +29,7 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_CHECK_MATERIAL_AND_BATCH_FOR_VENDOR			="CheckMaterialAndBatchForVendor";
 	private static final String RFC_NAME_GET_INSPECTION_LOTS_FOR_VENDOR_BATCH			="GetInspectionLotsForVendorBatch";
 	private static final String RFC_NAME_GET_BATCH_OBJECTS_FOR_SUPPLIER					="GetBatchObjectsForSupplier";
+	private static final String RFC_NAME_GET_BATCH_OBJECTS_FOR_CUSTOMER					="GetBatchObjectsForCustomer";
 	
 	public String checkCoADeliveryNumberMaterial(String deliveryNumber, String matNo) throws Doc41ServiceException{
 		// logging
@@ -192,6 +193,22 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
         params.add(order);
         
         List<QMBatchObject> batchObjects = performRFC(params,RFC_NAME_GET_BATCH_OBJECTS_FOR_SUPPLIER);
+        
+		return batchObjects ;
+	}
+	
+	public List<QMBatchObject> getBatchObjectsForCustomer(String customer, String delivery, String material, String batch, String country) throws Doc41ServiceException{
+		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
+        		"getBatchObjectsForSupplier() - customer="+customer+", delivery="+delivery+", material="+material+", batch="+batch+", country="+country+".");
+       
+        List<Object> params = new ArrayList<Object>();
+        params.add(customer);
+        params.add(delivery);
+        params.add(material);
+        params.add(batch);
+        params.add(country);
+        
+        List<QMBatchObject> batchObjects = performRFC(params,RFC_NAME_GET_BATCH_OBJECTS_FOR_CUSTOMER);
         
 		return batchObjects ;
 	}
