@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 
 public abstract class SDUploadDocumentType implements UploadDocumentType {
@@ -29,10 +30,10 @@ public abstract class SDUploadDocumentType implements UploadDocumentType {
 			return;
 		}
 		
-//		String deliveryCheck = documentUC.checkDeliveryForPartner(partnerNumber, objectId, shippingUnitNumber);
-//		if(deliveryCheck != null){
-//			errors.reject(""+deliveryCheck);
-//		}
+		SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(partnerNumber, objectId);
+		if(!deliveryCheck.isOk()){
+			errors.rejectValue("objectId",""+deliveryCheck.getError());
+		}
 	}
 	
 }

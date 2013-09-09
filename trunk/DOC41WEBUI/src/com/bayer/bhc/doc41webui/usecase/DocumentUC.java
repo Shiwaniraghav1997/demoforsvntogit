@@ -31,6 +31,7 @@ import com.bayer.bhc.doc41webui.domain.DocMetadata;
 import com.bayer.bhc.doc41webui.domain.DocTypeDef;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
+import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
@@ -163,9 +164,9 @@ public class DocumentUC {
 		}
 	}
 	
-	public String checkDeliveryForPartner(String carrier,String deliveryNumber,String shippingUnitNumber) throws Doc41BusinessException{
+	public SDReferenceCheckResult checkDeliveryForPartner(String carrier,String referenceNumber) throws Doc41BusinessException{
 		try {
-			return authorizationRFCService.checkDeliveryForPartner(carrier, deliveryNumber, shippingUnitNumber);
+			return authorizationRFCService.checkDeliveryForPartner(carrier, referenceNumber);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("checkDeliveryForPartner",e);
 		}

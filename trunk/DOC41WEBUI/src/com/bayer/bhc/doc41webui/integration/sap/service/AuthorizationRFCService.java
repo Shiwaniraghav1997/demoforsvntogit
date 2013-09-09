@@ -10,6 +10,7 @@ import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Delivery;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
+import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.domain.UserPartner;
 
 @Component
@@ -46,23 +47,22 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	}
 
 
-	public String checkDeliveryForPartner(String carrier,
-			String deliveryNumber, String shippingUnitNumber) throws Doc41ServiceException{
+	public SDReferenceCheckResult checkDeliveryForPartner(String carrier,
+			String referenceNumber) throws Doc41ServiceException{
 		 Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
-        		"checkDeliveryForPartner() - deliveryNumber="+deliveryNumber+", shippingUnitNumber="+shippingUnitNumber+", carrier="+carrier+".");
+        		"checkDeliveryForPartner() - deliveryNumber="+referenceNumber+", carrier="+carrier+".");
        
         List<Object> params = new ArrayList<Object>();
         params.add(carrier);
-        params.add(deliveryNumber);
-        params.add(shippingUnitNumber);
+        params.add(referenceNumber);
         
-        List<String> returnTexts = performRFC(params,RFC_NAME_CHECK_DELIVERY_FOR_PARTNER);
+        List<SDReferenceCheckResult> results = performRFC(params,RFC_NAME_CHECK_DELIVERY_FOR_PARTNER);
         
-        String errorMsg=null;
-        if(!returnTexts.isEmpty()){
-        	errorMsg = returnTexts.get(0);
+        if(!results.isEmpty()){
+        	return results.get(0);
+        } else {
+        	throw new Doc41ServiceException("no result from RFC: "+RFC_NAME_CHECK_DELIVERY_FOR_PARTNER);
         }
-		return errorMsg ;
 	}
 	
 	public List<Delivery> getOpenDeliveries(String d41id, String carrier) throws Doc41ServiceException{

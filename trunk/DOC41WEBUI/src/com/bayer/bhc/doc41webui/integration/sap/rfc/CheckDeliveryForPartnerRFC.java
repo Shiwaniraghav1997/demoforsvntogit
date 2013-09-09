@@ -4,22 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
-public class CheckDeliveryForPartnerRFC extends AbstractDoc41RFC<String>{
+public class CheckDeliveryForPartnerRFC extends AbstractDoc41RFC<SDReferenceCheckResult>{
+	
 	private static final String IN_PARTNER = "IV_PARNR";
-	private static final String IN_DELIVERY = "IV_DELV_NO";
-	private static final String IN_SHIPMENT = "IV_SHPMT_NO";
+	//TODO
+	private static final String IN_REFERENCE = "???";
 	private static final String OUT_RETURNCODE = "EV_RETURN";
 	
-	private static final String RETURNCODE_OK = "0";
-	private static final String RETURNCODE_DELIVERY_UNKNOWN = "1";
-	private static final String RETURNCODE_WRONG_PARTNER = "2";
-	private static final String RETURNCODE_WRONG_SHIPPING_UNIT = "4";
-
+	//???
+	private static final String RETURNCODE_SHIPPING_UNIT_NUMBER_OK = "???";
+	private static final String RETURNCODE_SHIPPING_UNIT_NOT_FOR_PARTNER = "???";
+	private static final String RETURNCODE_DELIVERY_NUMBER_OK = "???";
+	private static final String RETURNCODE_DELIVERY_NOT_FOR_PARTNER = "???";
+	private static final String RETURNCODE_UNKNOWN_NUMBER = "???";
 	
 
 	@Override
@@ -30,14 +33,12 @@ public class CheckDeliveryForPartnerRFC extends AbstractDoc41RFC<String>{
         if (pFunction != null) {
             if (pInputParms != null) {
             	String partnerNumber = (String) pInputParms.get(0);
-                String deliveryNumber = (String) pInputParms.get(1);
-                String shipmentNumber = (String) pInputParms.get(2);
+                String referenceNumber = (String) pInputParms.get(1);
                 
                 JCoParameterList sapInput = pFunction.getImportParameterList();
 				
 				sapInput.setValue(IN_PARTNER,partnerNumber);
-				sapInput.setValue(IN_DELIVERY,deliveryNumber);
-				sapInput.setValue(IN_SHIPMENT,shipmentNumber);
+				sapInput.setValue(IN_REFERENCE,referenceNumber);
             } else {
                 throw new SAPException(
                         "CheckDeliveryForPartnerRFC pInputParms list is null", null);
@@ -50,32 +51,38 @@ public class CheckDeliveryForPartnerRFC extends AbstractDoc41RFC<String>{
 	}
 
 	@Override
-	public List<String> processResult(JCoFunction pFunction)
+	public List<SDReferenceCheckResult> processResult(JCoFunction pFunction)
 			throws SAPException {
 		Doc41Log.get().debug(CheckDeliveryForPartnerRFC.class, null, "processResult():ENTRY");
-		ArrayList<String> mResult = new ArrayList<String>();
+		ArrayList<SDReferenceCheckResult> mResult = new ArrayList<SDReferenceCheckResult>();
         if (pFunction != null) {
 //            processReturnTable(pFunction);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
             
-            mResult.add(mapReturnCodeToTag(returnCode));
+            JCoParameterList sapInput = pFunction.getImportParameterList();
+            String referenceNumber = sapInput.getString(IN_REFERENCE);
+            
+			mResult.add(mapReturnCodeToResult(returnCode,referenceNumber));
         }
         Doc41Log.get().debug(CheckDeliveryForPartnerRFC.class, null, "processResult():EXIT");
         return mResult;
 	}
 
-	private String mapReturnCodeToTag(String returnCode) {
-		if(StringTool.equals(returnCode, RETURNCODE_OK)){
-			return null;
-		} else if(StringTool.equals(returnCode, RETURNCODE_DELIVERY_UNKNOWN)){
-			return "DeliveryUnknown";
-		} else if(StringTool.equals(returnCode, RETURNCODE_WRONG_PARTNER)){
-			return "DeliveryNotAssignedToPartner";
-		} else if(StringTool.equals(returnCode, RETURNCODE_WRONG_SHIPPING_UNIT)){
-			return "ShippingUnitNotAssignedToPartner";
+	private SDReferenceCheckResult mapReturnCodeToResult(String returnCode,String referenceNumber) throws SAPException {
+		if(StringTool.equals(returnCode, RETURNCODE_SHIPPING_UNIT_NUMBER_OK)){
+			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_SHIPPING_UNIT_NUMBER, null);
+		} else if(StringTool.equals(returnCode, RETURNCODE_SHIPPING_UNIT_NOT_FOR_PARTNER)){
+			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_SHIPPING_UNIT_NUMBER, "ShippingUnitDoesNotBelongToCarrier");
+		} else if(StringTool.equals(returnCode, RETURNCODE_DELIVERY_NUMBER_OK)){
+			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_DELIVERY_NUMBER, null);
+		} else if(StringTool.equals(returnCode, RETURNCODE_DELIVERY_NOT_FOR_PARTNER)){
+			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_DELIVERY_NUMBER, "DeliveryDoesNotBelongToCarrier");
+		} else if(StringTool.equals(returnCode, RETURNCODE_UNKNOWN_NUMBER)){
+			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_UNKNOWN, "ReferenceNumberUnknown");
+		} else {
+			throw new SAPException("CheckDeliveryForPartnerRFC: unknown return code from SAP: "+returnCode,null);
 		}
-		return "UnknownReturnCode";
 	}
 
 }
