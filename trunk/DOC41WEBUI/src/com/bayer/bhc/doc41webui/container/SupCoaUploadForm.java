@@ -5,22 +5,23 @@ import java.util.Map;
 
 import com.bayer.bhc.doc41webui.usecase.documenttypes.SupplierCOADocumentType;
 
+//TODO maybe not necessary, if vendorBatch is part of the normal attributes
 public class SupCoaUploadForm extends UploadForm {
 
-	private String batch;
+	private String vendorBatch;
 	
-	public String getBatch() {
-		return batch;
+	public String getVendorBatch() {
+		return vendorBatch;
 	}
 	
-	public void setBatch(String batch) {
-		this.batch = batch;
+	public void setVendorBatch(String vendorBatch) {
+		this.vendorBatch = vendorBatch;
 	}
 	
 	@Override
 	public Map<String, String> getViewAttributes() {
 		Map<String, String> viewAttribs = new HashMap<String, String>();
-		viewAttribs.put(SupplierCOADocumentType.VIEW_ATTRIB_BATCH,batch);
+		viewAttribs.put(SupplierCOADocumentType.VIEW_ATTRIB_VENDOR_BATCH,vendorBatch);
 		return viewAttribs;
 	}
 }

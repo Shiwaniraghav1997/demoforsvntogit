@@ -12,7 +12,8 @@ import com.bayer.ecim.foundation.basic.StringTool;
 
 public class SupplierCOADocumentType implements UploadDocumentType {
 
-	public static final String VIEW_ATTRIB_BATCH = "batch";
+	public static final String VIEW_ATTRIB_VENDOR_BATCH = "vendorBatch";
+	public static final String VIEW_ATTRIB_PLANT = "plant";
 
 	@Override
 	public boolean isPartnerNumberUsed() {
@@ -40,22 +41,26 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
 
-		String batch = viewAttributes.get(VIEW_ATTRIB_BATCH);
-		if(StringTool.isTrimmedEmptyOrNull(batch)){
-			errors.reject("BatchMissing");
+		String vendorBatch = viewAttributes.get(VIEW_ATTRIB_VENDOR_BATCH);
+		if(StringTool.isTrimmedEmptyOrNull(vendorBatch)){
+			errors.rejectValue(VIEW_ATTRIB_VENDOR_BATCH,"VendorBatchMissing");
+		}
+		String plant = viewAttributes.get(VIEW_ATTRIB_PLANT);
+		if(StringTool.isTrimmedEmptyOrNull(plant)){
+			errors.rejectValue(VIEW_ATTRIB_PLANT,"PlantMissing");
 		}
 		
 		if(errors.hasErrors()){
 			return;
 		}
 		
-		checkInspectionLot(errors, documentUC, partnerNumber, batch, objectId);
+		checkInspectionLot(errors, documentUC, partnerNumber, vendorBatch, plant, objectId);
 
 	}
 
 	private void checkInspectionLot(Errors errors, DocumentUC documentUC,
-			String partnerNumber, String batch, String objectId) throws Doc41BusinessException {
-		List<InspectionLot> deliveryCheck = documentUC.getInspectionLotsForVendorBatch(partnerNumber, batch);
+			String partnerNumber, String vendorBatch, String plant, String objectId) throws Doc41BusinessException {
+		List<InspectionLot> deliveryCheck = documentUC.getInspectionLotsForVendorBatch(partnerNumber, vendorBatch, plant);
 		for (InspectionLot inspectionLot : deliveryCheck) {
 			if(StringTool.equals(inspectionLot.getNumber(), objectId)){
 				return;

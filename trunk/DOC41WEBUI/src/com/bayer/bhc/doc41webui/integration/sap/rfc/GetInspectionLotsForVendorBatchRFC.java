@@ -12,15 +12,19 @@ import com.sap.conn.jco.JCoTable;
 
 public class GetInspectionLotsForVendorBatchRFC extends AbstractDoc41RFC<InspectionLot>{
 	//TODO
-	private static final String IN_PARTNER = "IV_PARNR???";
-	private static final String IN_BATCH = "???";
+	private static final String IN_VENDOR = "IV_PARNR???";
+	private static final String IN_VENDOR_BATCH = "???";
+	private static final String IN_PLANT = "???";
 //	private static final String OUT_RETURNCODE = "EV_RETURN";
 	
 	private static final String OT_INSPECTIONLOTS = "???";
 	private static final String OUT_NUMBER = "???";
 	private static final String OUT_MAT_NUMBER = "???";
-	private static final String OUT_BATCH = "???";
+	private static final String OUT_MAT_TEXT = "???";
 	private static final String OUT_PLANT = "???";
+	private static final String OUT_BATCH = "???";
+	private static final String OUT_VENDOR = "???";
+	private static final String OUT_VENDOR_BATCH = "???";
 	
 
 	@Override
@@ -35,8 +39,9 @@ public class GetInspectionLotsForVendorBatchRFC extends AbstractDoc41RFC<Inspect
                 
                 JCoParameterList sapInput = pFunction.getImportParameterList();
 				
-				sapInput.setValue(IN_PARTNER,partnerNumber);
-				sapInput.setValue(IN_BATCH,batch);
+				sapInput.setValue(IN_VENDOR,partnerNumber);
+				sapInput.setValue(IN_VENDOR_BATCH,batch);
+				sapInput.setValue(IN_PLANT,batch);
             } else {
                 throw new SAPException(
                         "GetInspectionLotsForVendorBatchRFC pInputParms list is null", null);
@@ -62,9 +67,12 @@ public class GetInspectionLotsForVendorBatchRFC extends AbstractDoc41RFC<Inspect
             		InspectionLot inspectionlot = new InspectionLot();
             		inspectionlot.setNumber(inspectionlotsTable.getString(OUT_NUMBER));
             		inspectionlot.setMaterialNumber(inspectionlotsTable.getString(OUT_MAT_NUMBER));
-            		inspectionlot.setBatch(inspectionlotsTable.getString(OUT_BATCH));
+            		inspectionlot.setMaterialText(inspectionlotsTable.getString(OUT_MAT_TEXT));
             		inspectionlot.setPlant(inspectionlotsTable.getString(OUT_PLANT));
-
+            		inspectionlot.setBatch(inspectionlotsTable.getString(OUT_BATCH));
+            		inspectionlot.setVendor(inspectionlotsTable.getString(OUT_VENDOR));
+            		inspectionlot.setVendorBatch(inspectionlotsTable.getString(OUT_VENDOR_BATCH));
+            		
             		mResult.add(inspectionlot);
             		inspectionlotsTable.nextRow();
             	}

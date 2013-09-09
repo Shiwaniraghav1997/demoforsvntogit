@@ -373,9 +373,9 @@ public class DocumentUC {
 	}
 
 	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor,
-			String batch) throws Doc41BusinessException {
+			String vendorBatch, String plant) throws Doc41BusinessException {
 		try{
-			return authorizationRFCService.getInspectionLotsForVendorBatch(vendor,batch);
+			return authorizationRFCService.getInspectionLotsForVendorBatch(vendor,vendorBatch,plant);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("getInspectionLotsForVendorBatch",e);
 		}

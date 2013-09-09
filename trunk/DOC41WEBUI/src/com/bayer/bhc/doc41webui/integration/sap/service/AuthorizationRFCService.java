@@ -164,13 +164,14 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		return errorMsg ;
 	}
 	
-	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor, String batch) throws Doc41ServiceException{
+	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor, String vendorBatch, String plant) throws Doc41ServiceException{
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
-        		"getInspectionLotsForVendorBatch() - vendor="+vendor+", batch="+batch+".");
+        		"getInspectionLotsForVendorBatch() - vendor="+vendor+", vendorBatch="+vendorBatch+", plant="+plant+".");
        
         List<Object> params = new ArrayList<Object>();
         params.add(vendor);
-        params.add(batch);
+        params.add(vendorBatch);
+        params.add(plant);
         
         List<InspectionLot> deliveries = performRFC(params,RFC_NAME_GET_INSPECTION_LOTS_FOR_VENDOR_BATCH);
         
