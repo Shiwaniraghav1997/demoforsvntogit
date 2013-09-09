@@ -31,6 +31,7 @@ import com.bayer.bhc.doc41webui.domain.DocMetadata;
 import com.bayer.bhc.doc41webui.domain.DocTypeDef;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
+import com.bayer.bhc.doc41webui.domain.QMBatchObject;
 import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
@@ -380,5 +381,15 @@ public class DocumentUC {
 			throw new Doc41BusinessException("getInspectionLotsForVendorBatch",e);
 		}
 	}
+	
+	public List<QMBatchObject> getBatchObjectsForSupplier(String supplier, String plant, String material,
+			String batch, String order) throws Doc41BusinessException {
+		try{
+			return authorizationRFCService.getBatchObjectsForSupplier(supplier, plant, material, batch, order);
+		} catch (Doc41ServiceException e) {
+			throw new Doc41BusinessException("getBatchObjectsForSupplier",e);
+		}
+	}
+
 
 }

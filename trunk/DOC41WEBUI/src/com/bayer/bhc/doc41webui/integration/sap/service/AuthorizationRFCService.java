@@ -10,6 +10,7 @@ import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.DeliveryOrShippingUnit;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
+import com.bayer.bhc.doc41webui.domain.QMBatchObject;
 import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.domain.UserPartner;
 
@@ -27,6 +28,7 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_CHECK_PARTNER									="CheckPartner";
 	private static final String RFC_NAME_CHECK_MATERIAL_AND_BATCH_FOR_VENDOR			="CheckMaterialAndBatchForVendor";
 	private static final String RFC_NAME_GET_INSPECTION_LOTS_FOR_VENDOR_BATCH			="GetInspectionLotsForVendorBatch";
+	private static final String RFC_NAME_GET_BATCH_OBJECTS_FOR_SUPPLIER					="GetBatchObjectsForSupplier";
 	
 	public String checkCoADeliveryNumberMaterial(String deliveryNumber, String matNo) throws Doc41ServiceException{
 		// logging
@@ -173,9 +175,25 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
         params.add(vendorBatch);
         params.add(plant);
         
-        List<InspectionLot> deliveries = performRFC(params,RFC_NAME_GET_INSPECTION_LOTS_FOR_VENDOR_BATCH);
+        List<InspectionLot> insplots = performRFC(params,RFC_NAME_GET_INSPECTION_LOTS_FOR_VENDOR_BATCH);
         
-		return deliveries ;
+		return insplots ;
+	}
+	
+	public List<QMBatchObject> getBatchObjectsForSupplier(String supplier, String plant, String material, String batch, String order) throws Doc41ServiceException{
+		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
+        		"getBatchObjectsForSupplier() - supplier="+supplier+", plant="+plant+", material="+material+", batch="+batch+", order="+order+".");
+       
+        List<Object> params = new ArrayList<Object>();
+        params.add(supplier);
+        params.add(plant);
+        params.add(material);
+        params.add(batch);
+        params.add(order);
+        
+        List<QMBatchObject> batchObjects = performRFC(params,RFC_NAME_GET_BATCH_OBJECTS_FOR_SUPPLIER);
+        
+		return batchObjects ;
 	}
 }
 
