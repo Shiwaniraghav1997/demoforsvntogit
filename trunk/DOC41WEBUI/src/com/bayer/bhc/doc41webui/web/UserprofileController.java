@@ -67,7 +67,7 @@ public class UserprofileController extends AbstractDoc41Controller {
 				result.rejectValue("passwordRepeated", "pwDifferent", "password and passwordRepeated do not match.");
 				return "/userprofile/myprofile";
 			} else {
-				userManagementUC.editUser(user, false,false,false,false);
+				userManagementUC.editUser(user, false,false,false,false,false);
 			}
 	    }
 

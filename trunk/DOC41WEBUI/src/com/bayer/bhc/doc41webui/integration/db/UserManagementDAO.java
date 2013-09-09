@@ -14,6 +14,7 @@ import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserCountryDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPartnerDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.UserPlantDC;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.dbx.DeleteException;
@@ -39,6 +40,8 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	private static final String GET_USER_PARTNER			= "getUserPartner";
 	private static final String GET_COUNTRIES_BY_USER		= "getCountriesByUser";
 	private static final String GET_USER_COUNTRY			= "getUserCountry";
+	private static final String GET_PLANTS_BY_USER			= "getPlantsByUser";
+	private static final String GET_USER_PLANT				= "getUserPlant";
 	private static final String GET_PROFILE_PERMISSIONS		= "getProfilePermissions";
 	
 	@Override
@@ -218,6 +221,8 @@ public class UserManagementDAO extends AbstractDAOImpl {
             throw new Doc41TechnicalException(this.getClass(), getClass().getSimpleName() + "." + pCallingMethod + ": Obligatory parameter '" + pParamName + "' not available, value is null!", null );
     }
 
+	//---- partners
+	
 	public List<UserPartnerDC> getPartnersByUser(Long objectID) throws Doc41TechnicalException {
 		try {
 			String[] parameterNames			= { "USER_ID" };
@@ -272,6 +277,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 		}
 	}
 	
+	//---- countries
 	
 	public List<UserCountryDC> getCountriesByUser(Long objectID) throws Doc41TechnicalException {
 		try {
@@ -326,6 +332,64 @@ public class UserManagementDAO extends AbstractDAOImpl {
 			throw new Doc41TechnicalException(this.getClass(), "getUserCountry", e);
 		}
 	}
+	
+	//---- plants
+	
+	public List<UserPlantDC> getPlantsByUser(Long objectID) throws Doc41TechnicalException {
+		try {
+			String[] parameterNames			= { "USER_ID" };
+	        Object[] parameterValues		= { objectID };
+	        String templateName				= GET_PLANTS_BY_USER;
+	        Class<UserPlantDC> dcClass		= UserPlantDC.class;        
+	        
+	        List<UserPlantDC> dcs = find(parameterNames, parameterValues, templateName, dcClass);	                		
+			
+			return dcs;
+		} catch (Exception e) {
+			throw new Doc41TechnicalException(this.getClass(), "getPlantByUser", e);
+		}
+	}
+
+	public UserPlantDC createUserPlant(Locale locale) throws Doc41TechnicalException {
+		checkUser();
+		UserPlantDC newPlant = new UserPlantDC();
+		return newPlant;
+	}
+
+	public void saveUserPlant(UserPlantDC newPlant) throws Doc41TechnicalException {
+		checkUser();
+        try {
+            OTUserManagementN.get().storeDC(newPlant);
+        } catch (StoreException e) {
+            throw new Doc41TechnicalException(this.getClass(), "saveUserPlant", e);
+        }
+	}
+
+	public void deleteUserPlant(UserPlantDC plant) throws Doc41TechnicalException {
+		checkUser();
+        try {
+            OTUserManagementN.get().deleteDC(plant);
+        } catch (DeleteException e) {
+            throw new Doc41TechnicalException(this.getClass(), "deleteUserPlant", e);
+        }
+	}
+
+	public UserPlantDC getUserPlant(Long userId, String plant) throws Doc41TechnicalException {
+		try {
+			String[] parameterNames			= { "USER_ID", "PLANT" };
+	        Object[] parameterValues		= { userId, plant };
+	        String templateName				= GET_USER_PLANT;
+	        Class<UserPlantDC> dcClass		= UserPlantDC.class;        
+	        
+	        UserPlantDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
+			
+			return dc;
+		} catch (Exception e) {
+			throw new Doc41TechnicalException(this.getClass(), "getUserPlant", e);
+		}
+	}
+	
+	//---- 
 	
 	
 	public List<ProfilePermissionDC> getProfilePermissions() throws Doc41TechnicalException {

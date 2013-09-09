@@ -77,6 +77,8 @@ public class User extends DomainObject {
 	
 	private List<String> countries = new ArrayList<String>();
 	
+	private List<String> plants = new ArrayList<String>();
+	
 	private Locale locale;
 	
 	// Default: no write permissions
@@ -246,6 +248,14 @@ public class User extends DomainObject {
 			countries = new ArrayList<String>();
 		}
 		this.countries = countries;
+	}
+	
+	public List<String> getPlants() {
+		return plants;
+	}
+	
+	public void setPlants(List<String> plants) {
+		this.plants = plants;
 	}
 
 	public String getPassword() {

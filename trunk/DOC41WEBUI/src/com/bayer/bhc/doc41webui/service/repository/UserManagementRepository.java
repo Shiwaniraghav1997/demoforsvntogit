@@ -33,6 +33,7 @@ import com.bayer.bhc.doc41webui.integration.db.LdapDAO;
 import com.bayer.bhc.doc41webui.integration.db.UserManagementDAO;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserCountryDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPartnerDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.UserPlantDC;
 import com.bayer.bhc.doc41webui.service.mapping.UserMapper;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.SendMail;
@@ -255,7 +256,7 @@ public class UserManagementRepository extends AbstractRepository {
 	}
 	
 	
-	public void updateUser(User pUser, boolean updateRoles,boolean updateLdap,boolean updatePartner,boolean updateCountries) throws Doc41RepositoryException, Doc41BusinessException {
+	public void updateUser(User pUser, boolean updateRoles,boolean updateLdap,boolean updatePartner,boolean updateCountries,boolean updatePlants) throws Doc41RepositoryException, Doc41BusinessException {
         checkUser(Doc41ErrorMessageKeys.USR_MGT_UPDATE_USER_FAILED);
         
         Doc41Log.get().debug(this.getClass(), "System", "Entering UserManagementRepositoryImpl.updateUser(): " + pUser);
@@ -377,9 +378,32 @@ public class UserManagementRepository extends AbstractRepository {
 					removeCountryFromUserInDB(userDC, countryToDelete, pUser.getLocale());
 				}
 	        } else {
-	        	// refresh partners
-	        	List<UserPartnerDC> partnersInDB = getPartnersFromDB(userDC.getObjectID());
-	    		pUser.setPartners(copyDcToDomainPartners(partnersInDB) );		
+	        	// refresh countries
+	        	List<UserCountryDC> countriesInDB = getCountriesFromDB(userDC.getObjectID());
+	    		pUser.setCountries(copyDcToDomainCountries(countriesInDB) );		
+	        }
+        	
+        	if (updatePlants) {
+	            List<UserPlantDC> plantsInDB = getPlantsFromDB(userDC.getObjectID());
+	            Set<String> plantsToDelete = new HashSet<String>();
+	            for (UserPlantDC userplantDC : plantsInDB) {
+	            	plantsToDelete.add(userplantDC.getPlant());
+				}
+	            Set<String> plantsFromInput = new LinkedHashSet<String>(pUser.getPlants());
+	            
+	            for (String plant : plantsFromInput) {
+					if(!plantsToDelete.remove(plant)){
+						addPlantToUserInDB(userDC, plant, pUser.getLocale());
+					}
+				}
+	            
+	            for (String plantToDelete : plantsToDelete) {
+					removePlantFromUserInDB(userDC, plantToDelete, pUser.getLocale());
+				}
+	        } else {
+	        	// refresh plants
+	        	List<UserPlantDC> plantsInDB = getPlantsFromDB(userDC.getObjectID());
+	    		pUser.setPlants(copyDcToDomainPlants(plantsInDB) );		
 	        }
         	
         } catch (Doc41TechnicalException e) {
@@ -408,6 +432,16 @@ public class UserManagementRepository extends AbstractRepository {
 			newCountryList.add(newCountry );
 		}
 		return newCountryList;
+	}
+	
+	private List<String> copyDcToDomainPlants(
+			List<UserPlantDC> plantsInDB) {
+		List<String> newPlantsList = new ArrayList<String>();
+		for (UserPlantDC userPlantDC : plantsInDB) {
+			String newPlant = userPlantDC.getPlant();
+			newPlantsList.add(newPlant );
+		}
+		return newPlantsList;
 	}
 		
 	/**
@@ -452,6 +486,8 @@ public class UserManagementRepository extends AbstractRepository {
         }
     }
     
+   //----- partners
+    
 	private List<UserPartnerDC> getPartnersFromDB(Long objectID) throws Doc41RepositoryException {
 		try {
 			List<UserPartnerDC> partners = userManagementDAO.getPartnersByUser(objectID);
@@ -488,6 +524,7 @@ public class UserManagementRepository extends AbstractRepository {
 		}
 	}
 	
+	//----- countries
 	
 	private List<UserCountryDC> getCountriesFromDB(Long objectID) throws Doc41RepositoryException {
 		try {
@@ -509,7 +546,7 @@ public class UserManagementRepository extends AbstractRepository {
 			newCountry.setCreatedBy(usr.getCwid());
 			userManagementDAO.saveUserCountry(newCountry);
 		}catch (Doc41TechnicalException e) {
-			throw new Doc41RepositoryException("Error during addPartnerToUserInDB.", e);
+			throw new Doc41RepositoryException("Error during addCountryToUserInDB.", e);
 		}
 	}
 	
@@ -519,9 +556,47 @@ public class UserManagementRepository extends AbstractRepository {
 			UserCountryDC country = userManagementDAO.getUserCountry(userDC.getObjectID(),countryToDelete);
 			userManagementDAO.deleteUserCountry(country);
 		} catch (Doc41TechnicalException e) {
-			throw new Doc41RepositoryException("Error during removePartnerFromUserInDB.", e);
+			throw new Doc41RepositoryException("Error during removeCountryFromUserInDB.", e);
 		}
 	}
+	
+	//----- countries
+	
+	private List<UserPlantDC> getPlantsFromDB(Long objectID) throws Doc41RepositoryException {
+		try {
+			List<UserPlantDC> plants = userManagementDAO.getPlantsByUser(objectID);
+			return plants;
+		} catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during getPlantsFromDB.", e);
+		}
+	}
+	
+	private void addPlantToUserInDB(UMUserNDC userDC, String plant,
+			Locale locale) throws Doc41RepositoryException {
+		try{
+			User usr = UserInSession.get();
+            UserPlantDC newPlant = userManagementDAO.createUserPlant(locale);
+			newPlant.setUserId(userDC.getObjectID());
+			newPlant.setPlant(plant);
+			newPlant.setChangedBy(usr.getCwid());
+			newPlant.setCreatedBy(usr.getCwid());
+			userManagementDAO.saveUserPlant(newPlant);
+		}catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during addPlantToUserInDB.", e);
+		}
+	}
+	
+	private void removePlantFromUserInDB(UMUserNDC userDC,
+			String plantToDelete, Locale locale) throws Doc41RepositoryException {
+		try{
+			UserPlantDC plant = userManagementDAO.getUserPlant(userDC.getObjectID(),plantToDelete);
+			userManagementDAO.deleteUserPlant(plant);
+		} catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during removePlantFromUserInDB.", e);
+		}
+	}
+	
+	//-----
 			
 	protected User copyDcToDomainUser(UMUserNDC pUserDC) throws Doc41RepositoryException {
 		try{
@@ -544,6 +619,9 @@ public class UserManagementRepository extends AbstractRepository {
 			
 			List<UserCountryDC> countriesInDB = getCountriesFromDB(pUserDC.getObjectID());
 			domainUser.setCountries(copyDcToDomainCountries(countriesInDB));
+			
+			List<UserPlantDC> plantsInDB = getPlantsFromDB(pUserDC.getObjectID());
+			domainUser.setPlants(copyDcToDomainPlants(plantsInDB));
 			
 			pUserDC.loadResolvedUserPermissions(LocaleInSession.get());
 			@SuppressWarnings("unchecked")

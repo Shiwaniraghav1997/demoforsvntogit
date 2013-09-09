@@ -63,7 +63,7 @@ public class UsereditController extends AbstractDoc41Controller {
         }
     	try {
         	User user = userEditForm.copyToDomainUser();
-        	getUserManagementUC().editUser(user, true,true,true,true);
+        	getUserManagementUC().editUser(user, true,true,true,true,true);
         } catch (Doc41InvalidPasswordException e) {
             result.rejectValue("password", "error.password.invalid", "Please enter a valid password.");
             return "/useradmin/updateuser";
