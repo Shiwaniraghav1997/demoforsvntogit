@@ -11,6 +11,8 @@ import com.bayer.ecim.foundation.basic.StringTool;
 
 public class LayoutDocumentType implements DownloadDocumentType,
 		UploadDocumentType {
+	
+	private static final String SAP_OBJECT = "MARA";
 
 	@Override
 	public boolean isPartnerNumberUsed() {
@@ -33,7 +35,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 	}
 
 	@Override
-	public void checkForUpload(Errors errors, DocumentUC documentUC,
+	public String checkForUpload(Errors errors, DocumentUC documentUC,
 			String partnerNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
@@ -41,6 +43,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 		
 		// no RFC check needed
 
+		return SAP_OBJECT;
 	}
 
 	@Override

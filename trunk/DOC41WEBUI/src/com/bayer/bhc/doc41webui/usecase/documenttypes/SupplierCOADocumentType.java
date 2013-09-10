@@ -36,7 +36,7 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 	}
 
 	@Override
-	public void checkForUpload(Errors errors, DocumentUC documentUC,
+	public String checkForUpload(Errors errors, DocumentUC documentUC,
 			String partnerNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
@@ -51,11 +51,14 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 		}
 		
 		if(errors.hasErrors()){
-			return;
+			return null;
 		}
 		
 		checkInspectionLot(errors, documentUC, partnerNumber, vendorBatch, plant, objectId);
 
+		
+		//TODO SAP OBJECT
+		return null;
 	}
 
 	private void checkInspectionLot(Errors errors, DocumentUC documentUC,

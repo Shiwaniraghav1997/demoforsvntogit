@@ -10,7 +10,10 @@ import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 
 public abstract class SDUploadDocumentType implements UploadDocumentType {
 	
-//	private static final Object SHIPPING_UNIT_NUMBER = "SHIPPINGUNIT";
+//	private static final String SHIPPING_UNIT_NUMBER = "SHIPPINGUNIT";
+	
+	private static final String SAP_OBJECT_DELIVERY = "LIKP";
+	private static final String SAP_OBJECT_SHIPPING_UNIT = "YTMWF_TRKO";
 
 	@Override
 	public boolean isPartnerNumberUsed() {
@@ -18,7 +21,7 @@ public abstract class SDUploadDocumentType implements UploadDocumentType {
 	}
 
 	@Override
-	public void checkForUpload(Errors errors, DocumentUC documentUC,
+	public String checkForUpload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException {
 		
 //		String shippingUnitNumber = attributeValues.get(SHIPPING_UNIT_NUMBER);
@@ -27,13 +30,23 @@ public abstract class SDUploadDocumentType implements UploadDocumentType {
 //		}
 		
 		if(errors.hasErrors()){
-			return;
+			return null;
 		}
 		
 		SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(partnerNumber, objectId);
 		if(!deliveryCheck.isOk()){
 			errors.rejectValue("objectId",""+deliveryCheck.getError());
+		} 
+		
+		if(deliveryCheck.isDeliveryNumber()){
+			return SAP_OBJECT_DELIVERY;
+		} else if (deliveryCheck.isShippingUnitNumber()){
+			return SAP_OBJECT_SHIPPING_UNIT;
+		} else {
+			return null;
 		}
+		
+		
 	}
 	
 }

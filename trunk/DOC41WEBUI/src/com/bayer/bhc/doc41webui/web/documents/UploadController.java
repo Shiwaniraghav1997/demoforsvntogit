@@ -60,7 +60,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		checkPartnerNumber(result,type,uploadForm.getPartnerNumber());
 		checkObjectId(result,type,uploadForm.getObjectId());
 		checkFileParameter(result,uploadForm.getFile(),uploadForm.getFileId(),uploadForm.getFileName());
-		documentUC.checkForUpload(result, type, 
+		String sapObject = documentUC.checkForUpload(result, type, 
 				uploadForm.getPartnerNumber(), uploadForm.getObjectId(), uploadForm.getAttributeValues(),
 				uploadForm.getViewAttributes());
 		if(result.hasErrors()){
@@ -83,7 +83,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 			return failedURL;
 		} 
 		//set attributes in sap
-		documentUC.setAttributesForNewDocument(type,uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getObjectId(),uploadForm.getFileName());
+		documentUC.setAttributesForNewDocument(type,uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getObjectId(),uploadForm.getFileName(),sapObject);
 		
 		
 		return "redirect:"+getSuccessURL()+"?type="+type;

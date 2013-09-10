@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -193,14 +194,14 @@ public class DocumentUC {
 
 
 	public void setAttributesForNewDocument(String type, String fileId,
-			Map<String, String> attributeValues, String objId,String fileName) throws Doc41BusinessException {
+			Map<String, String> attributeValues, String objId,String fileName, String sapObject) throws Doc41BusinessException {
 		try{
 			DocMetadata metadata = getMetadata(type);
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
 			DocTypeDef docDef = metadata.getDocDef();
 			String d41id = docDef.getD41id();
 			String fileNameToSet = metadata.getHasFileName()?fileName:null;
-			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),crepInfo.getDocClass(),objId,docDef.getSapObj(),attributeValues,fileNameToSet);
+			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),crepInfo.getDocClass(),objId,sapObject,attributeValues,fileNameToSet);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("setAttributesForNewDocument",e);
 		}
@@ -260,8 +261,14 @@ public class DocumentUC {
 //			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
 			DocTypeDef docDef = metadata.getDocDef();
 			String d41id = docDef.getD41id();
-			String sapObj = docDef.getSapObj();
-			return kgsRFCService.findDocs(d41id, sapObj, objectId, attributeValues, maxResults, maxVersionOnly);
+			List<String> sapObjList = docDef.getSapObjList();
+			List<HitListEntry> allResults = new ArrayList<HitListEntry>();
+			for (String sapObj : sapObjList) {
+				List<HitListEntry> oneResult = kgsRFCService.findDocs(d41id, sapObj, objectId, attributeValues, maxResults, maxVersionOnly);
+				allResults.addAll(oneResult);
+			}
+			
+			return allResults;
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("searchDocuments",e);
 		}
@@ -286,8 +293,24 @@ public class DocumentUC {
 		}
 	}
 	
-	public void checkForUpload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException{
-		getDocTypeForUpload(type).checkForUpload(errors, this, partnerNumber, objectId, attributeValues,viewAttributes);
+	public String checkForUpload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException{
+		String sapObject = getDocTypeForUpload(type).checkForUpload(errors, this, partnerNumber, objectId, attributeValues,viewAttributes);
+		DocMetadata metadata = getMetadata(type);
+		DocTypeDef docDef = metadata.getDocDef();
+		List<String> sapObjList = docDef.getSapObjList();
+		if(StringTool.isTrimmedEmptyOrNull(sapObject)){//no mapping configured, only allowed if only one busob in metadata
+			if(sapObjList.size()==1){
+				return sapObjList.get(0);
+			} else {
+				throw new Doc41BusinessException("no SAP_OBJECT mapping in DocType, but "+sapObjList.size()+" possible values in metadata for type "+type);
+			}
+		} else { //compare sapobj from mapping with metadata
+			if(sapObjList.contains(sapObject)){
+				return sapObject;
+			} else {
+				throw new Doc41BusinessException("SAP_OBJECT "+sapObject+" not in metadata of type "+type);
+			}
+		}
 	}
 	
 	public void checkForDownload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues) throws Doc41BusinessException{

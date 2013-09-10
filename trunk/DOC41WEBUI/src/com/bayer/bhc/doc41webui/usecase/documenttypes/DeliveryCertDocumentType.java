@@ -13,6 +13,8 @@ public class DeliveryCertDocumentType implements DownloadDocumentType, UploadDoc
 	
 	private static final Object COUNTRY_ISO_CODE = "COUNTRYISOCODE";
 	private static final Object MATERIAL_NUMBER = "MATERIALNUMBER";
+	
+	//TODO SAP OBJECT???
 
 	//TODO
 	@Override
@@ -57,7 +59,7 @@ public class DeliveryCertDocumentType implements DownloadDocumentType, UploadDoc
 	}
 
 	@Override
-	public void checkForUpload(Errors errors, DocumentUC documentUC,
+	public String checkForUpload(Errors errors, DocumentUC documentUC,
 			String partnerNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
@@ -68,10 +70,14 @@ public class DeliveryCertDocumentType implements DownloadDocumentType, UploadDoc
 		}
 		
 		if(errors.hasErrors()){
-			return;
+			return null;
 		}
 		
 		//TODO getBatchObjectsForSupplier
+		
+		
+		//TODO SAP OBJECT
+		return null;
 	}
 
 }
