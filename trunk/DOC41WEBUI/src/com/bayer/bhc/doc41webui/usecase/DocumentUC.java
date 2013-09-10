@@ -60,6 +60,8 @@ import com.bayer.ecim.foundation.basic.StringTool;
 public class DocumentUC {
 
 	private static final String TEMP_FILE_PREFIX = "D41-";
+	
+	private static final String ATTRIB_NAME_FILENAME = "FILENAME";
 
 	@Autowired
 	private AuthorizationRFCService authorizationRFCService;
@@ -140,9 +142,20 @@ public class DocumentUC {
 	}
 	
 	
-	public List<Attribute> getAttributeDefinitions(String doctype) throws Doc41BusinessException{
+	public List<Attribute> getAttributeDefinitions(String doctype,boolean filterFileName) throws Doc41BusinessException{
 		DocMetadata metadata = getMetadata(doctype);
-		return metadata.getAttributes();
+		List<Attribute> attributes = metadata.getAttributes();
+		if(filterFileName){
+			List<Attribute> filteredAttributes = new ArrayList<Attribute>();
+			for (Attribute attribute : attributes) {
+				if(!StringTool.equals(attribute.getName(), ATTRIB_NAME_FILENAME)){
+					filteredAttributes.add(attribute);
+				}
+			}
+			return filteredAttributes ;
+		} else {
+			return attributes;
+		}
 	}
 	
 	public List<DeliveryOrShippingUnit> getOpenDeliveries(String type, String carrier) throws Doc41BusinessException {
@@ -200,8 +213,11 @@ public class DocumentUC {
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
 			DocTypeDef docDef = metadata.getDocDef();
 			String d41id = docDef.getD41id();
-			String fileNameToSet = metadata.getHasFileName()?fileName:null;
-			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),crepInfo.getDocClass(),objId,sapObject,attributeValues,fileNameToSet);
+			
+			if(!StringTool.isTrimmedEmptyOrNull(fileName) && attributeValues.containsKey(ATTRIB_NAME_FILENAME)){
+				attributeValues.put(ATTRIB_NAME_FILENAME, fileName);
+			}
+			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),crepInfo.getDocClass(),objId,sapObject,attributeValues,fileName);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("setAttributesForNewDocument",e);
 		}

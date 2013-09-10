@@ -7,7 +7,6 @@ public class DocMetadata {
 	private DocTypeDef docDef;
 	private List<Attribute> attributes;
 	private ContentRepositoryInfo contentRepository;
-	private boolean hasFileName;
 	
 	public DocTypeDef getDocDef() {
 		return docDef;
@@ -27,14 +26,6 @@ public class DocMetadata {
 	
 	public void setContentRepository(ContentRepositoryInfo contentRepository) {
 		this.contentRepository = contentRepository;
-	}
-	
-	public void setHasFileName(boolean hasFileName) {
-		this.hasFileName = hasFileName;
-	}
-	
-	public boolean getHasFileName() {
-		return hasFileName;
 	}
 	
 	public DocMetadata(DocTypeDef docDef){

@@ -43,7 +43,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		uploadForm.setType(type);
 		uploadForm.setPartnerNumberUsed(documentUC.isPartnerNumberUsed(type));
 //		uploadForm.setTypeLabel(documentUC.getTypeLabel(type, language));
-		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type);
+		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type,true);
 		uploadForm.initAttributes(attributeDefinitions,language);
 		return uploadForm;
 	}
