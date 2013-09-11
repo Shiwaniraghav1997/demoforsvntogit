@@ -60,6 +60,9 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		checkPartnerNumber(result,type,uploadForm.getPartnerNumber());
 		checkObjectId(result,type,uploadForm.getObjectId());
 		checkFileParameter(result,uploadForm.getFile(),uploadForm.getFileId(),uploadForm.getFileName());
+		if(result.hasErrors()){
+			return failedURL;
+		}
 		String sapObject = documentUC.checkForUpload(result, type, 
 				uploadForm.getPartnerNumber(), uploadForm.getObjectId(), uploadForm.getAttributeValues(),
 				uploadForm.getViewAttributes());
