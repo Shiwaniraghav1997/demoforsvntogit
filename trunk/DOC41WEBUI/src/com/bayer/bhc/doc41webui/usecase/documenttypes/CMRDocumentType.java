@@ -1,7 +1,7 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
 
-public class CMRDocumentType extends SDUploadDocumentType {
+public class CMRDocumentType extends SDDocumentType implements UploadDocumentType{
 
 	@Override
 	public String getTypeConst() {
