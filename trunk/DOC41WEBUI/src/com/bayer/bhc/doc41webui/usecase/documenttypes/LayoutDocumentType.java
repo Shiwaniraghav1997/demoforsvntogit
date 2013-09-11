@@ -37,7 +37,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 			String partnerNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
-		//TODO check mandatory fields
+		//TODO check mandatory fields except partner#
 		
 		// no RFC check needed
 
