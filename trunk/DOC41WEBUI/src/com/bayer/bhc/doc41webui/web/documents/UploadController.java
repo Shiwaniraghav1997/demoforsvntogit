@@ -89,7 +89,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		documentUC.setAttributesForNewDocument(type,uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getObjectId(),uploadForm.getFileName(),sapObject);
 		
 		
-		return "redirect:"+getSuccessURL()+"?type="+type;
+		return "redirect:/documents/uploadsuccess?type="+type+"&uploadurl="+getSuccessURL();
 	}
 
 	private void checkObjectId(BindingResult errors, String type,

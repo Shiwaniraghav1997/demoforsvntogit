@@ -36,6 +36,6 @@ public class SupCoaUploadController extends UploadController {
 
 	@Override
 	protected String getSuccessURL() {
-		return "/documents/supcoaupload";
+		return "supcoaupload";
 	}
 }

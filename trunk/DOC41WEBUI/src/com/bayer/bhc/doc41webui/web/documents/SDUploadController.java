@@ -30,6 +30,6 @@ public class SDUploadController extends UploadController {
 
 	@Override
 	protected String getSuccessURL() {
-		return "/documents/sdupload";
+		return "sdupload";
 	}
 }

@@ -30,6 +30,6 @@ public class PTUploadController extends UploadController {
 
 	@Override
 	protected String getSuccessURL() {
-		return "/documents/ptupload";
+		return "ptupload";
 	}
 }

@@ -30,6 +30,6 @@ public class DelCertUploadController extends UploadController {
 
 	@Override
 	protected String getSuccessURL() {
-		return "/documents/delcertupload";
+		return "delcertupload";
 	}
 }
