@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.SearchForm;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
@@ -54,15 +55,18 @@ public class SearchController extends AbstractDoc41Controller {
 		
 		if(!StringTool.isTrimmedEmptyOrNull(ButtonSearch)){
 			if(searchForm.isSearchFilled()){
-				documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), searchForm.getObjectId(), searchForm.getAttributeValues());
-				
+				checkPartnerNumber(result,type,searchForm.getPartnerNumber());
 				if(!result.hasErrors()){
-					List<HitListEntry> documents = documentUC.searchDocuments(type, StringTool.emptyToNull(
-							searchForm.getObjectId()), searchForm.getAttributeValues(), MAX_RESULTS+1, true);
-					if(documents.size()>MAX_RESULTS){
-						result.rejectValue("table", "ToManyResults");
-					} else {
-						searchForm.setDocuments(documents);
+					documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), searchForm.getObjectId(), searchForm.getAttributeValues());
+				
+					if(!result.hasErrors()){
+						List<HitListEntry> documents = documentUC.searchDocuments(type, StringTool.emptyToNull(
+								searchForm.getObjectId()), searchForm.getAttributeValues(), MAX_RESULTS+1, true);
+						if(documents.size()>MAX_RESULTS){
+							result.rejectValue("table", "ToManyResults");
+						} else {
+							searchForm.setDocuments(documents);
+						}
 					}
 				}
 			} else {
@@ -76,6 +80,19 @@ public class SearchController extends AbstractDoc41Controller {
 	@RequestMapping(value="/documents/download",method = RequestMethod.GET)
 	public void download(@RequestParam String type, @RequestParam String docId,HttpServletResponse response) throws Doc41BusinessException{
 		documentUC.downloadDocument(response,type,docId);
+	}
+	
+	private void checkPartnerNumber(BindingResult errors, String type,
+			String partnerNumber) throws Doc41BusinessException {
+		if(documentUC.isPartnerNumberUsed(type)){
+			if(StringTool.isTrimmedEmptyOrNull(partnerNumber)){
+				errors.rejectValue("partnerNumber","PartnerNumberMissing");
+			} else {
+				if(!UserInSession.get().hasPartner(partnerNumber)){
+					errors.rejectValue("partnerNumber","PartnerNotAssignedToUser");
+				}
+			}
+		}
 	}
 	
 }
