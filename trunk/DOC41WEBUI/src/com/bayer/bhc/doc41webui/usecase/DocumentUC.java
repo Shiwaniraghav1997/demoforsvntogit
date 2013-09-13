@@ -397,6 +397,29 @@ public class DocumentUC {
 	
 	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor,
 			String vendorBatch, String plant) throws Doc41BusinessException {
+//		//TODO remove mock
+//		if(true){
+//			List<InspectionLot> list = new ArrayList<InspectionLot>();
+//			try {
+//				int count = Integer.parseInt(vendorBatch);
+//				for(int i=0;i<count;i++){
+//					InspectionLot lot = new InspectionLot();
+//					lot.setNumber("Dummy"+i);
+//					lot.setMaterialNumber("matno"+i);
+//					lot.setMaterialText("mattext"+i);
+//					lot.setPlant("plant"+i);
+//					lot.setBatch("batch"+i);
+//					lot.setVendor(vendor);
+//					lot.setVendorBatch(vendorBatch);
+//					list.add(lot);
+//				}
+//			} catch (NumberFormatException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			return list ;
+//		}
+//		//mock
 		try{
 			return authorizationRFCService.getInspectionLotsForVendorBatch(vendor,vendorBatch,plant);
 		} catch (Doc41ServiceException e) {

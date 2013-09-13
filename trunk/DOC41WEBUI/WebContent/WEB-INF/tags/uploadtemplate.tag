@@ -5,6 +5,7 @@
 <%@attribute name="fragmentCustomSearchFields"		required="false" fragment="true"%>
 <%@attribute name="showCustomAttributes"		required="false"%>
 <%@attribute name="showObjectId"		required="false"%>
+<%@attribute name="showPartnerNumber"		required="false"%>
 <%@taglib prefix="doc41" uri="doc41-tags" %>
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn"		uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -49,7 +50,7 @@
 							</tr>
 						</spring:hasBindErrors>
 						
-						<c:if test="${uploadForm.partnerNumberUsed }">
+						<c:if test="${uploadForm.partnerNumberUsed && (empty showPartnerNumber or showPartnerNumber)}">
 						<tr>
 							<th><doc41:translate label="PartnerNumber" /></th>
 							<td><form:select path="partnerNumber" items="${user.partners}" cssClass="portlet-form-input-field" cssStyle="width:240px;" itemLabel="partnerLabel" itemValue="partnerNumber"/><doc41:error path="partnerNumber" /></td>

@@ -12,8 +12,11 @@ import com.bayer.ecim.foundation.basic.StringTool;
 
 public class SupplierCOADocumentType implements UploadDocumentType {
 
+	//TODO
 	public static final String VIEW_ATTRIB_VENDOR_BATCH = "vendorBatch";
 	public static final String VIEW_ATTRIB_PLANT = "plant";
+	public static final String VIEW_ATTRIB_BATCH = "batch";
+	public static final String VIEW_ATTRIB_MATERIAL = "material";
 
 	@Override
 	public boolean isPartnerNumberUsed() {

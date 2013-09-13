@@ -7,70 +7,40 @@ title="Upload Document">
 <%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
-<script>
-	function mapBatchToInspectionLot(batch,inspectionlot){
-		if(typeof batch == 'undefined'){
-			var batch=$("#batch").val();	
-		}
-		if(batch==""){
-			var inspectionlot = "";
-			$("#inspectionlotsingle").show();
-			$("#inspectionlotmulti").hide();
-			$("#inspectionlotro").html(inspectionlot);
-			$("#inspectionlothidden").val(inspectionlot);
-			$("#inspectionlothidden").prop('disabled', false);
-			$("#inspectionlotselect").prop('disabled', true);
-		} else {
-				//TODO AJAX call
-			if(batch=="123"){
-				var inspectionlot = "999";
-				$("#inspectionlotsingle").show();
-				$("#inspectionlotmulti").hide();
-				$("#inspectionlotro").html(inspectionlot);
-				$("#inspectionlothidden").val(inspectionlot);
-				$("#inspectionlothidden").prop('disabled', false);
-				$("#inspectionlotselect").prop('disabled', true);
-			} else {
-				$("#inspectionlotsingle").hide();
-				$("#inspectionlotmulti").show();
-				$("#inspectionlothidden").prop('disabled', true);
-				$("#inspectionlotselect").prop('disabled', false);
-				$('#inspectionlotselect').append('<option value="222" selected="selected">222</option>');
-				$('#inspectionlotselect').append('<option value="333">333</option>');
-				$('#inspectionlotselect').append('<option value="444">444</option>');
-				if(typeof inspectionlot != 'undefined'){
-					$('#inspectionlotselect').val(inspectionlot);
-				}
-				setTimeout(function(){
-					$("#inspectionlotselect").focus();
-				},1);
-			}
-		}
-	}
-	
-	$(function() {
-		mapBatchToInspectionLot("${uploadForm.batch}","${uploadForm.objectId}");
-	});
-</script>
 
-	<doc41:uploadtemplate action="supcoauploadpost" showObjectId="false">
+<!-- TODO c:out insplot -->
+	<doc41:uploadtemplate action="supcoauploadpost" showObjectId="false" showPartnerNumber="false" showCustomAttributes="false">
 		<jsp:attribute name="fragmentCustomSearchFields">
 						<tr>
-							<th style="border-left-width: 1px; border-top-width: 1px; border-style: solid;"><doc41:translate label="batch" /></th>
-							<td style="border-right-width: 1px; border-top-width: 1px; border-style: solid;"><form:input path="batch" cssClass="portlet-form-input-field"  maxlength="70" onblur="mapBatchToInspectionLot();"/><doc41:error path="batch" /></td>
+							<th><doc41:translate label="InspectionLot" /></th>
+							<td><c:out value="${uploadForm.objectId }"/><form:hidden path="objectId"/></td>
+						</tr>
+						<tr>
+							<th><doc41:translate label="Vendor" /></th>
+							<td><c:out value="${uploadForm.partnerNumber }"/><form:hidden path="partnerNumber"/></td>
+						</tr>
+						<tr>
+							<th><doc41:translate label="VendorBatch" /></th>
+							<td><c:out value="${uploadForm.attributeValues[keyVendorBatch]}"/><input id="${keyVendorBatch}" type="hidden" name="attributeValues['${keyVendorBatch}']" value="${uploadForm.attributeValues[keyVendorBatch]}"/></td>
+						</tr>
+						<tr>
+							<th><doc41:translate label="Plant" />${uploadForm.attributeValues[keyPlant]}</th>
+							<td><c:out value="${uploadForm.attributeValues[keyPlant]}"/><input id="${keyPlant}" type="hidden" name="attributeValues['${keyPlant}']" value="${uploadForm.attributeValues[keyPlant]}"/></td>
+						</tr>
+						<tr>
+							<th><doc41:translate label="Batch" /></th>
+							<td><c:out value="${uploadForm.attributeValues[keyBatch]}"/><input id="${keyBatch}" type="hidden" name="attributeValues['${keyBatch}']" value="${uploadForm.attributeValues[keyBatch]}"/></td>
+						</tr>
+						<tr>
+							<th><doc41:translate label="MaterialNumber" /></th>
+							<td><c:out value="${uploadForm.attributeValues[keyMaterial]}"/><input id="${keyMaterial}" type="hidden" name="attributeValues['${keyMaterial}']" value="${uploadForm.attributeValues[keyMaterial]}"/></td>
+						</tr>
+						<tr>
+							<th><doc41:translate label="MaterialText" /></th>
+							<td><c:out value="${materialText }"/></td>
 						</tr>
 						
-
 						
-						<tr id="inspectionlotsingle">
-							<th style="border-left-width: 1px; border-bottom-width: 1px; border-style: solid;"><doc41:translate label="inspectionlot" /></th>
-							<td style="border-right-width: 1px; border-bottom-width: 1px; border-style: solid;"><span id="inspectionlotro">&nbsp;</span><form:hidden id="inspectionlothidden" path="objectId"/></<input></td>
-						</tr>
-						
-						<tr id="inspectionlotmulti">
-							<th style="border-left-width: 1px; border-bottom-width: 1px; border-style: solid;"><doc41:translate label="inspectionlot" /></th>
-							<td style="border-right-width: 1px; border-bottom-width: 1px; border-style: solid;"><form:select id="inspectionlotselect" path="objectId" cssClass="portlet-form-input-field" cssStyle="width:240px;"/><doc41:error path="objectId" /></td>
-						</tr>
 		</jsp:attribute>
 	</doc41:uploadtemplate>
 		

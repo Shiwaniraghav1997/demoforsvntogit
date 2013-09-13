@@ -54,6 +54,9 @@ public abstract class SDDocumentType implements DocumentType {
 	public void checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, String objectId,
 			Map<String, String> attributeValues) throws Doc41BusinessException {
+//		if(true)return;
+		
+		
 		SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(partnerNumber, objectId);
 		if(!deliveryCheck.isOk()){
 			errors.rejectValue("objectId",""+deliveryCheck.getError());

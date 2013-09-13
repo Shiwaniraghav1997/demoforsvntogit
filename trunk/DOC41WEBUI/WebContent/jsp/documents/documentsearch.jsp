@@ -30,7 +30,7 @@
 					</tr>
 				</table>
 				<input type="submit" class="portlet-form-button"
-					value="<doc41:translate label="ButtonSearch"/>" id="123" name="ButtonSearch"/>
+					value="<doc41:translate label="ButtonSearch"/>" name="ButtonSearch"/>
 				<a	class="portlet-form-button"
 					href='documentsearch?type=${searchForm.type}'><doc41:translate
 						label="ButtonReset" /></a>
