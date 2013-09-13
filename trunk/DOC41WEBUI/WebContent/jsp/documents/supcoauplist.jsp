@@ -1,6 +1,6 @@
 <%@taglib prefix="doc41" uri="doc41-tags"%><doc41:layout
 	activePage="${pageContext.request.servletPath}"
-	jspName="supcoaupinsplots" component="documents" activeTopNav="upload"
+	jspName="supcoauplist" component="documents" activeTopNav="upload"
 	activeNav="${type}" title="Upload Supplier CoA Document">
 	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 	<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>

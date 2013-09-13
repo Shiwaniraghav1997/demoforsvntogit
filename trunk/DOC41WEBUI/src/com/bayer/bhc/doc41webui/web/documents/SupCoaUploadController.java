@@ -22,14 +22,14 @@ import com.bayer.ecim.foundation.basic.StringTool;
 @Controller
 public class SupCoaUploadController extends UploadController {
 	
-	@RequestMapping(value="/documents/supcoaupvbatch",method = RequestMethod.GET)
+	@RequestMapping(value="/documents/supcoaupinput",method = RequestMethod.GET)
 	public VendorBatchForm getVBatch(@RequestParam() String type) throws Doc41BusinessException{
 		VendorBatchForm form = new VendorBatchForm();
 		form.setType(type);
 		return form;
 	}
 	
-	@RequestMapping(value="/documents/supcoaupinsplots",method = RequestMethod.GET)
+	@RequestMapping(value="/documents/supcoauplist",method = RequestMethod.GET)
 	public ModelAndView getInspLots(String type,VendorBatchForm vendorBatchForm,BindingResult result, ModelAndView mav) throws Doc41BusinessException{
 		
 		String partnerNumber = vendorBatchForm.getPartnerNumber();
@@ -47,7 +47,7 @@ public class SupCoaUploadController extends UploadController {
 		if(result.hasErrors()){
 			mav.addObject(vendorBatchForm);
 			result.reject("NoInspectionLotFound");
-			mav.setViewName("documents/supcoaupvbatch");
+			mav.setViewName("documents/supcoaupinput");
 			return mav;
 		}
 		
@@ -56,7 +56,7 @@ public class SupCoaUploadController extends UploadController {
 		if(ilots.isEmpty()){
 			mav.addObject(vendorBatchForm);
 			result.reject("NoInspectionLotFound");
-			mav.setViewName("documents/supcoaupvbatch");
+			mav.setViewName("documents/supcoaupinput");
 		} else if(ilots.size()==1){
 			InspectionLot ilot = ilots.get(0);
 			mav.setViewName("redirect:/documents/supcoaupload?type="+type+"&number="+ilot.getNumber()
@@ -70,7 +70,7 @@ public class SupCoaUploadController extends UploadController {
 		} else {
 			mav.addObject("type",type);
 			mav.addObject(ilots);
-			mav.setViewName("documents/supcoaupinsplots");
+			mav.setViewName("documents/supcoauplist");
 		}
 		
 		

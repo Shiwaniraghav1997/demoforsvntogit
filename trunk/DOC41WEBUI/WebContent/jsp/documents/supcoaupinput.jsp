@@ -1,6 +1,6 @@
 <%@taglib prefix="doc41" uri="doc41-tags"%><doc41:layout
 	activePage="${pageContext.request.servletPath}"
-	jspName="supcoaupvbatch" component="documents" activeTopNav="upload"
+	jspName="supcoaupinput" component="documents" activeTopNav="upload"
 	activeNav="${vendorBatchForm.type}" title="Upload Supplier CoA Document">
 	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 	<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -9,7 +9,7 @@
 
 	
 	<div id="div-body" class="portlet-body">
-		<form:form commandName="vendorBatchForm" action="supcoaupinsplots"
+		<form:form commandName="vendorBatchForm" action="supcoauplist"
 			method="get">
 			<form:hidden path="type" />
 			<div class="portlet-section-header">
