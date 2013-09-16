@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.validation.Errors;
@@ -51,7 +52,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 
 	@Override
 	public void checkForDownload(Errors errors, DocumentUC documentUC,
-			String partnerNumber, String objectId,
+			String partnerNumber, List<String> objectIds,
 			Map<String, String> attributeValues) throws Doc41BusinessException {
 		
 		String deliveryCheck = documentUC.checkLayoutForVendor(partnerNumber);

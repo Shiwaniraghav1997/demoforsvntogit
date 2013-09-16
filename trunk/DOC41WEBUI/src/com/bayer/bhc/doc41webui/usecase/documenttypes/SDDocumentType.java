@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.validation.Errors;
@@ -52,12 +53,17 @@ public abstract class SDDocumentType implements DocumentType {
 	
 	//implements method from DownloadDocumentType
 	public void checkForDownload(Errors errors, DocumentUC documentUC,
-			String partnerNumber, String objectId,
+			String partnerNumber, List<String> objectIds,
 			Map<String, String> attributeValues) throws Doc41BusinessException {
 //		if(true)return;
 		
+		if(objectIds.size()==0){
+			throw new Doc41BusinessException("no objectId");
+		} else if(objectIds.size()>1){
+			throw new Doc41BusinessException("more than one objectId");
+		}
 		
-		SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(partnerNumber, objectId);
+		SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(partnerNumber, objectIds.get(0));
 		if(!deliveryCheck.isOk()){
 			errors.rejectValue("objectId",""+deliveryCheck.getError());
 		} 

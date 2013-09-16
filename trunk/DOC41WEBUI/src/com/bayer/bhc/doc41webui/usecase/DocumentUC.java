@@ -42,7 +42,9 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.AWBDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ArtworkDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.BOLDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CMRDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCountryDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCustomerDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertUploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.FDACertDocumentType;
@@ -90,7 +92,9 @@ public class DocumentUC {
 		addDocumentType(new FDACertDocumentType());
 		addDocumentType(new SupplierCOADocumentType());
 		addDocumentType(new CMRDocumentType());
-		addDocumentType(new DeliveryCertDocumentType());
+		addDocumentType(new DeliveryCertDownCountryDocumentType());
+		addDocumentType(new DeliveryCertDownCustomerDocumentType());
+		addDocumentType(new DeliveryCertUploadDocumentType());
 		addDocumentType(new ArtworkDocumentType());
 		addDocumentType(new LayoutDocumentType());
 		addDocumentType(new TecPackDelReqDocumentType());
@@ -329,8 +333,8 @@ public class DocumentUC {
 		}
 	}
 	
-	public void checkForDownload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues) throws Doc41BusinessException{
-		getDocTypeForDownload(type).checkForDownload(errors, this, partnerNumber, objectId, attributeValues);
+	public void checkForDownload(Errors errors, String type, String partnerNumber, List<String> objectIds, Map<String, String> attributeValues) throws Doc41BusinessException{
+		getDocTypeForDownload(type).checkForDownload(errors, this, partnerNumber, objectIds, attributeValues);
 	}
 	
 	private UploadDocumentType getDocTypeForUpload(String type) throws Doc41BusinessException{

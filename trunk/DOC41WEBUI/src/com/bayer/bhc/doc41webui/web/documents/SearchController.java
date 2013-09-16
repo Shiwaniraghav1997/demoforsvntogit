@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.web.documents;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,11 +58,20 @@ public class SearchController extends AbstractDoc41Controller {
 			if(searchForm.isSearchFilled()){
 				checkPartnerNumber(result,type,searchForm.getPartnerNumber());
 				if(!result.hasErrors()){
-					documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), searchForm.getObjectId(), searchForm.getAttributeValues());
+					String singleObjectId = searchForm.getObjectId();
+					List<String> objectIds = new ArrayList<String>();
+					if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
+						objectIds.add(singleObjectId);
+					}
+					documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), objectIds, searchForm.getAttributeValues());
 				
 					if(!result.hasErrors()){
-						List<HitListEntry> documents = documentUC.searchDocuments(type, StringTool.emptyToNull(
-								searchForm.getObjectId()), searchForm.getAttributeValues(), MAX_RESULTS+1, true);
+						List<HitListEntry> documents = new ArrayList<HitListEntry>();
+						for (String objectId : objectIds) {
+							List<HitListEntry> oneResult = documentUC.searchDocuments(type, StringTool.emptyToNull(
+									objectId), searchForm.getAttributeValues(), MAX_RESULTS+1, true);
+							documents.addAll(oneResult);
+						}
 						if(documents.size()>MAX_RESULTS){
 							result.rejectValue("table", "ToManyResults");
 						} else {

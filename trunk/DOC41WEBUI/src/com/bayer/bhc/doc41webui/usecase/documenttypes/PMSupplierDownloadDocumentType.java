@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.validation.Errors;
@@ -20,12 +21,13 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 
 	@Override
 	public void checkForDownload(Errors errors, DocumentUC documentUC, String partnerNumber,
-			String objectId, Map<String, String> attributeValues) throws Doc41BusinessException {
+			List<String> objectIds, Map<String, String> attributeValues) throws Doc41BusinessException {
 
 		//TODO
-		if(StringTool.isTrimmedEmptyOrNull(objectId)){
+		if(objectIds.size()==0){
 			errors.rejectValue("objectId","PONumberMissing");
 		}
+		String objectId = objectIds.get(0);
 		String matNumber = attributeValues.get(MATERIAL_NUMBER);
 		if(StringTool.isTrimmedEmptyOrNull(matNumber)){
 			errors.rejectValue("attributeValues['"+MATERIAL_NUMBER+"']","MaterialNumberMissing");

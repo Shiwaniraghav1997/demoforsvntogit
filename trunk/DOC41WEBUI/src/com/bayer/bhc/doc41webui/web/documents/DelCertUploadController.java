@@ -19,7 +19,7 @@ import com.bayer.bhc.doc41webui.container.BatchObjectForm;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.domain.QMBatchObject;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.AbstractDeliveryCertDocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 @Controller
@@ -90,18 +90,18 @@ public class DelCertUploadController extends UploadController {
 		uploadForm.setObjectId(batchObject.getObjectId());
 		uploadForm.setPartnerNumber(supplier);
 		Map<String, String> avalues = new HashMap<String, String>();
-		avalues.put(DeliveryCertDocumentType.VIEW_ATTRIB_PLANT,batchObject.getPlant());
-		avalues.put(DeliveryCertDocumentType.VIEW_ATTRIB_BATCH,batchObject.getBatch());
-		avalues.put(DeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL,batchObject.getMaterialNumber());
+		avalues.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_PLANT,batchObject.getPlant());
+		avalues.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_BATCH,batchObject.getBatch());
+		avalues.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL,batchObject.getMaterialNumber());
 		uploadForm.setAttributeValues(avalues);
 		map.addAttribute(uploadForm);
 		map.addAttribute("materialText",batchObject.getMaterialText());
 		
-		map.addAttribute("keyCountry",DeliveryCertDocumentType.VIEW_ATTRIB_COUNTRY);
+		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_COUNTRY);
 		
-		map.addAttribute("keyPlant",DeliveryCertDocumentType.VIEW_ATTRIB_PLANT);
-		map.addAttribute("keyBatch",DeliveryCertDocumentType.VIEW_ATTRIB_BATCH);
-		map.addAttribute("keyMaterial",DeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL);
+		map.addAttribute("keyPlant",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_PLANT);
+		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_BATCH);
+		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL);
 		
 		List<SelectionItem> userCountries = getCountrySIs(UserInSession.get().getCountries());
 		map.addAttribute("userCountrySIList",userCountries);
