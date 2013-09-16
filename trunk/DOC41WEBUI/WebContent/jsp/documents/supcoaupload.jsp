@@ -8,7 +8,6 @@ title="Upload Document">
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
 
-<!-- TODO c:out insplot -->
 	<doc41:uploadtemplate action="supcoauploadpost" showObjectId="false" showPartnerNumber="false" showCustomAttributes="false">
 		<jsp:attribute name="fragmentCustomSearchFields">
 						<tr>

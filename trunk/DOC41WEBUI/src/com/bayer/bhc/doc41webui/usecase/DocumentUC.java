@@ -430,6 +430,27 @@ public class DocumentUC {
 	public List<QMBatchObject> getBatchObjectsForSupplier(String supplier, String plant, String material,
 			String batch, String order) throws Doc41BusinessException {
 		try{
+//			//TODO remove mock
+//			if(true){
+//				List<QMBatchObject> list = new ArrayList<QMBatchObject>();
+//				try {
+//					int count = Integer.parseInt(batch);
+//					for(int i=0;i<count;i++){
+//						QMBatchObject bo = new QMBatchObject();
+//						bo.setObjectId("Dummy"+i);
+//						bo.setMaterialNumber("matno"+i);
+//						bo.setMaterialText("mattext"+i);
+//						bo.setPlant("plant"+i);
+//						bo.setBatch("batch"+i);
+//						list.add(bo);
+//					}
+//				} catch (NumberFormatException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				return list ;
+//			}
+//			//mock
 			return authorizationRFCService.getBatchObjectsForSupplier(supplier, plant, material, batch, order);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("getBatchObjectsForSupplier",e);

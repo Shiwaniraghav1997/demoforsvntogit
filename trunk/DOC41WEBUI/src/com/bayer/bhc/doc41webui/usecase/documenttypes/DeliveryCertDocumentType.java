@@ -11,8 +11,13 @@ import com.bayer.ecim.foundation.basic.StringTool;
 
 public class DeliveryCertDocumentType implements DownloadDocumentType, UploadDocumentType {
 	
-	private static final Object COUNTRY_ISO_CODE = "COUNTRYISOCODE";
-	private static final Object MATERIAL_NUMBER = "MATERIALNUMBER";
+	//TODO
+	public static final String VIEW_ATTRIB_COUNTRY = "country";
+	public static final String VIEW_ATTRIB_MATERIAL = "material";
+	public static final String VIEW_ATTRIB_BATCH = "batch";
+	public static final String VIEW_ATTRIB_PLANT = "plant";
+	
+	
 	
 	//TODO SAP OBJECT???
 
@@ -41,15 +46,17 @@ public class DeliveryCertDocumentType implements DownloadDocumentType, UploadDoc
 	public void checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, String objectId,
 			Map<String, String> attributeValues) throws Doc41BusinessException {
-		String countryCode = attributeValues.get(COUNTRY_ISO_CODE);
+		
+		//TODO 2 implementations for different roles
+		String countryCode = attributeValues.get(VIEW_ATTRIB_COUNTRY);
 		if(StringTool.isTrimmedEmptyOrNull(countryCode)){
-			errors.rejectValue("attributeValues['"+COUNTRY_ISO_CODE+"']","CountryMissing");
+			errors.rejectValue("attributeValues['"+VIEW_ATTRIB_COUNTRY+"']","CountryMissing");
 		}
 		
 		boolean hasCountry = UserInSession.get().hasCountry(countryCode);
 		
 		if(!hasCountry){
-			errors.rejectValue("attributeValues['"+COUNTRY_ISO_CODE+"']","Country does not belong to User");
+			errors.rejectValue("attributeValues['"+VIEW_ATTRIB_COUNTRY+"']","Country does not belong to User");
 		}
 	}
 
@@ -64,9 +71,9 @@ public class DeliveryCertDocumentType implements DownloadDocumentType, UploadDoc
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
 
-		String matNumber = attributeValues.get(MATERIAL_NUMBER);
-		if(StringTool.isTrimmedEmptyOrNull(matNumber)){
-			errors.rejectValue("attributeValues['"+MATERIAL_NUMBER+"']","MaterialNumberMissing");
+		String country = attributeValues.get(VIEW_ATTRIB_COUNTRY);
+		if(StringTool.isTrimmedEmptyOrNull(country)){
+			errors.rejectValue("attributeValues['"+VIEW_ATTRIB_COUNTRY+"']","CountryMissing");
 		}
 		
 		if(errors.hasErrors()){
