@@ -16,9 +16,7 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 
 	@Override
 	public String getSapTypeId() {
-//		return "DOC41.39";
-		//TODO use real type
-		return "DOC41.14";//BOL
+		return "DOC41.39";
 	}
 
 }
