@@ -25,8 +25,8 @@
 			  	<doc41:navEntry href="documents/documentsearch?type=WB" title="Waybill" id="WBDOWN" cssclass="first-child" permission="DOC_WB_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=AWB" title="Air Waybill" id="WBDOWN" cssclass="first-child" permission="DOC_AWB_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=FDACERT" title="FDA Certificate" id="FDACERTDOWN" cssclass="first-child" permission="DOC_FDACERT_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=DELCERTDOWNCOUNTRY" title="Delivery Certificate Country" id="DELCERTDOWNCOUNTRY" cssclass="first-child" permission="DOC_DELCERT_DOWN_COUNTRY"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=DELCERTDOWNCUSTOMER" title="Delivery Certificate Customer" id="DELCERTDOWNCUSTOMER" cssclass="first-child" permission="DOC_DELCERT_DOWN_CUSTOMER"/>
+			  	<doc41:navEntry href="documents/searchdelcertcountry?type=DELCERTDOWNCOUNTRY" title="Delivery Certificate Country" id="DELCERTDOWNCOUNTRY" cssclass="first-child" permission="DOC_DELCERT_DOWN_COUNTRY"/>
+			  	<doc41:navEntry href="documents/searchdelcertcustomer?type=DELCERTDOWNCUSTOMER" title="Delivery Certificate Customer" id="DELCERTDOWNCUSTOMER" cssclass="first-child" permission="DOC_DELCERT_DOWN_CUSTOMER"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=ARTWORK" title="Artwork Low Res" id="ARTWORKDOWN" cssclass="first-child" permission="DOC_ARTWORK_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=LAYOUT" title="Layout High Res" id="LAYOUTDOWN" cssclass="first-child" permission="DOC_LAYOUT_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=TPACKDELREQ" title="Tech. Pack. and Deliv. Requirements" id="TPACKDELREQDOWN" cssclass="first-child" permission="DOC_TPACKDELREQ_DOWN"/>
