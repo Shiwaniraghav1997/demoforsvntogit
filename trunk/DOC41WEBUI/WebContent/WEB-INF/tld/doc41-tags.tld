@@ -19,6 +19,11 @@
 		<path>/WEB-INF/tags/uploadtemplate.tag</path>
 	</tag-file>
 	
+	<tag-file>
+		<name>searchtemplate</name>
+		<path>/WEB-INF/tags/searchtemplate.tag</path>
+	</tag-file>
+	
 	<tag id="LoadTranslations">
 		<name>loadTranslations</name>
 		<tag-class>com.bayer.bhc.doc41webui.tags.LoadTranslationsTag</tag-class>

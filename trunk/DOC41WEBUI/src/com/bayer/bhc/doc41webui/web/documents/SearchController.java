@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +19,12 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.SearchForm;
+import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.AbstractDeliveryCertDocumentType;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -85,6 +88,21 @@ public class SearchController extends AbstractDoc41Controller {
 		}
 		
 		return searchForm;
+	}
+	
+	@RequestMapping(value="/documents/searchdelcertcountry",method = RequestMethod.GET)
+	public ModelMap getDelCertCountry(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
+		ModelMap map = new ModelMap();
+		SearchForm searchForm2 = get(searchForm, result, ButtonSearch);
+		map.addAttribute(searchForm2);
+		
+		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_COUNTRY);
+		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_BATCH);
+		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL);
+		
+		List<SelectionItem> userCountries = displaytextUC.getCountrySIs(UserInSession.get().getCountries());
+		map.addAttribute("userCountrySIList",userCountries);
+		return map;
 	}
 	
 	@RequestMapping(value="/documents/download",method = RequestMethod.GET)

@@ -4,7 +4,10 @@
  */
 package com.bayer.bhc.doc41webui.usecase;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -102,5 +105,23 @@ public class DisplaytextUC {
     public List<SelectionItem> getMonths() {
         return getDisplaytextRepository().getMonths();
     }
+    
+    /**
+     * return country selection items for the codes in the parameter list
+     * @param countries
+     * @return
+     */
+    public List<SelectionItem> getCountrySIs(List<String> countries) {
+		List<SelectionItem> countryCodes = getCountryCodes();
+		Map<String, SelectionItem> countryMap = new HashMap<String, SelectionItem>();
+		for (SelectionItem selectionItem : countryCodes) {
+			countryMap.put(selectionItem.getValue(), selectionItem);
+		}
+		List<SelectionItem> userCountrySIs = new ArrayList<SelectionItem>();
+		for (String countryCode : countries) {
+			userCountrySIs.add(countryMap.get(countryCode));
+		}
+		return userCountrySIs;
+	}
 
 }

@@ -1,6 +1,5 @@
 package com.bayer.bhc.doc41webui.web.documents;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,26 +102,13 @@ public class DelCertUploadController extends UploadController {
 		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_BATCH);
 		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL);
 		
-		List<SelectionItem> userCountries = getCountrySIs(UserInSession.get().getCountries());
+		List<SelectionItem> userCountries = displaytextUC.getCountrySIs(UserInSession.get().getCountries());
 		map.addAttribute("userCountrySIList",userCountries);
 		
 		
 		return map;
 	}
 	
-	private List<SelectionItem> getCountrySIs(List<String> countries) {
-		List<SelectionItem> countryCodes = displaytextUC.getCountryCodes();
-		Map<String, SelectionItem> countryMap = new HashMap<String, SelectionItem>();
-		for (SelectionItem selectionItem : countryCodes) {
-			countryMap.put(selectionItem.getValue(), selectionItem);
-		}
-		List<SelectionItem> userCountrySIs = new ArrayList<SelectionItem>();
-		for (String countryCode : countries) {
-			userCountrySIs.add(countryMap.get(countryCode));
-		}
-		return userCountrySIs;
-	}
-
 	@RequestMapping(value="/documents/delcertuploadpost",method = RequestMethod.POST)
 	public String postUpload(UploadForm uploadForm,BindingResult result) throws Doc41BusinessException { //ggf. kein modelattribute wegen sessionattribute
 		return super.postUpload(uploadForm, result);

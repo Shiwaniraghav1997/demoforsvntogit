@@ -13,7 +13,7 @@ title="Upload Document">
 							<th><doc41:translate label="BatchObjectId" /></th>
 							<td><c:out value="${uploadForm.objectId }"/><form:hidden path="objectId"/></td>
 						</tr>
-						<tr>
+						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="Supplier" /></th>
 							<td><c:out value="${uploadForm.partnerNumber }"/><form:hidden path="partnerNumber"/></td>
 						</tr>
@@ -21,7 +21,7 @@ title="Upload Document">
 							<th><doc41:translate label="Plant" />${uploadForm.attributeValues[keyPlant]}</th>
 							<td><c:out value="${uploadForm.attributeValues[keyPlant]}"/><input id="${keyPlant}" type="hidden" name="attributeValues['${keyPlant}']" value="${uploadForm.attributeValues[keyPlant]}"/></td>
 						</tr>
-						<tr>
+						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="Batch" /></th>
 							<td><c:out value="${uploadForm.attributeValues[keyBatch]}"/><input id="${keyBatch}" type="hidden" name="attributeValues['${keyBatch}']" value="${uploadForm.attributeValues[keyBatch]}"/></td>
 						</tr>
@@ -29,7 +29,7 @@ title="Upload Document">
 							<th><doc41:translate label="MaterialNumber" /></th>
 							<td><c:out value="${uploadForm.attributeValues[keyMaterial]}"/><input id="${keyMaterial}" type="hidden" name="attributeValues['${keyMaterial}']" value="${uploadForm.attributeValues[keyMaterial]}"/></td>
 						</tr>
-						<tr>
+						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="MaterialText" /></th>
 							<td><c:out value="${materialText }"/></td>
 						</tr>
@@ -38,7 +38,7 @@ title="Upload Document">
 							<th><doc41:translate label="MaterialNumber" /></th>
 							<td><c:out value="${uploadForm.attributeValues[keyMaterial]}"/><input id="${keyMaterial}" type="hidden" name="attributeValues['${keyMaterial}']" value="${uploadForm.attributeValues[keyMaterial]}"/></td>
 						</tr>
-						<tr>
+						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="Country" /></th>
 							<td>
 								<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${userCountrySIList}" cssClass="portlet-form-input-field" cssStyle="width:240px;" itemValue="value" itemLabel="label"/><doc41:error path="attributeValues['${keyCountry}']" />
