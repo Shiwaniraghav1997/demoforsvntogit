@@ -63,8 +63,6 @@ public class DocumentUC {
 
 	private static final String TEMP_FILE_PREFIX = "D41-";
 	
-	private static final String ATTRIB_NAME_FILENAME = "FILENAME";
-
 	@Autowired
 	private AuthorizationRFCService authorizationRFCService;
 	
@@ -148,18 +146,8 @@ public class DocumentUC {
 	
 	public List<Attribute> getAttributeDefinitions(String doctype,boolean filterFileName) throws Doc41BusinessException{
 		DocMetadata metadata = getMetadata(doctype);
-		List<Attribute> attributes = metadata.getAttributes();
-		if(filterFileName){
-			List<Attribute> filteredAttributes = new ArrayList<Attribute>();
-			for (Attribute attribute : attributes) {
-				if(!StringTool.equals(attribute.getName(), ATTRIB_NAME_FILENAME)){
-					filteredAttributes.add(attribute);
-				}
-			}
-			return filteredAttributes ;
-		} else {
-			return attributes;
-		}
+		List<Attribute> attributes = metadata.getAttributes(filterFileName);
+		return attributes;
 	}
 	
 	public List<DeliveryOrShippingUnit> getOpenDeliveries(String type, String carrier) throws Doc41BusinessException {
@@ -176,6 +164,13 @@ public class DocumentUC {
 	
 	public SDReferenceCheckResult checkDeliveryForPartner(String carrier,String referenceNumber) throws Doc41BusinessException{
 		try {
+//			//TODO remove mock
+//			if(true){
+//				if(referenceNumber.startsWith("V")){
+//					return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_SHIPPING_UNIT_NUMBER, null);
+//				}
+//				return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_DELIVERY_NUMBER, null);
+//			}
 			return authorizationRFCService.checkDeliveryForPartner(carrier, referenceNumber);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("checkDeliveryForPartner",e);
@@ -218,10 +213,10 @@ public class DocumentUC {
 			DocTypeDef docDef = metadata.getDocDef();
 			String d41id = docDef.getD41id();
 			
-			if(!StringTool.isTrimmedEmptyOrNull(fileName) && attributeValues.containsKey(ATTRIB_NAME_FILENAME)){
-				attributeValues.put(ATTRIB_NAME_FILENAME, fileName);
+			if(!StringTool.isTrimmedEmptyOrNull(fileName) && metadata.isFileNameAttribAvailable()){
+				attributeValues.put(metadata.getFileNameAttibKey(), fileName);
 			}
-			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),crepInfo.getDocClass(),objId,sapObject,attributeValues,fileName);
+			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),crepInfo.getDocClass(),objId,sapObject,attributeValues);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("setAttributesForNewDocument",e);
 		}
