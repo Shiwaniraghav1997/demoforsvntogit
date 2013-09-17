@@ -50,7 +50,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
         		metadata.setContentRepository(getContentRepo(d41id));
         		//attributes for all languages
         		List<Attribute> attributes = getAttributes(d41id,languageCodes);
-        		metadata.setAttributes(attributes);
+        		metadata.initAttributes(attributes);
         		//predefined attrib values
         		Map<String,List<String>> attrValues = getAttrValues(d41id);
         		for (Attribute attribute : attributes) {
@@ -205,7 +205,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 
 	public int setAttributesForNewDocument(String d41id, String fileId,
 			String contentRepository,String docClass, String objId, String sapObj,
-			Map<String, String> attributeValues,String fileName) throws Doc41ServiceException {
+			Map<String, String> attributeValues) throws Doc41ServiceException {
 		List<Object> params = new ArrayList<Object>();
 		params.add(d41id);
 		params.add(fileId);
