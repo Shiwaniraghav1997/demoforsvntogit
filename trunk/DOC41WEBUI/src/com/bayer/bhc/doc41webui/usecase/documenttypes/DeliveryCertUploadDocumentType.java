@@ -34,18 +34,18 @@ public class DeliveryCertUploadDocumentType extends
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
 
-		String country = attributeValues.get(VIEW_ATTRIB_COUNTRY);
+		String country = attributeValues.get(ATTRIB_COUNTRY);
 		if(StringTool.isTrimmedEmptyOrNull(country)){
-			errors.rejectValue("attributeValues['"+VIEW_ATTRIB_COUNTRY+"']","CountryMissing");
+			errors.rejectValue("attributeValues['"+ATTRIB_COUNTRY+"']","CountryMissing");
 		}
 		
 		if(errors.hasErrors()){
 			return null;
 		}
 		
-		String plant = attributeValues.get(VIEW_ATTRIB_PLANT);
-		String material = attributeValues.get(VIEW_ATTRIB_MATERIAL);
-		String batch = attributeValues.get(VIEW_ATTRIB_BATCH);
+		String plant = attributeValues.get(ATTRIB_PLANT);
+		String material = attributeValues.get(ATTRIB_MATERIAL);
+		String batch = attributeValues.get(ATTRIB_BATCH);
 		List<QMBatchObject> bos = documentUC.getBatchObjectsForSupplier(partnerNumber, plant, material, batch, null);
 		if(bos.size()==0){
 			errors.reject("BatchObjectNotFoundOrNotForSupplier");

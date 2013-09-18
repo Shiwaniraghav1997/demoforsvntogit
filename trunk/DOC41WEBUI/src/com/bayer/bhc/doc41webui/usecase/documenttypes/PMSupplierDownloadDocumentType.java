@@ -21,7 +21,7 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 
 	@Override
 	public void checkForDownload(Errors errors, DocumentUC documentUC, String partnerNumber,
-			List<String> objectIds, Map<String, String> attributeValues) throws Doc41BusinessException {
+			List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 
 		//TODO
 		if(objectIds.size()==0){

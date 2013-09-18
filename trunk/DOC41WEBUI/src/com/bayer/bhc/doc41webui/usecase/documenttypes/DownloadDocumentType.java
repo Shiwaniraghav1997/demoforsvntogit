@@ -11,5 +11,5 @@ import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 public interface DownloadDocumentType extends DocumentType{
 
 	public String getPermissionDownload();
-	public void checkForDownload(Errors errors, DocumentUC documentUC, String partnerNumber, List<String> objectIds, Map<String, String> attributeValues)throws Doc41BusinessException;
+	public void checkForDownload(Errors errors, DocumentUC documentUC, String partnerNumber, List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes)throws Doc41BusinessException;
 }

@@ -32,24 +32,24 @@ public class DeliveryCertDownCountryDocumentType extends
 	@Override
 	public void checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, List<String> objectIds,
-			Map<String, String> attributeValues) throws Doc41BusinessException {
+			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
-		String countryCode = attributeValues.get(VIEW_ATTRIB_COUNTRY);
+		String countryCode = attributeValues.get(ATTRIB_COUNTRY);
 		if(StringTool.isTrimmedEmptyOrNull(countryCode)){
-			errors.rejectValue("attributeValues['"+VIEW_ATTRIB_COUNTRY+"']","CountryMissing");
+			errors.rejectValue("attributeValues['"+ATTRIB_COUNTRY+"']","CountryMissing");
 		}
 		
 		boolean hasCountry = UserInSession.get().hasCountry(countryCode);
 		
 		if(!hasCountry){
-			errors.rejectValue("attributeValues['"+VIEW_ATTRIB_COUNTRY+"']","Country does not belong to User");
+			errors.rejectValue("attributeValues['"+ATTRIB_COUNTRY+"']","Country does not belong to User");
 		}
 		
-		String material = attributeValues.get(VIEW_ATTRIB_MATERIAL);
-		String batch = attributeValues.get(VIEW_ATTRIB_BATCH);
+		String material = attributeValues.get(ATTRIB_MATERIAL);
+		String batch = attributeValues.get(ATTRIB_BATCH);
 		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch)){
-			errors.rejectValue("attributeValues['"+VIEW_ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
-			errors.rejectValue("attributeValues['"+VIEW_ATTRIB_BATCH+"']","MaterialAndBatchMissing");
+			errors.rejectValue("attributeValues['"+ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
+			errors.rejectValue("attributeValues['"+ATTRIB_BATCH+"']","MaterialAndBatchMissing");
 		}
 	}
 }

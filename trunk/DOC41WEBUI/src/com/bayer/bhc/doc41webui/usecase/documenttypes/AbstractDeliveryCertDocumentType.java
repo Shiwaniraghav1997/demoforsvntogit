@@ -4,10 +4,12 @@ package com.bayer.bhc.doc41webui.usecase.documenttypes;
 public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 	
 	//TODO
-	public static final String VIEW_ATTRIB_COUNTRY = "country";
-	public static final String VIEW_ATTRIB_MATERIAL = "material";
-	public static final String VIEW_ATTRIB_BATCH = "batch";
-	public static final String VIEW_ATTRIB_PLANT = "plant";
+	public static final String ATTRIB_COUNTRY = "country";
+	public static final String ATTRIB_MATERIAL = "material";
+	public static final String ATTRIB_BATCH = "batch";
+	public static final String ATTRIB_PLANT = "plant";
+	
+	public static final String VIEW_ATTRIB_DELIVERY_NUMBER = "delivery";
 	
 	
 	
@@ -17,6 +19,8 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 	@Override
 	public String getSapTypeId() {
 		return "DOC41.39";
+		//TODO use real type
+//		return "DOC41.14";//BOL
 	}
 
 }

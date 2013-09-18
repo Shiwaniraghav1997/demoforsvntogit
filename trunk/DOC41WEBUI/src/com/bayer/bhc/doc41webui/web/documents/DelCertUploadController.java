@@ -89,18 +89,18 @@ public class DelCertUploadController extends UploadController {
 		uploadForm.setObjectId(batchObject.getObjectId());
 		uploadForm.setPartnerNumber(supplier);
 		Map<String, String> avalues = new HashMap<String, String>();
-		avalues.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_PLANT,batchObject.getPlant());
-		avalues.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_BATCH,batchObject.getBatch());
-		avalues.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL,batchObject.getMaterialNumber());
+		avalues.put(AbstractDeliveryCertDocumentType.ATTRIB_PLANT,batchObject.getPlant());
+		avalues.put(AbstractDeliveryCertDocumentType.ATTRIB_BATCH,batchObject.getBatch());
+		avalues.put(AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL,batchObject.getMaterialNumber());
 		uploadForm.setAttributeValues(avalues);
 		map.addAttribute(uploadForm);
 		map.addAttribute("materialText",batchObject.getMaterialText());
 		
-		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_COUNTRY);
+		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
 		
-		map.addAttribute("keyPlant",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_PLANT);
-		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_BATCH);
-		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL);
+		map.addAttribute("keyPlant",AbstractDeliveryCertDocumentType.ATTRIB_PLANT);
+		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
+		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
 		
 		List<SelectionItem> userCountries = displaytextUC.getCountrySIs(UserInSession.get().getCountries());
 		map.addAttribute("userCountrySIList",userCountries);

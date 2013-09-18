@@ -19,6 +19,8 @@ public abstract class CustomizedDocumentForm {
 	private Map<String, List<String>> attributePredefValues;
 	private Map<Integer, String> attributeSeqToKey;
 	
+	private Map<String, String> viewAttributes = new HashMap<String, String>();
+	
 	private String partnerNumber;
 	
 	private boolean partnerNumberUsed;
@@ -124,9 +126,8 @@ public abstract class CustomizedDocumentForm {
 		return attributeLabels.size();
 	}
 	
-	//TODO maybe remove, no longer needed
 	public Map<String, String> getViewAttributes(){
-		return null;
+		return viewAttributes;
 	}
 	
 }

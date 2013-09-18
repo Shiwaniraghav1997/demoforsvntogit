@@ -32,22 +32,20 @@ public class DeliveryCertDownCustomerDocumentType extends
 	@Override
 	public void checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, List<String> objectIds,
-			Map<String, String> attributeValues) throws Doc41BusinessException {
+			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
-		String countryCode = attributeValues.get(VIEW_ATTRIB_COUNTRY);
+		String countryCode = attributeValues.get(ATTRIB_COUNTRY);
 		if(StringTool.isTrimmedEmptyOrNull(countryCode)){
-			errors.rejectValue("attributeValues['"+VIEW_ATTRIB_COUNTRY+"']","CountryMissing");
+			errors.rejectValue("attributeValues['"+ATTRIB_COUNTRY+"']","CountryMissing");
 		}
 		
-		//TODO delivery mandatory
-		String delivery="";
+		String delivery=viewAttributes.get(VIEW_ATTRIB_DELIVERY_NUMBER);
 		if(StringTool.isTrimmedEmptyOrNull(delivery)){
-//			errors.rejectValue("attributeValues['"+VIEW_ATTRIB_DELIVERY+"']","DeliveryMissing");
+			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_DELIVERY_NUMBER+"']","DeliveryMissing");
 		}
 		
-		//TODO getBatchObjectsForCustomer
-		String material = attributeValues.get(VIEW_ATTRIB_MATERIAL);
-		String batch = attributeValues.get(VIEW_ATTRIB_BATCH);
+		String material = attributeValues.get(ATTRIB_MATERIAL);
+		String batch = attributeValues.get(ATTRIB_BATCH);
 		List<QMBatchObject> bos = documentUC.getBatchObjectsForCustomer(partnerNumber, delivery, material, batch, countryCode);
 		
 		for (QMBatchObject qmBatchObject : bos) {

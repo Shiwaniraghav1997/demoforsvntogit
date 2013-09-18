@@ -66,7 +66,7 @@ public class SearchController extends AbstractDoc41Controller {
 					if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
 						objectIds.add(singleObjectId);
 					}
-					documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), objectIds, searchForm.getAttributeValues());
+					documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), objectIds, searchForm.getAttributeValues(), searchForm.getViewAttributes());
 				
 					if(!result.hasErrors()){
 						List<HitListEntry> documents = new ArrayList<HitListEntry>();
@@ -96,14 +96,32 @@ public class SearchController extends AbstractDoc41Controller {
 		SearchForm searchForm2 = get(searchForm, result, ButtonSearch);
 		map.addAttribute(searchForm2);
 		
-		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_COUNTRY);
-		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_BATCH);
-		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL);
+		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
+		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
+		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
 		
 		List<SelectionItem> userCountries = displaytextUC.getCountrySIs(UserInSession.get().getCountries());
 		map.addAttribute("userCountrySIList",userCountries);
 		return map;
 	}
+	
+	@RequestMapping(value="/documents/searchdelcertcustomer",method = RequestMethod.GET)
+	public ModelMap getDelCertCustomer(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
+		ModelMap map = new ModelMap();
+		SearchForm searchForm2 = get(searchForm, result, ButtonSearch);
+		map.addAttribute(searchForm2);
+		
+		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
+		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
+		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
+		map.addAttribute("keyDeliveryNumber",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_DELIVERY_NUMBER);
+		
+		List<SelectionItem> allCountries = getDisplaytextUC().getCountryCodes();
+		map.addAttribute("allCountryList",allCountries);
+		return map;
+	}
+	
+	
 	
 	@RequestMapping(value="/documents/download",method = RequestMethod.GET)
 	public void download(@RequestParam String type, @RequestParam String docId,HttpServletResponse response) throws Doc41BusinessException{

@@ -33,7 +33,7 @@ public class ArtworkDocumentType implements DownloadDocumentType {
 	@Override
 	public void checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, List<String> objectIds,
-			Map<String, String> attributeValues) throws Doc41BusinessException {
+			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
 		String deliveryCheck = documentUC.checkArtworkForVendor(partnerNumber);
 		if(deliveryCheck != null){

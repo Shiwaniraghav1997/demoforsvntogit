@@ -328,8 +328,8 @@ public class DocumentUC {
 		}
 	}
 	
-	public void checkForDownload(Errors errors, String type, String partnerNumber, List<String> objectIds, Map<String, String> attributeValues) throws Doc41BusinessException{
-		getDocTypeForDownload(type).checkForDownload(errors, this, partnerNumber, objectIds, attributeValues);
+	public void checkForDownload(Errors errors, String type, String partnerNumber, List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException{
+		getDocTypeForDownload(type).checkForDownload(errors, this, partnerNumber, objectIds, attributeValues,viewAttributes);
 	}
 	
 	private UploadDocumentType getDocTypeForUpload(String type) throws Doc41BusinessException{

@@ -54,7 +54,7 @@ public abstract class SDDocumentType implements DocumentType {
 	//implements method from DownloadDocumentType
 	public void checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, List<String> objectIds,
-			Map<String, String> attributeValues) throws Doc41BusinessException {
+			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 //		if(true)return;
 		
 		if(objectIds.size()==0){
