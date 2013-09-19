@@ -1,8 +1,11 @@
 package com.bayer.bhc.doc41webui.integration.sap.rfc;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -117,8 +120,15 @@ public abstract class AbstractDoc41RFC<E> implements RFCCaller<E> {
 	}
 
 
-	protected Date mergeSapDateTime(Date ardate, Date artime) {
-		return new Date(ardate.getTime()+artime.getTime());
+	protected Date mergeSapDateTime(String ardate, String artime) throws SAPException {//2013-09-17 09:13:31
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			Date date = sdf.parse(ardate+" "+artime);
+			return date;
+		} catch (ParseException e) {
+			throw new SAPException("parse error: "+ardate+" "+artime, e);
+		}
 	}
 	
 	public void checkReturnCode(JCoFunction pFunction, String codeCol, String msgCol) throws SAPException{

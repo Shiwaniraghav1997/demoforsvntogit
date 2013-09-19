@@ -193,6 +193,7 @@ public final class DateRenderer {
      * @return
      */
     public static String getDatePattern(Locale locale) {
+    	
         String retValue = ENGLISH_US_DATE_PATTERN;
         if(Locale.GERMANY.equals(locale)){  retValue = GERMAN_DATE_PATTERN;}
         if(Locale.GERMAN.equals(locale)){   retValue = GERMAN_DATE_PATTERN;}

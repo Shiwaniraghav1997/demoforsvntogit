@@ -1,7 +1,6 @@
 package com.bayer.bhc.doc41webui.integration.sap.rfc;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -122,8 +121,8 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
             		doc.setDocId(table.getString(OUT_DOC_ID));
             		doc.setObjectId(table.getString(OUT_OBJ_ID));
             		doc.setStorageDate(table.getDate(OUT_STOR_DATE));
-            		Date arTime = table.getDate(OUT_AL_TIME);
-            		Date arDate = table.getDate(OUT_AL_DATE);
+            		String arTime = table.getString(OUT_AL_TIME);
+            		String arDate = table.getString(OUT_AL_DATE);
 					doc.setArchiveLinkDate(mergeSapDateTime(arDate, arTime));
             		doc.setObjectType(table.getString(OUT_OBJ_TYPE));
             		doc.setDocumentClass(table.getString(OUT_DOC_CLASS));

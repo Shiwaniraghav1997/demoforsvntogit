@@ -1,4 +1,23 @@
 $(function(){
+	$.tablesorter.addParser({
+		id: "moment",
+		is: function(s) {
+			return false;
+		},
+		format: function(s, table) {
+            return moment(s, "MM-DD-YYYY");
+		},
+		format: function(s, table, cell, cellIndex) {
+			if (s) {
+				var c = table.config, ci = c.headerList[cellIndex],
+				format = ci.dateFormat || $.tablesorter.getData( ci, c.headers[cellIndex], 'dateFormat') || c.dateFormat;
+				s = s.replace(/\s+/g," ").replace(/[\-.,]/g, "/"); // escaped - because JSHint in Firefox was showing it as an error
+				return moment(s, format);
+			}
+			return s;
+		},
+		type: "numeric"
+	});
 	
 	//tsfilters can be used to configure special filters like select boxes
 	if(typeof tswidgets === "undefined"){

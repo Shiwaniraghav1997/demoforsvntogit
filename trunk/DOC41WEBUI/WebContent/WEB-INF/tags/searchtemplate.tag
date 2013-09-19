@@ -9,9 +9,9 @@
 <%@taglib prefix="doc41" uri="doc41-tags" %>
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn"		uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="fmt"		uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
-
 
 	<script type="text/javascript">
 		tswidgets = [ 'uitheme','zebra' ];
@@ -151,8 +151,8 @@
 					<!-- thead text will be updated from the JSON; make sure the number of columns matches the JSON data -->
 					<!-- header update currently disabled to put names in the jsp instead of in java  -->
 					<th><doc41:translate label="ObjectId${searchForm.type}" /></th>
-					<th><doc41:translate label="StorageDate" /></th>
-					<th><doc41:translate label="ArchiveLinkDate" /></th>
+					<th data-sorter="moment" data-date-format="${dateMomentPattern}"><doc41:translate label="StorageDate" /></th>
+					<th data-sorter="moment" data-date-format="${dateTimeMomentPattern}"><doc41:translate label="ArchiveLinkDate" /></th>
 					<th><doc41:translate label="DocumentClass" /></th>
 					<c:forEach items="${searchForm.customizedValuesLabels}"
 							var="custValueLabel" varStatus="status">
@@ -178,8 +178,12 @@
 					<tr style="cursor: pointer;"
 						onclick="openDocument('${document.docId}','${searchForm.type}')">
 						<td><c:out value="${document.objectId}" /></td>
-						<td><c:out value="${document.storageDate}" /></td>
-						<td><c:out value="${document.archiveLinkDate}" /></td>
+						<td>
+							<doc41:formatDate date="${document.storageDate}" zone="${user.timeZone}"></doc41:formatDate>
+						</td>
+						<td>
+							<doc41:formatDate date="${document.archiveLinkDate}" zone="${user.timeZone}"></doc41:formatDate>&nbsp;<doc41:formatTime date="${document.archiveLinkDate}" zone="${user.timeZone}"></doc41:formatTime>
+						</td>
 						<td><c:out value="${document.documentClass}" /></td>
 						<c:forEach items="${searchForm.attributeLabels}"
 							var="attribLabel" varStatus="status">

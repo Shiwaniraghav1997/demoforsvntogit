@@ -1,7 +1,6 @@
 package com.bayer.bhc.doc41webui.integration.sap.rfc;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
@@ -58,8 +57,8 @@ public class GetDocStatusRFC extends AbstractDoc41RFC<DocumentStatus>{
             DocumentStatus docStat = new DocumentStatus();
             docStat.setStatus(exportParameterList.getString(OUT_DOCSTATUS));
 
-            Date artime = exportParameterList.getTime(OUT_AR_TIME);
-            Date ardate = exportParameterList.getDate(OUT_AR_DATE);
+            String artime = exportParameterList.getString(OUT_AR_TIME);
+            String ardate = exportParameterList.getString(OUT_AR_DATE);
 
             docStat.setArchivingDate(mergeSapDateTime(ardate,artime));
             mResult.add(docStat);

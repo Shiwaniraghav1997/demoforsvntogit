@@ -47,7 +47,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCustomerDo
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertUploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.FDACertDocumentType;
+//import com.bayer.bhc.doc41webui.usecase.documenttypes.FDACertDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.LayoutDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.PZTecDrawingDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.PackMatSpecDocumentType;
@@ -87,7 +87,8 @@ public class DocumentUC {
 		addDocumentType(new BOLDocumentType());
 		addDocumentType(new WaybillDocumentType());
 		addDocumentType(new AWBDocumentType());
-		addDocumentType(new FDACertDocumentType());
+		//TODO add type again after customizing in SAP is finished
+//		addDocumentType(new FDACertDocumentType());
 		addDocumentType(new SupplierCOADocumentType());
 		addDocumentType(new CMRDocumentType());
 		addDocumentType(new DeliveryCertDownCountryDocumentType());

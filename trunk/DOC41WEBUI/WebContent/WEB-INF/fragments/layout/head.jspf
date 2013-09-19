@@ -32,6 +32,8 @@
 		<!-- Tablesorter: optional -->
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.tablesorter.widgets.min.js"></script>
 		
+		<!-- Moment Date/Time lib -->
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/moment.min.js"></script>
 		
 		
 		<!-- domLib/domTT -->
