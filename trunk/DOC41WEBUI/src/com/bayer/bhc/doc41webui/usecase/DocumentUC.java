@@ -104,8 +104,7 @@ public class DocumentUC {
 		documentTypes.put(typeConst, documentType);
 	}
 
-	//TODO maybe synchronize or make member final and call from constructor
-	public DocMetadata getMetadata(String type) throws Doc41BusinessException{
+	public synchronized DocMetadata getMetadata(String type) throws Doc41BusinessException{
 		try {
 			if(docMetadataContainer==null){
 				Set<String> languageCodes = translationsRepository.getLanguageCodes().keySet();
@@ -414,7 +413,6 @@ public class DocumentUC {
 //					list.add(lot);
 //				}
 //			} catch (NumberFormatException e) {
-//				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
 //			return list ;
@@ -445,7 +443,6 @@ public class DocumentUC {
 //						list.add(bo);
 //					}
 //				} catch (NumberFormatException e) {
-//					// TODO Auto-generated catch block
 //					e.printStackTrace();
 //				}
 //				return list ;
