@@ -47,7 +47,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCustomerDo
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertUploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
-//import com.bayer.bhc.doc41webui.usecase.documenttypes.FDACertDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.FDACertDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.LayoutDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.PZTecDrawingDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.PackMatSpecDocumentType;
@@ -87,8 +87,7 @@ public class DocumentUC {
 		addDocumentType(new BOLDocumentType());
 		addDocumentType(new WaybillDocumentType());
 		addDocumentType(new AWBDocumentType());
-		//TODO add type again after customizing in SAP is finished
-//		addDocumentType(new FDACertDocumentType());
+		addDocumentType(new FDACertDocumentType());
 		addDocumentType(new SupplierCOADocumentType());
 		addDocumentType(new CMRDocumentType());
 		addDocumentType(new DeliveryCertDownCountryDocumentType());
@@ -164,7 +163,7 @@ public class DocumentUC {
 	
 	public SDReferenceCheckResult checkDeliveryForPartner(String carrier,String referenceNumber) throws Doc41BusinessException{
 		try {
-//			//TODO remove mock
+//			//TODO remove mock SD mock
 //			if(true){
 //				if(referenceNumber.startsWith("V")){
 //					return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_SHIPPING_UNIT_NUMBER, null);
@@ -396,7 +395,7 @@ public class DocumentUC {
 	
 	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor,
 			String vendorBatch, String plant) throws Doc41BusinessException {
-//		//TODO remove mock
+//		//TODO remove mock qm mock
 //		if(true){
 //			List<InspectionLot> list = new ArrayList<InspectionLot>();
 //			try {
@@ -428,7 +427,7 @@ public class DocumentUC {
 	public List<QMBatchObject> getBatchObjectsForSupplier(String supplier, String plant, String material,
 			String batch, String order) throws Doc41BusinessException {
 		try{
-//			//TODO remove mock
+//			//TODO remove mock qm mock
 //			if(true){
 //				List<QMBatchObject> list = new ArrayList<QMBatchObject>();
 //				try {
