@@ -120,9 +120,9 @@ public abstract class AbstractDoc41RFC<E> implements RFCCaller<E> {
 	}
 
 
-	protected Date mergeSapDateTime(String ardate, String artime) throws SAPException {//2013-09-17 09:13:31
+	protected Date mergeSapDateTime(String ardate, String artime, String dateFormat, String timeFormat) throws SAPException {//2013-09-17 09:13:31
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat(dateFormat+ " "+timeFormat);
 			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 			Date date = sdf.parse(ardate+" "+artime);
 			return date;

@@ -123,7 +123,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
             		doc.setStorageDate(table.getDate(OUT_STOR_DATE));
             		String arTime = table.getString(OUT_AL_TIME);
             		String arDate = table.getString(OUT_AL_DATE);
-					doc.setArchiveLinkDate(mergeSapDateTime(arDate, arTime));
+					doc.setArchiveLinkDate(mergeSapDateTime(arDate, arTime, "yyyy-MM-dd", "HH:mm:ss"));
             		doc.setObjectType(table.getString(OUT_OBJ_TYPE));
             		doc.setDocumentClass(table.getString(OUT_DOC_CLASS));
             		

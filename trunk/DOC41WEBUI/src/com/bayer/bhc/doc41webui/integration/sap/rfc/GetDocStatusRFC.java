@@ -60,7 +60,7 @@ public class GetDocStatusRFC extends AbstractDoc41RFC<DocumentStatus>{
             String artime = exportParameterList.getString(OUT_AR_TIME);
             String ardate = exportParameterList.getString(OUT_AR_DATE);
 
-            docStat.setArchivingDate(mergeSapDateTime(ardate,artime));
+            docStat.setArchivingDate(mergeSapDateTime(ardate,artime, "yyyyMMdd", "HHmmss"));
             mResult.add(docStat);
         }
         Doc41Log.get().debug(GetDocStatusRFC.class, null, "processResult():EXIT");
