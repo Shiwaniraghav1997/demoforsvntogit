@@ -2,7 +2,7 @@
 			<!--  BEGIN Header -->
 			<div id="head">
 			 <div id="headLeft">
-			  <div id="namingArea" style="background-image: url('${pageContext.request.contextPath}/resources/img/gradient.png')"><img src="${pageContext.request.contextPath}/resources/img/bhc.gif" alt="Doc41" title="Document for one"/></div>
+			  <div id="namingArea" style="background-image: url('${pageContext.request.contextPath}/resources/img/gradient.png')"><img src="${pageContext.request.contextPath}/resources/img/bhc.gif" alt="Doc41"/></div>
 			  <div class="support"><doc41:stageInfo/><br/><a href="${pageContext.request.contextPath}/logout">Logout</a></div>
 			 </div>
 			 <div id="headRight">

@@ -9,6 +9,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 import org.apache.commons.lang3.StringUtils;
 
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
+import com.bayer.bhc.doc41webui.web.maintenance.UntranslatedLabelsController;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
 public class NavigationEntryTag extends TagSupport {
@@ -31,7 +32,7 @@ public class NavigationEntryTag extends TagSupport {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(String.format("<li class=\"%s\">", tmpCSSClass));
-		sb.append(String.format("<a title=\"%s\" href=\"%s\"%s>%s</a>", tmpTitle, tmpHref, tmpActNavAttr, tmpTitle));
+		sb.append(String.format("<a href=\"%s\"%s>%s</a>", tmpHref, tmpActNavAttr, tmpTitle));
 		sb.append("</li>");
 		
 		JspWriter printer = pageContext.getOut();
@@ -54,6 +55,10 @@ public class NavigationEntryTag extends TagSupport {
 	private String getTranslation(String title) {
 		Tags translations = (Tags) pageContext.getRequest().getAttribute(TAGS);
 		String transText =  translations.getTag(title);
+		if (StringUtils.startsWith(transText, "&#91;") && StringUtils.endsWith(transText, "&#93;")) {
+			 // memorize untranslated Labels
+            UntranslatedLabelsController.getUntranslatedLabels().add(title);
+		}
 		return transText;
 	}
 	

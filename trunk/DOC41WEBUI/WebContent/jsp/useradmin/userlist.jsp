@@ -42,14 +42,11 @@ title="User Management">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41tablesorter.js"></script>
   	
   	<div id="div-body" class="portlet-body">
-			<div class="portlet-section-header">
-				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
-					<tr><th><doc41:translate label="UserOverview"/></th></tr>
-				</table>
-				
-				<a class="portlet-form-button" type="button" href='userlookup'><doc41:translate label="ButtonLookup"/></a>
-				<a class="portlet-form-button" type="button" href='usercreate'><doc41:translate label="ButtonCreate"/></a>
-			</div>
+		<div class="portlet-section-header">
+			<div class="portlet-section-header-title"><doc41:translate label="UserOverview"/></div>
+			<a class="portlet-form-button" type="button" href='userlookup'><doc41:translate label="ButtonLookup"/></a>
+			<a class="portlet-form-button" type="button" href='usercreate'><doc41:translate label="ButtonCreate"/></a>
+		</div>
 		
 		
 		<div class="portlet-section-body">

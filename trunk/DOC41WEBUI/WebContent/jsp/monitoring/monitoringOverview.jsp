@@ -7,16 +7,15 @@ title="MonitoringOverview">
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
 	<div class="portlet-section-header">
-		<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
-			<tr><th><doc41:translate label="MonitoringOverview"/></th></tr>
-		</table>
-	
+		<div class="portlet-section-header-title">
+			<doc41:translate label="MonitoringOverview"/>
+		</div>
 		<a class="portlet-form-button" href='monitoringOverview'><doc41:translate label="ButtonRefresh"/></a>
 		<a class="portlet-form-button" href='addInterface'><doc41:translate label="ButtonAddInterface"/></a>
 	</div>
-	
+
 	<div class="portlet-section-body">
-	<table class="nohover" cellpadding="4" cellspacing="0">
+	<table class="nohover tablesorter" cellpadding="4" cellspacing="0">
 		<thead class="portlet-table-header">
 					<c:if test="${empty monitoringEntries}">
 						<tr>

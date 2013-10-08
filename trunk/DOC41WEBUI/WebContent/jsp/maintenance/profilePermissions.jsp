@@ -32,13 +32,13 @@
   <c:forEach items="${pps}" var="varpps" varStatus="status">
   <tr>
 	<td><span title="${varpps.Permissiondescription}">${varpps.Permissionname}</span></td>
-	<td><c:if test="${varpps.Doc41Carr}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
-	<td><c:if test="${varpps.Doc41Cusbr}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
-	<td><c:if test="${varpps.Doc41Laysup}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>
-	<td><c:if test="${varpps.Doc41Pmsup}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
-	<td><c:if test="${varpps.Doc41Badm}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
-	<td><c:if test="${varpps.Doc41Tadm}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
-	<td><c:if test="${varpps.Doc41Obsv}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
+	<td class="centered"><c:if test="${varpps.Doc41Carr}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
+	<td class="centered"><c:if test="${varpps.Doc41Cusbr}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
+	<td class="centered"><c:if test="${varpps.Doc41Laysup}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>
+	<td class="centered"><c:if test="${varpps.Doc41Pmsup}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
+	<td class="centered"><c:if test="${varpps.Doc41Badm}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
+	<td class="centered"><c:if test="${varpps.Doc41Tadm}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
+	<td class="centered"><c:if test="${varpps.Doc41Obsv}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
   </tr>
   </c:forEach>
   </tbody>

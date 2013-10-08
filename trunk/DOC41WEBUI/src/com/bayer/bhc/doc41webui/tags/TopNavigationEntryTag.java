@@ -9,6 +9,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 import org.apache.commons.lang3.StringUtils;
 
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
+import com.bayer.bhc.doc41webui.web.maintenance.UntranslatedLabelsController;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
 public class TopNavigationEntryTag extends TagSupport {
@@ -31,7 +32,7 @@ public class TopNavigationEntryTag extends TagSupport {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(String.format("<li%s>", tmpActTopNavAttr));
-		sb.append(String.format("<a title=\"%s\" href=\"%s\">%s</a>", tmpTitle, tmpHref, tmpTitle));
+		sb.append(String.format("<a href=\"%s\">%s</a>", tmpHref, tmpTitle));
 		if (!StringUtils.contains(cssclass, "home")) {
 			sb.append("<ul class ='ui-front'>");
 		}
@@ -66,6 +67,10 @@ public class TopNavigationEntryTag extends TagSupport {
 	private String getTranslation(String title) {
 		Tags translations = (Tags) pageContext.getRequest().getAttribute(TAGS);
 		String transText =  translations.getTag(title);
+		if (StringUtils.startsWith(transText, "&#91;") && StringUtils.endsWith(transText, "&#93;")) {
+			 // memorize untranslated Labels
+           UntranslatedLabelsController.getUntranslatedLabels().add(title);
+		}
 		return transText;
 	}
 	

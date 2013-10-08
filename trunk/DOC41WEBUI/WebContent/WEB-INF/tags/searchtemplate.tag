@@ -24,32 +24,23 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41tablesorterclient.js"></script>
 
 	<div id="div-body" class="portlet-body">
-		<form:form commandName="searchForm" action="${action}"
-			method="get">
+		<form:form commandName="searchForm" action="${action}" method="get">
 			<form:hidden path="type" />
 			<div class="portlet-section-header">
-				<table class="portlet-section-subheader"
-					style="float: left; padding-left: 2px; padding-right: 30px; vertical-align: bottom">
-					<tr>
-						<th><doc41:translate label="Search Document" />&nbsp;<doc41:translate
-								label="${searchForm.type}" /></th>
-					</tr>
-				</table>
+				<div class="portlet-section-header-title">
+					<doc41:translate label="Search Document"/>&nbsp;<doc41:translate label="${searchForm.type}"/>
+				</div>
 				<c:if test="${not empty fragmentAdditionalButtons}">
 					<jsp:invoke fragment="fragmentAdditionalButtons"/>
 				</c:if>
-				<a	class="portlet-form-button"
-					href='documentsearch?type=${searchForm.type}'><doc41:translate
-						label="ButtonReset" /></a>
-				<input type="submit" class="portlet-form-button"
-					value="<doc41:translate label="ButtonSearch"/>" name="ButtonSearch"/>
+				<a class="portlet-form-button" type="button" href='documentsearch?type=${searchForm.type}'><doc41:translate label="ButtonReset" /></a>
+				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSearch"/>" name="ButtonSearch"/>
 			</div>
+			
 			<div class="portlet-section-body">
+				<div class="section-separator"><doc41:translate label="attributes" /></div>
 				<table cellpadding="4" cellspacing="0" class="nohover">
 					<thead class="portlet-table-header">
-						<tr>
-							<th colspan="4"><doc41:translate label="attributes" /></th>
-						</tr>
 						<colcolgroup>
 						<col width="15%" />
 						<col width="35%" />
@@ -143,6 +134,7 @@
 	</div>
 	<div class="portlet-section-body">
 		<doc41:error path="objectId" />
+		<div class="section-separator"><doc41:translate label="results" /></div>
 		<doc41:pager />
 		<table class="tablesorter" id="doc41table">
 			<thead >

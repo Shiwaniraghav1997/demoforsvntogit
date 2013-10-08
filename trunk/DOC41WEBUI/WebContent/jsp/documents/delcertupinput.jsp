@@ -13,15 +13,12 @@
 			method="get">
 			<form:hidden path="type" />
 			<div class="portlet-section-header">
-				<table class="portlet-section-subheader"
-					style="float: left; padding-left: 2px; padding-right: 30px; vertical-align: bottom">
-					<tr>
-						<tr><th><doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${batchObjectForm.type}"/></th></tr>
-					</tr>
-				</table>
-				<input type="submit" class="portlet-form-button"
-					value="<doc41:translate label="ButtonContinue"/>" name="ButtonContinue"/>
+				<div class="portlet-section-header-title">
+					<doc41:translate label="Upload Document"/>&nbsp;<doc41:translate label="${batchObjectForm.type}"/>
+				</div>
+				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonContinue"/>" name="ButtonContinue"/>
 			</div>
+			
 			<div class="portlet-section-body">
 				<spring:hasBindErrors name="batchObjectForm">
 					<tr>

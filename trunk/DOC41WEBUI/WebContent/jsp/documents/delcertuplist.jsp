@@ -23,17 +23,13 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/doc41tablesorterclient.js"></script>
 	
 	<div id="div-body" class="portlet-body">
-		
-			<div class="portlet-section-header">
-				<table class="portlet-section-subheader"
-					style="float: left; padding-left: 2px; padding-right: 30px; vertical-align: bottom">
-					<tr>
-						<tr><th><doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${type}"/></th></tr>
-					</tr>
-				</table>
+		<div class="portlet-section-header">
+			<div class="portlet-section-header-title">
+				<doc41:translate label="Upload Document"/>&nbsp;<doc41:translate label="${type}"/>
 			</div>
+		</div>
 			
-			<div class="portlet-section-body">
+		<div class="portlet-section-body">
 		<doc41:error path="objectId" />
 		<doc41:pager />
 		<table class="tablesorter" id="doc41table">

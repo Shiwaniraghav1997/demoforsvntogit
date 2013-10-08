@@ -9,19 +9,15 @@
 
 
 	<div id="div-body" class="portlet-body">
+		<div class="portlet-section-header">
+			<div class="portlet-section-header-title">
+				<doc41:translate label="Upload Successful"/><doc41:translate label="${type}"/>
+			</div>
+			<aclass="portlet-form-button" href='${uploadurl}?type=${type}'><doc41:translate label="NewUpload"/></a>
+		</div>
 		
-			<div class="portlet-section-header">
-				<table class="portlet-section-subheader"
-					style="float: left; padding-left: 2px; padding-right: 30px; vertical-align: bottom">
-					<tr>
-						<th><doc41:translate label="Upload Successful" /><doc41:translate label="${type}" /></th>
-					</tr>
-				</table>
-				<a	class="portlet-form-button"
-					href='${uploadurl}?type=${type}'><doc41:translate label="NewUpload" /></a>
-			</div>
-			<div class="portlet-section-body">
-				<doc41:translate label="UploadSuccessfulText" />
-			</div>
+		<div class="portlet-section-body">
+			<doc41:translate label="UploadSuccessfulText" />
+		</div>
 	</div>
 </doc41:layout>

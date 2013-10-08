@@ -17,14 +17,15 @@
 			method="post" enctype="multipart/form-data">
 			<form:hidden path="type"/>
 			<div class="portlet-section-header">
-				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
-					<tr><th><doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${uploadForm.type}"/></th></tr>
-				</table>
+				<div class="portlet-section-header-title">
+					<doc41:translate label="Upload Document" />&nbsp;<doc41:translate label="${uploadForm.type}"/>
+				</div>
 				<c:if test="${not empty fragmentAdditionalButtons}">
 					<jsp:invoke fragment="fragmentAdditionalButtons"/>
 				</c:if>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonUpload"/>" />
 			</div>
+
 			<div class="portlet-section-body">
 				<table cellpadding="4" cellspacing="0" class="nohover">
 					<thead class="portlet-table-header">

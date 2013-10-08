@@ -8,13 +8,13 @@ title="User Management">
 
 	<div class="portlet-body">
 		<form:form commandName="userEditForm" action="importuser" method="post">
-			<div class="portlet-section-header">
-				<form:hidden path="type" />
-				<form:hidden path="cwid" />
+			<form:hidden path="type" />
+			<form:hidden path="cwid" />
 				
-				<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
-					<th><doc41:translate label="UserImport"/></th>
-				</table>
+			<div class="portlet-section-header">
+				<div class="portlet-section-header-title">
+					<doc41:translate label="UserImport"/>
+				</div>
 				<a class="portlet-form-button" href=userlist'><doc41:translate label="ButtonCancel"/></a>
 				<a class="portlet-form-button" href='userlookup'><doc41:translate label="ButtonLookup"/></a>
 				<c:if test="${!empty userEditForm.surname}">

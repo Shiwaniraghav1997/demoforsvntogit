@@ -14,10 +14,9 @@ title="User Management">
 		</div>
 
 		<div class="portlet-section-header">
-			<table class="portlet-section-subheader" style="float: left; padding-left: 2px; padding-right: 30px;vertical-align:bottom" >
-				<tr><th><doc41:translate label="EditUser"/></th></tr>
-			</table>
-			
+			<div class="portlet-section-header-title">
+				<doc41:translate label="EditUser"/>
+			</div>
 			<a class="portlet-form-button" href='userlist'><doc41:translate label="ButtonCancel"/></a>
 			<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
 		</div>

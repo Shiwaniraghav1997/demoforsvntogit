@@ -14,6 +14,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.web.maintenance.UntranslatedLabelsController;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
 /**
@@ -147,6 +148,9 @@ public class LabelTag extends TagSupport {
             	} else {
             		transText =  translations.getTag(labelChanged);
             	}
+                
+                // memorize untranslated Labels
+                UntranslatedLabelsController.getUntranslatedLabels().add(lab);
             }
         }
         return transText;
@@ -170,5 +174,4 @@ public class LabelTag extends TagSupport {
 	public void setEscape(String escape) {
 		this.escape = escape;
 	}
-
 }

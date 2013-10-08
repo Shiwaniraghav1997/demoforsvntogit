@@ -18,11 +18,9 @@ title="My Profile">
 	</div>
 
 	<div class="portlet-section-body">
+		<div class="section-separator"><doc41:translate label="TitelUserData" /></div>
 		<table cellpadding="4" cellspacing="0" class="nohover">
 			<thead class="portlet-table-header">
-				<tr>
-					<th colspan="4"><doc41:translate label="TitelUserData"/></th>
-				</tr>
 				<colcolgroup>
 					<col width="15%" />
 					<col width="35%" />
@@ -92,12 +90,10 @@ title="My Profile">
 							<form:options items="${languageCountryList}" itemValue="code" itemLabel="label"/>
 						</form:select>
 					</td>
+					<c:if test="${user.type eq 'external' && !user.readOnly}">
 					<th><doc41:translate label="Password"/></th>
-					<td>
-						<c:if test="${user.type eq 'external' && !user.readOnly}">
-							<form:password path="password" cssClass="portlet-form-input-field" />
-						</c:if>
-					</td>
+					<td><form:password path="password" cssClass="portlet-form-input-field" /></td>
+					</c:if>
 				</tr>	
 				
 				<c:if test="${user.type eq 'external' && !user.readOnly}">
@@ -105,11 +101,7 @@ title="My Profile">
 					<th></th>
 					<td>&nbsp;</td>
 					<th><doc41:translate label="RepeatPassword"/></th>
-					<td>
-						
-							<form:password path="passwordRepeated" cssClass="portlet-form-input-field" />
-						
-					</td>
+					<td><form:password path="passwordRepeated" cssClass="portlet-form-input-field" /></td>
 				</tr>		
 				</c:if>
 						
@@ -118,11 +110,9 @@ title="My Profile">
 	</div>
 	
 	<div class="portlet-section-body">
+		<div class="section-separator"><doc41:translate label="TitelPartners" /></div>
 		<table cellpadding="4" cellspacing="0" class="nohover">
 			<thead class="portlet-table-header">
-				<tr>
-					<th colspan="4"><doc41:translate label="TitelPartners"/></th>
-				</tr>
 			</thead>
 			<tbody class="portlet-table-body">		
 				
