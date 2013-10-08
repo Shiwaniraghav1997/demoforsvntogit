@@ -5,14 +5,15 @@ import java.util.Map;
 
 import org.springframework.validation.Errors;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 
 public class ArtworkDocumentType implements DownloadDocumentType {
 
 	@Override
-	public boolean isPartnerNumberUsed() {
-		return true;
+	public String getPartnerNumberType() {
+		return Doc41Constants.PARTNER_TYPE_VENDOR;
 	}
 
 	@Override

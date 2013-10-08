@@ -7,6 +7,7 @@ package com.bayer.bhc.doc41webui.usecase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.Doc41ErrorMessageKeys;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
@@ -195,5 +196,9 @@ public class UserManagementUC {
 			throw new Doc41BusinessException("checkDeliveryForPartner",e);
 		}
     }
+
+	public String[] getSupportedPartnerTypes() {
+		return Doc41Constants.SUPPORTED_PARTNER_TYPES;
+	}
 
 }

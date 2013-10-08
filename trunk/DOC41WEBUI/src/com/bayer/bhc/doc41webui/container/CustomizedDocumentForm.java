@@ -7,7 +7,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
+import com.bayer.bhc.doc41webui.domain.UserPartner;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 public abstract class CustomizedDocumentForm {
 
@@ -24,6 +27,8 @@ public abstract class CustomizedDocumentForm {
 	private String partnerNumber;
 	
 	private boolean partnerNumberUsed;
+	
+	private List<UserPartner> partners;
 	
 	public String getType() {
 		return type;
@@ -76,8 +81,17 @@ public abstract class CustomizedDocumentForm {
 	public boolean isPartnerNumberUsed() {
 		return partnerNumberUsed;
 	}
-	public void setPartnerNumberUsed(boolean partnerNumberUsed) {
-		this.partnerNumberUsed = partnerNumberUsed;
+	public void initPartnerNumber(String partnerNumberType) {
+		this.partnerNumberUsed = !StringTool.isTrimmedEmptyOrNull(partnerNumberType);
+		if(partnerNumberUsed){
+			partners = UserInSession.get().getPartnersByType(partnerNumberType);
+		}
+	}
+	public List<UserPartner> getPartners() {
+		return partners;
+	}
+	public void setPartners(List<UserPartner> partners) {
+		this.partners = partners;
 	}
 
 	

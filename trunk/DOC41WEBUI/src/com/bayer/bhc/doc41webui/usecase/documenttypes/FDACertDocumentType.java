@@ -4,11 +4,6 @@ package com.bayer.bhc.doc41webui.usecase.documenttypes;
 public class FDACertDocumentType extends SDDocumentType implements DownloadDocumentType {
 
 	@Override
-	public boolean isPartnerNumberUsed() {
-		return true;
-	}
-
-	@Override
 	public String getTypeConst() {
 		return "FDACERT";
 	}

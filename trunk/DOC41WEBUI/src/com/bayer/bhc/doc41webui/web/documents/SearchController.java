@@ -53,7 +53,7 @@ public class SearchController extends AbstractDoc41Controller {
 		if(StringTool.isTrimmedEmptyOrNull(type)){
 			throw new Doc41BusinessException("typeIsMissing");
 		}
-		searchForm.setPartnerNumberUsed(documentUC.isPartnerNumberUsed(type));
+		searchForm.initPartnerNumber(documentUC.getPartnerNumberType(type));
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type,false);
 		searchForm.initAttributes(attributeDefinitions,language);
 		

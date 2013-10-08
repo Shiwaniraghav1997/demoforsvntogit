@@ -15,8 +15,8 @@ public class DeliveryCertDownCountryDocumentType extends
 		AbstractDeliveryCertDocumentType implements DownloadDocumentType {
 	
 	@Override
-	public boolean isPartnerNumberUsed() {
-		return false;
+	public String getPartnerNumberType() {
+		return null;
 	}
 	
 	@Override

@@ -8,6 +8,7 @@ public class UserPartner extends DomainObject {
 	private String partnerNumber;
 	private String partnerName1;
 	private String partnerName2;
+	private String partnerType;
 	
 	public String getPartnerNumber() {
 		return partnerNumber;
@@ -27,11 +28,17 @@ public class UserPartner extends DomainObject {
 	public void setPartnerName2(String partnerName2) {
 		this.partnerName2 = partnerName2;
 	}
+	public String getPartnerType() {
+		return partnerType;
+	}
+	public void setPartnerType(String partnerType) {
+		this.partnerType = partnerType;
+	}
 	@Override
 	public String toString() {
-		return "UserPartner [partnerNumber="
-				+ partnerNumber + ", partnerName1=" + partnerName1
-				+ ", partnerName2=" + partnerName2 + "]";
+		return "UserPartner [partnerNumber=" + partnerNumber
+				+ ", partnerName1=" + partnerName1 + ", partnerName2="
+				+ partnerName2 + ", partnerType=" + partnerType + "]";
 	}
 	
 	public String getPartnerLabel(){

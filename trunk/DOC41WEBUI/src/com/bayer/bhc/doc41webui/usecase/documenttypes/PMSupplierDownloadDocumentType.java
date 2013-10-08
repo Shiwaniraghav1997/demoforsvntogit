@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.validation.Errors;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -15,8 +16,8 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 	private static final Object MATERIAL_NUMBER = null;
 
 	@Override
-	public boolean isPartnerNumberUsed() {
-		return true;
+	public String getPartnerNumberType() {
+		return Doc41Constants.PARTNER_TYPE_VENDOR;
 	}
 
 	@Override

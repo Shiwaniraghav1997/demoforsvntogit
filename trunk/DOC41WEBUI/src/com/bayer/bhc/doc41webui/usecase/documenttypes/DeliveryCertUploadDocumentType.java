@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.validation.Errors;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.domain.QMBatchObject;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
@@ -14,8 +15,8 @@ import com.bayer.ecim.foundation.basic.StringTool;
 public class DeliveryCertUploadDocumentType extends
 		AbstractDeliveryCertDocumentType implements UploadDocumentType{
 	@Override
-	public boolean isPartnerNumberUsed() {
-		return true;
+	public String getPartnerNumberType() {
+		return Doc41Constants.PARTNER_TYPE_SUPPLIER;
 	}
 	
 	@Override

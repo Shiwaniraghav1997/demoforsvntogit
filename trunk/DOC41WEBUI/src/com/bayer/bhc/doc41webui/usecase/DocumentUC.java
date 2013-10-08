@@ -355,8 +355,8 @@ public class DocumentUC {
 		return documentType;
 	}
 
-	public boolean isPartnerNumberUsed(String type) throws Doc41BusinessException {
-		return getDocType(type).isPartnerNumberUsed();
+	public String getPartnerNumberType(String type) throws Doc41BusinessException {
+		return getDocType(type).getPartnerNumberType();
 	}
 	
 
@@ -460,6 +460,10 @@ public class DocumentUC {
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("getBatchObjectsForCustomer",e);
 		}
+	}
+
+	public boolean isPartnerNumberUsed(String type) throws Doc41BusinessException {
+		return !StringTool.isTrimmedEmptyOrNull(getPartnerNumberType(type));
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.validation.Errors;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
@@ -17,8 +18,8 @@ public abstract class SDDocumentType implements DocumentType {
 	private static final String SAP_OBJECT_SHIPPING_UNIT = "YTMWF_TRKO";
 
 	@Override
-	public boolean isPartnerNumberUsed() {
-		return true;
+	public String getPartnerNumberType() {
+		return Doc41Constants.PARTNER_TYPE_CARRIER;
 	}
 
 	//implements method from UploadDocumentType

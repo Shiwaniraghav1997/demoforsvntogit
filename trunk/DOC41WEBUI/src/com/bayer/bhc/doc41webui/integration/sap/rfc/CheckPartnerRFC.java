@@ -16,6 +16,7 @@ public class CheckPartnerRFC extends AbstractDoc41RFC<UserPartner>{
 	//TODO
 	private static final String OUT_NAME1 = "";
 	private static final String OUT_NAME2 = "";
+	private static final String OUT_TYPE = "";
 	
 	private static final String RETURNCODE_OK = "0";
 
@@ -56,6 +57,7 @@ public class CheckPartnerRFC extends AbstractDoc41RFC<UserPartner>{
             	up.setPartnerNumber(pFunction.getImportParameterList().getString(IN_PARTNER));
             	up.setPartnerName1(exportParameterList.getString(OUT_NAME1));
             	up.setPartnerName2(exportParameterList.getString(OUT_NAME2));
+            	up.setPartnerType(exportParameterList.getString(OUT_TYPE));
 				mResult.add(up);
             }
         }

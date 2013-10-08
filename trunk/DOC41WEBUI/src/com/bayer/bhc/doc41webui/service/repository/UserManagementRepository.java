@@ -419,6 +419,7 @@ public class UserManagementRepository extends AbstractRepository {
 			newPartner.setPartnerNumber(userPartnerDC.getPartnerNumber());
 			newPartner.setPartnerName1(userPartnerDC.getPartnerName1());
 			newPartner.setPartnerName2(userPartnerDC.getPartnerName2());
+			newPartner.setPartnerType(userPartnerDC.getPartnerType());
 			newPartnerList.add(newPartner );
 		}
 		return newPartnerList;
@@ -506,6 +507,7 @@ public class UserManagementRepository extends AbstractRepository {
 			newPartner.setPartnerNumber(partner.getPartnerNumber());
 			newPartner.setPartnerName1(partner.getPartnerName1());
 			newPartner.setPartnerName2(partner.getPartnerName2());
+			newPartner.setPartnerType(partner.getPartnerType());
 			newPartner.setChangedBy(usr.getCwid());
 			newPartner.setCreatedBy(usr.getCwid());
 			userManagementDAO.saveUserPartner(newPartner);

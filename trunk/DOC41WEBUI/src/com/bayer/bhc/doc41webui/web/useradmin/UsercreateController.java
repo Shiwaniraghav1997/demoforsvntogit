@@ -39,6 +39,11 @@ public class UsercreateController extends AbstractDoc41Controller {
 	public List<SelectionItem> addAllCountriesList(){
 		return getDisplaytextUC().getCountryCodes();
 	}
+	
+	@ModelAttribute("supportedPartnerTypes")
+	public String[] addSupportedPartnerTypes(){
+		return getUserManagementUC().getSupportedPartnerTypes();
+	}
 		
 	@Override
 	protected boolean hasPermission(User usr, HttpServletRequest request) {

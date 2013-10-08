@@ -252,6 +252,9 @@ public class UserEditForm implements Serializable{
 				up.setPartnerName1(split[1]);
 				if(split.length>2){
 					up.setPartnerName2(split[2]);
+					if(split.length>3){
+						up.setPartnerType(split[3]);
+					}
 				}
 			}
 			

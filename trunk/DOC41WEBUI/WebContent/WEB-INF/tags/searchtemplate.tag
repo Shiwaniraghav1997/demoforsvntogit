@@ -64,7 +64,7 @@
 							<c:if test="${searchForm.partnerNumberUsed && (empty showPartnerNumber or showPartnerNumber)}">
 								<th><doc41:translate label="PartnerNumber" /></th>
 								<td><form:select path="partnerNumber"
-										items="${user.partners}" cssClass="portlet-form-input-field"
+										items="${searchForm.partners}" cssClass="portlet-form-input-field"
 										cssStyle="width:240px;" itemLabel="partnerLabel"
 										itemValue="partnerNumber" />
 									<doc41:error path="partnerNumber" /></td>

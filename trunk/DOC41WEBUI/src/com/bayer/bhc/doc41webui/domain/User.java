@@ -380,4 +380,14 @@ public class User extends DomainObject {
 		return false;
 	}
 	
+	public List<UserPartner> getPartnersByType(String partnerNumberType) {
+		List<UserPartner> filteredPartners = new ArrayList<UserPartner>();
+		for (UserPartner userPartner : partners) {
+			if(StringTool.equals(userPartner.getPartnerType(),partnerNumberType)){
+				filteredPartners.add(userPartner);
+			}
+		}
+		return filteredPartners;
+	}
+	
 }

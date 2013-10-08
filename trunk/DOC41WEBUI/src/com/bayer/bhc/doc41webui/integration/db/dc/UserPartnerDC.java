@@ -39,6 +39,10 @@ public class UserPartnerDC
 	String cPartnerName2;
 	public static final String FIELD_PARTNERNAME2 = "PartnerName2";
 
+	/** Maps DB-Column: partner_type */
+	String cPartnerType;
+	public static final String FIELD_PARTNERTYPE = "PartnerType";
+
 	/** The master Class of this class. */
 	public final Class<DataCarrier> MASTER_CLASS = DataCarrier.class;
 
@@ -47,12 +51,12 @@ public class UserPartnerDC
 		setDBTablename( UserPartnerDC.class, "[DOC41WEB_MGR].D41_USER_PARTNER" );
 	}
 
-	private static final long serialVersionUID = 20130724031312059L;
+	private static final long serialVersionUID = 20131008015429145L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_USERPARTNERDC = java.math.BigDecimal.class;
 
 	@SuppressWarnings("unchecked")
 	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_USERID, FIELD_PARTNERNUMBER, FIELD_PARTNERNAME1, FIELD_PARTNERNAME2};
+	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_USERID, FIELD_PARTNERNUMBER, FIELD_PARTNERNAME1, FIELD_PARTNERNAME2, FIELD_PARTNERTYPE};
 	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
 
 	static {
@@ -61,6 +65,7 @@ public class UserPartnerDC
 			FIELD_META.put( FIELD_PARTNERNUMBER,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_PARTNERNAME1,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_PARTNERNAME2,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
+			FIELD_META.put( FIELD_PARTNERTYPE,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 		} catch ( Exception e ) {
 			throw new InitException( "Failed to detect return types of the getter methods of UserPartnerDC!", null );
 		}
@@ -598,6 +603,100 @@ public class UserPartnerDC
 		return getBasicDCColumnMetaData( FIELD_PARTNERNAME2 );
 	}
 	// END Method getColumnMetaDataPartnerName2
+
+
+	// START Method getPartnerType generated
+	/**
+	 * Maps DB-Column: partner_type
+	 * Logical type: STRING
+	 */
+	public String getPartnerType() {
+		return cPartnerType;
+	}
+	// END Method getPartnerType
+
+
+	// START Method setPartnerType generated
+	/**
+	 * Maps DB-Column: partner_type
+	 * Logical type: STRING
+	 */
+	public void setPartnerType( String pPartnerType ) {
+		cPartnerType = StringTool.trimmedEmptyToNull( pPartnerType );
+		forgetOriginalValue( FIELD_PARTNERTYPE );
+		touchField( FIELD_PARTNERTYPE );
+	}
+	// END Method setPartnerType
+
+
+	// START Method getFormattedPartnerType generated
+	/**
+	 * Maps DB-Column: partner_type
+	 * Logical type: STRING
+	 */
+	public String getFormattedPartnerType() {
+		return hasInvalidValue( FIELD_PARTNERTYPE ) ? getOriginalValue( FIELD_PARTNERTYPE ) : getPool().formatString( cPartnerType );
+	}
+	// END Method getFormattedPartnerType
+
+
+	// START Method setFormattedPartnerType generated
+	/**
+	 * Maps DB-Column: partner_type
+	 * Logical type: STRING
+	 */
+	public void setFormattedPartnerType( String pPartnerType )
+		throws java.text.ParseException
+	{
+		setPartnerType( null );
+		memorizeOriginalValue( FIELD_PARTNERTYPE, pPartnerType );
+		setPartnerType( getPool().parseString( pPartnerType ) );
+	}
+	// END Method setFormattedPartnerType
+
+
+	// START Method getFormattedHTMLPartnerType generated
+	/**
+	 * Maps DB-Column: partner_type
+	 * Logical type: STRING
+	 */
+	public String getFormattedHTMLPartnerType() {
+		return StringTool.escapeHTML( getFormattedPartnerType() );
+	}
+	// END Method getFormattedHTMLPartnerType
+
+
+	// START Method getToStringPartnerType generated
+	/**
+	 * Maps DB-Column: partner_type
+	 * Logical type: STRING
+	 */
+	public String getPartnerTypeToString() {
+		return StringTool.nullToEmpty(getPartnerType());
+	}
+	// END Method getToStringPartnerType
+
+
+	// START Method setFromStringPartnerType generated
+	/**
+	 * Maps DB-Column: partner_type
+	 * Logical type: STRING
+	 */
+	public void setPartnerTypeFromString( String pPartnerType ) {
+		setPartnerType( StringTool.emptyToNull( pPartnerType ) );
+	}
+	// END Method setFromStringPartnerType
+
+
+	// START Method getColumnMetaDataPartnerType generated
+	/**
+	 * Maps DB-Column: partner_type
+	 * Logical type: STRING
+	 */
+	public BasicDCColumnMetaData getColumnMetaDataForPartnerType() {
+		return getBasicDCColumnMetaData( FIELD_PARTNERTYPE );
+	}
+	// END Method getColumnMetaDataPartnerType
 
 
 	// START Protected ( insert your personal code here ) -- do not modify this line!!

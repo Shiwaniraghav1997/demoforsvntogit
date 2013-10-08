@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.container.VendorBatchForm;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
+import com.bayer.bhc.doc41webui.domain.UserPartner;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.SupplierCOADocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -26,6 +28,8 @@ public class SupCoaUploadController extends UploadController {
 	public VendorBatchForm getVBatch(@RequestParam() String type) throws Doc41BusinessException{
 		VendorBatchForm form = new VendorBatchForm();
 		form.setType(type);
+		List<UserPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
+		form.setPartners(partners);
 		return form;
 	}
 	

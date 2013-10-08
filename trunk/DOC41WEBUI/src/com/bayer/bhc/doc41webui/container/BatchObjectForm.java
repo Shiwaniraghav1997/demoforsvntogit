@@ -1,5 +1,9 @@
 package com.bayer.bhc.doc41webui.container;
 
+import java.util.List;
+
+import com.bayer.bhc.doc41webui.domain.UserPartner;
+
 public class BatchObjectForm {
 
 	private String type;
@@ -8,6 +12,7 @@ public class BatchObjectForm {
 	private String material;
 	private String batch;
 	private String order;
+	private List<UserPartner> partners;
 	public String getType() {
 		return type;
 	}
@@ -44,11 +49,18 @@ public class BatchObjectForm {
 	public void setOrder(String order) {
 		this.order = order;
 	}
+	public List<UserPartner> getPartners() {
+		return partners;
+	}
+	public void setPartners(List<UserPartner> partners) {
+		this.partners = partners;
+	}
 	@Override
 	public String toString() {
 		return "BatchObjectForm [type=" + type + ", partnerNumber="
 				+ partnerNumber + ", plant=" + plant + ", material=" + material
-				+ ", batch=" + batch + ", order=" + order + "]";
+				+ ", batch=" + batch + ", order=" + order + ", partners="
+				+ partners + "]";
 	}
 	
 	

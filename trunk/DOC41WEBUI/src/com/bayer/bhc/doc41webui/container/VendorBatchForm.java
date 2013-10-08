@@ -1,11 +1,16 @@
 package com.bayer.bhc.doc41webui.container;
 
+import java.util.List;
+
+import com.bayer.bhc.doc41webui.domain.UserPartner;
+
 public class VendorBatchForm {
 
 	private String type;
 	private String partnerNumber;
 	private String vendorBatch;
 	private String plant;
+	private List<UserPartner> partners;
 	public String getType() {
 		return type;
 	}
@@ -30,11 +35,17 @@ public class VendorBatchForm {
 	public void setPlant(String plant) {
 		this.plant = plant;
 	}
+	public List<UserPartner> getPartners() {
+		return partners;
+	}
+	public void setPartners(List<UserPartner> partners) {
+		this.partners = partners;
+	}
 	@Override
 	public String toString() {
 		return "VendorBatchForm [type=" + type + ", partnerNumber="
 				+ partnerNumber + ", vendorBatch=" + vendorBatch + ", plant="
-				+ plant + "]";
+				+ plant + ", partners=" + partners + "]";
 	}
 	
 	
