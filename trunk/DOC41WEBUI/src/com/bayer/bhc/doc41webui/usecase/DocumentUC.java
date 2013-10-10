@@ -269,7 +269,7 @@ public class DocumentUC {
 		}
 	}
 	
-	public List<HitListEntry> searchDocuments(String type, String objectId, Map<String, String> attributeValues, int maxResults, boolean maxVersionOnly) throws Doc41BusinessException {
+	public List<HitListEntry> searchDocuments(String type, List<String> objectIds, Map<String, String> attributeValues, int maxResults, boolean maxVersionOnly) throws Doc41BusinessException {
 		try{
 			DocMetadata metadata = getMetadata(type);
 //			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
@@ -278,7 +278,7 @@ public class DocumentUC {
 			List<String> sapObjList = docDef.getSapObjList();
 			List<HitListEntry> allResults = new ArrayList<HitListEntry>();
 			for (String sapObj : sapObjList) {
-				List<HitListEntry> oneResult = kgsRFCService.findDocs(d41id, sapObj, objectId, attributeValues, maxResults, maxVersionOnly);
+				List<HitListEntry> oneResult = kgsRFCService.findDocs(d41id, sapObj, objectIds, attributeValues, maxResults, maxVersionOnly);
 				allResults.addAll(oneResult);
 			}
 			

@@ -46,7 +46,8 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
             if (pInputParms != null) {
             	String d41id = (String) pInputParms.get(0);
             	String sapObj = (String) pInputParms.get(1);
-                String objectId = (String) pInputParms.get(2);
+                @SuppressWarnings("unchecked")
+				List<String> objectIds = (List<String>) pInputParms.get(2);
                 Integer maxResults = (Integer) pInputParms.get(3);
                 Boolean maxVersionOnly = (Boolean) pInputParms.get(4);
                 @SuppressWarnings("unchecked")
@@ -59,8 +60,8 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 				sapInput.setValue(IN_MAX_VER_ONLY,sapBooleanToChar(maxVersionOnly));
 				int paramNumber=1;
 				JCoParameterList tableParameterList = pFunction.getTableParameterList();
-				if(!StringTool.isTrimmedEmptyOrNull(objectId)){
-					setParamObjectID(objectId,sapObj,paramNumber++,sapInput,tableParameterList);
+				if(objectIds!=null && !objectIds.isEmpty()){
+					setParamObjectIDs(objectIds,sapObj,paramNumber++,sapInput,tableParameterList);
 				}
 				for (String key : attribValues.keySet()) {
 					String value = attribValues.get(key);
@@ -91,17 +92,18 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 		table.setValue(IN_LOW,value);
 	}
 
-	private void setParamObjectID(String objectId, String sapObj, int paramNumber,
+	private void setParamObjectIDs(List<String> objectIds, String sapObj, int paramNumber,
 			JCoParameterList sapInput, JCoParameterList tableParameterList) {
 		sapInput.setValue(IN_OBJ_TYPE+paramNumber, sapObj);
 //		sapInput.setValue(IN_ATT_NAME+paramNumber, arg1);
 		
 		JCoTable table = tableParameterList.getTable(IT_OBJID_RANGE+paramNumber);
-		table.appendRow();
-		table.setValue(IN_SIGN, "I");
-		table.setValue(IN_OPTION, "EQ");
-		table.setValue(IN_LOW,objectId);
-		
+		for (String objectId : objectIds) {
+			table.appendRow();
+			table.setValue(IN_SIGN, "I");
+			table.setValue(IN_OPTION, "EQ");
+			table.setValue(IN_LOW,objectId);
+		}
 	}
 	
 	

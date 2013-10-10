@@ -69,12 +69,8 @@ public class SearchController extends AbstractDoc41Controller {
 					documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), objectIds, searchForm.getAttributeValues(), searchForm.getViewAttributes());
 				
 					if(!result.hasErrors()){
-						List<HitListEntry> documents = new ArrayList<HitListEntry>();
-						for (String objectId : objectIds) {
-							List<HitListEntry> oneResult = documentUC.searchDocuments(type, StringTool.emptyToNull(
-									objectId), searchForm.getAttributeValues(), MAX_RESULTS+1, true);
-							documents.addAll(oneResult);
-						}
+							List<HitListEntry> documents = documentUC.searchDocuments(type, 
+									objectIds, searchForm.getAttributeValues(), MAX_RESULTS+1, true);
 						if(documents.size()>MAX_RESULTS){
 							result.rejectValue("table", "ToManyResults");
 						} else {
