@@ -5,14 +5,15 @@ $(function(){
 			return false;
 		},
 		format: function(s, table) {
-            return moment(s, "MM-DD-YYYY");
+            return moment(s, "MM-DD-YYYY").toDate();
 		},
 		format: function(s, table, cell, cellIndex) {
 			if (s) {
 				var c = table.config, ci = c.headerList[cellIndex],
 				format = ci.dateFormat || $.tablesorter.getData( ci, c.headers[cellIndex], 'dateFormat') || c.dateFormat;
 				s = s.replace(/\s+/g," ").replace(/[\-.,]/g, "/"); // escaped - because JSHint in Firefox was showing it as an error
-				return moment(s, format);
+				var m = moment(s, format);
+				return m.toDate();
 			}
 			return s;
 		},
