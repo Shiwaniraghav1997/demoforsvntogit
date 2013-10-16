@@ -58,15 +58,15 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 				sapInput.setValue(IN_D41ID,d41id);
 				sapInput.setValue(IN_MAXHIT,maxResults);
 				sapInput.setValue(IN_MAX_VER_ONLY,sapBooleanToChar(maxVersionOnly));
-				int paramNumber=1;
 				JCoParameterList tableParameterList = pFunction.getTableParameterList();
 				if(objectIds!=null && !objectIds.isEmpty()){
-					setParamObjectIDs(objectIds,sapObj,paramNumber++,sapInput,tableParameterList);
+					setParamObjectIDs(objectIds,sapObj,1,sapInput,tableParameterList);
 				}
+				int attribParamNumber=1;
 				for (String key : attribValues.keySet()) {
 					String value = attribValues.get(key);
 					if(!StringTool.isTrimmedEmptyOrNull(value)){
-						setParamValue(key,value,sapObj,paramNumber++,sapInput,tableParameterList);
+						setParamValue(key,value,sapObj,attribParamNumber++,sapInput,tableParameterList);
 					}
 				}
             } else {
@@ -82,14 +82,14 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 
 	private void setParamValue(String key, String value, String sapObj, int paramNumber,
 			JCoParameterList sapInput, JCoParameterList tableParameterList) {
-		sapInput.setValue(IN_OBJ_TYPE+paramNumber, sapObj);
+//		sapInput.setValue(IN_OBJ_TYPE+paramNumber, sapObj);
 		sapInput.setValue(IN_ATT_NAME+paramNumber, key);
 		
 		JCoTable table = tableParameterList.getTable(IT_VALUE_RANGE+paramNumber);
 		table.appendRow();
 		table.setValue(IN_SIGN, "I");
 		table.setValue(IN_OPTION, "EQ");
-		table.setValue(IN_LOW,value);
+		table.setValue(IN_LOW,value.toUpperCase());
 	}
 
 	private void setParamObjectIDs(List<String> objectIds, String sapObj, int paramNumber,
