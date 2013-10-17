@@ -26,6 +26,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="related/serverlibs/sapjco3.jar">
 		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/DOC41WEBUI/related/libsource/sapjco3-javadoc.zip!/"/>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
