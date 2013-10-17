@@ -52,6 +52,7 @@ public class GetCrepInfoRFC extends AbstractDoc41RFC<ContentRepositoryInfo>{
 //            processReturnTable(pFunction);
         	checkReturnCode(pFunction,OUT_RETURNCODE,null);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
+            System.out.println(hasElement(exportParameterList,"EEEE"));
             ContentRepositoryInfo crep = new ContentRepositoryInfo();
             crep.setContentRepository(exportParameterList.getString(OUT_CONT_REP));
             crep.setDocClass(exportParameterList.getString(OUT_DOC_CLASS));

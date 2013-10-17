@@ -11,6 +11,6 @@ public interface UploadDocumentType extends DocumentType{
 	
 	public String getPermissionUpload();
 
-	public String checkForUpload(Errors errors, DocumentUC documentUC, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)throws Doc41BusinessException;
+	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)throws Doc41BusinessException;
 	
 }

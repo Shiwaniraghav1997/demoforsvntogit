@@ -30,7 +30,7 @@ public class DeliveryCertUploadDocumentType extends
 	}
 
 	@Override
-	public String checkForUpload(Errors errors, DocumentUC documentUC,
+	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
 			String partnerNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
@@ -56,7 +56,7 @@ public class DeliveryCertUploadDocumentType extends
 		
 		
 		//TODO SAP OBJECT
-		return null;
+		return new CheckForUpdateResult(null,null);
 	}
 
 }

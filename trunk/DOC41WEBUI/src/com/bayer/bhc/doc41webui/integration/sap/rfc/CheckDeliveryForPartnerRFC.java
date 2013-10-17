@@ -16,6 +16,7 @@ public class CheckDeliveryForPartnerRFC extends AbstractDoc41RFC<SDReferenceChec
 	//TODO
 	private static final String IN_REFERENCE = "???";
 	private static final String OUT_RETURNCODE = "EV_RETURN";
+	private static final String OUT_VKORG = "???";
 	
 	//???
 	private static final String RETURNCODE_SHIPPING_UNIT_NUMBER_OK = "???";
@@ -63,7 +64,14 @@ public class CheckDeliveryForPartnerRFC extends AbstractDoc41RFC<SDReferenceChec
             JCoParameterList sapInput = pFunction.getImportParameterList();
             String referenceNumber = sapInput.getString(IN_REFERENCE);
             
-			mResult.add(mapReturnCodeToResult(returnCode,referenceNumber));
+			SDReferenceCheckResult result = mapReturnCodeToResult(returnCode,referenceNumber);
+			
+			if(hasElement(exportParameterList,OUT_VKORG)){
+				String vkOrg = exportParameterList.getString(OUT_VKORG);
+				result.setVkOrg(vkOrg);
+			}
+			
+			mResult.add(result);
         }
         Doc41Log.get().debug(CheckDeliveryForPartnerRFC.class, null, "processResult():EXIT");
         return mResult;

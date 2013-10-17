@@ -23,7 +23,7 @@ public abstract class SDDocumentType implements DocumentType {
 	}
 
 	//implements method from UploadDocumentType
-	public String checkForUpload(Errors errors, DocumentUC documentUC,
+	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException {
 //		if(true)return SAP_OBJECT_DELIVERY;
 		
@@ -41,12 +41,14 @@ public abstract class SDDocumentType implements DocumentType {
 			errors.rejectValue("objectId",""+deliveryCheck.getError());
 		} 
 		
+		String vkOrg = deliveryCheck.getVkOrg();
+		
 		if(deliveryCheck.isDeliveryNumber()){
-			return SAP_OBJECT_DELIVERY;
+			return new CheckForUpdateResult(SAP_OBJECT_DELIVERY,vkOrg);
 		} else if (deliveryCheck.isShippingUnitNumber()){
-			return SAP_OBJECT_SHIPPING_UNIT;
+			return new CheckForUpdateResult(SAP_OBJECT_SHIPPING_UNIT,vkOrg);
 		} else {
-			return null;
+			return new CheckForUpdateResult(null,vkOrg);
 		}
 		
 		

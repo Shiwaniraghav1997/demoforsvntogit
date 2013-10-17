@@ -13,6 +13,7 @@ public class SDReferenceCheckResult extends DomainObject {
 	private String referenceNumber;
 	private int referenceType;
 	private String error;
+	private String vkOrg;
 	
 	public SDReferenceCheckResult(String referenceNumber, int referenceType,
 			String error) {
@@ -29,6 +30,12 @@ public class SDReferenceCheckResult extends DomainObject {
 	}
 	public String getError() {
 		return error;
+	}
+	public String getVkOrg() {
+		return vkOrg;
+	}
+	public void setVkOrg(String vkOrg) {
+		this.vkOrg = vkOrg;
 	}
 	
 	

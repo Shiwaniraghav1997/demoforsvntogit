@@ -42,6 +42,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.AWBDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ArtworkDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.BOLDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CMRDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCountryDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCustomerDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertUploadDocumentType;
@@ -205,7 +206,7 @@ public class DocumentUC {
 
 
 	public void setAttributesForNewDocument(String type, String fileId,
-			Map<String, String> attributeValues, String objId,String fileName, String sapObject) throws Doc41BusinessException {
+			Map<String, String> attributeValues, String objId,String fileName, String sapObject,String vkOrg) throws Doc41BusinessException {
 		try{
 			DocMetadata metadata = getMetadata(type);
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
@@ -215,6 +216,7 @@ public class DocumentUC {
 			if(!StringTool.isTrimmedEmptyOrNull(fileName) && metadata.isFileNameAttribAvailable()){
 				attributeValues.put(metadata.getFileNameAttibKey(), fileName);
 			}
+			//TODO do something with vkOrg
 			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),crepInfo.getDocClass(),objId,sapObject,attributeValues);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("setAttributesForNewDocument",e);
@@ -307,24 +309,28 @@ public class DocumentUC {
 		}
 	}
 	
-	public String checkForUpload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException{
-		String sapObject = getDocTypeForUpload(type).checkForUpload(errors, this, partnerNumber, objectId, attributeValues,viewAttributes);
+	public CheckForUpdateResult checkForUpload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException{
+		CheckForUpdateResult checkResult = getDocTypeForUpload(type).checkForUpload(errors, this, partnerNumber, objectId, attributeValues,viewAttributes);
+		String sapObjectFromCheck = checkResult.getSapObject();
+		String vkOrg = checkResult.getVkOrg();
 		DocMetadata metadata = getMetadata(type);
 		DocTypeDef docDef = metadata.getDocDef();
 		List<String> sapObjList = docDef.getSapObjList();
-		if(StringTool.isTrimmedEmptyOrNull(sapObject)){//no mapping configured, only allowed if only one busob in metadata
+		String realSapObject;
+		if(StringTool.isTrimmedEmptyOrNull(sapObjectFromCheck)){//no mapping configured, only allowed if only one busob in metadata
 			if(sapObjList.size()==1){
-				return sapObjList.get(0);
+				realSapObject = sapObjList.get(0);
 			} else {
 				throw new Doc41BusinessException("no SAP_OBJECT mapping in DocType, but "+sapObjList.size()+" possible values in metadata for type "+type);
 			}
 		} else { //compare sapobj from mapping with metadata
-			if(sapObjList.contains(sapObject)){
-				return sapObject;
+			if(sapObjList.contains(sapObjectFromCheck)){
+				realSapObject = sapObjectFromCheck;
 			} else {
-				throw new Doc41BusinessException("SAP_OBJECT "+sapObject+" not in metadata of type "+type);
+				throw new Doc41BusinessException("SAP_OBJECT "+sapObjectFromCheck+" not in metadata of type "+type);
 			}
 		}
+		return new CheckForUpdateResult(realSapObject, vkOrg);
 	}
 	
 	public void checkForDownload(Errors errors, String type, String partnerNumber, List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException{

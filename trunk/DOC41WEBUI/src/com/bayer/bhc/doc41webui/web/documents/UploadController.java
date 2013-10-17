@@ -18,6 +18,7 @@ import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -63,7 +64,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		if(result.hasErrors()){
 			return failedURL;
 		}
-		String sapObject = documentUC.checkForUpload(result, type, 
+		CheckForUpdateResult checkResult = documentUC.checkForUpload(result, type, 
 				uploadForm.getPartnerNumber(), uploadForm.getObjectId(), uploadForm.getAttributeValues(),
 				uploadForm.getViewAttributes());
 		if(result.hasErrors()){
@@ -86,7 +87,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 			return failedURL;
 		} 
 		//set attributes in sap
-		documentUC.setAttributesForNewDocument(type,uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getObjectId(),uploadForm.getFileName(),sapObject);
+		documentUC.setAttributesForNewDocument(type,uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getObjectId(),uploadForm.getFileName(),checkResult.getSapObject(),checkResult.getVkOrg());
 		
 		
 		return "redirect:/documents/uploadsuccess?type="+type+"&uploadurl="+getSuccessURL();

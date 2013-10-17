@@ -35,7 +35,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 	}
 
 	@Override
-	public String checkForUpload(Errors errors, DocumentUC documentUC,
+	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
 			String partnerNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
@@ -43,7 +43,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 		
 		// no RFC check needed
 
-		return SAP_OBJECT;
+		return new CheckForUpdateResult(SAP_OBJECT,null);
 	}
 
 	@Override

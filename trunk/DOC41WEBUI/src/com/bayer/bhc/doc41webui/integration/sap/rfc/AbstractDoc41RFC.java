@@ -13,7 +13,9 @@ import com.bayer.bhc.doc41webui.integration.sap.util.RFCCaller;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
+import com.sap.conn.jco.JCoListMetaData;
 import com.sap.conn.jco.JCoParameterList;
+import com.sap.conn.jco.JCoRecordMetaData;
 import com.sap.conn.jco.JCoTable;
 
 public abstract class AbstractDoc41RFC<E> implements RFCCaller<E> {
@@ -144,6 +146,17 @@ public abstract class AbstractDoc41RFC<E> implements RFCCaller<E> {
 			}
 			throw new SAPException("return code "+codeCol+" is "+returnCode+" but should have been "+RETURNCODE_OK+msg,null);
 		}
+	}
+
+
+	protected boolean hasElement(JCoParameterList parameterList, String fieldName) {
+		JCoListMetaData listMetaData = parameterList.getListMetaData();
+		return listMetaData.hasField(fieldName);
+	}
+	
+	protected boolean hasElement(JCoTable table, String fieldName) {
+		JCoRecordMetaData recordMetaData = table.getRecordMetaData();
+		return recordMetaData.hasField(fieldName);
 	}
 	
 }
