@@ -13,7 +13,7 @@
 			<div class="portlet-section-header-title">
 				<doc41:translate label="Upload Successful"/><doc41:translate label="${type}"/>
 			</div>
-			<aclass="portlet-form-button" href='${uploadurl}?type=${type}'><doc41:translate label="NewUpload"/></a>
+			<a class="portlet-form-button" href='${uploadurl}?type=${type}'><doc41:translate label="NewUpload"/></a>
 		</div>
 		
 		<div class="portlet-section-body">
