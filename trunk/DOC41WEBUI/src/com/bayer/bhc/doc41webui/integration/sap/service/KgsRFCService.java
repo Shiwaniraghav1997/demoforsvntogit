@@ -44,23 +44,28 @@ public class KgsRFCService extends AbstractSAPJCOService {
         for (DocTypeDef docTypeDef : docTypeDefs) {
         	String d41id = docTypeDef.getD41id();
         	if(set.contains(d41id)){
-        		Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "start Metadata loading for doc type "+d41id);
-        		DocMetadata metadata = new DocMetadata(docTypeDef);
-        		//content repo
-        		metadata.setContentRepository(getContentRepo(d41id));
-        		//attributes for all languages
-        		List<Attribute> attributes = getAttributes(d41id,languageCodes);
-        		metadata.initAttributes(attributes);
-        		//predefined attrib values
-        		Map<String,List<String>> attrValues = getAttrValues(d41id);
-        		for (Attribute attribute : attributes) {
-        			List<String> values = attrValues.get(attribute.getName());
-        			attribute.setValues(values);
-        		}
+        		try {
+					Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "start Metadata loading for doc type "+d41id);
+					DocMetadata metadata = new DocMetadata(docTypeDef);
+					//content repo
+					metadata.setContentRepository(getContentRepo(d41id));
+					//attributes for all languages
+					List<Attribute> attributes = getAttributes(d41id,languageCodes);
+					metadata.initAttributes(attributes);
+					//predefined attrib values
+					Map<String,List<String>> attrValues = getAttrValues(d41id);
+					for (Attribute attribute : attributes) {
+						List<String> values = attrValues.get(attribute.getName());
+						attribute.setValues(values);
+					}
 
 //        		textKeysToTranslate.add(docTypeDef.getSapObj());
-        		metadataMap.put(d41id, metadata);
-        		Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "Metadata for doc type "+d41id+" loaded");
+					metadataMap.put(d41id, metadata);
+					Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "Metadata for doc type "+d41id+" loaded");
+				} catch (Doc41ServiceException e) {
+					Doc41Log.get().error(getClass(), UserInSession.getCwid(), "error during metadata loading");
+					Doc41Log.get().error(getClass(), UserInSession.getCwid(), e);
+				}
         	}
 		}
         //translations for doc type names
