@@ -8,7 +8,7 @@
 	<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 	<script type="text/javascript">
-		tswidgets = [ 'uitheme','zebra' ];
+		tswidgets = [ 'zebra' ];
 		
 		function chooseILot(type,number,materialNumber,materialText,plant,batch,vendor,vendorBatch){
 			window.location ="supcoaupload?type="+type+"&number="+number

@@ -14,7 +14,7 @@
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
 	<script type="text/javascript">
-		tswidgets = [ 'uitheme','zebra' ];
+		tswidgets = [ 'zebra' ];
 		
 		function openDocument(docId,type){
 			window.location ="download?type="+type+"&docId="+docId;

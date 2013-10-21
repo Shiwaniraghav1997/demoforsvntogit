@@ -8,7 +8,7 @@
 	<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 	<script type="text/javascript">
-		tswidgets = [ 'uitheme','zebra' ];
+		tswidgets = [ 'zebra' ];
 		
 		function chooseBatchObject(type,objectId,materialNumber,materialText,plant,batch,supplier){
 			window.location ="delcertupload?type="+type+"&objectId="+objectId
