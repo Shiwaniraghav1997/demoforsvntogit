@@ -105,11 +105,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 	
 	
 	private boolean hasRolePermission(User usr, Object handler, HttpServletRequest request) throws Doc41BusinessException{
-		Object realHandler = handler;
-		if(handler instanceof HandlerMethod){
-			HandlerMethod hm = (HandlerMethod) handler;
-			realHandler = hm.getBean();
-		}
+		Object realHandler = getRealHandler(handler);
 		if(realHandler instanceof AbstractDoc41Controller){
 			AbstractDoc41Controller d41Controller = (AbstractDoc41Controller) realHandler;
 			return d41Controller.hasPermission(usr,request);
@@ -117,10 +113,20 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 		return true;
 	}
 
+
+	private Object getRealHandler(Object handler) {
+		Object realHandler = handler;
+		if(handler instanceof HandlerMethod){
+			HandlerMethod hm = (HandlerMethod) handler;
+			realHandler = hm.getBean();
+		}
+		return realHandler;
+	}
+
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, org.springframework.web.servlet.ModelAndView modelAndView) throws Exception {
 		try{
 			// do the postRender intercepter job:
-			String ctrl = this.getClass().getName();
+			String ctrl = getRealHandler(handler).getClass().getName();
 			StringTokenizer st = new StringTokenizer(ctrl, ".");
 			while (st.hasMoreTokens())  ctrl = st.nextToken();
 
@@ -153,7 +159,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			HttpSession session= request.getSession();
 			SessionDataDC dbSessionDC = (SessionDataDC) request.getAttribute(DB_SESSION_DC_REQ_ATTR);
 			persistSessionData(usr,session,dbSessionDC);
-			Doc41Log.get().logWebMetrix(request, this, request.getRequestURI());
+			Doc41Log.get().logWebMetrix(request, getRealHandler(handler), request.getRequestURI());
 		}
 	}
 
