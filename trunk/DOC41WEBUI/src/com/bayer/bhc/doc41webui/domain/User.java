@@ -352,12 +352,33 @@ public class User extends DomainObject {
 	public String toString() {
 		return "User [cwid=" + cwid + ", surname=" + surname + ", firstname="
 				+ firstname + ", email=" + email + ", phone=" + phone
-				+ ", type=" + type + ", active=" + active
-				+ ", locale=" + locale + ", readOnly=" + readOnly
-				+ ", timeZone=" + timeZone + ", permissions=" + permissions
-				+ ", company=" + company + "]";
+				+ ", type=" + type + ", active=" + active + ", roles=" + roles
+				+ ", partners=" + partners + ", countries=" + countries
+				+ ", plants=" + plants + ", locale=" + locale + ", readOnly="
+				+ readOnly + ", timeZone=" + timeZone + ", permissions="
+				+ permissions + ", company=" + company + "]";
 	}
 	
+	public String getWebMetrixOutput() {
+		return "cwid=" + cwid + ", surname=" + surname + ", firstname="
+				+ firstname + ", email=" + email + ", phone=" + phone
+				+ ", type=" + type + ", active=" + active + ", roles=" + roles
+				+ ", partners=" + getPartnerNumbers() + ", countries=" + countries
+				+ ", plants=" + plants + ", locale=" + locale + ", readOnly="
+				+ readOnly + ", timeZone=" + timeZone + ", company=" + company;
+	}
+	
+	private List<String> getPartnerNumbers() {
+		if(partners==null){
+			return null;
+		}
+		List<String> numbers = new ArrayList<String>();
+		for (UserPartner up : partners) {
+			numbers.add(up.getPartnerNumber());
+		}
+		return numbers;
+	}
+
 	public boolean hasPartner(String partnerNumber){
 		if(partners!=null){
 			for (UserPartner userPartner : partners) {

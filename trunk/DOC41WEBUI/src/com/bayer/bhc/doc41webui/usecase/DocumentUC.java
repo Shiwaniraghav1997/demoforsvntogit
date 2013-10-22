@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.common.logging.Doc41LogEntry;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.ContentRepositoryInfo;
@@ -189,6 +190,7 @@ public class DocumentUC {
 			//test docstatus
 			boolean docPresent = kgsRFCService.testDocStatus(guid,crep);
 			if(docPresent){
+				logWebMetrix("DOC_UPLOADED",guid,null);
 				return guid;
 			} else {
 				return null;
@@ -298,7 +300,7 @@ public class DocumentUC {
 			URI docURL = kgsRFCService.getDocURL(crepInfo.getContentRepository(), docId);
 		
 			String statusText = httpClientService.downloadDocumentToResponse(docURL,targetResponse,docId);
-		
+			logWebMetrix("DOC_DOWNLOADED",docId,statusText);
 			return statusText;
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("downloadDocument",e);
@@ -466,6 +468,13 @@ public class DocumentUC {
 
 	public boolean isPartnerNumberUsed(String type) throws Doc41BusinessException {
 		return !StringTool.isTrimmedEmptyOrNull(getPartnerNumberType(type));
+	}
+	
+	
+	private void logWebMetrix(String action, String docId, String statusText) {
+		String loggedInUser = UserInSession.getCwid();
+		Doc41Log.get().logWebMetrix(this.getClass(),new Doc41LogEntry(loggedInUser, loggedInUser, "DOCUMENTS", action, 
+				docId, statusText, null, null, null, null, null, null, null),loggedInUser);
 	}
 
 }

@@ -14,6 +14,7 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.common.logging.Doc41LogEntry;
 import com.bayer.bhc.doc41webui.common.paging.PagingData;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -23,6 +24,7 @@ import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.domain.UserPartner;
 import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.service.repository.UserManagementRepository;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 /**
  * User management use case implementation. Finds, edits, creates user. Also used for to active or deactive user accounts. 
@@ -53,6 +55,7 @@ public class UserManagementUC {
             Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(), "createUser() - user cwid '"+pUser.getCwid()+"'.");
             // audit
             // getDoc41AuditService().doAudit(this.getClass(), Doc41AuditEntry.ACTION_CREATE_USER, "user cwid '"+pUser.getCwid()+"'.", null, null, null, null, null, null, null, null, null);
+            logWebMetrix(pUser, "USER_CREATE");
         } catch (Doc41ExceptionBase e) {
             throw new Doc41BusinessException(Doc41ErrorMessageKeys.USR_CREATE_FAILED, e);
         }
@@ -73,7 +76,8 @@ public class UserManagementUC {
             // logging
             Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(), "editUser() - user cwid '"+pUser.getCwid()+"'.");
             // audit
-            // getDoc41AuditService().doAudit(this.getClass(), Doc41AuditEntry.ACTION_EDIT_USER, "user cwid '"+pUser.getCwid()+"'.", null, null, null, null, null, null, null, null, null);            
+            // getDoc41AuditService().doAudit(this.getClass(), Doc41AuditEntry.ACTION_EDIT_USER, "user cwid '"+pUser.getCwid()+"'.", null, null, null, null, null, null, null, null, null);
+            logWebMetrix(pUser, "USER_EDIT");
         } catch (Doc41ExceptionBase e) {
             throw new Doc41BusinessException(Doc41ErrorMessageKeys.USR_EDIT_FAILED, e);
         }
@@ -164,16 +168,20 @@ public class UserManagementUC {
                 user = getUserManagementRepository().getUserByCwid(pCwid);
             
                 if (user != null) {
-	                if (user.getActive() == null || user.getActive().booleanValue()) {
+                	String wmAction;
+					if (user.getActive() == null || user.getActive().booleanValue()) {
 	                    user.setActive(Boolean.FALSE);
+	                    wmAction="USER_DEACTIVATE";
 	                } else {
 	                    user.setActive(Boolean.TRUE);
+	                    wmAction="USER_ACTIVATE";
 	                }
 	                getUserManagementRepository().updateUser(user, false,true,false,false,false);
 	                // logging
 	                Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(), "toggleUserActivation() - user cwid '"+pCwid+"'.");
 	                // audit
-	                // getDoc41AuditService().doAudit(this.getClass(), Doc41AuditEntry.ACTION_EDIT_USER, "user cwid '"+pCwid+"' is active?: '"+user.getActive()+"'", null, null, null, null, null, null, null, null, null);            
+	                // getDoc41AuditService().doAudit(this.getClass(), Doc41AuditEntry.ACTION_EDIT_USER, "user cwid '"+pCwid+"' is active?: '"+user.getActive()+"'", null, null, null, null, null, null, null, null, null);
+	                logWebMetrix(user, wmAction);
                 }
             } catch (Doc41ExceptionBase e) {
                 throw new Doc41BusinessException(Doc41ErrorMessageKeys.USR_TOGGLE_ACTIVATION_FAILED, e);
@@ -199,6 +207,13 @@ public class UserManagementUC {
 
 	public String[] getSupportedPartnerTypes() {
 		return Doc41Constants.SUPPORTED_PARTNER_TYPES;
+	}
+	
+	private void logWebMetrix(User changedUser, String action){
+		String loggedInUser = UserInSession.getCwid();
+		String info = changedUser.getWebMetrixOutput();
+		Doc41Log.get().logWebMetrix(this.getClass(),new Doc41LogEntry(loggedInUser, loggedInUser, "USER_MANAGEMENT", action, 
+				StringTool.maxRString(info, 750, "..."), changedUser.getCwid(), null, null, null, null, null, null, null),loggedInUser);
 	}
 
 }
