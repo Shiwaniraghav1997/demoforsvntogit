@@ -22,19 +22,25 @@ showHeader="false">
 			<th><doc41:translate label="ShippingUnitNumber" /></th>
 			<th><doc41:translate label="ShipTo" /></th>
 			<th><doc41:translate label="SoldTo" /></th>
+			<th><doc41:translate label="From" /></th>
+			<th><doc41:translate label="To" /></th>
 			<th><doc41:translate label="GoodsIssuedDate" /></th>
+			<th><doc41:translate label="OrderingParty" /></th>
 		    </tr>
 		    <colgroup>
-		    	<col width="20%"/>
-		    	<col width="20%"/>
-		    	<col width="20%"/>
-		    	<col width="20%"/>
-		    	<col width="20%"/>
+		    	<col width="10%"/>
+		    	<col width="10%"/>
+		    	<col width="10%"/>
+		    	<col width="10%"/>
+		    	<col width="15%"/>
+		    	<col width="15%"/>
+		    	<col width="15%"/>
+		    	<col width="15%"/>
 		    </colgroup>
 		  </thead>
 		
 		  <tbody class="portlet-table-body">
-		  	<c:forEach items="${deliveryList}" var="delivery"
+		  	<c:forEach items="${deliveryOrShippingUnitList}" var="delivery"
 				varStatus="status">
 				<tr style="cursor: pointer;" onclick="setDeliveryNumber('${delivery.referenceNumber}')">
 					<td><c:out value="${delivery.referenceNumber}"/></td>

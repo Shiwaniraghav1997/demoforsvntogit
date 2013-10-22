@@ -24,6 +24,7 @@ $(document).ready(function() {
 					url = url + popupAppendFunction();
 				}
 				$(this).load(url);
+				$(this).parents('.ui-dialog').attr('tabindex', -1)[0].focus();
 			},
 			close: function(event, ui) {
 				$(this).html('&nbsp;');
