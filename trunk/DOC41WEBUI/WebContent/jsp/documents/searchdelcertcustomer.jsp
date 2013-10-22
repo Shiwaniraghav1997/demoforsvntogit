@@ -1,6 +1,6 @@
 <%@taglib prefix="doc41" uri="doc41-tags"%><doc41:layout
 	activePage="${pageContext.request.servletPath}"
-	jspName="searchdelcertcountry" component="documents" activeTopNav="download"
+	jspName="searchdelcertcustomer" component="documents" activeTopNav="download"
 	activeNav="${searchForm.type}" title="Search Document">
 	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 	<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -8,7 +8,7 @@
 	<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 	
 	
-	<doc41:searchtemplate action="searchdelcertcountry" showCustomAttributes="false" showObjectId="false" showPartnerNumber="true">
+	<doc41:searchtemplate action="searchdelcertcustomer" showCustomAttributes="false" showObjectId="false" showPartnerNumber="true">
 		<jsp:attribute name="fragmentCustomSearchFields">
 			<tr>
 				<th><doc41:translate label="Country" /></th>

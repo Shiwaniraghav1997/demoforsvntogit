@@ -13,20 +13,21 @@ import com.sap.conn.jco.JCoTable;
 public class GetBatchObjectsForSupplierRFC extends AbstractDoc41RFC<QMBatchObject> {
 
 	//TODO
-	private static final String IN_SUPPLIER = "???";
-	private static final String IN_PLANT = "???";
-	private static final String IN_MATERIAL = "???";
-	private static final String IN_BATCH = "???";
-	private static final String IN_ORDER = "???";
+	private static final String IN_SUPPLIER = "IV_SUPPLIER";
+	private static final String IN_PLANT = "IV_PLANT";
+	private static final String IN_MATERIAL = "IV_MATNR";
+	private static final String IN_BATCH = "IV_BATCH";
+	private static final String IN_ORDER = "IV_DOCNUMBER";
 	
 	//		private static final String OUT_RETURNCODE = "EV_RETURN";
 
-	private static final String OT_BATCHES = "???";
-	private static final String OUT_OBJECT_ID = "???";
-	private static final String OUT_MAT_NUMBER = "???";
-	private static final String OUT_MAT_TEXT = "???";
-	private static final String OUT_PLANT = "???";
-	private static final String OUT_BATCH = "???";
+	private static final String CT_BATCHES = "CT_OBJECTS";
+	
+	private static final String OUT_OBJECT_ID = "OBJID";
+	private static final String OUT_MAT_NUMBER = "MATNR";
+	private static final String OUT_MAT_TEXT = "MAKTX";
+	private static final String OUT_PLANT = "PLANT";
+	private static final String OUT_BATCH = "BATCH";
 
 	@Override
 	public void prepareCall(JCoFunction pFunction, List<?> pInputParms)
@@ -66,7 +67,7 @@ public class GetBatchObjectsForSupplierRFC extends AbstractDoc41RFC<QMBatchObjec
         if (pFunction != null) {
 //            processReturnTable(pFunction);
 //            checkReturnCode(pFunction, OUT_RETURNCODE, null);
-            JCoTable batchesTable = pFunction.getTableParameterList().getTable(OT_BATCHES);
+            JCoTable batchesTable = pFunction.getChangingParameterList().getTable(CT_BATCHES);
             if(batchesTable!=null){
             	for(int i=0;i<batchesTable.getNumRows();i++){
             		QMBatchObject batchObject = new QMBatchObject();

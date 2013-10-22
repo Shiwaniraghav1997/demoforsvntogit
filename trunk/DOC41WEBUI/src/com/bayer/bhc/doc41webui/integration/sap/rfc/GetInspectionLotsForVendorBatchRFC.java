@@ -11,20 +11,21 @@ import com.sap.conn.jco.JCoParameterList;
 import com.sap.conn.jco.JCoTable;
 
 public class GetInspectionLotsForVendorBatchRFC extends AbstractDoc41RFC<InspectionLot>{
-	//TODO
-	private static final String IN_VENDOR = "IV_PARNR???";
-	private static final String IN_VENDOR_BATCH = "???";
-	private static final String IN_PLANT = "???";
+
+	private static final String IN_VENDOR = "IV_VENDOR";
+	private static final String IN_VENDOR_BATCH = "IV_VENDOR_BATCH";
+	private static final String IN_PLANT = "IV_PLANT";
 //	private static final String OUT_RETURNCODE = "EV_RETURN";
 	
-	private static final String OT_INSPECTIONLOTS = "???";
-	private static final String OUT_NUMBER = "???";
-	private static final String OUT_MAT_NUMBER = "???";
-	private static final String OUT_MAT_TEXT = "???";
-	private static final String OUT_PLANT = "???";
-	private static final String OUT_BATCH = "???";
-	private static final String OUT_VENDOR = "???";
-	private static final String OUT_VENDOR_BATCH = "???";
+	private static final String CT_INSPECTIONLOTS = "CT_INSPLOTS4VBATCH";
+	
+	private static final String OUT_NUMBER = "PRUEFLOS";
+	private static final String OUT_MAT_NUMBER = "MATNR";
+	private static final String OUT_MAT_TEXT = "MAKTX";
+	private static final String OUT_PLANT = "PLANT";
+	private static final String OUT_BATCH = "BATCH";
+	private static final String OUT_VENDOR = "VENDOR";
+	private static final String OUT_VENDOR_BATCH = "VENDOR_BATCH";
 	
 
 	@Override
@@ -62,7 +63,7 @@ public class GetInspectionLotsForVendorBatchRFC extends AbstractDoc41RFC<Inspect
         if (pFunction != null) {
 //            processReturnTable(pFunction);
 //            checkReturnCode(pFunction, OUT_RETURNCODE, null);
-            JCoTable inspectionlotsTable = pFunction.getTableParameterList().getTable(OT_INSPECTIONLOTS);
+            JCoTable inspectionlotsTable = pFunction.getChangingParameterList().getTable(CT_INSPECTIONLOTS);
             if(inspectionlotsTable!=null){
             	for(int i=0;i<inspectionlotsTable.getNumRows();i++){
             		InspectionLot inspectionlot = new InspectionLot();
