@@ -32,7 +32,7 @@ function addPartner(partner){
 	var paddedPartner = strPad(partner, <%=Doc41Constants.FIELD_SIZE_PARTNER_NUMBER %>);
 	$.getJSON('checkpartner?partnerNumber='+paddedPartner, function(data) {
 		if(data.successful){
-			addPartnerLine(data.partnerNumber,data.partnerName1,data.partnerName2,date.partnerType);
+			addPartnerLine(data.partnerNumber,data.partnerName1,data.partnerName2,data.partnerType);
 		} else {
 			alert('<doc41:translate label="PartnerNumberInvalid"/>');
 		}
