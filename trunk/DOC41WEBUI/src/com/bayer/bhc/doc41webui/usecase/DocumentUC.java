@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -57,6 +58,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.SupplierCOADocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.TecPackDelReqDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.WaybillDocumentType;
+import com.bayer.ecim.foundation.basic.DateTool;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 @Component
@@ -153,10 +155,11 @@ public class DocumentUC {
 	public List<DeliveryOrShippingUnit> getOpenDeliveries(String type, String carrier) throws Doc41BusinessException {
 		try{
 			DocMetadata metadata = getMetadata(type);
-//			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
 			DocTypeDef docDef = metadata.getDocDef();
 			String d41id = docDef.getD41id();
-			return authorizationRFCService.getOpenDeliveries(d41id,carrier);
+			Date toDate = new Date();
+			Date fromDate = DateTool.modifyDate(toDate,"-90D");
+			return authorizationRFCService.getOpenDeliveries(d41id,carrier,fromDate,toDate);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("getOpenDeliveries",e);
 		}
@@ -164,13 +167,6 @@ public class DocumentUC {
 	
 	public SDReferenceCheckResult checkDeliveryForPartner(String carrier,String referenceNumber) throws Doc41BusinessException{
 		try {
-//			//TODO remove mock SD mock
-//			if(true){
-//				if(referenceNumber.startsWith("V")){
-//					return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_SHIPPING_UNIT_NUMBER, null);
-//				}
-//				return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_DELIVERY_NUMBER, null);
-//			}
 			return authorizationRFCService.checkDeliveryForPartner(carrier, referenceNumber);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("checkDeliveryForPartner",e);

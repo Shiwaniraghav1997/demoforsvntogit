@@ -3,6 +3,7 @@ package com.bayer.bhc.doc41webui.integration.sap.rfc;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.domain.UserPartner;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
@@ -14,9 +15,9 @@ public class CheckPartnerRFC extends AbstractDoc41RFC<UserPartner>{
 	private static final String IN_PARTNER = "IV_LIFNR";
 	private static final String OUT_RETURNCODE = "EV_RETURN";
 	//TODO
-	private static final String OUT_NAME1 = "";
-	private static final String OUT_NAME2 = "";
-	private static final String OUT_TYPE = "";
+	private static final String OUT_NAME1 = "EV_NAME1";
+	private static final String OUT_NAME2 = "EV_NAME2";
+	private static final String OUT_TYPE = "???";
 	
 	private static final String RETURNCODE_OK = "0";
 
@@ -57,7 +58,12 @@ public class CheckPartnerRFC extends AbstractDoc41RFC<UserPartner>{
             	up.setPartnerNumber(pFunction.getImportParameterList().getString(IN_PARTNER));
             	up.setPartnerName1(exportParameterList.getString(OUT_NAME1));
             	up.setPartnerName2(exportParameterList.getString(OUT_NAME2));
-            	up.setPartnerType(exportParameterList.getString(OUT_TYPE));
+            	//TODO
+            	if(hasElement(exportParameterList, OUT_TYPE)){
+            		up.setPartnerType(exportParameterList.getString(OUT_TYPE));
+            	} else {
+            		up.setPartnerType(Doc41Constants.PARTNER_TYPE_CARRIER);
+            	}
 				mResult.add(up);
             }
         }

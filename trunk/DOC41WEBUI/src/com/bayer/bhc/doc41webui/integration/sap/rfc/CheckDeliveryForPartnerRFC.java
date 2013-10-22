@@ -13,17 +13,16 @@ import com.sap.conn.jco.JCoParameterList;
 public class CheckDeliveryForPartnerRFC extends AbstractDoc41RFC<SDReferenceCheckResult>{
 	
 	private static final String IN_PARTNER = "IV_PARNR";
-	//TODO
-	private static final String IN_REFERENCE = "???";
-	private static final String OUT_RETURNCODE = "EV_RETURN";
-	private static final String OUT_VKORG = "???";
+	private static final String IN_REFERENCE = "IV_REF_NO";
 	
-	//???
-	private static final String RETURNCODE_SHIPPING_UNIT_NUMBER_OK = "???";
-	private static final String RETURNCODE_SHIPPING_UNIT_NOT_FOR_PARTNER = "???";
-	private static final String RETURNCODE_DELIVERY_NUMBER_OK = "???";
-	private static final String RETURNCODE_DELIVERY_NOT_FOR_PARTNER = "???";
-	private static final String RETURNCODE_UNKNOWN_NUMBER = "???";
+	private static final String OUT_RETURNCODE = "EV_RETURN";
+	private static final String OUT_VKORG = "EV_VKORG";
+	
+	private static final String RETURNCODE_SHIPPING_UNIT_NUMBER_OK = "A";
+	private static final String RETURNCODE_SHIPPING_UNIT_NOT_FOR_PARTNER = "B";
+	private static final String RETURNCODE_DELIVERY_NUMBER_OK = "C";
+	private static final String RETURNCODE_DELIVERY_NOT_FOR_PARTNER = "D";
+	private static final String RETURNCODE_UNKNOWN_NUMBER = "E";
 	
 
 	@Override

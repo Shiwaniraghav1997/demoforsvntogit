@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.integration.sap.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -47,13 +48,15 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
         }
 	}
 	
-	public List<DeliveryOrShippingUnit> getOpenDeliveries(String d41id, String carrier) throws Doc41ServiceException{
+	public List<DeliveryOrShippingUnit> getOpenDeliveries(String d41id, String carrier, Date fromDate, Date toDate) throws Doc41ServiceException{
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
         		"getOpenDeliveries() - d41id="+d41id+", carrier="+carrier+".");
        
         List<Object> params = new ArrayList<Object>();
         params.add(carrier);
         params.add(d41id);
+        params.add(fromDate);
+        params.add(toDate);
         
         List<DeliveryOrShippingUnit> deliveries = performRFC(params,RFC_NAME_GET_DELIVERIES_WITHOUT_DOC);
         
