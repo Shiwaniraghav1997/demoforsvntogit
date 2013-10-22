@@ -54,8 +54,10 @@ public class DelCertUploadController extends UploadController {
 		}
 		
 		if(result.hasErrors()){
+			List<UserPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
+			batchObjectForm.setPartners(partners);
 			mav.addObject(batchObjectForm);
-			result.reject("NoBatchObjectFound");
+			result.reject("PleaseEnterMandatoryFields");
 			mav.setViewName("documents/delcertupinput");
 			return mav;
 		}
@@ -63,7 +65,7 @@ public class DelCertUploadController extends UploadController {
 		List<QMBatchObject> bos = documentUC.getBatchObjectsForSupplier(partnerNumber,plant, material, batch, order);
 		if(bos.isEmpty()){
 			mav.addObject(batchObjectForm);
-			result.reject("NoInspectionLotFound");
+			result.reject("NoBatchObjectFound");
 			mav.setViewName("documents/delcertupinput");
 		} else if(bos.size()==1){
 			QMBatchObject bo = bos.get(0);

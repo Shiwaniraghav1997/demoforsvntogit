@@ -49,8 +49,10 @@ public class SupCoaUploadController extends UploadController {
 			result.rejectValue("plant","PlantMissing");
 		}
 		if(result.hasErrors()){
+			List<UserPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
+			vendorBatchForm.setPartners(partners);
 			mav.addObject(vendorBatchForm);
-			result.reject("NoInspectionLotFound");
+			result.reject("PleaseEnterMandatoryFields");
 			mav.setViewName("documents/supcoaupinput");
 			return mav;
 		}
