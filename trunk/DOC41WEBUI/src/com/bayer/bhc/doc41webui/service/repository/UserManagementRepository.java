@@ -366,13 +366,16 @@ public class UserManagementRepository extends AbstractRepository {
 	            for (UserCountryDC usercountryDC : countriesInDB) {
 	            	countriesToDelete.add(usercountryDC.getCountryIsoCode());
 				}
-	            Set<String> countriesFromInput = new LinkedHashSet<String>(pUser.getCountries());
-	            
-	            for (String country : countriesFromInput) {
-					if(!countriesToDelete.remove(country)){
-						addCountryToUserInDB(userDC, country, pUser.getLocale());
+	            List<String> countriesFromUserParam = pUser.getCountries();
+	            if(countriesFromUserParam!=null){
+					Set<String> countriesFromInput = new LinkedHashSet<String>(countriesFromUserParam);
+		            
+		            for (String country : countriesFromInput) {
+						if(!countriesToDelete.remove(country)){
+							addCountryToUserInDB(userDC, country, pUser.getLocale());
+						}
 					}
-				}
+	            }
 	            
 	            for (String countryToDelete : countriesToDelete) {
 					removeCountryFromUserInDB(userDC, countryToDelete, pUser.getLocale());
@@ -389,13 +392,16 @@ public class UserManagementRepository extends AbstractRepository {
 	            for (UserPlantDC userplantDC : plantsInDB) {
 	            	plantsToDelete.add(userplantDC.getPlant());
 				}
-	            Set<String> plantsFromInput = new LinkedHashSet<String>(pUser.getPlants());
-	            
-	            for (String plant : plantsFromInput) {
-					if(!plantsToDelete.remove(plant)){
-						addPlantToUserInDB(userDC, plant, pUser.getLocale());
+	            List<String> plantsFromUserParam = pUser.getPlants();
+	            if(plantsFromUserParam!=null){
+					Set<String> plantsFromInput = new LinkedHashSet<String>(plantsFromUserParam);
+		            
+		            for (String plant : plantsFromInput) {
+						if(!plantsToDelete.remove(plant)){
+							addPlantToUserInDB(userDC, plant, pUser.getLocale());
+						}
 					}
-				}
+	            }
 	            
 	            for (String plantToDelete : plantsToDelete) {
 					removePlantFromUserInDB(userDC, plantToDelete, pUser.getLocale());
