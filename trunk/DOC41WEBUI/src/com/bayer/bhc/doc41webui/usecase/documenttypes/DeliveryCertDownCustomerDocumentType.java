@@ -47,6 +47,14 @@ public class DeliveryCertDownCustomerDocumentType extends
 		
 		String material = attributeValues.get(ATTRIB_MATERIAL);
 		String batch = attributeValues.get(ATTRIB_BATCH);
+		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch)){
+			errors.rejectValue("attributeValues['"+ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
+			errors.rejectValue("attributeValues['"+ATTRIB_BATCH+"']","MaterialAndBatchMissing");
+		}
+		
+		if(errors.hasErrors()){
+			return;
+		}
 		List<QMBatchObject> bos = documentUC.getBatchObjectsForCustomer(partnerNumber, delivery, material, batch, countryCode);
 		
 		for (QMBatchObject qmBatchObject : bos) {

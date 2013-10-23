@@ -64,15 +64,15 @@
 							<c:if test="${searchForm.partnerNumberUsed && (empty showPartnerNumber or showPartnerNumber)}">
 								<th><doc41:translate label="PartnerNumber" /></th>
 								<td><form:select path="partnerNumber"
-										items="${searchForm.partners}" cssClass="portlet-form-input-field"
+										items="${searchForm.partners}" cssClass="portlet-form-input-field-mandatory"
 										cssStyle="width:240px;" itemLabel="partnerLabel"
-										itemValue="partnerNumber" />
+										itemValue="partnerNumber" />*
 									<doc41:error path="partnerNumber" /></td>
 							</c:if>
 							<c:if test="${empty showObjectId or showObjectId}">
 								<th><doc41:translate label="ObjectId${searchForm.type}" /></th>
 								<td><form:input path="objectId"
-										cssClass="portlet-form-input-field" maxlength="70" />
+										cssClass="portlet-form-input-field-mandatory" maxlength="70" />*
 									<doc41:error path="objectId" /></td>
 							</c:if>
 						</tr>

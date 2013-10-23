@@ -15,7 +15,7 @@ title="User Management">
 				<div class="portlet-section-header-title">
 					<doc41:translate label="UserImport"/>
 				</div>
-				<a class="portlet-form-button" href=userlist'><doc41:translate label="ButtonCancel"/></a>
+				<a class="portlet-form-button" href='userlist'><doc41:translate label="ButtonCancel"/></a>
 				<a class="portlet-form-button" href='userlookup'><doc41:translate label="ButtonLookup"/></a>
 				<c:if test="${!empty userEditForm.surname}">
 					<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
@@ -102,9 +102,9 @@ title="User Management">
 							<tr>
 								<th><doc41:translate label="TimeZone"/></th>
 								<td>
-								    <form:select path="timeZone" cssClass="portlet-form-input-field">
+								    <form:select path="timeZone" cssClass="portlet-form-input-field-mandatory">
 										<form:options items="${timeZoneList}" itemValue="code" itemLabel="label"/>
-									</form:select>
+									</form:select>*
 								</td>
 								<th><doc41:translate label="Type"/></th>
 								<td><c:out value="${userEditForm.type}"/></td>
@@ -113,16 +113,16 @@ title="User Management">
 							<tr class="portlet-table-alternate">
 								<th><doc41:translate label="Language"/></th>
 								<td>
-								    <form:select path="languageCountry" cssClass="portlet-form-input-field">
+								    <form:select path="languageCountry" cssClass="portlet-form-input-field-mandatory">
 										<form:options items="${languageCountryList}" itemValue="code" itemLabel="label"/>
-									</form:select>
+									</form:select>*
 								</td>
 								<th><doc41:translate label="Status"/></th>
 								<td>
-									<form:select path="active" cssClass="portlet-form-input-field">
+									<form:select path="active" cssClass="portlet-form-input-field-mandatory">
 										<form:option value="false"><doc41:translate label="Inactive"/></form:option>
 										<form:option value="true"><doc41:translate label="Active"/></form:option>
-								   </form:select>
+								   </form:select>*
 								</td>
 							</tr>
 					
@@ -132,7 +132,6 @@ title="User Management">
 			</div>
 			<c:if test="${!empty userEditForm.surname}">
 				<%@include file="roles.jspf"%>
-				<%@include file="partners.jspf"%>
 			</c:if>
 		</form:form>
 	</div>

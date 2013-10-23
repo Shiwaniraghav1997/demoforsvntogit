@@ -37,6 +37,11 @@ public class UserEditForm implements Serializable{
 	
 
 	public void validate(HttpServletRequest request, Errors errors) {
+		if(StringTool.equals(getType(), User.TYPE_EXTERNAL)){
+			checkMandatory("surname",getSurname(),errors);
+			checkMandatory("firstname",getFirstname(),errors);
+			checkMandatory("email",getEmail(),errors);
+		}
 		if(!StringTool.equals(getPassword(), getPasswordRepeated())){
 			errors.rejectValue("passwordRepeated", "pwDifferent", "password and passwordRepeated do not match.");
 		}
@@ -56,8 +61,18 @@ public class UserEditForm implements Serializable{
 				}
 			}
 		}
+		if(roles==null && roles.isEmpty()){
+			errors.reject("noRoles", "at least one role must be selected.");
+		}
 	}
 	
+	private void checkMandatory(String field, String value, Errors errors) {
+		if(StringTool.isTrimmedEmptyOrNull(value)){
+			errors.rejectValue(field, ""+field+"Missing", ""+field+" is mandatory");
+		}
+		
+	}
+
 	public UserEditForm(){
 		super();
 	}

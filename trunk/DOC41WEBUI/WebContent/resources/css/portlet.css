@@ -114,7 +114,15 @@
 	color: black;
 }
 
-
+.portlet-form-input-field-mandatory {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: black;
+	background-color: #FFDDDD;
+}
 
 .portlet-section-header {
 	font-family: 		Verdana, Arial, Helvetica, sans-serif;

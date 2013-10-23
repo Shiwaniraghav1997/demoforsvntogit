@@ -13,7 +13,7 @@
 			<tr>
 				<th><doc41:translate label="Country" /></th>
 				<td>
-					<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${allCountryList}" cssClass="portlet-form-input-field" cssStyle="width:240px;" itemValue="value" itemLabel="label"/><doc41:error path="attributeValues['${keyCountry}']" />
+					<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${allCountryList}" cssClass="portlet-form-input-field-mandatory" cssStyle="width:240px;" itemValue="value" itemLabel="label"/>*<doc41:error path="attributeValues['${keyCountry}']" />
 					
 					<%-- <select id="${keyCountry}" class="portlet-form-input-field"  name="attributeValues['${keyCountry}']">
 						<c:forEach items="${uploadForm.attributePredefValues[keyCountry]}" var="predefValue" varStatus="pdstatus">
@@ -30,9 +30,10 @@
 				<th><doc41:translate label="DeliveryNumber" /></th>
 				<td>
 					<input id="${keyDeliveryNumber}"
-						class="portlet-form-input-field" maxlength="70"
+						class="portlet-form-input-field-mandatory" maxlength="70"
 						name="viewAttributes['${keyDeliveryNumber}']"
-						value="${uploadForm.viewAttributes[keyDeliveryNumber]}" />
+						value="${uploadForm.viewAttributes[keyDeliveryNumber]}" />*
+						<doc41:error path="viewAttributes['${keyDeliveryNumber}']" />
 				</td>
 			</tr>
 			<tr class="portlet-table-alternate">
@@ -42,6 +43,7 @@
 						class="portlet-form-input-field" maxlength="70"
 						name="attributeValues['${keyMaterial}']"
 						value="${uploadForm.attributeValues[keyMaterial]}" />
+						<doc41:error path="attributeValues['${keyMaterial}']" />
 				</td>
 			</tr>
 			<tr>
@@ -51,6 +53,7 @@
 						class="portlet-form-input-field" maxlength="70"
 						name="attributeValues['${keyBatch}']"
 						value="${uploadForm.attributeValues[keyBatch]}" />
+						<doc41:error path="attributeValues['${keyBatch}']" />
 				</td>
 			</tr>
 		</jsp:attribute>

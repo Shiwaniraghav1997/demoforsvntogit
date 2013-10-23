@@ -76,6 +76,8 @@ public class SearchController extends AbstractDoc41Controller {
 						} else {
 							searchForm.setDocuments(documents);
 						}
+					} else {
+						result.reject("PleaseEnterMandatoryFields");
 					}
 				}
 			} else {

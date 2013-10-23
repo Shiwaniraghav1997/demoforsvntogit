@@ -20,6 +20,7 @@ public abstract class CustomizedDocumentForm {
 	private Map<String,String> attributeLabels;
 	private Map<String, String> attributeValues;
 	private Map<String, List<String>> attributePredefValues;
+	private Map<String, Boolean> attributeMandatory;
 	private Map<Integer, String> attributeSeqToKey;
 	
 	private Map<String, String> viewAttributes = new HashMap<String, String>();
@@ -68,6 +69,10 @@ public abstract class CustomizedDocumentForm {
 			Map<String, List<String>> attributePredefValues) {
 		this.attributePredefValues = attributePredefValues;
 	}
+	
+	public Map<String, Boolean> getAttributeMandatory() {
+		return attributeMandatory;
+	}
 
 	public String getPartnerNumber() {
 		return partnerNumber;
@@ -101,6 +106,7 @@ public abstract class CustomizedDocumentForm {
 			attributeValues = new LinkedHashMap<String, String>();
 		}
 		attributePredefValues = new HashMap<String, List<String>>();
+		attributeMandatory = new HashMap<String, Boolean>();
 		attributeSeqToKey = new HashMap<Integer, String>();
 		for (Attribute attribute : attributeDefinitions) {
 			String key = attribute.getName();
@@ -112,6 +118,7 @@ public abstract class CustomizedDocumentForm {
 			List<String> predefValues = attribute.getValues();
 			attributePredefValues.put(key,predefValues);
 			attributeSeqToKey.put(attribute.getSeqNumber(), key);
+			attributeMandatory.put(key, attribute.getMandatory());
 		}
 	}
 

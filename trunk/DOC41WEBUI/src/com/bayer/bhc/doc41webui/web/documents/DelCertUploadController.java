@@ -51,6 +51,8 @@ public class DelCertUploadController extends UploadController {
 		String order = batchObjectForm.getOrder();
 		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch) && StringTool.isTrimmedEmptyOrNull(order)){
 			result.rejectValue("material","MaterialBatchOrderMissing");
+			result.rejectValue("batch","MaterialBatchOrderMissing");
+			result.rejectValue("order","MaterialBatchOrderMissing");
 		}
 		
 		if(result.hasErrors()){

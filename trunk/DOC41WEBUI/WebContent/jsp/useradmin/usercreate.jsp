@@ -42,7 +42,7 @@ title="User Management">
 							<th style="width: 15%"><doc41:translate label="Surname"/></th> 
 							<td style="width: 35%">
 								<c:if test="${userEditForm.type eq 'external'}">
-									<form:input path="surname" cssClass="portlet-form-input-field" maxlength="70"/>
+									<form:input path="surname" cssClass="portlet-form-input-field-mandatory" maxlength="70"/>*
 								</c:if>
 								<c:if test="${userEditForm.type eq 'internal'}">
 									<c:out value="${userEditForm.surname}"/>
@@ -52,7 +52,7 @@ title="User Management">
 							<th style="width: 15%"><doc41:translate label="Password"/></th>
 							<td style="width: 35%">
 								<c:if test="${userEditForm.type eq 'external'}">
-									<form:password path="password" cssClass="portlet-form-input-field"/>
+									<form:password path="password" cssClass="portlet-form-input-field-mandatory"/>*
 								</c:if>
 								<c:if test="${userEditForm.type eq 'internal'}">
 									<doc41:translate label="NotChangeable"/>
@@ -63,7 +63,7 @@ title="User Management">
 							<th><doc41:translate label="Firstname"/></th>
 							<td>
 								<c:if test="${userEditForm.type eq 'external'}">
-									<form:input path="firstname" cssClass="portlet-form-input-field"  maxlength="30"/>
+									<form:input path="firstname" cssClass="portlet-form-input-field-mandatory"  maxlength="30"/>*
 								</c:if>
 								<c:if test="${userEditForm.type eq 'internal'}">
 									<c:out value="${userEditForm.firstname}"/>
@@ -73,7 +73,7 @@ title="User Management">
 							<th><doc41:translate label="RepeatPassword"/></th>
 							<td>
 								<c:if test="${userEditForm.type eq 'external'}">
-									<form:password path="passwordRepeated" cssClass="portlet-form-input-field" />
+									<form:password path="passwordRepeated" cssClass="portlet-form-input-field-mandatory" />*
 								</c:if>
 								<c:if test="${userEditForm.type eq 'internal'}">
 									<doc41:translate label="NotChangeable"/>
@@ -100,7 +100,7 @@ title="User Management">
 							<th><doc41:translate label="Email"/></th>
 							<td>
 								<c:if test="${userEditForm.type eq 'external'}">
-									<form:input path="email" cssClass="portlet-form-input-field"  maxlength="70"/>
+									<form:input path="email" cssClass="portlet-form-input-field-mandatory"  maxlength="70"/>*
 								</c:if>
 								<c:if test="${userEditForm.type eq 'internal'}">
 									<c:out value="${userEditForm.email}"/>
@@ -121,9 +121,9 @@ title="User Management">
 						<tr>
 							<th><doc41:translate label="TimeZone"/></th>
 							<td>
-							    <form:select path="timeZone" cssClass="portlet-form-input-field">
+							    <form:select path="timeZone" cssClass="portlet-form-input-field-mandatory">
 									<form:options items="${timeZoneList}" itemValue="code" itemLabel="label"/>
-								</form:select>
+								</form:select>*
 							</td>
 							<th><doc41:translate label="Type"/></th>
 							<td><c:out value="${userEditForm.type}"/></td>
@@ -132,16 +132,16 @@ title="User Management">
 						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="Language"/></th>
 							<td>
-							    <form:select path="languageCountry" cssClass="portlet-form-input-field">
+							    <form:select path="languageCountry" cssClass="portlet-form-input-field-mandatory">
 									<form:options items="${languageCountryList}" itemValue="code" itemLabel="label"/>
-								</form:select>
+								</form:select>*
 							</td>
 							<th><doc41:translate label="Status"/></th>
 							<td>
-								<form:select path="active" cssClass="portlet-form-input-field">
+								<form:select path="active" cssClass="portlet-form-input-field-mandatory">
 									<form:option value="false"><doc41:translate label="Inactive"/></form:option>
 									<form:option value="true"><doc41:translate label="Active"/></form:option>
-							   </form:select>
+							   </form:select>*
 							</td>
 						</tr>
 						
