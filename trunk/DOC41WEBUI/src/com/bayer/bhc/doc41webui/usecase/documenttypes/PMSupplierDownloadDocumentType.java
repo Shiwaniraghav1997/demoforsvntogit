@@ -17,7 +17,7 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 
 	@Override
 	public String getPartnerNumberType() {
-		return Doc41Constants.PARTNER_TYPE_VENDOR;
+		return Doc41Constants.PARTNER_TYPE_VENDOR_MASTER; //VENDOR;
 	}
 
 	@Override

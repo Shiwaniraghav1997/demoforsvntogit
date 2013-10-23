@@ -17,7 +17,7 @@ public class DeliveryCertDownCustomerDocumentType extends
 	
 	@Override
 	public String getPartnerNumberType() {
-		return Doc41Constants.PARTNER_TYPE_CUSTOMER;
+		return Doc41Constants.PARTNER_TYPE_CUSTOMER_MASTER;//CUSTOMER
 	}
 	
 	@Override

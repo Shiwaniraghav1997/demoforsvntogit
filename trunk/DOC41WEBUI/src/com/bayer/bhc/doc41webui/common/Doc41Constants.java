@@ -45,9 +45,7 @@ public interface Doc41Constants {
     
     public static final int CUSTOMIZATION_VALUES_COUNT = 9;
     
-    public static final String PARTNER_TYPE_CARRIER="X1";
-    public static final String PARTNER_TYPE_SUPPLIER="X2";
-    public static final String PARTNER_TYPE_CUSTOMER="X3";
-    public static final String PARTNER_TYPE_VENDOR="X4";
-    public static final String[] SUPPORTED_PARTNER_TYPES = {PARTNER_TYPE_CARRIER,PARTNER_TYPE_SUPPLIER,PARTNER_TYPE_CUSTOMER,PARTNER_TYPE_VENDOR};
+    public static final String PARTNER_TYPE_VENDOR_MASTER="L";
+    public static final String PARTNER_TYPE_CUSTOMER_MASTER="K";
+    public static final String[] SUPPORTED_PARTNER_TYPES = {PARTNER_TYPE_VENDOR_MASTER,PARTNER_TYPE_CUSTOMER_MASTER};
 }

@@ -16,7 +16,7 @@ public class DeliveryCertUploadDocumentType extends
 		AbstractDeliveryCertDocumentType implements UploadDocumentType{
 	@Override
 	public String getPartnerNumberType() {
-		return Doc41Constants.PARTNER_TYPE_SUPPLIER;
+		return Doc41Constants.PARTNER_TYPE_VENDOR_MASTER;//SUPPLIER
 	}
 	
 	@Override

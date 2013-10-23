@@ -21,7 +21,7 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 
 	@Override
 	public String getPartnerNumberType() {
-		return Doc41Constants.PARTNER_TYPE_SUPPLIER;
+		return Doc41Constants.PARTNER_TYPE_VENDOR_MASTER; //SUPPLIER;
 	}
 
 	@Override

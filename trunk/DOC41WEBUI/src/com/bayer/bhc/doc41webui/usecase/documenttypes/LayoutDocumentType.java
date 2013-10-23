@@ -16,7 +16,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 
 	@Override
 	public String getPartnerNumberType() {
-		return Doc41Constants.PARTNER_TYPE_VENDOR;
+		return Doc41Constants.PARTNER_TYPE_VENDOR_MASTER;//VENDOR;
 	}
 
 	@Override

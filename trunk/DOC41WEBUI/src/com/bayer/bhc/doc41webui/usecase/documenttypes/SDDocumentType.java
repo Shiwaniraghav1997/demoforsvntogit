@@ -19,7 +19,7 @@ public abstract class SDDocumentType implements DocumentType {
 
 	@Override
 	public String getPartnerNumberType() {
-		return Doc41Constants.PARTNER_TYPE_CARRIER;
+		return Doc41Constants.PARTNER_TYPE_VENDOR_MASTER; //CARRIER;
 	}
 
 	//implements method from UploadDocumentType

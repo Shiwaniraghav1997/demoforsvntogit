@@ -14,12 +14,12 @@ import com.sap.conn.jco.JCoParameterList;
 public class CheckPartnerRFC extends AbstractDoc41RFC<UserPartner>{
 	private static final String IN_PARTNER = "IV_LIFNR";
 	private static final String OUT_RETURNCODE = "EV_RETURN";
-	//TODO
 	private static final String OUT_NAME1 = "EV_NAME1";
 	private static final String OUT_NAME2 = "EV_NAME2";
-	private static final String OUT_TYPE = "???";
 	
-	private static final String RETURNCODE_OK = "0";
+	private static final String RETURNCODE_NOT_FOUND = "4";
+	private static final String RETURNCODE_VENDOR_MASTER = "L";
+	private static final String RETURNCODE_CUSTOMER_MASTER = "K";
 
 	@Override
 	public void prepareCall(JCoFunction pFunction, List<?> pInputParms)
@@ -53,16 +53,17 @@ public class CheckPartnerRFC extends AbstractDoc41RFC<UserPartner>{
 //            processReturnTable(pFunction);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
-            if(StringTool.equals(returnCode, RETURNCODE_OK)){
+            if(!StringTool.equals(returnCode, RETURNCODE_NOT_FOUND)){
             	UserPartner up = new UserPartner();
             	up.setPartnerNumber(pFunction.getImportParameterList().getString(IN_PARTNER));
             	up.setPartnerName1(exportParameterList.getString(OUT_NAME1));
             	up.setPartnerName2(exportParameterList.getString(OUT_NAME2));
-            	//TODO
-            	if(hasElement(exportParameterList, OUT_TYPE)){
-            		up.setPartnerType(exportParameterList.getString(OUT_TYPE));
+            	if(StringTool.equals(returnCode, RETURNCODE_CUSTOMER_MASTER)){
+            		up.setPartnerType(Doc41Constants.PARTNER_TYPE_CUSTOMER_MASTER);
+            	} else if(StringTool.equals(returnCode, RETURNCODE_VENDOR_MASTER)){
+            		up.setPartnerType(Doc41Constants.PARTNER_TYPE_VENDOR_MASTER);
             	} else {
-            		up.setPartnerType(Doc41Constants.PARTNER_TYPE_CARRIER);
+            		throw new SAPException("unknown returncode: "+returnCode, null);
             	}
 				mResult.add(up);
             }
