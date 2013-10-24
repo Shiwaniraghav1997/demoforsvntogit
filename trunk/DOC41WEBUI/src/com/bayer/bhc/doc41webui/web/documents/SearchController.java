@@ -1,9 +1,6 @@
 package com.bayer.bhc.doc41webui.web.documents;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +25,6 @@ import com.bayer.bhc.doc41webui.container.SearchForm;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
-import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.AbstractDeliveryCertDocumentType;
@@ -143,45 +139,6 @@ public class SearchController extends AbstractDoc41Controller {
 		if(cwid==null || !cwid.equalsIgnoreCase(UserInSession.getCwid())){
 			throw new Doc41BusinessException("download link for different user");
 		}
-		downloadDoc(type, docId, response);
-	}
-	
-	@RequestMapping(value="/documents/directdownload",method = RequestMethod.GET)
-	public void directDownload(@RequestParam String type, @RequestParam String refId,HttpServletResponse response) throws Doc41BusinessException{
-		if(StringTool.isTrimmedEmptyOrNull(type)){
-			throw new Doc41BusinessException("type missing");
-		}
-		if(StringTool.isTrimmedEmptyOrNull(refId)){
-			throw new Doc41BusinessException("refId missing");
-		}
-		SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(null, refId);
-		if(!deliveryCheck.isOk(true)){
-			throw new Doc41BusinessException(""+deliveryCheck.getError());
-		}
-	
-		Map<String, String> emptyAttributeValues = new HashMap<String,String>();
-		List<HitListEntry> documents = documentUC.searchDocuments(type,Collections.singletonList(refId), emptyAttributeValues, MAX_RESULTS+1, true);
-		if(documents==null || documents.isEmpty()){
-			throw new Doc41BusinessException("NotFound");
-		} else if(documents.size()>MAX_RESULTS){
-			throw new Doc41BusinessException("ToManyResults");
-		} else {
-			Date maxDate = new Date(0);
-			HitListEntry newestDocument=null;
-			for (HitListEntry document : documents) {
-				Date date = document.getArchiveLinkDate();
-				if(date.after(maxDate)){
-					maxDate = date;
-					newestDocument = document;
-				}
-			}
-			String docId = newestDocument.getDocId();
-			downloadDoc(type, docId , response);
-		}
-	}
-	
-	private void downloadDoc(String type, String docId,
-			HttpServletResponse response) throws Doc41BusinessException {
 		documentUC.downloadDocument(response,type,docId);
 	}
 	

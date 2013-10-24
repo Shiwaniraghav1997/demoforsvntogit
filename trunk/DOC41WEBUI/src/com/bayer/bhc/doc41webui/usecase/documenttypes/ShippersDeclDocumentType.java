@@ -1,7 +1,7 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
 
-public class ShippersDeclDocumentType extends SDDocumentType implements DownloadDocumentType {
+public class ShippersDeclDocumentType extends SDDocumentType implements DownloadDocumentType,DirectDownloadDocumentType {
 
 	@Override
 	public String getTypeConst() {
@@ -16,6 +16,11 @@ public class ShippersDeclDocumentType extends SDDocumentType implements Download
 	@Override
 	public String getPermissionDownload() {
 		return "DOC_SHIPDECL_DOWN";
+	}
+	
+	@Override
+	public String getPermissionDirectDownload() {
+		return "DOC_SHIPDECL_DIRECT_DOWN";
 	}
 	
 	//TODO maybe YTMSA will become standard for sd

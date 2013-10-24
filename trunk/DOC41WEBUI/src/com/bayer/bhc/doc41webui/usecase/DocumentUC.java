@@ -51,6 +51,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCountryDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCustomerDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertUploadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DirectDownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.FDACertDocumentType;
@@ -346,6 +347,10 @@ public class DocumentUC {
 		getDocTypeForDownload(type).checkForDownload(errors, this, partnerNumber, objectIds, attributeValues,viewAttributes);
 	}
 	
+	public void checkForDirectDownload(String type, String objectId) throws Doc41BusinessException{
+		getDocTypeForDirectDownload(type).checkForDirectDownload(this, objectId);
+	}
+	
 	private UploadDocumentType getDocTypeForUpload(String type) throws Doc41BusinessException{
 		DocumentType documentType = getDocType(type);
 		if(!(documentType instanceof UploadDocumentType)){
@@ -360,6 +365,14 @@ public class DocumentUC {
 			throw new Doc41BusinessException("doctype not enabled for download: "+type);
 		}
 		return (DownloadDocumentType) documentType;
+	}
+	
+	private DirectDownloadDocumentType getDocTypeForDirectDownload(String type) throws Doc41BusinessException{
+		DocumentType documentType = getDocType(type);
+		if(!(documentType instanceof DirectDownloadDocumentType)){
+			throw new Doc41BusinessException("doctype not enabled for direct download: "+type);
+		}
+		return (DirectDownloadDocumentType) documentType;
 	}
 
 	private DocumentType getDocType(String type) throws Doc41BusinessException {
@@ -381,6 +394,10 @@ public class DocumentUC {
 	
 	public String getDownloadPermission(String type) throws Doc41BusinessException {
 		return getDocTypeForDownload(type).getPermissionDownload();
+	}
+	
+	public String getDirectDownloadPermission(String type) throws Doc41BusinessException {
+		return getDocTypeForDirectDownload(type).getPermissionDirectDownload();
 	}
 
 	public String checkArtworkForVendor(String vendorNumber) throws Doc41BusinessException {

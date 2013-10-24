@@ -9,6 +9,7 @@ import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 public abstract class SDDocumentType implements DocumentType {
 	
@@ -74,6 +75,16 @@ public abstract class SDDocumentType implements DocumentType {
 		if(!deliveryCheck.isOk()){
 			errors.rejectValue("objectId",""+deliveryCheck.getError());
 		} 
+	}
+	
+	public void checkForDirectDownload(DocumentUC documentUC, String objectId)throws Doc41BusinessException{
+		if(StringTool.isTrimmedEmptyOrNull(objectId)){
+			throw new Doc41BusinessException("objectId missing");
+		}
+		SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(null, objectId);
+		if(!deliveryCheck.isOk(true)){
+			throw new Doc41BusinessException(""+deliveryCheck.getError());
+		}
 	}
 	
 }

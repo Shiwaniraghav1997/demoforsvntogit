@@ -1,7 +1,7 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
 
-public class BOLDocumentType extends SDDocumentType implements DownloadDocumentType,UploadDocumentType{
+public class BOLDocumentType extends SDDocumentType implements DownloadDocumentType,UploadDocumentType,DirectDownloadDocumentType{
 
 	@Override
 	public String getTypeConst() {
@@ -21,6 +21,11 @@ public class BOLDocumentType extends SDDocumentType implements DownloadDocumentT
 	@Override
 	public String getPermissionDownload() {
 		return "DOC_BOL_DOWN";
+	}
+	
+	@Override
+	public String getPermissionDirectDownload() {
+		return "DOC_BOL_DIRECT_DOWN";
 	}
 
 }

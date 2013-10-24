@@ -1,7 +1,7 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
 
-public class FDACertDocumentType extends SDDocumentType implements DownloadDocumentType {
+public class FDACertDocumentType extends SDDocumentType implements DownloadDocumentType,DirectDownloadDocumentType {
 
 	@Override
 	public String getTypeConst() {
@@ -16,6 +16,11 @@ public class FDACertDocumentType extends SDDocumentType implements DownloadDocum
 	@Override
 	public String getPermissionDownload() {
 		return "DOC_FDACERT_DOWN";
+	}
+	
+	@Override
+	public String getPermissionDirectDownload() {
+		return "DOC_FDACERT_DIRECT_DOWN";
 	}
 
 }
