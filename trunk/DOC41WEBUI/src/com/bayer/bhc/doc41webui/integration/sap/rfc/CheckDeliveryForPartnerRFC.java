@@ -78,15 +78,15 @@ public class CheckDeliveryForPartnerRFC extends AbstractDoc41RFC<SDReferenceChec
 
 	private SDReferenceCheckResult mapReturnCodeToResult(String returnCode,String referenceNumber) throws SAPException {
 		if(StringTool.equals(returnCode, RETURNCODE_SHIPPING_UNIT_NUMBER_OK)){
-			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_SHIPPING_UNIT_NUMBER, null);
+			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_SHIPPING_UNIT_NUMBER, true);
 		} else if(StringTool.equals(returnCode, RETURNCODE_SHIPPING_UNIT_NOT_FOR_PARTNER)){
-			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_SHIPPING_UNIT_NUMBER, "ShippingUnitDoesNotBelongToCarrier");
+			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_SHIPPING_UNIT_NUMBER, false);
 		} else if(StringTool.equals(returnCode, RETURNCODE_DELIVERY_NUMBER_OK)){
-			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_DELIVERY_NUMBER, null);
+			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_DELIVERY_NUMBER, true);
 		} else if(StringTool.equals(returnCode, RETURNCODE_DELIVERY_NOT_FOR_PARTNER)){
-			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_DELIVERY_NUMBER, "DeliveryDoesNotBelongToCarrier");
+			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_DELIVERY_NUMBER, false);
 		} else if(StringTool.equals(returnCode, RETURNCODE_UNKNOWN_NUMBER)){
-			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_UNKNOWN, "ReferenceNumberUnknown");
+			return new SDReferenceCheckResult(referenceNumber, SDReferenceCheckResult.TYPE_UNKNOWN, false);
 		} else {
 			throw new SAPException("CheckDeliveryForPartnerRFC: unknown return code from SAP: "+returnCode,null);
 		}
