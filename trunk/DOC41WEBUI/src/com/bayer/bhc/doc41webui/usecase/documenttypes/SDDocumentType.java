@@ -46,12 +46,16 @@ public abstract class SDDocumentType implements DocumentType {
 		if(deliveryCheck.isDeliveryNumber()){
 			return new CheckForUpdateResult(SAP_OBJECT_DELIVERY,vkOrg);
 		} else if (deliveryCheck.isShippingUnitNumber()){
-			return new CheckForUpdateResult(SAP_OBJECT_SHIPPING_UNIT,vkOrg);
+			return new CheckForUpdateResult(getSapObjectShippingUnit(),vkOrg);
 		} else {
 			return new CheckForUpdateResult(null,vkOrg);
 		}
 		
 		
+	}
+
+	protected String getSapObjectShippingUnit() {
+		return SAP_OBJECT_SHIPPING_UNIT;
 	}
 	
 	//implements method from DownloadDocumentType

@@ -17,5 +17,11 @@ public class ShippersDeclDocumentType extends SDDocumentType implements Download
 	public String getPermissionDownload() {
 		return "DOC_SHIPDECL_DOWN";
 	}
+	
+	//TODO maybe YTMSA will become standard for sd
+	@Override
+	protected String getSapObjectShippingUnit() {
+		return "YTMSA";
+	}
 
 }
