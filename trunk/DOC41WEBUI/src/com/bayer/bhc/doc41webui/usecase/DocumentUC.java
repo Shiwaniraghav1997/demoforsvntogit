@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,10 +23,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.logging.Doc41LogEntry;
+import com.bayer.bhc.doc41webui.common.util.UrlParamCrypt;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.ContentRepositoryInfo;
@@ -280,6 +283,14 @@ public class DocumentUC {
 			for (String sapObj : sapObjList) {
 				List<HitListEntry> oneResult = kgsRFCService.findDocs(d41id, sapObj, objectIds, attributeValues, maxResults, maxVersionOnly);
 				allResults.addAll(oneResult);
+			}
+			for (HitListEntry hitListEntry : allResults) {
+				Map<String,String> params = new LinkedHashMap<String, String>();
+                params.put(Doc41Constants.URL_PARAM_TYPE,type);
+                params.put(Doc41Constants.URL_PARAM_DOC_ID,hitListEntry.getDocId());
+                params.put(Doc41Constants.URL_PARAM_CWID,UserInSession.getCwid());
+                String key = UrlParamCrypt.encryptParameters(params);
+				hitListEntry.setKey(key);
 			}
 			
 			return allResults;

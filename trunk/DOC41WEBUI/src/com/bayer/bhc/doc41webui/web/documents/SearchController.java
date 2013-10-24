@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
+import com.bayer.bhc.doc41webui.common.util.UrlParamCrypt;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.SearchForm;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
@@ -127,7 +129,20 @@ public class SearchController extends AbstractDoc41Controller {
 	
 	
 	@RequestMapping(value="/documents/download",method = RequestMethod.GET)
-	public void download(@RequestParam String type, @RequestParam String docId,HttpServletResponse response) throws Doc41BusinessException{
+	public void download(@RequestParam String key,HttpServletResponse response) throws Doc41BusinessException{
+		Map<String, String> decryptParameters = UrlParamCrypt.decryptParameters(key);
+		String type = decryptParameters.get(Doc41Constants.URL_PARAM_TYPE);
+		String docId = decryptParameters.get(Doc41Constants.URL_PARAM_DOC_ID);
+		String cwid = decryptParameters.get(Doc41Constants.URL_PARAM_CWID);
+		if(StringTool.isTrimmedEmptyOrNull(type)){
+			throw new Doc41BusinessException("type is missing in download link");
+		}
+		if(StringTool.isTrimmedEmptyOrNull(docId)){
+			throw new Doc41BusinessException("docId is missing in download link");
+		}
+		if(cwid==null || !cwid.equalsIgnoreCase(UserInSession.getCwid())){
+			throw new Doc41BusinessException("download link for different user");
+		}
 		downloadDoc(type, docId, response);
 	}
 	

@@ -16,8 +16,8 @@
 	<script type="text/javascript">
 		tswidgets = [ 'zebra' ];
 		
-		function openDocument(docId,type){
-			window.location ="download?type="+type+"&docId="+docId;
+		function openDocument(key,type){
+			window.location ="download?type="+type+"&key="+key;
 		}
 	</script>
 	
@@ -168,7 +168,7 @@
 				<c:forEach items="${searchForm.documents}" var="document"
 					varStatus="status">
 					<tr style="cursor: pointer;"
-						onclick="openDocument('${document.docId}','${searchForm.type}')">
+						onclick="openDocument('${document.key}','${searchForm.type}')">
 						<td><c:out value="${document.objectId}" /></td>
 						<td>
 							<doc41:formatDate date="${document.storageDate}" zone="${user.timeZone}"></doc41:formatDate>

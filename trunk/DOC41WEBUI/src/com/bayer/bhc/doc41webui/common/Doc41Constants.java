@@ -48,4 +48,9 @@ public interface Doc41Constants {
     public static final String PARTNER_TYPE_VENDOR_MASTER="L";
     public static final String PARTNER_TYPE_CUSTOMER_MASTER="K";
     public static final String[] SUPPORTED_PARTNER_TYPES = {PARTNER_TYPE_VENDOR_MASTER,PARTNER_TYPE_CUSTOMER_MASTER};
+	
+    
+    public static final String URL_PARAM_TYPE = "type";
+	public static final String URL_PARAM_DOC_ID = "docId";
+	public static final String URL_PARAM_CWID = "cwid";
 }

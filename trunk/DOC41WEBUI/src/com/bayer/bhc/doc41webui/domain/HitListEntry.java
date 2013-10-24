@@ -21,6 +21,7 @@ public class HitListEntry implements Serializable {
 	private String documentClass;
 	private String[] customizedValues;
 	private Map<String, String> customizedValuesByKey;
+	private String key;
 	public String getDocId() {
 		return docId;
 	}
@@ -65,6 +66,12 @@ public class HitListEntry implements Serializable {
 	}
 	public Map<String, String> getCustomizedValuesByKey() {
 		return customizedValuesByKey;
+	}
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
 	}
 	
 	
