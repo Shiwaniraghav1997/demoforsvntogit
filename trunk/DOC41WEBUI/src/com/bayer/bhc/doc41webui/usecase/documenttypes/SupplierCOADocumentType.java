@@ -45,13 +45,13 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
 
-		String vendorBatch = viewAttributes.get(VIEW_ATTRIB_VENDOR_BATCH);
+		String vendorBatch = attributeValues.get(VIEW_ATTRIB_VENDOR_BATCH);
 		if(StringTool.isTrimmedEmptyOrNull(vendorBatch)){
-			errors.rejectValue(VIEW_ATTRIB_VENDOR_BATCH,"VendorBatchMissing");
+			errors.reject("VendorBatchMissing");
 		}
-		String plant = viewAttributes.get(VIEW_ATTRIB_PLANT);
+		String plant = attributeValues.get(VIEW_ATTRIB_PLANT);
 		if(StringTool.isTrimmedEmptyOrNull(plant)){
-			errors.rejectValue(VIEW_ATTRIB_PLANT,"PlantMissing");
+			errors.reject("PlantMissing");
 		}
 		
 		if(errors.hasErrors()){
