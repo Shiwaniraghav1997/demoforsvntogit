@@ -59,7 +59,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		String type = uploadForm.getType();
 		uploadForm.initPartnerNumber(documentUC.getPartnerNumberType(type));
 		checkPartnerNumber(result,type,uploadForm.getPartnerNumber());
-		checkObjectId(result,type,uploadForm.getObjectId());
+		checkAndFillObjectId(result,type,uploadForm);
 		checkFileParameter(result,uploadForm.getFile(),uploadForm.getFileId(),uploadForm.getFileName());
 		if(result.hasErrors()){
 			return failedURL;
@@ -93,12 +93,18 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		return "redirect:/documents/uploadsuccess?type="+type+"&uploadurl="+getSuccessURL();
 	}
 
-	private void checkObjectId(BindingResult errors, String type,
-			String objectId) {
+	private void checkAndFillObjectId(BindingResult errors, String type,
+			UploadForm uploadForm) throws Doc41BusinessException {
+		String objectId = uploadForm.getObjectId();
 		if(StringTool.isTrimmedEmptyOrNull(objectId)){
 			errors.rejectValue("objectId","ObjectId"+type+"Missing");
+		} else {
+			int objectIdFillLength = documentUC.getDocumentFillLength(type);
+			if(objectId.length()<objectIdFillLength){
+				objectId = StringTool.minLString(objectId, objectIdFillLength, '0');
+				uploadForm.setObjectId(objectId);
+			}
 		}
-		
 	}
 
 	private void checkPartnerNumber(BindingResult errors, String type,

@@ -42,6 +42,7 @@ public interface Doc41Constants {
     
     public static final int FIELD_SIZE_PARTNER_NUMBER = 10;
     public static final int FIELD_SIZE_PLANT = 4;
+    public static final int FIELD_SIZE_SD_REF_NO = 10;
     
     public static final int CUSTOMIZATION_VALUES_COUNT = 9;
     

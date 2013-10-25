@@ -45,5 +45,9 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 
 	}
 
+	@Override
+	public int getObjectIdFillLength() {
+		return 0;
+	}
 
 }

@@ -22,5 +22,10 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 		//TODO remove mock with BOL type
 //		return "DOC41.14";//BOL
 	}
+	
+	@Override
+	public int getObjectIdFillLength() {
+		return 0;
+	}
 
 }

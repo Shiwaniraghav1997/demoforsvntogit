@@ -61,5 +61,10 @@ public class LayoutDocumentType implements DownloadDocumentType,
 			errors.reject(""+deliveryCheck);
 		}
 	}
+	
+	@Override
+	public int getObjectIdFillLength() {
+		return 0;
+	}
 
 }

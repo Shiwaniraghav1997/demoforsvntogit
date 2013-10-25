@@ -399,6 +399,10 @@ public class DocumentUC {
 	public String getDirectDownloadPermission(String type) throws Doc41BusinessException {
 		return getDocTypeForDirectDownload(type).getPermissionDirectDownload();
 	}
+	
+	public int getDocumentFillLength(String type) throws Doc41BusinessException {
+		return getDocType(type).getObjectIdFillLength();
+	}
 
 	public String checkArtworkForVendor(String vendorNumber) throws Doc41BusinessException {
 		try {
@@ -504,5 +508,6 @@ public class DocumentUC {
 		Doc41Log.get().logWebMetrix(this.getClass(),new Doc41LogEntry(loggedInUser, loggedInUser, "DOCUMENTS", action, 
 				docId, statusText, null, null, null, null, null, null, null),loggedInUser);
 	}
+
 
 }

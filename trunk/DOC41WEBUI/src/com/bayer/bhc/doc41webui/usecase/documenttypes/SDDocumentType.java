@@ -87,4 +87,8 @@ public abstract class SDDocumentType implements DocumentType {
 		}
 	}
 	
+	@Override
+	public int getObjectIdFillLength() {
+		return Doc41Constants.FIELD_SIZE_SD_REF_NO;
+	}
 }

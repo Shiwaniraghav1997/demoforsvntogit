@@ -75,5 +75,10 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 		}
 		errors.reject("inspectionLot does not belong to vendor and batch");
 	}
+	
+	@Override
+	public int getObjectIdFillLength() {
+		return 0;
+	}
 
 }

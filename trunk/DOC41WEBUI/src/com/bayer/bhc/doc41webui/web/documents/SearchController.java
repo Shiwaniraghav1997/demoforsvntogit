@@ -67,6 +67,11 @@ public class SearchController extends AbstractDoc41Controller {
 					String singleObjectId = searchForm.getObjectId();
 					List<String> objectIds = new ArrayList<String>();
 					if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
+						int objectIdFillLength = documentUC.getDocumentFillLength(type);
+						if(singleObjectId.length()<objectIdFillLength){
+							singleObjectId = StringTool.minLString(singleObjectId, objectIdFillLength, '0');
+							searchForm.setObjectId(singleObjectId);
+						}
 						objectIds.add(singleObjectId);
 					}
 					documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), objectIds, searchForm.getAttributeValues(), searchForm.getViewAttributes());

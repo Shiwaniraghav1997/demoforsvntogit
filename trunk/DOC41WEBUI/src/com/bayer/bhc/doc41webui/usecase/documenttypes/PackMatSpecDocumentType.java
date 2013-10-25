@@ -19,5 +19,7 @@ public class PackMatSpecDocumentType extends PMSupplierDownloadDocumentType {
 	public String getPermissionDownload() {
 		return "DOC_PMS_DOWN";
 	}
+	
+	
 
 }

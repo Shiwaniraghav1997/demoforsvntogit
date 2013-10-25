@@ -41,5 +41,10 @@ public class ArtworkDocumentType implements DownloadDocumentType {
 			errors.reject(""+deliveryCheck);
 		}
 	}
+	
+	@Override
+	public int getObjectIdFillLength() {
+		return 0;
+	}
 
 }
