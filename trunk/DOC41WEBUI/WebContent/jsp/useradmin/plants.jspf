@@ -18,7 +18,7 @@ function addPlant(plant){
 		alert('<doc41:translate label="PlantTooLong"/>');
 		return false;
 	}
-	if(/[^A-Z]/g.test(plant)){
+	if(/[^A-Z0-9]/g.test(plant)){
 		alert('<doc41:translate label="OnlyUppercaseLettersInPlant"/>');
 		return false;
 	}
