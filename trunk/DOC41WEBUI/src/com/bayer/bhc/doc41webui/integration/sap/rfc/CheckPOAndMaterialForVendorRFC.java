@@ -10,14 +10,14 @@ import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
 public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
-	//TODO
-	private static final String IN_VENDOR = "";
-	private static final String IN_PO = "";
-	private static final String IN_MATERIAL = "";
-	private static final String OUT_RETURNCODE = "EV_RETURNCODE";
+	private static final String IN_VENDOR = "IV_VENDOR";
+	private static final String IN_PO = "IV_PONUMBER";
+	private static final String IN_MATERIAL = "IV_MATNR";
 	
-	//TODO
-	private static final String RETURNCODE_OK = "OK";
+	private static final String OUT_RETURNCODE = "EV_RETURN";
+	
+	private static final String RETURNCODE_OK = "0";
+	private static final String RETURNCODE_NOT_FOUND = "4";
 
 	
 
@@ -54,7 +54,7 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 		Doc41Log.get().debug(CheckPOAndMaterialForVendorRFC.class, null, "processResult():ENTRY");
 		ArrayList<String> mResult = new ArrayList<String>();
         if (pFunction != null) {
-            processReturnTable(pFunction);
+//            processReturnTable(pFunction);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
             mResult.add(mapReturnCodeToTag(returnCode));
@@ -66,8 +66,8 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 	private String mapReturnCodeToTag(String returnCode) {
 		if(StringTool.equals(returnCode, RETURNCODE_OK)){
 			return null;
-//		} else if(StringTool.equals(returnCode, RETURNCODE_DELIVERY_UNKNOWN)){
-//			return "DeliveryUnknown";
+		} else if(StringTool.equals(returnCode, RETURNCODE_NOT_FOUND)){
+			return "POWithMatNotFoundForVendor";
 //		} else if(StringTool.equals(returnCode, RETURNCODE_WRONG_PARTNER)){
 //			return "DeliveryNotAssignedToPartner";
 //		} else if(StringTool.equals(returnCode, RETURNCODE_WRONG_SHIPPING_UNIT)){

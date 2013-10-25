@@ -12,8 +12,7 @@ import com.bayer.ecim.foundation.basic.StringTool;
 
 public abstract class PMSupplierDownloadDocumentType implements DownloadDocumentType{
 
-	//TODO
-	private static final Object MATERIAL_NUMBER = null;
+	public static final String VIEW_ATTRIB_PO_NUMBER = "poNumber";
 
 	@Override
 	public String getPartnerNumberType() {
@@ -24,21 +23,20 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 	public void checkForDownload(Errors errors, DocumentUC documentUC, String partnerNumber,
 			List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 
-		//TODO
 		if(objectIds.size()==0){
-			errors.rejectValue("objectId","PONumberMissing");
+			errors.rejectValue("objectId","MatNoMissing");
 		}
-		String objectId = objectIds.get(0);
-		String matNumber = attributeValues.get(MATERIAL_NUMBER);
-		if(StringTool.isTrimmedEmptyOrNull(matNumber)){
-			errors.rejectValue("attributeValues['"+MATERIAL_NUMBER+"']","MaterialNumberMissing");
+		String matNumber = objectIds.get(0);
+		String poNumber = viewAttributes.get(VIEW_ATTRIB_PO_NUMBER);
+		if(StringTool.isTrimmedEmptyOrNull(poNumber)){
+			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_PO_NUMBER+"']","PONumberMissing");
 		}
 		
 		if(errors.hasErrors()){
 			return;
 		}
 		
-		String deliveryCheck = documentUC.checkPOAndMaterialForVendor(partnerNumber, objectId, matNumber);
+		String deliveryCheck = documentUC.checkPOAndMaterialForVendor(partnerNumber, poNumber, matNumber);
 		if(deliveryCheck != null){
 			errors.reject(""+deliveryCheck);
 		}
@@ -47,7 +45,7 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 
 	@Override
 	public int getObjectIdFillLength() {
-		return 0;
+		return 18;
 	}
 
 }

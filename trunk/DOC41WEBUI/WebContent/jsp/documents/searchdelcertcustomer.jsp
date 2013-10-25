@@ -16,7 +16,7 @@
 					<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${allCountryList}" cssClass="portlet-form-input-field-mandatory" cssStyle="width:240px;" itemValue="value" itemLabel="label"/>*<doc41:error path="attributeValues['${keyCountry}']" />
 					
 					<%-- <select id="${keyCountry}" class="portlet-form-input-field"  name="attributeValues['${keyCountry}']">
-						<c:forEach items="${uploadForm.attributePredefValues[keyCountry]}" var="predefValue" varStatus="pdstatus">
+						<c:forEach items="${searchForm.attributePredefValues[keyCountry]}" var="predefValue" varStatus="pdstatus">
 							<c:choose>
 								<c:when test="${attributeValue.value ==  predefValue}"><option selected="selected">${predefValue}</option></c:when>
 								<c:otherwise><option>${predefValue}</option></c:otherwise>
@@ -32,7 +32,7 @@
 					<input id="${keyDeliveryNumber}"
 						class="portlet-form-input-field-mandatory" maxlength="70"
 						name="viewAttributes['${keyDeliveryNumber}']"
-						value="${uploadForm.viewAttributes[keyDeliveryNumber]}" />*
+						value="${searchForm.viewAttributes[keyDeliveryNumber]}" />*
 						<doc41:error path="viewAttributes['${keyDeliveryNumber}']" />
 				</td>
 			</tr>
@@ -42,7 +42,7 @@
 					<input id="${keyMaterial}"
 						class="portlet-form-input-field" maxlength="70"
 						name="attributeValues['${keyMaterial}']"
-						value="${uploadForm.attributeValues[keyMaterial]}" />
+						value="${searchForm.attributeValues[keyMaterial]}" />
 						<doc41:error path="attributeValues['${keyMaterial}']" />
 				</td>
 			</tr>
@@ -52,7 +52,7 @@
 					<input id="${keyBatch}"
 						class="portlet-form-input-field" maxlength="70"
 						name="attributeValues['${keyBatch}']"
-						value="${uploadForm.attributeValues[keyBatch]}" />
+						value="${searchForm.attributeValues[keyBatch]}" />
 						<doc41:error path="attributeValues['${keyBatch}']" />
 				</td>
 			</tr>

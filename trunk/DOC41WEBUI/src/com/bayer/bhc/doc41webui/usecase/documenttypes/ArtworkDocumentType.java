@@ -36,7 +36,7 @@ public class ArtworkDocumentType implements DownloadDocumentType {
 			String partnerNumber, List<String> objectIds,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
-		String deliveryCheck = documentUC.checkArtworkForVendor(partnerNumber);
+		String deliveryCheck = documentUC.checkArtworkLayoutForVendor(partnerNumber,getSapTypeId());
 		if(deliveryCheck != null){
 			errors.reject(""+deliveryCheck);
 		}

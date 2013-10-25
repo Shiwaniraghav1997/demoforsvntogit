@@ -18,19 +18,19 @@
 			  </doc41:topNavEntry>
 			  
 			  <doc41:topNavEntry href="#" title="navDownload" id="download" permission="TOPNAV_DOWNLOAD">
-			  	<doc41:navEntry href="documents/documentsearch?type=PMS" title="Packaging Material Specification" id="PMSDOWN" cssclass="first-child" permission="DOC_PMS_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=PZ" title="Technical Drawing PZ" id="PZDOWN" cssclass="" permission="DOC_PZ_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=SHIPDECL" title="Shippers Declaration" id="SHIPDECLDOWN" cssclass="" permission="DOC_SHIPDECL_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=BOL" title="Bill of Lading" id="BOLDOWN" cssclass="" permission="DOC_BOL_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=WB" title="Waybill" id="WBDOWN" cssclass="" permission="DOC_WB_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=AWB" title="Air Waybill" id="WBDOWN" cssclass="" permission="DOC_AWB_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=FDACERT" title="FDA Certificate" id="FDACERTDOWN" cssclass="" permission="DOC_FDACERT_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=SHIPDECL" title="Shippers Declaration" id="SHIPDECLDOWN" cssclass="" permission="DOC_SHIPDECL_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=CMROUT" title="CMR Outgoing" id="CMROUTDOWN" cssclass="" permission="DOC_CMROUT_DOWN"/>
 			  	<doc41:navEntry href="documents/searchdelcertcountry?type=DELCERTDOWNCOUNTRY" title="Delivery Certificate Country" id="DELCERTDOWNCOUNTRY" cssclass="" permission="DOC_DELCERT_DOWN_COUNTRY"/>
 			  	<doc41:navEntry href="documents/searchdelcertcustomer?type=DELCERTDOWNCUSTOMER" title="Delivery Certificate Customer" id="DELCERTDOWNCUSTOMER" cssclass="" permission="DOC_DELCERT_DOWN_CUSTOMER"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=ARTWORK" title="Artwork Low Res" id="ARTWORKDOWN" cssclass="" permission="DOC_ARTWORK_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=LAYOUT" title="Layout High Res" id="LAYOUTDOWN" cssclass="" permission="DOC_LAYOUT_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=TPACKDELREQ" title="Tech. Pack. and Deliv. Requirements" id="TPACKDELREQDOWN" cssclass="" permission="DOC_TPACKDELREQ_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=CMROUT" title="CMR Outgoing" id="CMROUTDOWN" cssclass="" permission="DOC_CMROUT_DOWN"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=PMS" title="Packaging Material Specification" id="PMSDOWN" cssclass="first-child" permission="DOC_PMS_DOWN"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=PZ" title="Technical Drawing PZ" id="PZDOWN" cssclass="" permission="DOC_PZ_DOWN"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=TPACKDELREQ" title="Tech. Pack. and Deliv. Requirements" id="TPACKDELREQDOWN" cssclass="" permission="DOC_TPACKDELREQ_DOWN"/>
 			  </doc41:topNavEntry>
 			  
 			  <doc41:topNavEntry href="useradmin/userlist" title="navManagement" id="management" permission="TOPNAV_MANAGEMENT">

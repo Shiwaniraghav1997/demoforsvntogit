@@ -28,6 +28,7 @@ import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.AbstractDeliveryCertDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.PMSupplierDownloadDocumentType;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -124,6 +125,17 @@ public class SearchController extends AbstractDoc41Controller {
 		
 		List<SelectionItem> allCountries = getDisplaytextUC().getCountryCodes();
 		map.addAttribute("allCountryList",allCountries);
+		return map;
+	}
+	
+	@RequestMapping(value="/documents/searchpmsupplier",method = RequestMethod.GET)
+	public ModelMap getPMSupplier(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
+		ModelMap map = new ModelMap();
+		SearchForm searchForm2 = get(searchForm, result, ButtonSearch);
+		map.addAttribute(searchForm2);
+		
+		map.addAttribute("keyPONumber",PMSupplierDownloadDocumentType.VIEW_ATTRIB_PO_NUMBER);
+		
 		return map;
 	}
 	

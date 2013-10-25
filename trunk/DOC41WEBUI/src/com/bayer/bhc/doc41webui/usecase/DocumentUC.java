@@ -404,21 +404,14 @@ public class DocumentUC {
 		return getDocType(type).getObjectIdFillLength();
 	}
 
-	public String checkArtworkForVendor(String vendorNumber) throws Doc41BusinessException {
+	public String checkArtworkLayoutForVendor(String vendorNumber,String sapTypeId) throws Doc41BusinessException {
 		try {
-			return authorizationRFCService.checkArtworkForVendor(vendorNumber);
+			return authorizationRFCService.checkArtworkLayoutForVendor(vendorNumber,sapTypeId);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("checkArtworkForVendor",e);
 		}
 	}
 
-	public String checkLayoutForVendor(String vendorNumber) throws Doc41BusinessException {
-		try {
-			return authorizationRFCService.checkLayoutForVendor(vendorNumber);
-		} catch (Doc41ServiceException e) {
-			throw new Doc41BusinessException("checkLayoutForVendor",e);
-		}
-	}
 	
 	
 	public String checkPOAndMaterialForVendor(String vendorNumber, String poNumber, String materialNumber) throws Doc41BusinessException {

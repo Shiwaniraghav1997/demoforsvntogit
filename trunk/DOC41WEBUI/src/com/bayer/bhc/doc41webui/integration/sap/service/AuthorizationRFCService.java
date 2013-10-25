@@ -21,8 +21,7 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_CHECK_DELIVERY_FOR_PARTNER						= "CheckDeliveryForPartner";
 	private static final String RFC_NAME_GET_DELIVERIES_WITHOUT_DOC						="GetDeliveriesWithoutDocument";
 //	private static final String RFC_NAME_CHECK_DELIVERY_EXISTS							="CheckDeliveryNumberExists";
-	private static final String RFC_NAME_CHECK_ARTWORK_FOR_VENDOR						="CheckArtworkForVendor";
-	private static final String RFC_NAME_CHECK_LAYOUT_FOR_VENDOR						="CheckLayoutForVendor";
+	private static final String RFC_NAME_CHECK_ARTWORK_LAYOUT_FOR_VENDOR				="CheckArtworkLayoutForVendor";
 	private static final String RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR				="CheckPOAndMaterialForVendor";
 	private static final String RFC_NAME_CHECK_PARTNER									="CheckPartner";
 	private static final String RFC_NAME_GET_INSPECTION_LOTS_FOR_VENDOR_BATCH			="GetInspectionLotsForVendorBatch";
@@ -80,14 +79,15 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	}
 
 
-	public String checkArtworkForVendor(String vendorNumber) throws Doc41ServiceException{
+	public String checkArtworkLayoutForVendor(String vendorNumber,String sapDocType) throws Doc41ServiceException{
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
         		"checkArtworkForVendor() - vendorNumber="+vendorNumber+".");
        
         List<Object> params = new ArrayList<Object>();
         params.add(vendorNumber);
+        params.add(sapDocType);
         
-        List<String> returnTexts = performRFC(params,RFC_NAME_CHECK_ARTWORK_FOR_VENDOR);
+        List<String> returnTexts = performRFC(params,RFC_NAME_CHECK_ARTWORK_LAYOUT_FOR_VENDOR);
         
         String errorMsg=null;
         if(!returnTexts.isEmpty()){
@@ -96,23 +96,6 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		return errorMsg ;
 	}
 
-
-	public String checkLayoutForVendor(String vendorNumber) throws Doc41ServiceException{
-		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
-        		"checkLayoutForVendor() - vendorNumber="+vendorNumber+".");
-       
-        List<Object> params = new ArrayList<Object>();
-        params.add(vendorNumber);
-        
-        List<String> returnTexts = performRFC(params,RFC_NAME_CHECK_LAYOUT_FOR_VENDOR);
-        
-        String errorMsg=null;
-        if(!returnTexts.isEmpty()){
-        	errorMsg = returnTexts.get(0);
-        }
-		return errorMsg ;
-	}
-	
 	public String checkPOAndMaterialForVendor(String vendorNumber, String poNumber, String materialNumber) throws Doc41ServiceException{
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
         		"checkPOAndMaterialForVendor() - vendorNumber="+vendorNumber+".");
