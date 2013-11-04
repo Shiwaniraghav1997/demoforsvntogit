@@ -58,9 +58,6 @@ public class HitListEntry implements Serializable {
 	public void setDocumentClass(String documentClass) {
 		this.documentClass = documentClass;
 	} 
-	public String[] getCustomizedValues() {
-		return customizedValues;
-	}
 	public void setCustomizedValues(String[] customizedValues) {
 		this.customizedValues = customizedValues;
 	}
@@ -84,6 +81,10 @@ public class HitListEntry implements Serializable {
 				customizedValuesByKey.put(key, value);
 			}
 		}
+	}
+	
+	public String getFileName(){
+		return getCustomizedValuesByKey().get(Doc41Constants.ATTRIB_NAME_FILENAME);
 	}
 
 }

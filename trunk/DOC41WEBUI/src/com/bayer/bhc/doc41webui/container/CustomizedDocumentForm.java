@@ -21,7 +21,6 @@ public abstract class CustomizedDocumentForm {
 	private Map<String, String> attributeValues;
 	private Map<String, List<String>> attributePredefValues;
 	private Map<String, Boolean> attributeMandatory;
-	private Map<Integer, String> attributeSeqToKey;
 	
 	private Map<String, String> viewAttributes = new HashMap<String, String>();
 	
@@ -80,9 +79,6 @@ public abstract class CustomizedDocumentForm {
 	public void setPartnerNumber(String partnerNumber) {
 		this.partnerNumber = partnerNumber;
 	}
-	protected Map<Integer, String> getAttributeSeqToKey() {
-		return attributeSeqToKey;
-	}
 	public boolean isPartnerNumberUsed() {
 		return partnerNumberUsed;
 	}
@@ -107,7 +103,7 @@ public abstract class CustomizedDocumentForm {
 		}
 		attributePredefValues = new HashMap<String, List<String>>();
 		attributeMandatory = new HashMap<String, Boolean>();
-		attributeSeqToKey = new HashMap<Integer, String>();
+		
 		for (Attribute attribute : attributeDefinitions) {
 			String key = attribute.getName();
 			String label = attribute.getTranslation(languageCode);
@@ -117,7 +113,6 @@ public abstract class CustomizedDocumentForm {
 			}
 			List<String> predefValues = attribute.getValues();
 			attributePredefValues.put(key,predefValues);
-			attributeSeqToKey.put(attribute.getSeqNumber(), key);
 			attributeMandatory.put(key, attribute.getMandatory());
 		}
 	}
@@ -130,7 +125,6 @@ public abstract class CustomizedDocumentForm {
 				+ objectId + ", attributeLabels=" + attributeLabels
 				+ ", attributeValues=" + attributeValues
 				+ ", attributePredefValues=" + attributePredefValues
-				+ ", attributeSeqToKey=" + attributeSeqToKey
 				+ ", partnerNumber=" + partnerNumber + ", partnerNumberUsed="
 				+ partnerNumberUsed + "]";
 	}

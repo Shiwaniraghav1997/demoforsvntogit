@@ -273,8 +273,12 @@ public class DocumentUC {
 		}
 	}
 	
-	public List<HitListEntry> searchDocuments(String type, List<String> objectIds, Map<String, String> attributeValues, int maxResults, boolean maxVersionOnly) throws Doc41BusinessException {
+	public List<HitListEntry> searchDocuments(String type, List<String> objectIds,
+			Map<String, String> attributeValues, int maxResults, boolean maxVersionOnly)
+					throws Doc41BusinessException {
 		try{
+			List<Attribute> attributeDefinitions = getAttributeDefinitions(type,false);
+			Map<Integer, String> seqToKey = getSeqToKeyFromDefinitions(attributeDefinitions);
 			DocMetadata metadata = getMetadata(type);
 //			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
 			DocTypeDef docDef = metadata.getDocDef();
@@ -286,10 +290,13 @@ public class DocumentUC {
 				allResults.addAll(oneResult);
 			}
 			for (HitListEntry hitListEntry : allResults) {
+				hitListEntry.initCustValuesMap(seqToKey);
+				
 				Map<String,String> params = new LinkedHashMap<String, String>();
                 params.put(Doc41Constants.URL_PARAM_TYPE,type);
                 params.put(Doc41Constants.URL_PARAM_DOC_ID,hitListEntry.getDocId());
                 params.put(Doc41Constants.URL_PARAM_CWID,UserInSession.getCwid());
+                params.put(Doc41Constants.URL_PARAM_FILENAME,StringTool.encodeURLWithDefaultFileEnc(hitListEntry.getFileName()));
                 String key = UrlParamCrypt.encryptParameters(params);
 				hitListEntry.setKey(key);
 			}
@@ -302,8 +309,18 @@ public class DocumentUC {
 
 
 
+	private Map<Integer, String> getSeqToKeyFromDefinitions(
+			List<Attribute> attributeDefinitions) {
+		Map<Integer, String> attributeSeqToKey = new HashMap<Integer, String>();
+		for (Attribute attribute : attributeDefinitions) {
+			String key = attribute.getName();
+			attributeSeqToKey.put(attribute.getSeqNumber(), key);
+		}
+		return attributeSeqToKey;
+	}
+
 	public String downloadDocument(HttpServletResponse targetResponse, String type,
-			String docId) throws Doc41BusinessException {
+			String docId,String fileName) throws Doc41BusinessException {
 		try{
 			DocMetadata metadata = getMetadata(type);
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
@@ -311,7 +328,7 @@ public class DocumentUC {
 		
 			URI docURL = kgsRFCService.getDocURL(crepInfo.getContentRepository(), docId);
 		
-			String statusText = httpClientService.downloadDocumentToResponse(docURL,targetResponse,docId);
+			String statusText = httpClientService.downloadDocumentToResponse(docURL,targetResponse,docId,fileName);
 			logWebMetrix("DOC_DOWNLOADED",docId,statusText);
 			return statusText;
 		} catch (Doc41ServiceException e) {

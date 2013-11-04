@@ -54,4 +54,7 @@ public interface Doc41Constants {
     public static final String URL_PARAM_TYPE = "type";
 	public static final String URL_PARAM_DOC_ID = "docId";
 	public static final String URL_PARAM_CWID = "cwid";
+	public static final String URL_PARAM_FILENAME = "filename";
+	
+	public static final String ATTRIB_NAME_FILENAME = "FILENAME";
 }

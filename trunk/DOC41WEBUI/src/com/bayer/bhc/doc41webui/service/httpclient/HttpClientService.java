@@ -23,6 +23,7 @@ import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 @Component
 public class HttpClientService {
@@ -58,7 +59,7 @@ public class HttpClientService {
 		}
 	}
 	
-	public String downloadDocumentToResponse(URI getUrl, final HttpServletResponse targetResponse,final String docId) throws Doc41ServiceException{
+	public String downloadDocumentToResponse(URI getUrl, final HttpServletResponse targetResponse,final String docId,final String fileName) throws Doc41ServiceException{
 		final ResponseExtractor<String> responseExtractor = new ResponseExtractor<String>() {
 			
 			@Override
@@ -67,7 +68,7 @@ public class HttpClientService {
 				
 				MediaType contentType = headers.getContentType();
 				targetResponse.setHeader("Content-Type", ""+contentType);
-				targetResponse.setHeader("Content-Disposition", "attachment; filename="+generateFileName(docId,contentType));
+				targetResponse.setHeader("Content-Disposition", "attachment; filename=\""+generateFileName(fileName,docId,contentType)+"\"");
 //		      targetResponse.setHeader("Cache-Control", "no-cache");
 //				targetResponse.setHeader("Pragma", "no-cache");
 				targetResponse.setDateHeader("Expires", 0);
@@ -81,7 +82,10 @@ public class HttpClientService {
 				return response.getStatusText();
 			}
 
-			private String generateFileName(String docId, MediaType contentType) {
+			private String generateFileName(String fileName,String docId, MediaType contentType) {
+				if(!StringTool.isTrimmedEmptyOrNull(fileName)){
+					return fileName;
+				}
 				String extension="";
 				if(contentType.isCompatibleWith(MediaType.valueOf("application/pdf"))){
 					extension=".pdf";

@@ -23,9 +23,6 @@ public class SearchForm extends CustomizedDocumentForm {
 	
 	public void setDocuments(List<HitListEntry> documents) {
 		this.documents = documents;
-		for (HitListEntry document : documents) {
-			document.initCustValuesMap(getAttributeSeqToKey());
-		}
 	}
 
 	public boolean isSearchFilled() {

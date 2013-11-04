@@ -3,12 +3,11 @@ package com.bayer.bhc.doc41webui.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 public class DocMetadata {
 	
-	private static final String ATTRIB_NAME_FILENAME = "FILENAME";
-
 	private DocTypeDef docDef;
 	private List<Attribute> attributesWithFileName;
 	private List<Attribute> attributesWithoutFileName;
@@ -31,7 +30,7 @@ public class DocMetadata {
 		attributesWithFileName = new ArrayList<Attribute>();
 		attributesWithoutFileName = new ArrayList<Attribute>();
 		for (Attribute attribute : attributes) {
-			if(!StringTool.equals(attribute.getName(), ATTRIB_NAME_FILENAME)){
+			if(!StringTool.equals(attribute.getName(), Doc41Constants.ATTRIB_NAME_FILENAME)){
 				attributesWithoutFileName.add(attribute);
 			} else {
 				isFileNameAttribAvailable = true;
@@ -66,7 +65,7 @@ public class DocMetadata {
 	}
 
 	public String getFileNameAttibKey() {
-		return ATTRIB_NAME_FILENAME;
+		return Doc41Constants.ATTRIB_NAME_FILENAME;
 	}
 	
 	
