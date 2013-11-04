@@ -12,7 +12,7 @@ title="User Management">
 		
 			<div class="portlet-section-header">
 				<div class="portlet-section-header-title">
-					<doc41:translate label="CreateUser"/>
+					<doc41:translate label="CreateExternalUser"/>
 				</div>
 				<a class="portlet-form-button" href='userlist'><doc41:translate label="ButtonCancel"/></a>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />

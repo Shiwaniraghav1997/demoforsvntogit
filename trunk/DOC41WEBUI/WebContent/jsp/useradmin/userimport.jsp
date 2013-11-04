@@ -16,7 +16,7 @@ title="User Management">
 					<doc41:translate label="UserImport"/>
 				</div>
 				<a class="portlet-form-button" href='userlist'><doc41:translate label="ButtonCancel"/></a>
-				<a class="portlet-form-button" href='userlookup'><doc41:translate label="ButtonLookup"/></a>
+				<a class="portlet-form-button" href='userlookup'><doc41:translate label="ButtonBack"/></a>
 				<c:if test="${!empty userEditForm.surname}">
 					<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
 				</c:if>

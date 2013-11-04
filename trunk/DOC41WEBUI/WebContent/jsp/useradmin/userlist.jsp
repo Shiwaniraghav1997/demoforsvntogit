@@ -44,8 +44,8 @@ title="User Management">
   	<div id="div-body" class="portlet-body">
 		<div class="portlet-section-header">
 			<div class="portlet-section-header-title"><doc41:translate label="UserOverview"/></div>
-			<a class="portlet-form-button" type="button" href='userlookup'><doc41:translate label="ButtonLookup"/></a>
-			<a class="portlet-form-button" type="button" href='usercreate'><doc41:translate label="ButtonCreate"/></a>
+			<a class="portlet-form-button" type="button" href='userlookup'><doc41:translate label="ButtonCreateInternalUser"/></a>
+			<a class="portlet-form-button" type="button" href='usercreate'><doc41:translate label="ButtonCreateExternalUser"/></a>
 		</div>
 		
 		

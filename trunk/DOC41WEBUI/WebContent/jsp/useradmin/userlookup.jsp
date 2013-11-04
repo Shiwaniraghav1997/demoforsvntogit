@@ -14,7 +14,7 @@ title="User Management">
 					<doc41:translate label="UserImport"/>
 				</div>
 				<a class="portlet-form-button" href='userlist'><doc41:translate label="ButtonCancel"/></a>
-				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonLookup"/>" />
+				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonCreateInternalUser"/>" />
 			</div>
 		
 			<div class="portlet-section-body">
