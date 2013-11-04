@@ -12,12 +12,11 @@ import com.sap.conn.jco.JCoTable;
 
 public class GetBatchObjectsForCustomerRFC extends AbstractDoc41RFC<QMBatchObject> {
 
-	//TODO
 	private static final String IN_CUSTOMER = "IV_SHIPTO";
 	private static final String IN_DELIVERY = "IV_DELIVERY";
 	private static final String IN_MATERIAL = "IV_MATNR";
 	private static final String IN_BATCH = "IV_MATNR";
-	private static final String IN_COUNTRY = "???";
+	private static final String IN_COUNTRY = "IV_COUNTRY";
 	
 	//		private static final String OUT_RETURNCODE = "EV_RETURN";
 
