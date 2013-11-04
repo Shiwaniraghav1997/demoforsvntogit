@@ -12,7 +12,6 @@ import com.sap.conn.jco.JCoTable;
 
 public class GetBatchObjectsForSupplierRFC extends AbstractDoc41RFC<QMBatchObject> {
 
-	//TODO
 	private static final String IN_SUPPLIER = "IV_SUPPLIER";
 	private static final String IN_PLANT = "IV_PLANT";
 	private static final String IN_MATERIAL = "IV_MATNR";
