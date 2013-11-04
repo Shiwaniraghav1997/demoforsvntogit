@@ -2,6 +2,7 @@ package com.bayer.bhc.doc41webui.integration.db;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -104,6 +105,10 @@ public class LdapDAO {
 
     public AILAPerson createUser(AILAPerson person) throws Doc41TechnicalException {
     	if(isDevSystem()){ //can be replaced by dummy implementation with some database sequence for the cwid
+    		if (StringUtils.equals(person.getFirstName(), "Donald") && StringUtils.equals(person.getLastName(), "Demo")) {
+    			person.setCwid("DDEMO");
+    			return person;
+    		}
     		throw new Doc41TechnicalException(getClass(), "no createUser on DEV or WORKSTATION");
     	}
     	long startTime=0;
