@@ -2,6 +2,7 @@ package com.bayer.bhc.doc41webui.container;
 
 import java.util.List;
 
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.UserPartner;
 
 public class BatchObjectForm {
@@ -52,8 +53,14 @@ public class BatchObjectForm {
 	public List<UserPartner> getPartners() {
 		return partners;
 	}
-	public void setPartners(List<UserPartner> partners) {
-		this.partners = partners;
+//	public void setPartners(List<UserPartner> partners) {
+//		this.partners = partners;
+//	}
+	public void initPartnerNumber(String partnerNumberType) {
+//		this.partnerNumberUsed = !StringTool.isTrimmedEmptyOrNull(partnerNumberType);
+//		if(partnerNumberUsed){
+			partners = UserInSession.get().getPartnersByType(partnerNumberType);
+//		}
 	}
 	@Override
 	public String toString() {

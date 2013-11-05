@@ -91,9 +91,9 @@ public abstract class CustomizedDocumentForm {
 	public List<UserPartner> getPartners() {
 		return partners;
 	}
-	public void setPartners(List<UserPartner> partners) {
-		this.partners = partners;
-	}
+//	public void setPartners(List<UserPartner> partners) {
+//		this.partners = partners;
+//	}
 
 	
 	public void initAttributes(List<Attribute> attributeDefinitions,String languageCode) {
