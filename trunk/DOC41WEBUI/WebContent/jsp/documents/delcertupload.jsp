@@ -33,11 +33,7 @@ title="Upload Document">
 							<th><doc41:translate label="MaterialText" /></th>
 							<td><c:out value="${materialText }"/></td>
 						</tr>
-						
-						<tr>
-							<th><doc41:translate label="MaterialNumber" /></th>
-							<td><c:out value="${uploadForm.attributeValues[keyMaterial]}"/><input id="${keyMaterial}" type="hidden" name="attributeValues['${keyMaterial}']" value="${uploadForm.attributeValues[keyMaterial]}"/></td>
-						</tr>
+	
 						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="Country" /></th>
 							<td>
