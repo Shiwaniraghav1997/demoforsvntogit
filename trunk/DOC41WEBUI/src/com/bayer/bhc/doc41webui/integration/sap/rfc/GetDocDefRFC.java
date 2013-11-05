@@ -16,6 +16,7 @@ public class GetDocDefRFC extends AbstractDoc41RFC<DocTypeDef> {
 	private static final String OUT_D41ID = "D41ID";
 	private static final String OUT_TECH_ID = "DOCTY";
 	private static final String OUT_DESC = "DTEXT";
+	private static final String OUT_ISDVS = "ISDVS";
 	private static final String OUT_SAPOBJ = "BUSOB";
 	private static final String OUT_SAPOBJ2 = "BUSO2";
 	private static final String OUT_SAPOBJ3 = "BUSO3";
@@ -70,6 +71,7 @@ public class GetDocDefRFC extends AbstractDoc41RFC<DocTypeDef> {
             		def.setD41id(table.getString(OUT_D41ID));
             		def.setTechnicalId(table.getString(OUT_TECH_ID));
             		def.setDescription(table.getString(OUT_DESC));
+            		def.setDvs(sapCharToBoolean(table.getChar(OUT_ISDVS)));
             		List<String> sapObjList = new ArrayList<String>();
 					def.setSapObjList(sapObjList);
             		addNotNullOrEmptyToList(sapObjList,table.getString(OUT_SAPOBJ));

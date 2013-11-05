@@ -1,5 +1,8 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
+import java.util.Collections;
+import java.util.Set;
+
 
 public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 	
@@ -26,6 +29,11 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 	@Override
 	public int getObjectIdFillLength() {
 		return 0;
+	}
+	
+	@Override
+	public Set<String> getExcludedAttributes() {
+		return Collections.emptySet();
 	}
 
 }

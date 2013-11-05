@@ -1,7 +1,9 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.validation.Errors;
 
@@ -79,6 +81,11 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 	@Override
 	public int getObjectIdFillLength() {
 		return 0;
+	}
+	
+	@Override
+	public Set<String> getExcludedAttributes() {
+		return Collections.emptySet();
 	}
 
 }

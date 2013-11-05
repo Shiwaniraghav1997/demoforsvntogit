@@ -1,7 +1,9 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.validation.Errors;
 
@@ -15,8 +17,8 @@ public abstract class SDDocumentType implements DocumentType {
 	
 //	private static final String SHIPPING_UNIT_NUMBER = "SHIPPINGUNIT";
 	
-	private static final String SAP_OBJECT_DELIVERY = "LIKP";
-	private static final String SAP_OBJECT_SHIPPING_UNIT = "YTMWF_TRKO";
+	protected static final String SAP_OBJECT_DELIVERY = "LIKP";
+	protected static final String SAP_OBJECT_SHIPPING_UNIT = "YTMSA";
 
 	@Override
 	public String getPartnerNumberType() {
@@ -90,5 +92,10 @@ public abstract class SDDocumentType implements DocumentType {
 	@Override
 	public int getObjectIdFillLength() {
 		return Doc41Constants.FIELD_SIZE_SD_REF_NO;
+	}
+	
+	@Override
+	public Set<String> getExcludedAttributes() {
+		return Collections.emptySet();
 	}
 }

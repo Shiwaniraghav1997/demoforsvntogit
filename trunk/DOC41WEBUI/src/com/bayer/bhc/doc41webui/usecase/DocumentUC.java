@@ -115,7 +115,8 @@ public class DocumentUC {
 		try {
 			if(docMetadataContainer==null){
 				Set<String> languageCodes = translationsRepository.getLanguageCodes().keySet();
-				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes,getSupportedSapDocTypes());
+				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes,getSupportedSapDocTypes(),
+						getExcludedAttributesByD41Id());
 			}
 			String sapDocType = getDocType(type).getSapTypeId();
 			DocMetadata docMetadata = docMetadataContainer.get(sapDocType);
@@ -126,6 +127,14 @@ public class DocumentUC {
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("getMetadata",e);
 		}
+	}
+
+	private Map<String, Set<String>> getExcludedAttributesByD41Id() {
+		Map<String, Set<String>> excludedByD41Id = new HashMap<String, Set<String>>();
+		for (DocumentType docType : documentTypes.values()) {
+			excludedByD41Id.put(docType.getSapTypeId(), docType.getExcludedAttributes());
+		}
+		return excludedByD41Id;
 	}
 
 	private Set<String> getSupportedSapDocTypes() {
@@ -324,9 +333,13 @@ public class DocumentUC {
 		try{
 			DocMetadata metadata = getMetadata(type);
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
-//			DocTypeDef docDef = metadata.getDocDef();
+			DocTypeDef docDef = metadata.getDocDef();
+			String compId = null;
+			if(docDef.isDvs()){
+				compId=fileName;
+			}
 		
-			URI docURL = kgsRFCService.getDocURL(crepInfo.getContentRepository(), docId);
+			URI docURL = kgsRFCService.getDocURL(crepInfo.getContentRepository(), docId,compId);
 		
 			String statusText = httpClientService.downloadDocumentToResponse(docURL,targetResponse,docId,fileName);
 			logWebMetrix("DOC_DOWNLOADED",docId,statusText);

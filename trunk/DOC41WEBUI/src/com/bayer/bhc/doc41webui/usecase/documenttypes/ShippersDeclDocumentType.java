@@ -23,10 +23,9 @@ public class ShippersDeclDocumentType extends SDDocumentType implements Download
 		return "DOC_SHIPDECL_DIRECT_DOWN";
 	}
 	
-	//TODO maybe YTMSA will become standard for sd
 	@Override
 	protected String getSapObjectShippingUnit() {
-		return "YTMSA";
+		return SAP_OBJECT_SHIPPING_UNIT;
 	}
 
 }
