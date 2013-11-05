@@ -18,7 +18,6 @@ import com.bayer.bhc.doc41webui.container.BatchObjectForm;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.domain.QMBatchObject;
-import com.bayer.bhc.doc41webui.domain.UserPartner;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.AbstractDeliveryCertDocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -29,13 +28,13 @@ public class DelCertUploadController extends UploadController {
 	public BatchObjectForm getInput(@RequestParam() String type) throws Doc41BusinessException{
 		BatchObjectForm form = new BatchObjectForm();
 		form.setType(type);
-		List<UserPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
-		form.setPartners(partners);
+		form.initPartnerNumber(documentUC.getPartnerNumberType(type));
 		return form;
 	}
 	
 	@RequestMapping(value="/documents/delcertuplist",method = RequestMethod.GET)
 	public ModelAndView getInspLots(String type,BatchObjectForm batchObjectForm,BindingResult result, ModelAndView mav) throws Doc41BusinessException{
+		batchObjectForm.initPartnerNumber(documentUC.getPartnerNumberType(type));
 		
 		String partnerNumber = batchObjectForm.getPartnerNumber();
 		if(StringTool.isTrimmedEmptyOrNull(partnerNumber)){
@@ -56,8 +55,6 @@ public class DelCertUploadController extends UploadController {
 		}
 		
 		if(result.hasErrors()){
-			List<UserPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
-			batchObjectForm.setPartners(partners);
 			mav.addObject(batchObjectForm);
 			result.reject("PleaseEnterMandatoryFields");
 			mav.setViewName("documents/delcertupinput");
