@@ -32,6 +32,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_GET_ATTR_VALUES = "GetAttrValues";
 //	private static final String RFC_NAME_GET_TEXTS = "GetTexts";
 	private static final String RFC_NAME_CREATE_HTTP_PUT = "CreateHttpPut";
+	private static final String RFC_NAME_CREATE_HTTP_DVS_PUT = "CreateHttpDvsPut";
 	private static final String RFC_NAME_GET_DOC_STATUS = "GetDocStatus";
 	private static final String RFC_NAME_PROCESS_DR_REQ = "ProcessDrReq";
 	private static final String RFC_NAME_FIND_DOCS = "FindDocs";
@@ -193,6 +194,22 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		params.add(contentRepository);
 		params.add(guid);
 		List<URI> result = performRFC(params,RFC_NAME_CREATE_HTTP_PUT);
+		if(result ==null || result.isEmpty()){
+			return null;
+		} else if(result.size()>1){
+			throw new Doc41ServiceException("more than one PutURL returned");
+		} else {
+			return result.get(0);
+		}
+	}
+	
+	public URI getDvsPutUrl(String guid, String contentRepository,String compId) throws Doc41ServiceException {
+		// /BAY0/GZ_D41_GET_DVS_PUTURL
+		List<Object> params = new ArrayList<Object>();
+		params.add(contentRepository);
+		params.add(guid);
+		params.add(compId);
+		List<URI> result = performRFC(params,RFC_NAME_CREATE_HTTP_DVS_PUT);
 		if(result ==null || result.isEmpty()){
 			return null;
 		} else if(result.size()>1){

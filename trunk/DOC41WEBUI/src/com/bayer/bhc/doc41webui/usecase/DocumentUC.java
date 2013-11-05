@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -189,17 +190,23 @@ public class DocumentUC {
 		}
 	}
 
-	public String uploadDocument(String type, File localFile, String contentType) throws Doc41BusinessException {
+	public String uploadDocument(String type, File localFile, String contentType, String fileName) throws Doc41BusinessException {
 		try{
 			DocMetadata metadata = getMetadata(type);
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
 			String crep = crepInfo.getContentRepository();
+			DocTypeDef docDef = metadata.getDocDef();
 			//		String d41id = metadata.getDocDef().getD41id();
 
 			//create guid
 			String guid = UUID.randomUUID().toString();
 			//get put url
-			URI putUrl = kgsRFCService.getPutUrl(guid,crep);
+			URI putUrl;
+			if(docDef.isDvs()){
+				putUrl = kgsRFCService.getDvsPutUrl(guid,crep,fileName);
+			} else {
+				putUrl = kgsRFCService.getPutUrl(guid,crep);
+			}
 			//upload document to put url
 			httpClientService.uploadDocumentToUrl(putUrl,localFile,contentType);
 			//test docstatus
@@ -229,9 +236,20 @@ public class DocumentUC {
 			if(!StringTool.isTrimmedEmptyOrNull(fileName) && metadata.isFileNameAttribAvailable()){
 				attributeValues.put(metadata.getFileNameAttibKey(), fileName);
 			}
-			String docClass = getDocClass(fileName,crepInfo.getAllowedDocClass());
 			//TODO do something with vkOrg
-			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),docClass,objId,sapObject,attributeValues);
+			String docClass = getDocClass(fileName,crepInfo.getAllowedDocClass());
+			String kgsSapObject;
+			Map<String, String> kgsAttributeValues;
+			if(docDef.isDvs()){
+				kgsSapObject=null;
+				kgsAttributeValues = new HashMap<String, String>(attributeValues);
+				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME__I_DVSOBJTYPE, sapObject);
+				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME__I_DVSDOCTYPE, docDef.getTechnicalId());
+			} else {
+				kgsSapObject = sapObject;
+				kgsAttributeValues=Collections.unmodifiableMap(attributeValues);
+			}
+			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),docClass,objId,kgsSapObject,kgsAttributeValues);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("setAttributesForNewDocument",e);
 		}

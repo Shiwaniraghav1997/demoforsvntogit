@@ -78,9 +78,10 @@ public abstract class UploadController extends AbstractDoc41Controller {
 				result.reject("VirusDetected");
 				return failedURL;
 			}
-			String fileId = documentUC.uploadDocument(type,localFile,file.getContentType());
+			String fileName = file.getOriginalFilename();
+			String fileId = documentUC.uploadDocument(type,localFile,file.getContentType(),fileName);
 			uploadForm.setFileId(fileId);
-			uploadForm.setFileName(file.getOriginalFilename());
+			uploadForm.setFileName(fileName);
 		}
 		if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
 			result.reject("UploadFailed");
