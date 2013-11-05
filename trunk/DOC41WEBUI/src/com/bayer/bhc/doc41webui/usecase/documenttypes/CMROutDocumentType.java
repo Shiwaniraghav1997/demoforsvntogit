@@ -15,7 +15,7 @@ public class CMROutDocumentType extends SDDocumentType implements DownloadDocume
 
 	@Override
 	public String getPermissionDownload() {
-		return "DOC_CMROUT_DOWNLOAD";
+		return "DOC_CMROUT_DOWN";
 	}
 
 }
