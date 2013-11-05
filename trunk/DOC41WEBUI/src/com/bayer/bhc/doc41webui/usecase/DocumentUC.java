@@ -47,6 +47,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.AWBDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ArtworkDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.BOLDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CMRDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.CMROutDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCountryDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCustomerDocumentType;
@@ -91,6 +92,7 @@ public class DocumentUC {
 		documentTypes = new HashMap<String, DocumentType>();
 		addDocumentType(new PackMatSpecDocumentType());
 		addDocumentType(new PZTecDrawingDocumentType());
+		addDocumentType(new CMROutDocumentType());
 		addDocumentType(new ShippersDeclDocumentType());
 		addDocumentType(new BOLDocumentType());
 		addDocumentType(new WaybillDocumentType());
@@ -227,14 +229,56 @@ public class DocumentUC {
 			if(!StringTool.isTrimmedEmptyOrNull(fileName) && metadata.isFileNameAttribAvailable()){
 				attributeValues.put(metadata.getFileNameAttibKey(), fileName);
 			}
+			String docClass = getDocClass(fileName,crepInfo.getAllowedDocClass());
 			//TODO do something with vkOrg
-			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),crepInfo.getDocClass(),objId,sapObject,attributeValues);
+			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),docClass,objId,sapObject,attributeValues);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("setAttributesForNewDocument",e);
 		}
 	}
 
 
+
+	private String getDocClass(String fileName, String allowedDocClass) throws Doc41BusinessException {
+		String docClass;
+		boolean isAllClassesAllowed = StringTool.equals(allowedDocClass, "*");
+		if(StringTool.isTrimmedEmptyOrNull(fileName)){
+			if(isAllClassesAllowed){
+				throw new Doc41BusinessException("no filename for getDocClass");
+			} else {
+				return allowedDocClass;
+			}
+		}
+		
+		String fileNameUpper = fileName.toUpperCase();
+		if(fileNameUpper.endsWith(".PDF")){
+			docClass = "PDF";
+		} else if (fileNameUpper.endsWith(".TIFF") || fileNameUpper.endsWith(".TIF")){
+			docClass = "TIFF";
+		} else if (fileNameUpper.endsWith(".BMP")){
+			docClass = "BMP";
+		} else if (fileNameUpper.endsWith(".JPG") || fileNameUpper.endsWith(".JPEG")){
+			docClass = "JPG";
+		} else if (fileNameUpper.endsWith(".XLS")){
+			docClass = "XLS";
+		} else if (fileNameUpper.endsWith(".XLSX")){
+			docClass = "XLSX";
+		} else if (fileNameUpper.endsWith(".DOC")){
+			docClass = "DOC";
+		} else if (fileNameUpper.endsWith(".DOCX")){
+			docClass = "DOCX";
+		} else if (fileNameUpper.endsWith(".TXT")){
+			docClass = "TXT";
+		} else {
+			throw new Doc41BusinessException("unknown extension :"+fileNameUpper);
+		}
+		
+		if(!isAllClassesAllowed && !StringTool.equals(docClass, allowedDocClass.toUpperCase())){
+			throw new Doc41BusinessException("Doc class "+docClass+" is not allowed ("+allowedDocClass+")");
+		}
+		
+		return docClass;
+	}
 
 	public File checkForVirus(MultipartFile file) throws Doc41BusinessException {
 		OutputStream out = null;

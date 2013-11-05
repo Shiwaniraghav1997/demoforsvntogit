@@ -7,7 +7,7 @@ public class ContentRepositoryInfo implements Serializable {
 	private static final long serialVersionUID = 4205667592929472061L;
 	
 	private String contentRepository;
-	private String docClass;
+	private String allowedDocClass;
 	
 	public String getContentRepository() {
 		return contentRepository;
@@ -15,16 +15,16 @@ public class ContentRepositoryInfo implements Serializable {
 	public void setContentRepository(String contentRepository) {
 		this.contentRepository = contentRepository;
 	}
-	public String getDocClass() {
-		return docClass;
+	public String getAllowedDocClass() {
+		return allowedDocClass;
 	}
-	public void setDocClass(String docClass) {
-		this.docClass = docClass;
+	public void setAllowedDocClass(String docClass) {
+		this.allowedDocClass = docClass;
 	}
 	@Override
 	public String toString() {
 		return "ContentRepositoryInfo [contentRepository=" + contentRepository
-				+ ", docClass=" + docClass + "]";
+				+ ", docClass=" + allowedDocClass + "]";
 	}
 	
 	
