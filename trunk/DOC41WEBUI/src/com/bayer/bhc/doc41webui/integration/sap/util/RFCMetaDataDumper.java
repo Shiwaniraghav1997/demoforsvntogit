@@ -73,21 +73,25 @@ public class RFCMetaDataDumper {
 		}
 		tmpBuffer.append(tabPrefix+title+"\n");
 		tmpBuffer.append(tabPrefix+"-----------------\n");
-		tmpBuffer.append(getMetadata(record,tabPrefix));
-		JCoFieldIterator parameterFieldIterator = record.getFieldIterator();
-		while(parameterFieldIterator  .hasNextField()){
-			JCoField nextField = parameterFieldIterator.nextField();
-			String name = nextField.getName();
-			if(nextField.isStructure()){
-				outputStructure(tmpBuffer,name,nextField.getStructure(),indentCount+2);
-			} else if(nextField.isTable()) {
-				outputTable(tmpBuffer,name,nextField.getTable(),indentCount+2);
-			} 
+		if(record==null){
+			tmpBuffer.append("null\n");
+		} else {
+			tmpBuffer.append(getMetadata(record,tabPrefix));
+			JCoFieldIterator parameterFieldIterator = record.getFieldIterator();
+			while(parameterFieldIterator  .hasNextField()){
+				JCoField nextField = parameterFieldIterator.nextField();
+				String name = nextField.getName();
+				if(nextField.isStructure()){
+					outputStructure(tmpBuffer,name,nextField.getStructure(),indentCount+2);
+				} else if(nextField.isTable()) {
+					outputTable(tmpBuffer,name,nextField.getTable(),indentCount+2);
+				} 
+			}
 		}
 		tmpBuffer.append(tabPrefix+"-----------------"+"\n");
 	}
 
-    private static Object getMetadata(JCoRecord record, String tabPrefix) {
+    private static String getMetadata(JCoRecord record, String tabPrefix) {
 		String metaData = record.getMetaData().toString();
 		metaData = metaData.replace("\n", "\n"+tabPrefix);
 		metaData = metaData.trim();
