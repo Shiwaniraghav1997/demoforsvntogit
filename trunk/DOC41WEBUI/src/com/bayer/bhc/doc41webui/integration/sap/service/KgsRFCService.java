@@ -3,6 +3,7 @@ package com.bayer.bhc.doc41webui.integration.sap.service;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,21 +37,23 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_FIND_DOCS = "FindDocs";
 	private static final String RFC_NAME_GET_DOC_URL = "GetDocUrl";
 	
-	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes,Set<String> set) throws Doc41ServiceException {
+	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes,Set<String> supportedSapDocTypes,
+			Map<String,Set<String>> excludedAttributesByD41Id) throws Doc41ServiceException {
 		Map<String, DocMetadata> metadataMap = new HashMap<String, DocMetadata>();
 		//get doctypes
 		List<DocTypeDef> docTypeDefs = getDocTypeDefs();
 //		Set<String> textKeysToTranslate = new HashSet<String>();
         for (DocTypeDef docTypeDef : docTypeDefs) {
         	String d41id = docTypeDef.getD41id();
-        	if(set.contains(d41id)){
+        	if(supportedSapDocTypes.contains(d41id)){
         		try {
 					Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "start Metadata loading for doc type "+d41id);
 					DocMetadata metadata = new DocMetadata(docTypeDef);
 					//content repo
 					metadata.setContentRepository(getContentRepo(d41id));
 					//attributes for all languages
-					List<Attribute> attributes = getAttributes(d41id,languageCodes);
+					Set<String> excludedAttributes = excludedAttributesByD41Id.get(d41id);
+					List<Attribute> attributes = getAttributes(d41id,languageCodes,excludedAttributes);
 					metadata.initAttributes(attributes);
 					//predefined attrib values
 					Map<String,List<String>> attrValues = getAttrValues(d41id);
@@ -123,11 +126,11 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		}
 		return valueMap ;
 	}
-	private List<Attribute> getAttributes(String d41id, Set<String> languageCodes) throws Doc41ServiceException {
+	private List<Attribute> getAttributes(String d41id, Set<String> languageCodes, Set<String> excludedAttributes) throws Doc41ServiceException {
 		LinkedHashMap<String, Attribute> attribMap = new LinkedHashMap<String, Attribute>();
 		
 		for (String language : languageCodes) {
-			List<Attribute> attributesOneLanguage = getAttributes(d41id, language);
+			List<Attribute> attributesOneLanguage = getAttributes(d41id, language,excludedAttributes);
 			for (Attribute newAttrib : attributesOneLanguage) {
 				String key = newAttrib.getName();
 				String label = newAttrib.getTempLabel();
@@ -145,12 +148,19 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		return new ArrayList<Attribute>(attribMap.values());
 	}
 
-	private List<Attribute> getAttributes(String d41id,String language) throws Doc41ServiceException {
+	private List<Attribute> getAttributes(String d41id,String language,Set<String> excludedAttributes) throws Doc41ServiceException {
 		// /BAY0/GZ_D41_GET_ATTR_DEF_LIST
 		List<Object> params = new ArrayList<Object>();
 		params.add(d41id);
 		params.add(language);
 		List<Attribute> attr = performRFC(params,RFC_NAME_GET_ATTRIBUTES);
+		for (Iterator<Attribute> iterator = attr.iterator(); iterator.hasNext();) {
+			Attribute attribute = (Attribute) iterator.next();
+			if(excludedAttributes!=null && excludedAttributes.contains(attribute.getName())){
+				iterator.remove();
+			}
+		}
+		
 		return attr;
 	}
 
@@ -244,11 +254,12 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		return result;
 	}
 	
-	public URI getDocURL(String contentRepository,String docId)
+	public URI getDocURL(String contentRepository,String docId, String compId)
 			 throws Doc41ServiceException{
 		List<Object> params = new ArrayList<Object>();
 		params.add(contentRepository);
 		params.add(docId);
+		params.add(compId);
 		List<URI> result = performRFC(params,RFC_NAME_GET_DOC_URL);
 		if(result ==null || result.isEmpty()){
 			return null;

@@ -10,6 +10,7 @@ public class DocTypeDef {
 	private String description;
 	private List<String> sapObjList;
 	private Map<String, String> translations;
+	private boolean isDvs;
 	public String getD41id() {
 		return d41id;
 	}
@@ -43,11 +44,17 @@ public class DocTypeDef {
 	public void setTranslations(Map<String, String> translations) {
 		this.translations = translations;
 	}
+	public boolean isDvs() {
+		return isDvs;
+	}
+	public void setDvs(boolean isDvs) {
+		this.isDvs = isDvs;
+	}
 	@Override
 	public String toString() {
 		return "DocTypeDef [d41id=" + d41id + ", technicalId=" + technicalId
 				+ ", description=" + description + ", sapObjList=" + sapObjList
-				+ ", translations=" + translations + "]";
+				+ ", translations=" + translations + ", isDvs=" + isDvs + "]";
 	}
 
 	
