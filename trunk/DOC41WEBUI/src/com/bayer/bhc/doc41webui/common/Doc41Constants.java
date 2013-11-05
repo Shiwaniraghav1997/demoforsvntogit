@@ -41,6 +41,7 @@ public interface Doc41Constants {
     
     
     public static final int FIELD_SIZE_PARTNER_NUMBER = 10;
+    public static final int FIELD_SIZE_MATNR = 18;
     public static final int FIELD_SIZE_PLANT = 4;
     public static final int FIELD_SIZE_SD_REF_NO = 10;
     
@@ -57,4 +58,5 @@ public interface Doc41Constants {
 	public static final String URL_PARAM_FILENAME = "filename";
 	
 	public static final String ATTRIB_NAME_FILENAME = "FILENAME";
+	public static final String ATTRIB_NAME_VENDOR = "VENDOR";
 }
