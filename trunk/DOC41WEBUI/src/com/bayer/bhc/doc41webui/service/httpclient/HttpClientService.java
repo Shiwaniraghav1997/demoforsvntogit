@@ -39,13 +39,14 @@ public class HttpClientService {
 			final RequestCallback requestCallback = new RequestCallback() {
 			     @Override
 			    public void doWithRequest(final ClientHttpRequest request) throws IOException {
-			        request.getHeaders().add("Content-type", mimeType);
+			        request.getHeaders().setContentType(MediaType.valueOf(mimeType));
 			        IOUtils.copy(ffis, request.getBody());
 			     }
 			};
 			final ResponseExtractor<String> responseExtractor =
 			    new HttpMessageConverterExtractor<String>(String.class, restTemplate.getMessageConverters());
 			restTemplate.execute(putUrl, HttpMethod.PUT, requestCallback, responseExtractor);
+//			restTemplate.put(putUrl, localFile);
 		} catch (IOException e) {
 			throw new Doc41ServiceException("uploadDocumentToUrl", e);
 		} finally {
@@ -67,7 +68,7 @@ public class HttpClientService {
 				HttpHeaders headers = response.getHeaders();
 				
 				MediaType contentType = headers.getContentType();
-				targetResponse.setHeader("Content-Type", ""+contentType);
+				targetResponse.setContentType(""+contentType);
 				targetResponse.setHeader("Content-Disposition", "attachment; filename=\""+generateFileName(fileName,docId,contentType)+"\"");
 //		      targetResponse.setHeader("Cache-Control", "no-cache");
 //				targetResponse.setHeader("Pragma", "no-cache");
