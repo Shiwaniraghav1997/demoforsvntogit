@@ -42,7 +42,14 @@ public class DirectDownloadController extends AbstractDoc41Controller {
 	}
 	
 	@RequestMapping(value="/documents/directdownload",method = RequestMethod.GET)
-	public void directDownload(@RequestParam String type, @RequestParam String refId,HttpServletResponse response) throws Doc41BusinessException{
+	public Map<String, String> directDownload(@RequestParam String type, @RequestParam String refId){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("autoRedirectUrl", "directdownloaddl?type="+type+"&refId="+refId);
+		return map;
+	}
+	
+	@RequestMapping(value="/documents/directdownloaddl",method = RequestMethod.GET)
+	public void directDownloadDl(@RequestParam String type, @RequestParam String refId,HttpServletResponse response) throws Doc41BusinessException{
 		CheckForDownloadResult checkResult = documentUC.checkForDirectDownload(type, refId);
 	
 		Map<String, String> attributeValues = new HashMap<String,String>();
