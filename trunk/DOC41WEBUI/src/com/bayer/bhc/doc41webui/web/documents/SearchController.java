@@ -154,7 +154,7 @@ public class SearchController extends AbstractDoc41Controller {
 		String type = decryptParameters.get(Doc41Constants.URL_PARAM_TYPE);
 		String docId = decryptParameters.get(Doc41Constants.URL_PARAM_DOC_ID);
 		String cwid = decryptParameters.get(Doc41Constants.URL_PARAM_CWID);
-		String filename = StringTool.decodeURLWithDefaultFileEnc(decryptParameters.get(Doc41Constants.URL_PARAM_FILENAME));
+		String filename = StringTool.emptyToNull(StringTool.decodeURLWithDefaultFileEnc(decryptParameters.get(Doc41Constants.URL_PARAM_FILENAME)));
 		if(StringTool.isTrimmedEmptyOrNull(type)){
 			throw new Doc41BusinessException("type is missing in download link");
 		}
