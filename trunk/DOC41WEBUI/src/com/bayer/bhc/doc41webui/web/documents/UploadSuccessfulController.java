@@ -16,7 +16,7 @@ public class UploadSuccessfulController extends AbstractDoc41Controller {
 
 	
 	@RequestMapping(value="/documents/uploadsuccess",method = RequestMethod.GET)
-	public Map<String, String> download(@RequestParam String type, @RequestParam String uploadurl) throws Doc41BusinessException{
+	public Map<String, String> uploadSuccess(@RequestParam String type, @RequestParam String uploadurl) throws Doc41BusinessException{
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("type", type);
 		map.put("uploadurl", uploadurl);
