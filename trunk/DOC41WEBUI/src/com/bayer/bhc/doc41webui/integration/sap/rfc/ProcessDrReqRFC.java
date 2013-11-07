@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
+import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
@@ -49,7 +50,9 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
 				sapInput.setValue(IN_D41ID,d41id);
 				sapInput.setValue(IN_OBJ_ID,objId);
 				sapInput.setValue(IN_SAP_OBJ,sapObj);
-				sapInput.setValue(IN_DOC_TYPE,docClass);
+				if(!StringTool.isTrimmedEmptyOrNull(docClass)){
+					sapInput.setValue(IN_DOC_TYPE,docClass);
+				}
 				sapInput.setValue(IN_ATTRIBS,getAttribString(attribValues));
             } else {
                 throw new SAPException(

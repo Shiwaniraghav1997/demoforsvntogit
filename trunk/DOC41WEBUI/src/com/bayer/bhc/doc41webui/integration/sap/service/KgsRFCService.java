@@ -16,6 +16,7 @@ import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.ContentRepositoryInfo;
+import com.bayer.bhc.doc41webui.domain.DocInfoComponent;
 import com.bayer.bhc.doc41webui.domain.DocMetadata;
 import com.bayer.bhc.doc41webui.domain.DocTypeDef;
 import com.bayer.bhc.doc41webui.domain.DocumentStatus;
@@ -37,6 +38,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_PROCESS_DR_REQ = "ProcessDrReq";
 	private static final String RFC_NAME_FIND_DOCS = "FindDocs";
 	private static final String RFC_NAME_GET_DOC_URL = "GetDocUrl";
+	private static final String RFC_NAME_GET_DOC_INFO = "GetDocInfo";
 	
 	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes,Set<String> supportedSapDocTypes,
 			Map<String,Set<String>> excludedAttributesByD41Id) throws Doc41ServiceException {
@@ -286,5 +288,19 @@ public class KgsRFCService extends AbstractSAPJCOService {
 			return result.get(0);
 		}
 		
+	}
+
+	public DocInfoComponent getDocInfo(String crepId, String docId) throws Doc41ServiceException {
+		List<Object> params = new ArrayList<Object>();
+		params.add(crepId);
+		params.add(docId);
+		List<DocInfoComponent> result = performRFC(params,RFC_NAME_GET_DOC_INFO);
+		if(result ==null || result.isEmpty()){
+			return null;
+		} else if(result.size()>1){
+			throw new Doc41ServiceException("more than one getDocInfo returned");
+		} else {
+			return result.get(0);
+		}
 	}
 }

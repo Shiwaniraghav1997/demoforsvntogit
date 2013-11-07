@@ -61,4 +61,5 @@ public interface Doc41Constants {
 	public static final String ATTRIB_NAME_VENDOR = "VENDOR";
 	public static final String ATTRIB_NAME__I_DVSOBJTYPE = "_I_DVSOBJTYPE";
 	public static final String ATTRIB_NAME__I_DVSDOCTYPE = "_I_DVSDOCTYPE";
+	public static final String ATTRIB_NAME__I_NAMETYPE = "_I_NAMETYPE";
 }

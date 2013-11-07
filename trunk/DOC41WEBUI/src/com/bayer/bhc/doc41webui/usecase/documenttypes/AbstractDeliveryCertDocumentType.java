@@ -6,11 +6,10 @@ import java.util.Set;
 
 public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 	
-	//TODO
-	public static final String ATTRIB_COUNTRY = "country";
-	public static final String ATTRIB_MATERIAL = "material";
-	public static final String ATTRIB_BATCH = "batch";
-	public static final String ATTRIB_PLANT = "plant";
+	public static final String ATTRIB_COUNTRY = "COUNTRY";
+	public static final String ATTRIB_MATERIAL = "MATERIAL";
+	public static final String ATTRIB_BATCH = "BATCH";
+	public static final String ATTRIB_PLANT = "PLANT";
 	
 	public static final String VIEW_ATTRIB_DELIVERY_NUMBER = "delivery";
 	

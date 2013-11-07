@@ -34,6 +34,7 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.ContentRepositoryInfo;
 import com.bayer.bhc.doc41webui.domain.DeliveryOrShippingUnit;
+import com.bayer.bhc.doc41webui.domain.DocInfoComponent;
 import com.bayer.bhc.doc41webui.domain.DocMetadata;
 import com.bayer.bhc.doc41webui.domain.DocTypeDef;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
@@ -237,19 +238,19 @@ public class DocumentUC {
 				attributeValues.put(metadata.getFileNameAttibKey(), fileName);
 			}
 			//TODO do something with vkOrg
-			String docClass = getDocClass(fileName,crepInfo.getAllowedDocClass());
-			String kgsSapObject;
+			String docClass;
 			Map<String, String> kgsAttributeValues;
 			if(docDef.isDvs()){
-				kgsSapObject=null;
 				kgsAttributeValues = new HashMap<String, String>(attributeValues);
 				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME__I_DVSOBJTYPE, sapObject);
 				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME__I_DVSDOCTYPE, docDef.getTechnicalId());
+				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME__I_NAMETYPE, "2");
+				docClass=null;
 			} else {
-				kgsSapObject = sapObject;
 				kgsAttributeValues=Collections.unmodifiableMap(attributeValues);
+				docClass = getDocClass(fileName,crepInfo.getAllowedDocClass());
 			}
-			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),docClass,objId,kgsSapObject,kgsAttributeValues);
+			kgsRFCService.setAttributesForNewDocument(d41id,fileId,crepInfo.getContentRepository(),docClass,objId,sapObject,kgsAttributeValues);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("setAttributesForNewDocument",e);
 		}
@@ -395,13 +396,15 @@ public class DocumentUC {
 		try{
 			DocMetadata metadata = getMetadata(type);
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
+			String crepId = crepInfo.getContentRepository();
 			DocTypeDef docDef = metadata.getDocDef();
 			String compId = null;
 			if(docDef.isDvs()){
-				compId=fileName;
+				DocInfoComponent comp = kgsRFCService.getDocInfo(crepId,docId);
+				compId = comp.getCompId();
 			}
 		
-			URI docURL = kgsRFCService.getDocURL(crepInfo.getContentRepository(), docId,compId);
+			URI docURL = kgsRFCService.getDocURL(crepId, docId,compId);
 		
 			String statusText = httpClientService.downloadDocumentToResponse(docURL,targetResponse,docId,fileName);
 			logWebMetrix("DOC_DOWNLOADED",docId,statusText);
