@@ -22,7 +22,7 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 	}
 
 	@Override
-	public void checkForDownload(Errors errors, DocumentUC documentUC, String partnerNumber,
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String partnerNumber,
 			List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 
 		if(objectIds.size()==0){
@@ -34,14 +34,13 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_PO_NUMBER+"']","PONumberMissing");
 		}
 		
-		if(errors.hasErrors()){
-			return;
+		if(!errors.hasErrors()){
+			String deliveryCheck = documentUC.checkPOAndMaterialForVendor(partnerNumber, poNumber, matNumber);
+			if(deliveryCheck != null){
+				errors.reject(""+deliveryCheck);
+			}
 		}
-		
-		String deliveryCheck = documentUC.checkPOAndMaterialForVendor(partnerNumber, poNumber, matNumber);
-		if(deliveryCheck != null){
-			errors.reject(""+deliveryCheck);
-		}
+		return new CheckForDownloadResult(null);
 
 	}
 

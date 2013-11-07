@@ -64,7 +64,7 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 
 		
 		//TODO SAP OBJECT
-		return new CheckForUpdateResult(null,null);
+		return new CheckForUpdateResult(null,null,null);
 	}
 
 	private void checkInspectionLot(Errors errors, DocumentUC documentUC,

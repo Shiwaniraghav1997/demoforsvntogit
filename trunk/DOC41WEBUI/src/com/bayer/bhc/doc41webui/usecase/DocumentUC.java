@@ -50,6 +50,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.ArtworkDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.BOLDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CMRDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CMROutDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCountryDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCustomerDocumentType;
@@ -417,7 +418,6 @@ public class DocumentUC {
 	public CheckForUpdateResult checkForUpload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException{
 		CheckForUpdateResult checkResult = getDocTypeForUpload(type).checkForUpload(errors, this, partnerNumber, objectId, attributeValues,viewAttributes);
 		String sapObjectFromCheck = checkResult.getSapObject();
-		String vkOrg = checkResult.getVkOrg();
 		DocMetadata metadata = getMetadata(type);
 		DocTypeDef docDef = metadata.getDocDef();
 		List<String> sapObjList = docDef.getSapObjList();
@@ -435,15 +435,16 @@ public class DocumentUC {
 				throw new Doc41BusinessException("SAP_OBJECT "+sapObjectFromCheck+" not in metadata of type "+type);
 			}
 		}
-		return new CheckForUpdateResult(realSapObject, vkOrg);
+		checkResult.setSapObject(realSapObject);
+		return checkResult;
 	}
 	
-	public void checkForDownload(Errors errors, String type, String partnerNumber, List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException{
-		getDocTypeForDownload(type).checkForDownload(errors, this, partnerNumber, objectIds, attributeValues,viewAttributes);
+	public CheckForDownloadResult checkForDownload(Errors errors, String type, String partnerNumber, List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException{
+		return getDocTypeForDownload(type).checkForDownload(errors, this, partnerNumber, objectIds, attributeValues,viewAttributes);
 	}
 	
-	public void checkForDirectDownload(String type, String objectId) throws Doc41BusinessException{
-		getDocTypeForDirectDownload(type).checkForDirectDownload(this, objectId);
+	public CheckForDownloadResult checkForDirectDownload(String type, String objectId) throws Doc41BusinessException{
+		return getDocTypeForDirectDownload(type).checkForDirectDownload(this, objectId);
 	}
 	
 	private UploadDocumentType getDocTypeForUpload(String type) throws Doc41BusinessException{

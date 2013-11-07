@@ -6,5 +6,5 @@ import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 public interface DirectDownloadDocumentType extends DocumentType{
 
 	public String getPermissionDirectDownload();
-	public void checkForDirectDownload(DocumentUC documentUC, String objectId)throws Doc41BusinessException;
+	public CheckForDownloadResult checkForDirectDownload(DocumentUC documentUC, String objectId)throws Doc41BusinessException;
 }

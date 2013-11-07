@@ -30,7 +30,7 @@ public class DeliveryCertDownCountryDocumentType extends
 	}
 	
 	@Override
-	public void checkForDownload(Errors errors, DocumentUC documentUC,
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, List<String> objectIds,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
@@ -51,5 +51,6 @@ public class DeliveryCertDownCountryDocumentType extends
 			errors.rejectValue("attributeValues['"+ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
 			errors.rejectValue("attributeValues['"+ATTRIB_BATCH+"']","MaterialAndBatchMissing");
 		}
+		return new CheckForDownloadResult(null);
 	}
 }

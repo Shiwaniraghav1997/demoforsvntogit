@@ -1,7 +1,9 @@
 package com.bayer.bhc.doc41webui.web.documents;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -64,11 +66,17 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		if(result.hasErrors()){
 			return failedURL;
 		}
+		Map<String, String> attributeValues = uploadForm.getAttributeValues();
 		CheckForUpdateResult checkResult = documentUC.checkForUpload(result, type, 
-				uploadForm.getPartnerNumber(), uploadForm.getObjectId(), uploadForm.getAttributeValues(),
+				uploadForm.getPartnerNumber(), uploadForm.getObjectId(), attributeValues,
 				uploadForm.getViewAttributes());
 		if(result.hasErrors()){
 			return failedURL;
+		}
+		Map<String, String> allAttributeValues = new HashMap<String, String>(attributeValues);
+		Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
+		if(additionalAttributes!=null){
+			allAttributeValues.putAll(additionalAttributes);
 		}
 		
 		MultipartFile file = uploadForm.getFile();
@@ -88,7 +96,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 			return failedURL;
 		} 
 		//set attributes in sap
-		documentUC.setAttributesForNewDocument(type,uploadForm.getFileId(),uploadForm.getAttributeValues(),uploadForm.getObjectId(),uploadForm.getFileName(),checkResult.getSapObject(),checkResult.getVkOrg());
+		documentUC.setAttributesForNewDocument(type,uploadForm.getFileId(),allAttributeValues,uploadForm.getObjectId(),uploadForm.getFileName(),checkResult.getSapObject(),checkResult.getVkOrg());
 		
 		
 		return "redirect:/documents/uploadsuccess?type="+type+"&uploadurl="+getSuccessURL();

@@ -31,7 +31,7 @@ public class DeliveryCertDownCustomerDocumentType extends
 	}
 	
 	@Override
-	public void checkForDownload(Errors errors, DocumentUC documentUC,
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, List<String> objectIds,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
@@ -52,17 +52,17 @@ public class DeliveryCertDownCustomerDocumentType extends
 			errors.rejectValue("attributeValues['"+ATTRIB_BATCH+"']","MaterialAndBatchMissing");
 		}
 		
-		if(errors.hasErrors()){
-			return;
-		}
-		List<QMBatchObject> bos = documentUC.getBatchObjectsForCustomer(partnerNumber, delivery, material, batch, countryCode);
-		
-		for (QMBatchObject qmBatchObject : bos) {
-			String objectId = qmBatchObject.getObjectId();
-			if(!objectIds.contains(objectId)){
-				objectIds.add(objectId);
+		if(!errors.hasErrors()){
+			List<QMBatchObject> bos = documentUC.getBatchObjectsForCustomer(partnerNumber, delivery, material, batch, countryCode);
+
+			for (QMBatchObject qmBatchObject : bos) {
+				String objectId = qmBatchObject.getObjectId();
+				if(!objectIds.contains(objectId)){
+					objectIds.add(objectId);
+				}
 			}
 		}
+		return new CheckForDownloadResult(null);
 		
 	}
 }

@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.web.documents;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.AbstractDeliveryCertDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.PMSupplierDownloadDocumentType;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -75,11 +77,16 @@ public class SearchController extends AbstractDoc41Controller {
 						}
 						objectIds.add(singleObjectId);
 					}
-					documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), objectIds, searchForm.getAttributeValues(), searchForm.getViewAttributes());
-				
+					Map<String, String> attributeValues = searchForm.getAttributeValues();
+					CheckForDownloadResult checkResult = documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), objectIds, attributeValues, searchForm.getViewAttributes());
+					Map<String, String> allAttributeValues = new HashMap<String, String>(attributeValues);
+					Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
+					if(additionalAttributes!=null){
+						allAttributeValues.putAll(additionalAttributes);
+					}
 					if(!result.hasErrors()){
 							List<HitListEntry> documents = documentUC.searchDocuments(type, 
-									objectIds, searchForm.getAttributeValues(), MAX_RESULTS+1, true);
+									objectIds, allAttributeValues, MAX_RESULTS+1, true);
 						if(documents.size()>MAX_RESULTS){
 							result.rejectValue("table", "ToManyResults");
 						} else {

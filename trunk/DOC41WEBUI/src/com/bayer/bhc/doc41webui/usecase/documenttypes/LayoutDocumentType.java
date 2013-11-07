@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,11 +42,13 @@ public class LayoutDocumentType implements DownloadDocumentType,
 			String partnerNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
-		attributeValues.put(Doc41Constants.ATTRIB_NAME_VENDOR, partnerNumber);
+		Map<String, String> additionalAttributes = new HashMap<String, String>();
+		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, partnerNumber);
 		
 		// no RFC check needed
 
-		return new CheckForUpdateResult(SAP_OBJECT,null);
+		
+		return new CheckForUpdateResult(SAP_OBJECT,null,additionalAttributes);
 	}
 
 	@Override
@@ -54,7 +57,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 	}
 
 	@Override
-	public void checkForDownload(Errors errors, DocumentUC documentUC,
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, List<String> objectIds,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
@@ -62,7 +65,11 @@ public class LayoutDocumentType implements DownloadDocumentType,
 		if(deliveryCheck != null){
 			errors.reject(""+deliveryCheck);
 		}
-		attributeValues.put(Doc41Constants.ATTRIB_NAME_VENDOR, partnerNumber);
+		
+		Map<String, String> additionalAttributes = new HashMap<String, String>();
+		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, partnerNumber);
+		
+		return new CheckForDownloadResult(additionalAttributes);
 	}
 	
 	@Override

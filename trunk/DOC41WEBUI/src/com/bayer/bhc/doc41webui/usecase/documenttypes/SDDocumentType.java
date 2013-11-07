@@ -47,11 +47,11 @@ public abstract class SDDocumentType implements DocumentType {
 		String vkOrg = deliveryCheck.getVkOrg();
 		
 		if(deliveryCheck.isDeliveryNumber()){
-			return new CheckForUpdateResult(SAP_OBJECT_DELIVERY,vkOrg);
+			return new CheckForUpdateResult(SAP_OBJECT_DELIVERY,vkOrg,null);
 		} else if (deliveryCheck.isShippingUnitNumber()){
-			return new CheckForUpdateResult(getSapObjectShippingUnit(),vkOrg);
+			return new CheckForUpdateResult(getSapObjectShippingUnit(),vkOrg,null);
 		} else {
-			return new CheckForUpdateResult(null,vkOrg);
+			return new CheckForUpdateResult(null,vkOrg,null);
 		}
 		
 		
@@ -62,7 +62,7 @@ public abstract class SDDocumentType implements DocumentType {
 	}
 	
 	//implements method from DownloadDocumentType
-	public void checkForDownload(Errors errors, DocumentUC documentUC,
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, List<String> objectIds,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 //		if(true)return;
@@ -77,9 +77,10 @@ public abstract class SDDocumentType implements DocumentType {
 		if(!deliveryCheck.isOk()){
 			errors.rejectValue("objectId",""+deliveryCheck.getError());
 		} 
+		return new CheckForDownloadResult(null);
 	}
 	
-	public void checkForDirectDownload(DocumentUC documentUC, String objectId)throws Doc41BusinessException{
+	public CheckForDownloadResult checkForDirectDownload(DocumentUC documentUC, String objectId)throws Doc41BusinessException{
 		if(StringTool.isTrimmedEmptyOrNull(objectId)){
 			throw new Doc41BusinessException("objectId missing");
 		}
@@ -87,6 +88,7 @@ public abstract class SDDocumentType implements DocumentType {
 		if(!deliveryCheck.isOk(true)){
 			throw new Doc41BusinessException(""+deliveryCheck.getError());
 		}
+		return new CheckForDownloadResult(null);
 	}
 	
 	@Override

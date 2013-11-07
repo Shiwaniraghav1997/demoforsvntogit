@@ -19,6 +19,7 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -42,10 +43,15 @@ public class DirectDownloadController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/documents/directdownload",method = RequestMethod.GET)
 	public void directDownload(@RequestParam String type, @RequestParam String refId,HttpServletResponse response) throws Doc41BusinessException{
-		documentUC.checkForDirectDownload(type, refId);
+		CheckForDownloadResult checkResult = documentUC.checkForDirectDownload(type, refId);
 	
-		Map<String, String> emptyAttributeValues = new HashMap<String,String>();
-		List<HitListEntry> documents = documentUC.searchDocuments(type,Collections.singletonList(refId), emptyAttributeValues, MAX_RESULTS+1, true);
+		Map<String, String> attributeValues = new HashMap<String,String>();
+		Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
+		if(additionalAttributes!=null){
+			attributeValues.putAll(additionalAttributes);
+		}
+		
+		List<HitListEntry> documents = documentUC.searchDocuments(type,Collections.singletonList(refId), attributeValues, MAX_RESULTS+1, true);
 		if(documents==null || documents.isEmpty()){
 			throw new Doc41BusinessException("NotFound");
 		} else if(documents.size()>MAX_RESULTS){

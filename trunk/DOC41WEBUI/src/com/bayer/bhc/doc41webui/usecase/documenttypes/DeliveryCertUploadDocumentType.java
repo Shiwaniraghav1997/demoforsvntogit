@@ -56,7 +56,7 @@ public class DeliveryCertUploadDocumentType extends
 		
 		
 		//TODO SAP OBJECT
-		return new CheckForUpdateResult(null,null);
+		return new CheckForUpdateResult(null,null,null);
 	}
 
 }
