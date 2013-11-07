@@ -369,7 +369,7 @@ public class DocumentUC {
                 params.put(Doc41Constants.URL_PARAM_TYPE,type);
                 params.put(Doc41Constants.URL_PARAM_DOC_ID,hitListEntry.getDocId());
                 params.put(Doc41Constants.URL_PARAM_CWID,UserInSession.getCwid());
-                params.put(Doc41Constants.URL_PARAM_FILENAME,StringTool.encodeURLWithDefaultFileEnc(hitListEntry.getFileName()));
+                params.put(Doc41Constants.URL_PARAM_FILENAME,StringTool.encodeURLWithDefaultFileEnc(StringTool.nullToEmpty(hitListEntry.getFileName())));
                 String key = UrlParamCrypt.encryptParameters(params);
 				hitListEntry.setKey(key);
 			}
