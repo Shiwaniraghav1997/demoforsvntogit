@@ -3,6 +3,7 @@ package com.bayer.bhc.doc41webui.web.documents;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +20,13 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.User;
+import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.StringTool;
+import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
+import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
 public abstract class UploadController extends AbstractDoc41Controller {
 	
@@ -98,8 +102,29 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		//set attributes in sap
 		documentUC.setAttributesForNewDocument(type,uploadForm.getFileId(),allAttributeValues,uploadForm.getObjectId(),uploadForm.getFileName(),checkResult.getSapObject(),checkResult.getVkOrg());
 		
+		String notificationEMail = uploadForm.getNotificationEMail();
+		if(!StringTool.isTrimmedEmptyOrNull(notificationEMail)){
+			documentUC.sendUploadNotification(notificationEMail,getTypeName(type,false),uploadForm.getFileName(),uploadForm.getFileId());
+		}
+		
 		
 		return "redirect:/documents/uploadsuccess?type="+type+"&uploadurl="+getSuccessURL();
+	}
+
+	private String getTypeName(String type,boolean userLocale)  {
+		try {
+			Locale locale;
+			if(userLocale){
+				locale = LocaleInSession.get();
+			} else {
+				locale = Locale.ENGLISH;
+			}
+			Tags tags = new Tags(TranslationsDAO.SYSTEM_ID, "documents", "*", locale);
+			String typeName=tags.getTag(type);
+			return typeName;
+		} catch (BATranslationsException e) {
+			return "["+type+"]";
+		}
 	}
 
 	private void checkAndFillObjectId(BindingResult errors, String type,

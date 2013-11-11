@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
 import com.bayer.bhc.doc41webui.domain.QMBatchObject;
 import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
+import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
@@ -67,8 +69,12 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.SupplierCOADocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.TecPackDelReqDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.WaybillDocumentType;
+import com.bayer.ecim.foundation.basic.ConfigMap;
 import com.bayer.ecim.foundation.basic.DateTool;
+import com.bayer.ecim.foundation.basic.InitException;
+import com.bayer.ecim.foundation.basic.SendMail;
 import com.bayer.ecim.foundation.basic.StringTool;
+import com.bayer.ecim.foundation.basic.Template;
 
 @Component
 public class DocumentUC {
@@ -596,6 +602,37 @@ public class DocumentUC {
 		String loggedInUser = UserInSession.getCwid();
 		Doc41Log.get().logWebMetrix(this.getClass(),new Doc41LogEntry(loggedInUser, loggedInUser, "DOCUMENTS", action, 
 				docId, statusText, null, null, null, null, null, null, null),loggedInUser);
+	}
+
+	public void sendUploadNotification(String notificationEMail, String typeName,  String fileName, String guid) {
+		try {
+			@SuppressWarnings("unchecked")
+			Map<String,String> subConfig = ConfigMap.get().getSubConfig("documents", "notifymail");
+			String sender = subConfig.get("sender");
+			String subjectTemplate = subConfig.get("subjectTemplate");
+			String bodyTemplate = subConfig.get("bodyTemplate");
+			
+			User user = UserInSession.get();
+			String replyTo = user.getEmail();
+			
+			String[] templateParamNames = {"FILE_NAME","GUID","TYPE_NAME","CWID","FIRSTNAME","SURNAME"};
+			Object[] templateParams = {fileName,guid,typeName,user.getCwid(),user.getFirstname(),user.getSurname()};
+			
+			String body = Template.expand(bodyTemplate,templateParams,templateParamNames);
+			String subject = Template.expand(subjectTemplate,templateParams,templateParamNames);
+			
+			SendMail.get().send(sender, replyTo, notificationEMail,null,null, subject, body,null,null,false);
+			
+		} catch (InitException e) {
+			Doc41Log.get().error(getClass(), UserInSession.getCwid(), 
+					"Exception in sendUploadNotification("+notificationEMail+", "+typeName+", "+fileName+", "+guid+")");
+			Doc41Log.get().error(getClass(), UserInSession.getCwid(), e);
+		} catch (MessagingException e) {
+			Doc41Log.get().error(getClass(), UserInSession.getCwid(), 
+					"Exception in sendUploadNotification("+notificationEMail+", "+typeName+", "+fileName+", "+guid+")");
+			Doc41Log.get().error(getClass(), UserInSession.getCwid(), e);
+		}
+		
 	}
 
 

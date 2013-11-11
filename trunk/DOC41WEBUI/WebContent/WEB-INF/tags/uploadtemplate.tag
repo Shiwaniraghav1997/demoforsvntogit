@@ -132,5 +132,26 @@
 					</tbody>
 				</table>
 			</div>
+			<div class="portlet-section-body">
+				<table cellpadding="4" cellspacing="0" class="nohover">
+					<thead class="portlet-table-header">
+						<tr>
+							<th colspan="2"><doc41:translate label="EMail Notification" /></th>
+						</tr>
+						<colcolgroup>
+							<col width="15%"/>
+							<col width="85%"/>
+						</colcolgroup>
+					</thead>
+					<tbody class="portlet-table-body">
+						<tr>
+							<th><doc41:translate label="NotificationEMailAddress" /></th>
+							<td>
+								<form:input path="notificationEMail" cssClass="portlet-form-input-field"  maxlength="200"/><doc41:error path="notificationEMail" />	
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</form:form>
 	</div>

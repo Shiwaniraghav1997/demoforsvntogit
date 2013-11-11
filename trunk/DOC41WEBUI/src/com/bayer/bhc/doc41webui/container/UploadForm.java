@@ -8,6 +8,7 @@ public class UploadForm extends CustomizedDocumentForm{
 	private String fileName;
 //	private String typeLabel;
 	private transient MultipartFile file;
+	private String notificationEMail;
 	
 	public String getFileId() {
 		return fileId;
@@ -29,11 +30,19 @@ public class UploadForm extends CustomizedDocumentForm{
 	public void setFile(MultipartFile file) {
 		this.file = file;
 	}
+	
+	public String getNotificationEMail() {
+		return notificationEMail;
+	}
+	
+	public void setNotificationEMail(String notificationEMail) {
+		this.notificationEMail = notificationEMail;
+	}
 
 	@Override
 	public String toString() {
-		return "UploadForm [fileId=" + fileId + ", toString()="
-				+ super.toString() + "]";
+		return "UploadForm [fileId=" + fileId + ", fileName=" + fileName
+				+ ", notificationEMail=" + notificationEMail + "]";
 	}
 	
 }
