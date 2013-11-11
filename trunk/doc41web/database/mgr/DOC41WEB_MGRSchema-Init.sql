@@ -9,7 +9,10 @@ CREATE TABLE D41_USER_PARTNER
   CREATEDON           VARCHAR2(100 CHAR),
   CHANGEDON           VARCHAR2(100 CHAR),
   USER_ID             NUMBER(27)                                 NOT NULL,
-  PARTNER_NUMBER      VARCHAR2(10 CHAR)                          NOT NULL
+  PARTNER_NUMBER      VARCHAR2(10 CHAR)                          NOT NULL,
+  PARTNER_TYPE        VARCHAR2(2 CHAR)                           NOT NULL,
+  PARTNER_NAME1       VARCHAR2(40 CHAR)                          NOT NULL,
+  PARTNER_NAME2       VARCHAR2(40 CHAR)
 )
 TABLESPACE DOC41WEB_DAT
 LOGGING 
