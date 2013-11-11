@@ -59,6 +59,22 @@ public class ProfilePermissionDC
 	Boolean cDoc41Obsv;
 	public static final String FIELD_DOC41OBSV = "Doc41Obsv";
 
+	/** Maps DB-Column: doc41_matsup */
+	Boolean cDoc41Matsup;
+	public static final String FIELD_DOC41MATSUP = "Doc41Matsup";
+
+	/** Maps DB-Column: doc41_prodsup */
+	Boolean cDoc41Prodsup;
+	public static final String FIELD_DOC41PRODSUP = "Doc41Prodsup";
+
+	/** Maps DB-Column: doc41_delcertvcountry */
+	Boolean cDoc41Delcertvcountry;
+	public static final String FIELD_DOC41DELCERTVCOUNTRY = "Doc41Delcertvcountry";
+
+	/** Maps DB-Column: doc41_delcertvcust */
+	Boolean cDoc41Delcertvcust;
+	public static final String FIELD_DOC41DELCERTVCUST = "Doc41Delcertvcust";
+
 	/** The master Class of this class. */
 	public final Class<DataCarrier> MASTER_CLASS = DataCarrier.class;
 
@@ -67,12 +83,12 @@ public class ProfilePermissionDC
 		setDBTablename( ProfilePermissionDC.class, null );
 	}
 
-	private static final long serialVersionUID = 20130718113326680L;
+	private static final long serialVersionUID = 20131111052250143L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_PROFILEPERMISSIONDC = java.math.BigDecimal.class;
 
 	@SuppressWarnings("unchecked")
 	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PERMISSIONNAME, FIELD_PERMISSIONDESCRIPTION, FIELD_DOC41CARR, FIELD_DOC41CUSBR, FIELD_DOC41LAYSUP, FIELD_DOC41PMSUP, FIELD_DOC41BADM, FIELD_DOC41TADM, FIELD_DOC41OBSV};
+	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PERMISSIONNAME, FIELD_PERMISSIONDESCRIPTION, FIELD_DOC41CARR, FIELD_DOC41CUSBR, FIELD_DOC41LAYSUP, FIELD_DOC41PMSUP, FIELD_DOC41BADM, FIELD_DOC41TADM, FIELD_DOC41OBSV, FIELD_DOC41MATSUP, FIELD_DOC41PRODSUP, FIELD_DOC41DELCERTVCOUNTRY, FIELD_DOC41DELCERTVCUST};
 	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
 
 	static {
@@ -86,6 +102,10 @@ public class ProfilePermissionDC
 			FIELD_META.put( FIELD_DOC41BADM,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 			FIELD_META.put( FIELD_DOC41TADM,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 			FIELD_META.put( FIELD_DOC41OBSV,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
+			FIELD_META.put( FIELD_DOC41MATSUP,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
+			FIELD_META.put( FIELD_DOC41PRODSUP,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
+			FIELD_META.put( FIELD_DOC41DELCERTVCOUNTRY,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
+			FIELD_META.put( FIELD_DOC41DELCERTVCUST,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 		} catch ( Exception e ) {
 			throw new InitException( "Failed to detect return types of the getter methods of ProfilePermissionDC!", null );
 		}
@@ -1093,6 +1113,382 @@ public class ProfilePermissionDC
 		return getBasicDCColumnMetaData( FIELD_DOC41OBSV );
 	}
 	// END Method getColumnMetaDataDoc41Obsv
+
+
+	// START Method getDoc41Matsup generated
+	/**
+	 * Maps DB-Column: doc41_matsup
+	 * Logical type: BOOLEAN
+	 */
+	public Boolean getDoc41Matsup() {
+		return cDoc41Matsup;
+	}
+	// END Method getDoc41Matsup
+
+
+	// START Method setDoc41Matsup generated
+	/**
+	 * Maps DB-Column: doc41_matsup
+	 * Logical type: BOOLEAN
+	 */
+	public void setDoc41Matsup( Boolean pDoc41Matsup ) {
+		cDoc41Matsup = pDoc41Matsup;
+		forgetOriginalValue( FIELD_DOC41MATSUP );
+		touchField( FIELD_DOC41MATSUP );
+	}
+	// END Method setDoc41Matsup
+
+
+	// START Method getFormattedDoc41Matsup generated
+	/**
+	 * Maps DB-Column: doc41_matsup
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedDoc41Matsup() {
+		return hasInvalidValue( FIELD_DOC41MATSUP ) ? getOriginalValue( FIELD_DOC41MATSUP ) : getPool().formatBoolean( cDoc41Matsup );
+	}
+	// END Method getFormattedDoc41Matsup
+
+
+	// START Method setFormattedDoc41Matsup generated
+	/**
+	 * Maps DB-Column: doc41_matsup
+	 * Logical type: BOOLEAN
+	 */
+	public void setFormattedDoc41Matsup( String pDoc41Matsup )
+		throws java.text.ParseException
+	{
+		setDoc41Matsup( null );
+		memorizeOriginalValue( FIELD_DOC41MATSUP, pDoc41Matsup );
+		setDoc41Matsup( getPool().parseBoolean( pDoc41Matsup ) );
+	}
+	// END Method setFormattedDoc41Matsup
+
+
+	// START Method getFormattedHTMLDoc41Matsup generated
+	/**
+	 * Maps DB-Column: doc41_matsup
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedHTMLDoc41Matsup() {
+		return StringTool.escapeHTML( getFormattedDoc41Matsup() );
+	}
+	// END Method getFormattedHTMLDoc41Matsup
+
+
+	// START Method getToStringDoc41Matsup generated
+	/**
+	 * Maps DB-Column: doc41_matsup
+	 * Logical type: BOOLEAN
+	 */
+	public String getDoc41MatsupToString() {
+		return StringTool.nullToEmpty(getDoc41Matsup());
+	}
+	// END Method getToStringDoc41Matsup
+
+
+	// START Method setFromStringDoc41Matsup generated
+	/**
+	 * Maps DB-Column: doc41_matsup
+	 * Logical type: BOOLEAN
+	 */
+	public void setDoc41MatsupFromString( String pDoc41Matsup ) {
+		setDoc41Matsup( BooleanTool.parseBoolean( pDoc41Matsup, null ) );
+	}
+	// END Method setFromStringDoc41Matsup
+
+
+	// START Method getColumnMetaDataDoc41Matsup generated
+	/**
+	 * Maps DB-Column: doc41_matsup
+	 * Logical type: BOOLEAN
+	 */
+	public BasicDCColumnMetaData getColumnMetaDataForDoc41Matsup() {
+		return getBasicDCColumnMetaData( FIELD_DOC41MATSUP );
+	}
+	// END Method getColumnMetaDataDoc41Matsup
+
+
+	// START Method getDoc41Prodsup generated
+	/**
+	 * Maps DB-Column: doc41_prodsup
+	 * Logical type: BOOLEAN
+	 */
+	public Boolean getDoc41Prodsup() {
+		return cDoc41Prodsup;
+	}
+	// END Method getDoc41Prodsup
+
+
+	// START Method setDoc41Prodsup generated
+	/**
+	 * Maps DB-Column: doc41_prodsup
+	 * Logical type: BOOLEAN
+	 */
+	public void setDoc41Prodsup( Boolean pDoc41Prodsup ) {
+		cDoc41Prodsup = pDoc41Prodsup;
+		forgetOriginalValue( FIELD_DOC41PRODSUP );
+		touchField( FIELD_DOC41PRODSUP );
+	}
+	// END Method setDoc41Prodsup
+
+
+	// START Method getFormattedDoc41Prodsup generated
+	/**
+	 * Maps DB-Column: doc41_prodsup
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedDoc41Prodsup() {
+		return hasInvalidValue( FIELD_DOC41PRODSUP ) ? getOriginalValue( FIELD_DOC41PRODSUP ) : getPool().formatBoolean( cDoc41Prodsup );
+	}
+	// END Method getFormattedDoc41Prodsup
+
+
+	// START Method setFormattedDoc41Prodsup generated
+	/**
+	 * Maps DB-Column: doc41_prodsup
+	 * Logical type: BOOLEAN
+	 */
+	public void setFormattedDoc41Prodsup( String pDoc41Prodsup )
+		throws java.text.ParseException
+	{
+		setDoc41Prodsup( null );
+		memorizeOriginalValue( FIELD_DOC41PRODSUP, pDoc41Prodsup );
+		setDoc41Prodsup( getPool().parseBoolean( pDoc41Prodsup ) );
+	}
+	// END Method setFormattedDoc41Prodsup
+
+
+	// START Method getFormattedHTMLDoc41Prodsup generated
+	/**
+	 * Maps DB-Column: doc41_prodsup
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedHTMLDoc41Prodsup() {
+		return StringTool.escapeHTML( getFormattedDoc41Prodsup() );
+	}
+	// END Method getFormattedHTMLDoc41Prodsup
+
+
+	// START Method getToStringDoc41Prodsup generated
+	/**
+	 * Maps DB-Column: doc41_prodsup
+	 * Logical type: BOOLEAN
+	 */
+	public String getDoc41ProdsupToString() {
+		return StringTool.nullToEmpty(getDoc41Prodsup());
+	}
+	// END Method getToStringDoc41Prodsup
+
+
+	// START Method setFromStringDoc41Prodsup generated
+	/**
+	 * Maps DB-Column: doc41_prodsup
+	 * Logical type: BOOLEAN
+	 */
+	public void setDoc41ProdsupFromString( String pDoc41Prodsup ) {
+		setDoc41Prodsup( BooleanTool.parseBoolean( pDoc41Prodsup, null ) );
+	}
+	// END Method setFromStringDoc41Prodsup
+
+
+	// START Method getColumnMetaDataDoc41Prodsup generated
+	/**
+	 * Maps DB-Column: doc41_prodsup
+	 * Logical type: BOOLEAN
+	 */
+	public BasicDCColumnMetaData getColumnMetaDataForDoc41Prodsup() {
+		return getBasicDCColumnMetaData( FIELD_DOC41PRODSUP );
+	}
+	// END Method getColumnMetaDataDoc41Prodsup
+
+
+	// START Method getDoc41Delcertvcountry generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcountry
+	 * Logical type: BOOLEAN
+	 */
+	public Boolean getDoc41Delcertvcountry() {
+		return cDoc41Delcertvcountry;
+	}
+	// END Method getDoc41Delcertvcountry
+
+
+	// START Method setDoc41Delcertvcountry generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcountry
+	 * Logical type: BOOLEAN
+	 */
+	public void setDoc41Delcertvcountry( Boolean pDoc41Delcertvcountry ) {
+		cDoc41Delcertvcountry = pDoc41Delcertvcountry;
+		forgetOriginalValue( FIELD_DOC41DELCERTVCOUNTRY );
+		touchField( FIELD_DOC41DELCERTVCOUNTRY );
+	}
+	// END Method setDoc41Delcertvcountry
+
+
+	// START Method getFormattedDoc41Delcertvcountry generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcountry
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedDoc41Delcertvcountry() {
+		return hasInvalidValue( FIELD_DOC41DELCERTVCOUNTRY ) ? getOriginalValue( FIELD_DOC41DELCERTVCOUNTRY ) : getPool().formatBoolean( cDoc41Delcertvcountry );
+	}
+	// END Method getFormattedDoc41Delcertvcountry
+
+
+	// START Method setFormattedDoc41Delcertvcountry generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcountry
+	 * Logical type: BOOLEAN
+	 */
+	public void setFormattedDoc41Delcertvcountry( String pDoc41Delcertvcountry )
+		throws java.text.ParseException
+	{
+		setDoc41Delcertvcountry( null );
+		memorizeOriginalValue( FIELD_DOC41DELCERTVCOUNTRY, pDoc41Delcertvcountry );
+		setDoc41Delcertvcountry( getPool().parseBoolean( pDoc41Delcertvcountry ) );
+	}
+	// END Method setFormattedDoc41Delcertvcountry
+
+
+	// START Method getFormattedHTMLDoc41Delcertvcountry generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcountry
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedHTMLDoc41Delcertvcountry() {
+		return StringTool.escapeHTML( getFormattedDoc41Delcertvcountry() );
+	}
+	// END Method getFormattedHTMLDoc41Delcertvcountry
+
+
+	// START Method getToStringDoc41Delcertvcountry generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcountry
+	 * Logical type: BOOLEAN
+	 */
+	public String getDoc41DelcertvcountryToString() {
+		return StringTool.nullToEmpty(getDoc41Delcertvcountry());
+	}
+	// END Method getToStringDoc41Delcertvcountry
+
+
+	// START Method setFromStringDoc41Delcertvcountry generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcountry
+	 * Logical type: BOOLEAN
+	 */
+	public void setDoc41DelcertvcountryFromString( String pDoc41Delcertvcountry ) {
+		setDoc41Delcertvcountry( BooleanTool.parseBoolean( pDoc41Delcertvcountry, null ) );
+	}
+	// END Method setFromStringDoc41Delcertvcountry
+
+
+	// START Method getColumnMetaDataDoc41Delcertvcountry generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcountry
+	 * Logical type: BOOLEAN
+	 */
+	public BasicDCColumnMetaData getColumnMetaDataForDoc41Delcertvcountry() {
+		return getBasicDCColumnMetaData( FIELD_DOC41DELCERTVCOUNTRY );
+	}
+	// END Method getColumnMetaDataDoc41Delcertvcountry
+
+
+	// START Method getDoc41Delcertvcust generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcust
+	 * Logical type: BOOLEAN
+	 */
+	public Boolean getDoc41Delcertvcust() {
+		return cDoc41Delcertvcust;
+	}
+	// END Method getDoc41Delcertvcust
+
+
+	// START Method setDoc41Delcertvcust generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcust
+	 * Logical type: BOOLEAN
+	 */
+	public void setDoc41Delcertvcust( Boolean pDoc41Delcertvcust ) {
+		cDoc41Delcertvcust = pDoc41Delcertvcust;
+		forgetOriginalValue( FIELD_DOC41DELCERTVCUST );
+		touchField( FIELD_DOC41DELCERTVCUST );
+	}
+	// END Method setDoc41Delcertvcust
+
+
+	// START Method getFormattedDoc41Delcertvcust generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcust
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedDoc41Delcertvcust() {
+		return hasInvalidValue( FIELD_DOC41DELCERTVCUST ) ? getOriginalValue( FIELD_DOC41DELCERTVCUST ) : getPool().formatBoolean( cDoc41Delcertvcust );
+	}
+	// END Method getFormattedDoc41Delcertvcust
+
+
+	// START Method setFormattedDoc41Delcertvcust generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcust
+	 * Logical type: BOOLEAN
+	 */
+	public void setFormattedDoc41Delcertvcust( String pDoc41Delcertvcust )
+		throws java.text.ParseException
+	{
+		setDoc41Delcertvcust( null );
+		memorizeOriginalValue( FIELD_DOC41DELCERTVCUST, pDoc41Delcertvcust );
+		setDoc41Delcertvcust( getPool().parseBoolean( pDoc41Delcertvcust ) );
+	}
+	// END Method setFormattedDoc41Delcertvcust
+
+
+	// START Method getFormattedHTMLDoc41Delcertvcust generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcust
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedHTMLDoc41Delcertvcust() {
+		return StringTool.escapeHTML( getFormattedDoc41Delcertvcust() );
+	}
+	// END Method getFormattedHTMLDoc41Delcertvcust
+
+
+	// START Method getToStringDoc41Delcertvcust generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcust
+	 * Logical type: BOOLEAN
+	 */
+	public String getDoc41DelcertvcustToString() {
+		return StringTool.nullToEmpty(getDoc41Delcertvcust());
+	}
+	// END Method getToStringDoc41Delcertvcust
+
+
+	// START Method setFromStringDoc41Delcertvcust generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcust
+	 * Logical type: BOOLEAN
+	 */
+	public void setDoc41DelcertvcustFromString( String pDoc41Delcertvcust ) {
+		setDoc41Delcertvcust( BooleanTool.parseBoolean( pDoc41Delcertvcust, null ) );
+	}
+	// END Method setFromStringDoc41Delcertvcust
+
+
+	// START Method getColumnMetaDataDoc41Delcertvcust generated
+	/**
+	 * Maps DB-Column: doc41_delcertvcust
+	 * Logical type: BOOLEAN
+	 */
+	public BasicDCColumnMetaData getColumnMetaDataForDoc41Delcertvcust() {
+		return getBasicDCColumnMetaData( FIELD_DOC41DELCERTVCUST );
+	}
+	// END Method getColumnMetaDataDoc41Delcertvcust
 
 
 	// START Protected ( insert your personal code here ) -- do not modify this line!!

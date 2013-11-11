@@ -54,3 +54,23 @@ Column.9.Name=Doc41Obsv
 Column.9.Type=BOOLEAN
 Column.9.Comment=Maps DB-Column: doc41_Obsv
 #Column.9.DBDefault="..."/new ...
+
+Column.10.Name=Doc41Matsup
+Column.10.Type=BOOLEAN
+Column.10.Comment=Maps DB-Column: doc41_matsup
+#Column.10.DBDefault="..."/new ...
+
+Column.11.Name=Doc41Prodsup
+Column.11.Type=BOOLEAN
+Column.11.Comment=Maps DB-Column: doc41_prodsup
+#Column.11.DBDefault="..."/new ...
+
+Column.12.Name=Doc41Delcertvcountry
+Column.12.Type=BOOLEAN
+Column.12.Comment=Maps DB-Column: doc41_delcertvcountry
+#Column.12.DBDefault="..."/new ...
+
+Column.13.Name=Doc41Delcertvcust
+Column.13.Type=BOOLEAN
+Column.13.Comment=Maps DB-Column: doc41_delcertvcust
+#Column.13.DBDefault="..."/new ...

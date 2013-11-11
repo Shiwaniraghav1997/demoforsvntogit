@@ -31,6 +31,14 @@ public class User extends DomainObject {
 	
 	public static final String ROLE_CUSTOMS_BROKER = "doc41_cusbr";
 	
+	public static final String ROLE_MATERIAL_SUPPLIER = "doc41_matsup";
+	
+	public static final String ROLE_PRODUCT_SUPPLIER = "doc41_prodsup";
+	
+	public static final String ROLE_DEL_CERT_VIEWER_COUNTRY = "doc41_delcertvcountry";
+	
+	public static final String ROLE_DEL_CERT_VIEWER_CUSTOMER = "doc41_delcertvcust";
+	
 	public static final String ROLE_LAYOUT_SUPPLIER = "doc41_laysup";
 	
 	public static final String ROLE_PM_SUPPLIER = "doc41_pmsup";
@@ -51,7 +59,9 @@ public class User extends DomainObject {
 	// ROLE_OPER_STAFF, ROLE_CARRIER, ROLE_EXPEDITION, ROLE_OBSERVER };
 
 	public static final String[] ALL_ROLES = new String[] {
-			ROLE_CARRIER, ROLE_CUSTOMS_BROKER, ROLE_LAYOUT_SUPPLIER, ROLE_PM_SUPPLIER,ROLE_BUSINESS_ADMIN, ROLE_TECH_ADMIN, ROLE_OBSERVER };
+			ROLE_CARRIER, ROLE_CUSTOMS_BROKER, ROLE_MATERIAL_SUPPLIER, ROLE_PRODUCT_SUPPLIER,
+			ROLE_DEL_CERT_VIEWER_COUNTRY, ROLE_DEL_CERT_VIEWER_CUSTOMER, ROLE_LAYOUT_SUPPLIER,
+			ROLE_PM_SUPPLIER,ROLE_BUSINESS_ADMIN, ROLE_TECH_ADMIN, ROLE_OBSERVER };
 
 	private String cwid;
 

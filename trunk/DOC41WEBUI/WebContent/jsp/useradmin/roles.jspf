@@ -50,6 +50,48 @@
 			</tr>
 			
 			<tr>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_MATERIAL_SUPPLIER %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_MATERIAL_SUPPLIER %>"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_MATERIAL_SUPPLIER %>" disabled="true"/>
+					</c:if>
+				</td>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_PRODUCT_SUPPLIER %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_PRODUCT_SUPPLIER %>"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_PRODUCT_SUPPLIER %>" disabled="true"/>
+					</c:if>
+				</td>
+			</tr>
+			
+			<tr>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_DEL_CERT_VIEWER_COUNTRY %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_DEL_CERT_VIEWER_COUNTRY %>"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_DEL_CERT_VIEWER_COUNTRY %>" disabled="true"/>
+					</c:if>
+				</td>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_DEL_CERT_VIEWER_CUSTOMER %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_DEL_CERT_VIEWER_CUSTOMER %>"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_DEL_CERT_VIEWER_CUSTOMER %>" disabled="true"/>
+					</c:if>
+				</td>
+			</tr>
+			
+			<tr>
 				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_LAYOUT_SUPPLIER %>"/></th>
 				<td style="width: 35%">
 					<c:if test="${userEditForm.type eq 'external'}">
