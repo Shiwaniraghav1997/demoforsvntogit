@@ -1,6 +1,6 @@
 <%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
 jspName="ptupload" 	component="documents"
-activeTopNav="upload" 	activeNav="${uploadForm.type}"
+activeTopNav="upload" 	activeNav="${uploadForm.type}UP"
 title="Upload PT Document">
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn"		uri="http://java.sun.com/jsp/jstl/functions" %>

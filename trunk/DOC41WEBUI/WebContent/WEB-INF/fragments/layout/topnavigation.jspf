@@ -20,7 +20,7 @@
 			  <doc41:topNavEntry href="#" title="navDownload" id="download" permission="TOPNAV_DOWNLOAD">
 			  	<doc41:navEntry href="documents/documentsearch?type=BOL" title="Bill of Lading" id="BOLDOWN" cssclass="" permission="DOC_BOL_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=WB" title="Waybill" id="WBDOWN" cssclass="" permission="DOC_WB_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=AWB" title="Air Waybill" id="WBDOWN" cssclass="" permission="DOC_AWB_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=AWB" title="Air Waybill" id="AWBDOWN" cssclass="" permission="DOC_AWB_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=FDACERT" title="FDA Certificate" id="FDACERTDOWN" cssclass="" permission="DOC_FDACERT_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=SHIPDECL" title="Shippers Declaration" id="SHIPDECLDOWN" cssclass="" permission="DOC_SHIPDECL_DOWN"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=CMROUT" title="CMR Outgoing" id="CMROUTDOWN" cssclass="" permission="DOC_CMROUT_DOWN"/>
