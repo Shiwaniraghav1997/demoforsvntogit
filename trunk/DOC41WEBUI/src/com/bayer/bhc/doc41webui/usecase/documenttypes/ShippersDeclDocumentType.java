@@ -23,9 +23,4 @@ public class ShippersDeclDocumentType extends SDDocumentType implements Download
 		return "DOC_SHIPDECL_DIRECT_DOWN";
 	}
 	
-	@Override
-	protected String getSapObjectShippingUnit() {
-		return SAP_OBJECT_SHIPPING_UNIT;
-	}
-
 }

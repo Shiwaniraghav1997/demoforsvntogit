@@ -49,7 +49,7 @@ public abstract class SDDocumentType implements DocumentType {
 		if(deliveryCheck.isDeliveryNumber()){
 			return new CheckForUpdateResult(SAP_OBJECT_DELIVERY,vkOrg,null);
 		} else if (deliveryCheck.isShippingUnitNumber()){
-			return new CheckForUpdateResult(getSapObjectShippingUnit(),vkOrg,null);
+			return new CheckForUpdateResult(SAP_OBJECT_SHIPPING_UNIT,vkOrg,null);
 		} else {
 			return new CheckForUpdateResult(null,vkOrg,null);
 		}
@@ -57,10 +57,6 @@ public abstract class SDDocumentType implements DocumentType {
 		
 	}
 
-	protected String getSapObjectShippingUnit() {
-		return SAP_OBJECT_SHIPPING_UNIT;
-	}
-	
 	//implements method from DownloadDocumentType
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String partnerNumber, List<String> objectIds,
