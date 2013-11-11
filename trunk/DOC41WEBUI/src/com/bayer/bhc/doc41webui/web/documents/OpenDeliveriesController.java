@@ -24,7 +24,6 @@ import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 /**
- * Controller to manage Translations view related requests using Translations Usecase.
  * @author ezzqc,evayd
  * 
  */
