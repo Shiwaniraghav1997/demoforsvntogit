@@ -252,7 +252,7 @@ public class DocumentUC {
 				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME__I_DVSOBJTYPE, sapObject);
 				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME__I_DVSDOCTYPE, docDef.getTechnicalId());
 				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME__I_NAMETYPE, "2");
-				docClass=null;
+				docClass=getDocClass(fileName,"*");
 			} else {
 				kgsAttributeValues=Collections.unmodifiableMap(attributeValues);
 				docClass = getDocClass(fileName,crepInfo.getAllowedDocClass());
