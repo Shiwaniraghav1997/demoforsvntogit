@@ -62,7 +62,7 @@ public class DirectDownloadController extends AbstractDoc41Controller {
 		if(documents==null || documents.isEmpty()){
 			throw new Doc41BusinessException("NotFound");
 		} else if(documents.size()>MAX_RESULTS){
-			throw new Doc41BusinessException("ToManyResults");
+			throw new Doc41BusinessException("TooManyResults");
 		} else {
 			Date maxDate = new Date(0);
 			HitListEntry newestDocument=null;
