@@ -21,7 +21,11 @@
 	<th><doc41:translate label="Doc41Carr" /></th>	
 	<th><doc41:translate label="Doc41Cusbr" /></th>	
 	<th><doc41:translate label="Doc41Laysup" /></th>
-	<th><doc41:translate label="Doc41Pmsup" /></th>	
+	<th><doc41:translate label="Doc41Pmsup" /></th>
+	<th><doc41:translate label="Doc41Delcertvcountry" /></th>	
+	<th><doc41:translate label="Doc41Delcertvcust" /></th>	
+	<th><doc41:translate label="Doc41Prodsup" /></th>	
+	<th><doc41:translate label="Doc41Matsup" /></th>		
 	<th><doc41:translate label="Doc41Badm" /></th>	
 	<th><doc41:translate label="Doc41Tadm" /></th>	
 	<th><doc41:translate label="Doc41Obsv" /></th>	
@@ -36,6 +40,10 @@
 	<td class="centered"><c:if test="${varpps.Doc41Cusbr}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
 	<td class="centered"><c:if test="${varpps.Doc41Laysup}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>
 	<td class="centered"><c:if test="${varpps.Doc41Pmsup}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
+	<td class="centered"><c:if test="${varpps.Doc41Delcertvcountry}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
+	<td class="centered"><c:if test="${varpps.Doc41Delcertvcust}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
+	<td class="centered"><c:if test="${varpps.Doc41Prodsup}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
+	<td class="centered"><c:if test="${varpps.Doc41Matsup}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
 	<td class="centered"><c:if test="${varpps.Doc41Badm}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
 	<td class="centered"><c:if test="${varpps.Doc41Tadm}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
 	<td class="centered"><c:if test="${varpps.Doc41Obsv}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
