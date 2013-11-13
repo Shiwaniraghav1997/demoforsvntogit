@@ -12,7 +12,10 @@
 	<div class="portlet-section-header-title">Untranslated Labels</div>
 </div>
 <div class="portlet-section-body">
-<textarea cols="80" rows="30" id="rfcDumpBox" >${command.untranslatedLabels}</textarea>
+	<form:form commandName="command" action="untranslatedLabels/reset" method="post">
+		<input type="submit" name="_finish" class="portlet-form-button" value="<doc41:translate label="ButtonReset"/>" /></span>
+	</form:form>
+	<textarea cols="80" rows="30" id="rfcDumpBox" >${command.untranslatedLabels}</textarea>
 </div>
 </div>
 </doc41:layout>

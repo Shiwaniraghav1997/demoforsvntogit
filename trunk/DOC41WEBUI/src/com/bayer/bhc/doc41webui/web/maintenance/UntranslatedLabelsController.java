@@ -38,6 +38,11 @@ public class UntranslatedLabelsController extends AbstractDoc41Controller {
 		model.addAttribute("command", form);
     }
 	
+	@RequestMapping(value="/maintenance/untranslatedLabels/reset",method = RequestMethod.POST)
+	public String reset() {
+		untranslatedLabels.clear();
+		return "/maintenance/untranslatedLabels";
+	}
 
 	public static Set<String> getUntranslatedLabels() {
 		return untranslatedLabels;
