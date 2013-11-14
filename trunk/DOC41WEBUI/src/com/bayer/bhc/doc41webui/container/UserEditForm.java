@@ -64,8 +64,54 @@ public class UserEditForm implements Serializable{
 		if(roles==null && roles.isEmpty()){
 			errors.reject("noRoles", "at least one role must be selected.");
 		}
+		
+		if(containsRoleFromList(roles,User.ROLES_WITH_CUSTOMER_PARTNER) && partnersContainPartnerType(partners,Doc41Constants.PARTNER_TYPE_CUSTOMER_MASTER)){
+			errors.rejectValue("partners", "customerPartnerNeededForRole", "for the selected roles at least one customer partner is required");
+		}
+		
+		if(containsRoleFromList(roles,User.ROLES_WITH_VENDOR_PARTNER) && partnersContainPartnerType(partners,Doc41Constants.PARTNER_TYPE_VENDOR_MASTER)){
+			errors.rejectValue("partners", "vendorPartnerNeededForRole", "for the selected roles at least one vendor partner is required");
+		}
+		
+		if(containsRoleFromList(roles,User.ROLES_WITH_COUNTRY) && !isEmpty(countries)){
+			errors.rejectValue("countries", "countryNeededForRole", "for the selected roles at least one country is required");
+		}
+		
+		if(containsRoleFromList(roles,User.ROLES_WITH_PLANT) && !isEmpty(plants)){
+			errors.rejectValue("plants", "plantNeededForRole", "for the selected roles at least one plant is required");
+		}
 	}
 	
+	private static boolean partnersContainPartnerType(List<UserPartner> partners2,String partnerType2) {
+		if(partners2==null){
+			return false;
+		}
+		for (UserPartner userPartner : partners2) {
+			String partnerType = userPartner.getPartnerType();
+			if(StringTool.equals(partnerType, partnerType2)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean isEmpty(List<String> list) {
+		return (list==null || list.isEmpty());
+	}
+
+	private static boolean containsRoleFromList(List<String> userRoles,
+			String[] rolesToCheck) {
+		if(userRoles==null){
+			return false;
+		}
+		for (String roleToCheck : rolesToCheck) {
+			if(userRoles.contains(roleToCheck)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void checkMandatory(String field, String value, Errors errors) {
 		if(StringTool.isTrimmedEmptyOrNull(value)){
 			errors.rejectValue(field, ""+field+"Missing", ""+field+" is mandatory");
