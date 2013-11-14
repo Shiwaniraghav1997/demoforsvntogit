@@ -25,10 +25,12 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String partnerNumber,
 			List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 
+		String matNumber = null;
 		if(objectIds.size()==0){
 			errors.rejectValue("objectId","MatNoMissing");
+		} else {
+			matNumber = objectIds.get(0);
 		}
-		String matNumber = objectIds.get(0);
 		String poNumber = viewAttributes.get(VIEW_ATTRIB_PO_NUMBER);
 		if(StringTool.isTrimmedEmptyOrNull(poNumber)){
 			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_PO_NUMBER+"']","PONumberMissing");
