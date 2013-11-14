@@ -64,14 +64,14 @@ public class UsereditController extends AbstractDoc41Controller {
     public String save(HttpServletRequest request,@ModelAttribute UserEditForm userEditForm, BindingResult result) throws Doc41ExceptionBase{
     	userEditForm.validate(request, result);
     	if (result.hasErrors()) {
-    		return "/useradmin/updateuser";
+    		return "/useradmin/useredit";
         }
     	try {
         	User user = userEditForm.copyToDomainUser();
         	getUserManagementUC().editUser(user, true,true,true,true,true);
         } catch (Doc41InvalidPasswordException e) {
             result.rejectValue("password", "error.password.invalid", "Please enter a valid password.");
-            return "/useradmin/updateuser";
+            return "/useradmin/useredit";
         }
     	
         return "redirect:/useradmin/userlist";
