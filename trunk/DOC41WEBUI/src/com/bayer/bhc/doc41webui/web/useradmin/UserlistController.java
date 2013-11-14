@@ -75,7 +75,7 @@ public class UserlistController extends AbstractDoc41Controller {
 		List<User> list = result.getResult();
 		List<String[]> rows = new ArrayList<String[]>();
 		if(list.isEmpty()){
-			String[] row = new String[]{"","","","","not found","","","","","","","","","",""};
+			String[] row = new String[]{"","","","","not found","","","","",""};
 			rows.add(row);
 		} else {
 			for (User user : list) {
