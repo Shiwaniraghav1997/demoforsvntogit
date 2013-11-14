@@ -35,7 +35,7 @@ title="User Management">
 								<c:forEach items="${errors.fieldErrors}" var="error">
 									<tr>
 										<td onmouseover="style.cursor='pointer';" onclick="$('#${error.field}').focus();" style="color: blue"> <doc41:translate label="${error.field}"/> </td>
-						    			<td style="color: red;"><doc41:translate label="${error.field}.${error.code}" /></td>
+						    			<td colspan="3" style="color: red;"><doc41:translate label="${error.field}.${error.code}" /></td>
 									</tr>
 								</c:forEach>
 							</td>
