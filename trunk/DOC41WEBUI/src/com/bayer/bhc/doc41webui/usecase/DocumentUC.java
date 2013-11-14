@@ -423,6 +423,9 @@ public class DocumentUC {
 	
 	public CheckForUpdateResult checkForUpload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException{
 		CheckForUpdateResult checkResult = getDocTypeForUpload(type).checkForUpload(errors, this, partnerNumber, objectId, attributeValues,viewAttributes);
+		if(errors.hasErrors()){
+			return null;
+		}
 		String sapObjectFromCheck = checkResult.getSapObject();
 		DocMetadata metadata = getMetadata(type);
 		DocTypeDef docDef = metadata.getDocDef();
