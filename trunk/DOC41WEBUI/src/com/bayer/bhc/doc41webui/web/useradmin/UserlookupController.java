@@ -59,7 +59,7 @@ public class UserlookupController extends AbstractDoc41Controller {
         	return "redirect:/useradmin/userimport?importcwid="+cwid;
         } else {
             result.rejectValue("cwid", "isRequired", "Please enter a cwid.");
-            return "/useradmin/lookuppost";
+            return "/useradmin/userlookup";
         }
     }
 	
