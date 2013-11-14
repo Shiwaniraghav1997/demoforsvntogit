@@ -35,7 +35,7 @@ title="Upload Document">
 						</tr>
 						<tr>
 							<th><doc41:translate label="MaterialText" /></th>
-							<td><c:out value="${materialText }"/></td>
+							<td><c:out value="${uploadForm.viewAttributes[keyMaterialText] }"/><input id="${keyMaterialText}" type="hidden" name="viewAttributes['${keyMaterialText}']" value="${uploadForm.viewAttributes[keyMaterialText]}"/></td>
 						</tr>
 						
 						

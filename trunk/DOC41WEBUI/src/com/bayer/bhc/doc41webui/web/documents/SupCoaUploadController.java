@@ -85,30 +85,44 @@ public class SupCoaUploadController extends UploadController {
 	
 	@RequestMapping(value="/documents/supcoaupload",method = RequestMethod.GET)
 	public ModelMap getUpload(@RequestParam() String type,InspectionLot inspectionLot) throws Doc41BusinessException{
-		ModelMap map = new ModelMap();
 		UploadForm uploadForm =  super.get(type);
 		uploadForm.setObjectId(inspectionLot.getNumber());
 		uploadForm.setPartnerNumber(inspectionLot.getVendor());
 		Map<String, String> avalues = new HashMap<String, String>();
-		avalues.put(SupplierCOADocumentType.VIEW_ATTRIB_VENDOR_BATCH,inspectionLot.getVendorBatch());
-		avalues.put(SupplierCOADocumentType.VIEW_ATTRIB_PLANT,inspectionLot.getPlant());
-		avalues.put(SupplierCOADocumentType.VIEW_ATTRIB_BATCH,inspectionLot.getBatch());
-		avalues.put(SupplierCOADocumentType.VIEW_ATTRIB_MATERIAL,inspectionLot.getMaterialNumber());
+		avalues.put(SupplierCOADocumentType.ATTRIB_VENDOR_BATCH,inspectionLot.getVendorBatch());
+		avalues.put(SupplierCOADocumentType.ATTRIB_PLANT,inspectionLot.getPlant());
+		avalues.put(SupplierCOADocumentType.ATTRIB_BATCH,inspectionLot.getBatch());
+		avalues.put(SupplierCOADocumentType.ATTRIB_MATERIAL,inspectionLot.getMaterialNumber());
 		uploadForm.setAttributeValues(avalues);
-		map.addAttribute(uploadForm);
-		map.addAttribute("materialText",inspectionLot.getMaterialText());
 		
-		map.addAttribute("keyVendorBatch",SupplierCOADocumentType.VIEW_ATTRIB_VENDOR_BATCH);
-		map.addAttribute("keyPlant",SupplierCOADocumentType.VIEW_ATTRIB_PLANT);
-		map.addAttribute("keyBatch",SupplierCOADocumentType.VIEW_ATTRIB_BATCH);
-		map.addAttribute("keyMaterial",SupplierCOADocumentType.VIEW_ATTRIB_MATERIAL);
+		Map<String, String> viewAttributes = uploadForm.getViewAttributes();
+		viewAttributes.put(SupplierCOADocumentType.VIEW_ATTRIB_MATERIAL_TEXT,inspectionLot.getMaterialText());
+		
+		ModelMap map = new ModelMap();
+		fillModelMap(uploadForm, map);
 		
 		return map;
 	}
+
+	private void fillModelMap(UploadForm uploadForm, ModelMap map) {
+		map.addAttribute(uploadForm);
+		
+		map.addAttribute("keyVendorBatch",SupplierCOADocumentType.ATTRIB_VENDOR_BATCH);
+		map.addAttribute("keyPlant",SupplierCOADocumentType.ATTRIB_PLANT);
+		map.addAttribute("keyBatch",SupplierCOADocumentType.ATTRIB_BATCH);
+		map.addAttribute("keyMaterial",SupplierCOADocumentType.ATTRIB_MATERIAL);
+		
+		map.addAttribute("keyMaterialText",SupplierCOADocumentType.VIEW_ATTRIB_MATERIAL_TEXT);
+	}
 	
 	@RequestMapping(value="/documents/supcoauploadpost",method = RequestMethod.POST)
-	public String postUpload(UploadForm uploadForm,BindingResult result) throws Doc41BusinessException { //ggf. kein modelattribute wegen sessionattribute
-		return super.postUpload(uploadForm, result);
+	public ModelAndView postUploadMap(UploadForm uploadForm,BindingResult result) throws Doc41BusinessException { //ggf. kein modelattribute wegen sessionattribute
+		ModelAndView mav = new ModelAndView();
+		String view = super.postUpload(uploadForm, result);
+		ModelMap modelMap = mav.getModelMap();
+		fillModelMap(uploadForm, modelMap);
+		mav.setViewName(view);
+		return mav;
 	}
 	
 	protected String getFailedURL() {

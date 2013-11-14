@@ -88,7 +88,6 @@ public class DelCertUploadController extends UploadController {
 	
 	@RequestMapping(value="/documents/delcertupload",method = RequestMethod.GET)
 	public ModelMap getUpload(@RequestParam() String type,QMBatchObject batchObject,String supplier) throws Doc41BusinessException{
-		ModelMap map = new ModelMap();
 		UploadForm uploadForm =  super.get(type);
 		uploadForm.setObjectId(batchObject.getObjectId());
 		uploadForm.setPartnerNumber(supplier);
@@ -97,8 +96,19 @@ public class DelCertUploadController extends UploadController {
 		avalues.put(AbstractDeliveryCertDocumentType.ATTRIB_BATCH,batchObject.getBatch());
 		avalues.put(AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL,batchObject.getMaterialNumber());
 		uploadForm.setAttributeValues(avalues);
+		
+		Map<String, String> viewAttributes = uploadForm.getViewAttributes();
+		viewAttributes.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL_TEXT,batchObject.getMaterialText());
+		
+		ModelMap map = new ModelMap();
+		fillModelMap(uploadForm, map);
+		
+		
+		return map;
+	}
+
+	private void fillModelMap(UploadForm uploadForm, ModelMap map) {
 		map.addAttribute(uploadForm);
-		map.addAttribute("materialText",batchObject.getMaterialText());
 		
 		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
 		
@@ -106,16 +116,20 @@ public class DelCertUploadController extends UploadController {
 		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
 		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
 		
+		map.addAttribute("keyMaterialText",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL_TEXT);
+		
 		List<SelectionItem> userCountries = displaytextUC.getCountrySIs(UserInSession.get().getCountries());
 		map.addAttribute("userCountrySIList",userCountries);
-		
-		
-		return map;
 	}
 	
 	@RequestMapping(value="/documents/delcertuploadpost",method = RequestMethod.POST)
-	public String postUpload(UploadForm uploadForm,BindingResult result) throws Doc41BusinessException { //ggf. kein modelattribute wegen sessionattribute
-		return super.postUpload(uploadForm, result);
+	public ModelAndView postUploadMap(UploadForm uploadForm,BindingResult result) throws Doc41BusinessException { //ggf. kein modelattribute wegen sessionattribute
+		ModelAndView mav = new ModelAndView();
+		String view = super.postUpload(uploadForm, result);
+		ModelMap modelMap = mav.getModelMap();
+		fillModelMap(uploadForm, modelMap);
+		mav.setViewName(view);
+		return mav;
 	}
 	
 	protected String getFailedURL() {

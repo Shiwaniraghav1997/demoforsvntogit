@@ -12,6 +12,7 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 	public static final String ATTRIB_PLANT = "PLANT";
 	
 	public static final String VIEW_ATTRIB_DELIVERY_NUMBER = "delivery";
+	public static final String VIEW_ATTRIB_MATERIAL_TEXT = "materialText";
 	
 	
 	
@@ -21,8 +22,6 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 	@Override
 	public String getSapTypeId() {
 		return "DOC41.39";
-		//TODO remove mock with BOL type
-//		return "DOC41.14";//BOL
 	}
 	
 	@Override
