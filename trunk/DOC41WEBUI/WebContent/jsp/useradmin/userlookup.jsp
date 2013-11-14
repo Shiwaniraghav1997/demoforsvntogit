@@ -25,7 +25,7 @@ title="User Management">
 						</tr>
 					</thead>
 					<tbody class="portlet-table-body">	
-						<spring:hasBindErrors name="lookupuser">
+						<spring:hasBindErrors name="userLookupForm">
 							<tr>
 								<td colspan="4">
 									<c:forEach items="${errors.fieldErrors}" var="error">
