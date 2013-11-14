@@ -65,13 +65,13 @@ $(function() {
 			<tr>
 				
 				<th style="width: 15%"><doc41:translate label="PartnerNumbers"/></th>
-				<td style="width: 35%">
+				<td style="width: 85%">
 					<table id="partnerlist">
 					<colgroup>
-						<col width="20%"/>
-						<col width="25%"/>
-						<col width="25%"/>
-						<col width="20%"/>
+						<col width="15%"/>
+						<col width="35%"/>
+						<col width="35%"/>
+						<col width="5%"/>
 						<col width="10%"/>
 					</colgroup>
 						<tr>
@@ -80,8 +80,6 @@ $(function() {
 						</tr>
 					</table>
 				</td>
-				<th style="width: 15%">&nbsp;</th>
-				<td style="width: 35%">&nbsp;</td>
 			</tr>
 		</tbody>
 	</table>
