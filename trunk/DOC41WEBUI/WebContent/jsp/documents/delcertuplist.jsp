@@ -1,7 +1,7 @@
 <%@taglib prefix="doc41" uri="doc41-tags"%><doc41:layout
 	activePage="${pageContext.request.servletPath}"
 	jspName="delcertuplist" component="documents" activeTopNav="upload"
-	activeNav="${type}" title="Upload Delivery Certificate Document">
+	activeNav="${type}UP" title="Upload Delivery Certificate Document">
 	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 	<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 	<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>

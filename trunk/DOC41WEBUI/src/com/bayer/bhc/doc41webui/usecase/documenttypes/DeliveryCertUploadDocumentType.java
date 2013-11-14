@@ -21,7 +21,7 @@ public class DeliveryCertUploadDocumentType extends
 	
 	@Override
 	public String getTypeConst() {
-		return "DELCERTUP";
+		return "DELCERT";
 	}
 
 	@Override

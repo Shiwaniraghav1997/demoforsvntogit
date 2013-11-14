@@ -13,7 +13,7 @@
 			  	<doc41:navEntry href="documents/sdupload?type=AWB" title="Air Waybill" id="AWBUP" cssclass="" permission="DOC_AWB_UP"/>
 			  	<doc41:navEntry href="documents/sdupload?type=CMR" title="Confirmation of Arrival" id="CMRUP" cssclass="" permission="DOC_CMR_UP"/>
 			  	<doc41:navEntry href="documents/supcoaupinput?type=SUPCOA" title="Supplier CoA" id="SUPCOAUP" cssclass="" permission="DOC_SUPCOA_UP"/>
-			  	<doc41:navEntry href="documents/delcertupinput?type=DELCERTUP" title="Delivery Certificate" id="DELCERTUP" cssclass="" permission="DOC_DELCERT_UP"/>
+			  	<doc41:navEntry href="documents/delcertupinput?type=DELCERT" title="Delivery Certificate" id="DELCERTUP" cssclass="" permission="DOC_DELCERT_UP"/>
 			  	<doc41:navEntry href="documents/ptupload?type=LAYOUT" title="Layout High Res" id="LAYOUTUP" cssclass="" permission="DOC_LAYOUT_UP"/>
 			  </doc41:topNavEntry>
 			  

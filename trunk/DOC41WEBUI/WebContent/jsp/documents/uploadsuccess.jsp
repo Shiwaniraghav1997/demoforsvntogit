@@ -1,7 +1,7 @@
 <%@taglib prefix="doc41" uri="doc41-tags"%><doc41:layout
 	activePage="${pageContext.request.servletPath}"
 	jspName="uploadsuccess" component="documents" activeTopNav="upload"
-	activeNav="${type}" title="Upload Successful">
+	activeNav="${type}UP" title="Upload Successful">
 	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 	<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 	<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>

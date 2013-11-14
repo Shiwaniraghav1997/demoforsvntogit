@@ -35,6 +35,8 @@ public class SupCoaUploadController extends UploadController {
 	
 	@RequestMapping(value="/documents/supcoauplist",method = RequestMethod.GET)
 	public ModelAndView getInspLots(String type,VendorBatchForm vendorBatchForm,BindingResult result, ModelAndView mav) throws Doc41BusinessException{
+		List<UserPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
+		vendorBatchForm.setPartners(partners);
 		
 		String partnerNumber = vendorBatchForm.getPartnerNumber();
 		if(StringTool.isTrimmedEmptyOrNull(partnerNumber)){
@@ -49,8 +51,6 @@ public class SupCoaUploadController extends UploadController {
 			result.rejectValue("plant","PlantMissing");
 		}
 		if(result.hasErrors()){
-			List<UserPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
-			vendorBatchForm.setPartners(partners);
 			mav.addObject(vendorBatchForm);
 			result.reject("PleaseEnterMandatoryFields");
 			mav.setViewName("documents/supcoaupinput");

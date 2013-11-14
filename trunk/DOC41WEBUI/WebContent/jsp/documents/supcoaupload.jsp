@@ -1,12 +1,11 @@
 <%@taglib prefix="doc41" uri="doc41-tags" %><doc41:layout activePage="${pageContext.request.servletPath}"
 jspName="documentupload" 	component="documents"
-activeTopNav="supcoaupload" 	activeNav="${uploadForm.type}UP"
+activeTopNav="upload" 	activeNav="${uploadForm.type}UP"
 title="Upload Document">
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn"		uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
-
 
 	<doc41:uploadtemplate action="supcoauploadpost" showObjectId="false" showPartnerNumber="false" showCustomAttributes="false">
 		<jsp:attribute name="fragmentCustomSearchFields">
