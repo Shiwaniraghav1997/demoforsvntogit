@@ -1,6 +1,5 @@
 package com.bayer.bhc.doc41webui.web.maintenance;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +13,11 @@ import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
+import com.bayer.bhc.doc41webui.web.Doc41Tags;
 
 @Controller
 public class UntranslatedLabelsController extends AbstractDoc41Controller {
-	private static Set<String> untranslatedLabels = new HashSet<String>();
+	
 	
 	@Override
 	protected boolean hasPermission(User usr, HttpServletRequest request) {
@@ -27,7 +27,7 @@ public class UntranslatedLabelsController extends AbstractDoc41Controller {
 	@RequestMapping(value="/maintenance/untranslatedLabels", method=RequestMethod.GET)
     public void get(ModelMap model) throws Doc41TechnicalException {
 		// Untranslated Labels
-		Set<String> untranslatedLabelsSet = getUntranslatedLabels();
+		Set<String> untranslatedLabelsSet = Doc41Tags.getUntranslatedLabels();
 		StringBuilder sb = new StringBuilder();
 		for (String label : untranslatedLabelsSet) {
 			sb.append(label + "\n");
@@ -40,13 +40,11 @@ public class UntranslatedLabelsController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/maintenance/untranslatedLabels/reset",method = RequestMethod.POST)
 	public String reset() {
-		untranslatedLabels.clear();
-		return "/maintenance/untranslatedLabels";
+		Doc41Tags.getUntranslatedLabels().clear();
+		return "redirect:/maintenance/untranslatedLabels";
 	}
 
-	public static Set<String> getUntranslatedLabels() {
-		return untranslatedLabels;
-	}
+	
 	
 	public static class Form {
 		private String untranslatedLabels;

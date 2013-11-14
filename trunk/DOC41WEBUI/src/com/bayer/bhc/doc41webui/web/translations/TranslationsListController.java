@@ -35,6 +35,7 @@ import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
 import com.bayer.bhc.doc41webui.usecase.TranslationsUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
+import com.bayer.bhc.doc41webui.web.Doc41Tags;
 import com.bayer.ecim.foundation.basic.ConfigMap;
 import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
@@ -100,7 +101,7 @@ public class TranslationsListController extends AbstractDoc41Controller {
 	@RequestMapping(value="/translations/jsontable", method=RequestMethod.GET,produces="application/json") 
     @ResponseBody
     public Map<String, Object> getTable(HttpServletRequest request,TableSorterParams params) throws Doc41ExceptionBase, BATranslationsException {
-		Tags tags = new Tags(TranslationsDAO.SYSTEM_ID, "TADMN", "translationOverview", LocaleInSession.get());
+		Tags tags = new Doc41Tags(TranslationsDAO.SYSTEM_ID, "TADMN", "translationOverview", LocaleInSession.get());
 		TranslationsForm translationsForm = new TranslationsForm();
 		translationsForm.setMandant(params.getFilter(0));
 		translationsForm.setComponent(params.getFilter(1));

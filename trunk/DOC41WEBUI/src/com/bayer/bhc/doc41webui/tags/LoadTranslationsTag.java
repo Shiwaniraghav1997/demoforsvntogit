@@ -13,6 +13,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
+import com.bayer.bhc.doc41webui.web.Doc41Tags;
 import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
@@ -51,7 +52,7 @@ public class LoadTranslationsTag extends TagSupport {
                 "Loading Translations for Component " + component + " and Page " + jspName
                         + " of  Locale  " + pLocale);
         try {
-            Tags tags = new Tags(MANDANT, component, jspName, pLocale);
+            Tags tags = new Doc41Tags(MANDANT, component, jspName, pLocale);
 //            if (tags == null) {
 //                throw new JspException("Unable to get Translation for Compnent " + component
 //                        + "and Page " + jspName + " for Locale  " + pLocale);

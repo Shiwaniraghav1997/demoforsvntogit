@@ -24,6 +24,7 @@ import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
+import com.bayer.bhc.doc41webui.web.Doc41Tags;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
@@ -119,7 +120,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 			} else {
 				locale = Locale.ENGLISH;
 			}
-			Tags tags = new Tags(TranslationsDAO.SYSTEM_ID, "documents", "*", locale);
+			Tags tags = new Doc41Tags(TranslationsDAO.SYSTEM_ID, "documents", "*", locale);
 			String typeName=tags.getTag(type);
 			return typeName;
 		} catch (BATranslationsException e) {

@@ -29,6 +29,7 @@ import com.bayer.bhc.doc41webui.container.UserListFilter;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
+import com.bayer.bhc.doc41webui.web.Doc41Tags;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
@@ -56,7 +57,7 @@ public class UserlistController extends AbstractDoc41Controller {
 	@RequestMapping(value="/useradmin/jsontable", method=RequestMethod.GET,produces="application/json") 
     @ResponseBody
     public Map<String, Object> getTable(TableSorterParams params) throws Doc41ExceptionBase, BATranslationsException {
-		Tags tags = new Tags(TranslationsDAO.SYSTEM_ID, "useradmin", "list", LocaleInSession.get());
+		Tags tags = new Doc41Tags(TranslationsDAO.SYSTEM_ID, "useradmin", "list", LocaleInSession.get());
 		UserListFilter userListFilter = new UserListFilter();
 		userListFilter.setStatus(params.getFilter(0));
 		userListFilter.setSurname(params.getFilter(1));

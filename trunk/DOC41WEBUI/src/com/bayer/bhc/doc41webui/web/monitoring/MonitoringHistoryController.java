@@ -30,6 +30,7 @@ import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
 import com.bayer.bhc.doc41webui.usecase.MonitoringUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
+import com.bayer.bhc.doc41webui.web.Doc41Tags;
 import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
@@ -56,7 +57,7 @@ public class MonitoringHistoryController extends AbstractDoc41Controller {
 	@RequestMapping(value="/monitoring/jsontable", method=RequestMethod.GET,produces="application/json") 
     @ResponseBody
     public Map<String, Object> getTable(TableSorterParams params,@RequestParam String serviceName) throws Doc41ExceptionBase, BATranslationsException {
-		Tags tags = new Tags(TranslationsDAO.SYSTEM_ID, "tAdmin", "monitoringHistory", LocaleInSession.get());
+		Tags tags = new Doc41Tags(TranslationsDAO.SYSTEM_ID, "tAdmin", "monitoringHistory", LocaleInSession.get());
 		
 		String orderBy = params.getSortColumn(DB_COL_NAMES);
 		
