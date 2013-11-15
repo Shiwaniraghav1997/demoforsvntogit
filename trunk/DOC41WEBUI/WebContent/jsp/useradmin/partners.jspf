@@ -3,6 +3,7 @@
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
+<c:if test="${userEditForm.type eq 'external'}">
 <script type="text/javascript">
 function translatePartnerType(partnerType){
 	<c:forEach items="${supportedPartnerTypes}" var="oneType">
@@ -84,3 +85,4 @@ $(function() {
 		</tbody>
 	</table>
 </div>
+</c:if>

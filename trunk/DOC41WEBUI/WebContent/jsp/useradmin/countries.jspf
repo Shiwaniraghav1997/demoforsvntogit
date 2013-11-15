@@ -1,3 +1,4 @@
+<c:if test="${userEditForm.type eq 'external'}">
 <%@page import="com.bayer.bhc.doc41webui.common.Doc41Constants"%>
 <%@taglib prefix="doc41" uri="doc41-tags" %>
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
@@ -75,3 +76,4 @@ $(function() {
 		</tbody>
 	</table>
 </div>
+</c:if>
