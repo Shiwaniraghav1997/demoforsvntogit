@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
@@ -38,12 +39,16 @@ public class Doc41Tags extends Tags {
 	
 	@Override
 	public String getTagNoEsc(String pTag) {
-		String value = super.getTagNoEsc(pTag);
+		String value = getTagNoEscNoUntranslatedMonitor(pTag);
 		if(value==null || value.startsWith("[")){
 			// memorize untranslated Labels
             getUntranslatedLabels().add(pTag);
 		}
 		return value;
+	}
+
+	public String getTagNoEscNoUntranslatedMonitor(String pTag) {
+		return super.getTagNoEsc(pTag);
 	}
 	
 	@Override
@@ -54,5 +59,9 @@ public class Doc41Tags extends Tags {
             getUntranslatedLabels().add(pTag);
 		}
 		return value;
+	}
+	
+	public String getTagNoUntranslatedMonitor(String pTag) {
+		return StringTool.escapeHTML(getTagNoEscNoUntranslatedMonitor(pTag));
 	}
 }

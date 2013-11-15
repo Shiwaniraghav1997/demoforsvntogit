@@ -14,7 +14,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
-import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
+import com.bayer.bhc.doc41webui.web.Doc41Tags;
 
 /**
  * Tag handler class  to Translate given label to specific language.
@@ -67,7 +67,7 @@ public class LabelTag extends TagSupport {
         	noEsc = "false".equals(escape);
         	
             JspWriter printer = pageContext.getOut();
-            Tags translations = (Tags) pageContext.getRequest().getAttribute(TAGS);
+            Doc41Tags translations = (Doc41Tags) pageContext.getRequest().getAttribute(TAGS);
             try {
 
                 if (translations != null) {
@@ -80,14 +80,14 @@ public class LabelTag extends TagSupport {
                     String[] tokens =  label.split("\\."); //split(label);
 
                     for (int i = 0; i < tokens.length; i++) {
-                        transText = getLabelTag(merge(i, tokens), translations, true);
-                        if (!transText.startsWith("&#91;"))
+                        transText = getLabelTag(merge(i, tokens), translations, true,false);
+                        if (!isDummyTranslation(transText))
                             break;
                     }
-                    if (transText.startsWith("&#91;")) {
-                        transText = getLabelTag(label, translations, false);
+                    if (isDummyTranslation(transText)) {
+                        transText = getLabelTag(label, translations, false,true);
                     }
-
+                    
                     out.append(transText);
                     if (color != null) {
                         out.append("</div>");
@@ -110,26 +110,31 @@ public class LabelTag extends TagSupport {
         }
         return super.doEndTag();
     }
+
+	private boolean isDummyTranslation(String transText) {
+		if (noEsc) {
+			return transText.startsWith("[");
+		} else {
+			return transText.startsWith("&#91;");
+		}
+	}
     
     /**
      * Inspects the given <code>Tags</code> to find  the translated text for the label.
      * If no text is found, a second search with upper or lower case will be tried. 
      * @return
      */
-    private String getLabelTag(String lab, Tags translations, boolean ignoreSensitiv) {
+    private String getLabelTag(String lab, Doc41Tags translations, boolean ignoreSensitiv,boolean monitorUntranslated) {
         String transText = "";
-        boolean startsWithBrake = false;
         
         if (null != lab && lab.length() > 0) {
         	if (noEsc) {
-        		transText =  translations.getTagNoEsc(lab);
-        		startsWithBrake = transText.startsWith("[");
+        		transText =  translations.getTagNoEscNoUntranslatedMonitor(lab);
         	} else {
-        		transText =  translations.getTag(lab);
-        		startsWithBrake = transText.startsWith("&#91;");
+        		transText =  translations.getTagNoUntranslatedMonitor(lab);
         	}
             
-            if (startsWithBrake) {
+            if (isDummyTranslation(transText)) {
                 String labelChanged = lab;
                 // no translation found and the label embedded in brackets is returned
                 //f.e.: &#91;nextInspection&#93;
@@ -142,11 +147,19 @@ public class LabelTag extends TagSupport {
                         labelChanged = Character.toUpperCase(lab.charAt(0)) + lab.substring(1);
                     }
                 }
-                if (noEsc) {
-            		transText =  translations.getTagNoEsc(labelChanged);
-            	} else {
-            		transText =  translations.getTag(labelChanged);
-            	}
+                if(monitorUntranslated){
+	                if (noEsc) {
+	            		transText =  translations.getTagNoEsc(labelChanged);
+	            	} else {
+	            		transText =  translations.getTag(labelChanged);
+	            	}
+                } else {
+                	if (noEsc) {
+	            		transText =  translations.getTagNoEscNoUntranslatedMonitor(labelChanged);
+	            	} else {
+	            		transText =  translations.getTagNoUntranslatedMonitor(labelChanged);
+	            	}
+                }
                 
             }
         }
