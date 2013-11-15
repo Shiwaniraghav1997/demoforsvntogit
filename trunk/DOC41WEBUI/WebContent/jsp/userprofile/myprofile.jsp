@@ -109,6 +109,7 @@ title="My Profile">
 		</table>
 	</div>
 	
+	<c:if test="${user.type eq 'external'}">
 	<div class="portlet-section-body">
 		<div class="section-separator"><doc41:translate label="TitelPartners" /></div>
 		<table cellpadding="4" cellspacing="0" class="nohover">
@@ -119,16 +120,15 @@ title="My Profile">
 				<tr>
 					
 					<th style="width: 15%"><doc41:translate label="PartnerNumbers"/></th>
-					<td style="width: 35%">
+					<td style="width: 85%">
 						<c:forEach items="${user.partners}" var="partner" varStatus="partnerStatus">
 							<c:out value="${partner.partnerNumber}"/>&nbsp;<c:out value="${partner.partnerName1}"/>&nbsp;<c:out value="${partner.partnerName2}"/>&nbsp;<doc41:translate label="PartnerType${partner.partnerType}"/><br/>
 						</c:forEach>
 					</td>
-					<th style="width: 15%">&nbsp;</th>
-					<td style="width: 35%">&nbsp;</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
+	</c:if>
 </form:form>
 </doc41:layout>
