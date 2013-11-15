@@ -65,19 +65,19 @@ public class UserEditForm implements Serializable{
 			errors.reject("noRoles", "at least one role must be selected.");
 		}
 		
-		if(containsRoleFromList(roles,User.ROLES_WITH_CUSTOMER_PARTNER) && partnersContainPartnerType(partners,Doc41Constants.PARTNER_TYPE_CUSTOMER_MASTER)){
+		if(containsRoleFromList(roles,User.ROLES_WITH_CUSTOMER_PARTNER) && !partnersContainPartnerType(partners,Doc41Constants.PARTNER_TYPE_CUSTOMER_MASTER)){
 			errors.rejectValue("partners", "customerPartnerNeededForRole", "for the selected roles at least one customer partner is required");
 		}
 		
-		if(containsRoleFromList(roles,User.ROLES_WITH_VENDOR_PARTNER) && partnersContainPartnerType(partners,Doc41Constants.PARTNER_TYPE_VENDOR_MASTER)){
+		if(containsRoleFromList(roles,User.ROLES_WITH_VENDOR_PARTNER) && !partnersContainPartnerType(partners,Doc41Constants.PARTNER_TYPE_VENDOR_MASTER)){
 			errors.rejectValue("partners", "vendorPartnerNeededForRole", "for the selected roles at least one vendor partner is required");
 		}
 		
-		if(containsRoleFromList(roles,User.ROLES_WITH_COUNTRY) && !isEmpty(countries)){
+		if(containsRoleFromList(roles,User.ROLES_WITH_COUNTRY) && isEmpty(countries)){
 			errors.rejectValue("countries", "countryNeededForRole", "for the selected roles at least one country is required");
 		}
 		
-		if(containsRoleFromList(roles,User.ROLES_WITH_PLANT) && !isEmpty(plants)){
+		if(containsRoleFromList(roles,User.ROLES_WITH_PLANT) && isEmpty(plants)){
 			errors.rejectValue("plants", "plantNeededForRole", "for the selected roles at least one plant is required");
 		}
 	}
