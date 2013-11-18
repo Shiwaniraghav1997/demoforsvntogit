@@ -103,7 +103,7 @@ title="User Management">
 							<tr>
 								<th><doc41:translate label="TimeZone"/></th>
 								<td>
-								    <form:select path="timeZone" cssClass="portlet-form-input-field-mandatory">
+								    <form:select path="timeZone" cssClass="portlet-form-input-field portlet-mandatory">
 										<form:options items="${timeZoneList}" itemValue="code" itemLabel="label"/>
 									</form:select>*
 								</td>
@@ -114,13 +114,13 @@ title="User Management">
 							<tr class="portlet-table-alternate">
 								<th><doc41:translate label="Language"/></th>
 								<td>
-								    <form:select path="languageCountry" cssClass="portlet-form-input-field-mandatory">
+								    <form:select path="languageCountry" cssClass="portlet-form-input-field portlet-mandatory">
 										<form:options items="${languageCountryList}" itemValue="code" itemLabel="label"/>
 									</form:select>*
 								</td>
 								<th><doc41:translate label="Status"/></th>
 								<td>
-									<form:select path="active" cssClass="portlet-form-input-field-mandatory">
+									<form:select path="active" cssClass="portlet-form-input-field portlet-mandatory">
 										<form:option value="false"><doc41:translate label="Inactive"/></form:option>
 										<form:option value="true"><doc41:translate label="Active"/></form:option>
 								   </form:select>*

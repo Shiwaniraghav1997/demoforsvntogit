@@ -57,11 +57,11 @@
 
 						<tr>
 							<th><doc41:translate label="PartnerNumber" /></th>
-							<td><form:select path="partnerNumber" items="${batchObjectForm.partners}" cssClass="portlet-form-input-field-mandatory" cssStyle="width:240px;" itemLabel="partnerLabel" itemValue="partnerNumber"/>*<doc41:error path="partnerNumber" /></td>
+							<td><form:select path="partnerNumber" items="${batchObjectForm.partners}" cssClass="portlet-form-input-field portlet-mandatory" itemLabel="partnerLabel" itemValue="partnerNumber"/>*<doc41:error path="partnerNumber" /></td>
 						</tr>
 						<tr>
 							<th><doc41:translate label="Plant" /></th>
-							<td><form:select path="plant" items="${user.plants}" cssClass="portlet-form-input-field-mandatory" cssStyle="width:240px;" />*<doc41:error path="plant" /></td>
+							<td><form:select path="plant" items="${user.plants}" cssClass="portlet-form-input-field portlet-mandatory" />*<doc41:error path="plant" /></td>
 						</tr>
 						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="Material" /></th>

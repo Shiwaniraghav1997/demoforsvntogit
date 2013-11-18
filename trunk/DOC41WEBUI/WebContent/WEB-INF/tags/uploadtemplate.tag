@@ -54,14 +54,14 @@
 						<c:if test="${uploadForm.partnerNumberUsed && (empty showPartnerNumber or showPartnerNumber)}">
 						<tr>
 							<th><doc41:translate label="PartnerNumber" /></th>
-							<td><form:select path="partnerNumber" items="${uploadForm.partners}" cssClass="portlet-form-input-field-mandatory" cssStyle="width:240px;" itemLabel="partnerLabel" itemValue="partnerNumber"/>*<doc41:error path="partnerNumber" /></td>
+							<td><form:select path="partnerNumber" items="${uploadForm.partners}" cssClass="portlet-form-input-field portlet-mandatory" itemLabel="partnerLabel" itemValue="partnerNumber"/>*<doc41:error path="partnerNumber" /></td>
 						</tr>
 						</c:if>
 						
 						<c:if test="${empty showObjectId or showObjectId}">
 						 	<tr class="portlet-table-alternate">
 								<th><doc41:translate label="ObjectId${uploadForm.type}" /></th>
-								<td><form:input path="objectId" cssClass="portlet-form-input-field-mandatory"  maxlength="70"/><doc41:error path="objectId" />*</td>
+								<td><form:input path="objectId" cssClass="portlet-form-input-field portlet-mandatory"  maxlength="70"/><doc41:error path="objectId" />*</td>
 							</tr>
 						</c:if>
 						
@@ -119,7 +119,7 @@
 							<td>
 							<c:choose>
 								<c:when test="${empty uploadForm.fileId}">
-									<input name="file" type="file" class="portlet-form-input-field-mandatory"/>*<doc41:error path="file" />
+									<input name="file" type="file" class="portlet-form-input-field portlet-mandatory"/>*<doc41:error path="file" />
 								</c:when>
 								<c:otherwise>
 									<doc41:translate label="FileAlreadyUploaded" />

@@ -55,7 +55,7 @@ title="User Management">
 						</tr>
 						<tr>
 							<th><doc41:translate label="Cwid"/></th>
-							<td><form:input id="cwid" path="cwid" cssClass="portlet-form-input-field-mandatory"/>*</td>
+							<td><form:input id="cwid" path="cwid" cssClass="portlet-form-input-field portlet-mandatory"/>*</td>
 							
 							<th><doc41:translate label="Company"/></th>
 							<td>

@@ -13,7 +13,7 @@
 			<tr>
 				<th><doc41:translate label="Country" /></th>
 				<td>
-					<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${allCountryList}" cssClass="portlet-form-input-field-mandatory" cssStyle="width:240px;" itemValue="value" itemLabel="label"/>*<doc41:error path="attributeValues['${keyCountry}']" />
+					<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${allCountryList}" cssClass="portlet-form-input-field portlet-mandatory" itemValue="value" itemLabel="label"/>*<doc41:error path="attributeValues['${keyCountry}']" />
 					
 					<%-- <select id="${keyCountry}" class="portlet-form-input-field"  name="attributeValues['${keyCountry}']">
 						<c:forEach items="${searchForm.attributePredefValues[keyCountry]}" var="predefValue" varStatus="pdstatus">
@@ -30,7 +30,7 @@
 				<th><doc41:translate label="DeliveryNumber" /></th>
 				<td>
 					<input id="${keyDeliveryNumber}"
-						class="portlet-form-input-field-mandatory" maxlength="70"
+						class="portlet-form-input-field portlet-mandatory" maxlength="70"
 						name="viewAttributes['${keyDeliveryNumber}']"
 						value="${searchForm.viewAttributes[keyDeliveryNumber]}" />*
 						<doc41:error path="viewAttributes['${keyDeliveryNumber}']" />
