@@ -88,6 +88,20 @@ public class LdapDAO {
 	
 	public boolean isInternalUserAuthenticated(String cwid, String password) throws Doc41TechnicalException {
 		try {
+			if(isDevSystem()){
+				if(cwid.equals("DDEMO")
+						||cwid.equals("CARRIER")
+						||cwid.equals("CUSTBROK")
+						||cwid.equals("MATSUP")
+						||cwid.equals("PRODSUP")
+						||cwid.equals("DCCOUNTRY")
+						||cwid.equals("DCCUSTOMER")
+						||cwid.equals("LAYOUTSUP")
+						||cwid.equals("PMSUP")
+						){
+					return true;
+				}
+			}
 			return getAilaAccess().isAuthenticated(cwid.trim(), password.trim());
 		} catch (AilaException e) {
 			return false;
@@ -107,6 +121,38 @@ public class LdapDAO {
     	if(isDevSystem()){ //can be replaced by dummy implementation with some database sequence for the cwid
     		if (StringUtils.equals(person.getFirstName(), "Donald") && StringUtils.equals(person.getLastName(), "Demo")) {
     			person.setCwid("DDEMO");
+    			return person;
+    		}
+    		if (StringUtils.equals(person.getFirstName(), "Carrier") && StringUtils.equals(person.getLastName(), "Demo")) {
+    			person.setCwid("CARRIER");
+    			return person;
+    		}
+    		if (StringUtils.equals(person.getFirstName(), "Custbrok") && StringUtils.equals(person.getLastName(), "Demo")) {
+    			person.setCwid("CUSTBROK");
+    			return person;
+    		}
+    		if (StringUtils.equals(person.getFirstName(), "Matsup") && StringUtils.equals(person.getLastName(), "Demo")) {
+    			person.setCwid("MATSUP");
+    			return person;
+    		}
+    		if (StringUtils.equals(person.getFirstName(), "Prodsup") && StringUtils.equals(person.getLastName(), "Demo")) {
+    			person.setCwid("PRODSUP");
+    			return person;
+    		}
+    		if (StringUtils.equals(person.getFirstName(), "Dccountry") && StringUtils.equals(person.getLastName(), "Demo")) {
+    			person.setCwid("DCCOUNTRY");
+    			return person;
+    		}
+    		if (StringUtils.equals(person.getFirstName(), "Dccustomer") && StringUtils.equals(person.getLastName(), "Demo")) {
+    			person.setCwid("DCCUSTOMER");
+    			return person;
+    		}
+    		if (StringUtils.equals(person.getFirstName(), "Layoutsup") && StringUtils.equals(person.getLastName(), "Demo")) {
+    			person.setCwid("LAYOUTSUP");
+    			return person;
+    		}
+    		if (StringUtils.equals(person.getFirstName(), "Pmsup") && StringUtils.equals(person.getLastName(), "Demo")) {
+    			person.setCwid("PMSUP");
     			return person;
     		}
     		throw new Doc41TechnicalException(getClass(), "no createUser on DEV or WORKSTATION");
