@@ -90,14 +90,14 @@ public class LdapDAO {
 		try {
 			if(isDevSystem()){
 				if(cwid.equals("DDEMO")
-						||cwid.equals("CARRIER")
-						||cwid.equals("CUSTBROK")
-						||cwid.equals("MATSUP")
-						||cwid.equals("PRODSUP")
-						||cwid.equals("DCCOUNTRY")
-						||cwid.equals("DCCUSTOMER")
-						||cwid.equals("LAYOUTSUP")
-						||cwid.equals("PMSUP")
+						||cwid.equalsIgnoreCase("CARRIER")
+						||cwid.equalsIgnoreCase("CUSTBROK")
+						||cwid.equalsIgnoreCase("MATSUP")
+						||cwid.equalsIgnoreCase("PRODSUP")
+						||cwid.equalsIgnoreCase("DCCOUNTRY")
+						||cwid.equalsIgnoreCase("DCCUSTOMER")
+						||cwid.equalsIgnoreCase("LAYOUTSUP")
+						||cwid.equalsIgnoreCase("PMSUP")
 						){
 					return true;
 				}
