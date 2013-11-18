@@ -109,7 +109,38 @@ title="My Profile">
 		</table>
 	</div>
 	
+	<div class="portlet-section-body">
+		<div class="section-separator"><doc41:translate label="TitelUserRoles" /></div>
+		<table cellpadding="4" cellspacing="0" class="nohover">
+			<thead class="portlet-table-header">
+			</thead>
+			<tbody class="portlet-table-body">		
+				
+				<tr>
+					
+					<th style="width: 15%"><doc41:translate label="Roles"/></th>
+					<td style="width: 35%">
+					
+						<table id="rolelist">
+							<colgroup>
+								<col width="100%"/>
+							</colgroup>
+							<c:forEach items="${user.roles}" var="role" varStatus="roleStatus">
+								<tr>
+									<td><doc41:translate label="${role}"/></td>
+								</tr>
+							</c:forEach>
+						</table>
+					</td>
+					<th style="width: 15%">
+					<td style="width: 35%">
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
 	<c:if test="${user.type eq 'external'}">
+	
 	<div class="portlet-section-body">
 		<div class="section-separator"><doc41:translate label="TitelPartners" /></div>
 		<table cellpadding="4" cellspacing="0" class="nohover">
@@ -121,14 +152,89 @@ title="My Profile">
 					
 					<th style="width: 15%"><doc41:translate label="PartnerNumbers"/></th>
 					<td style="width: 85%">
-						<c:forEach items="${user.partners}" var="partner" varStatus="partnerStatus">
-							<c:out value="${partner.partnerNumber}"/>&nbsp;<c:out value="${partner.partnerName1}"/>&nbsp;<c:out value="${partner.partnerName2}"/>&nbsp;<doc41:translate label="PartnerType${partner.partnerType}"/><br/>
-						</c:forEach>
+					
+						<table id="partnerlist">
+							<colgroup>
+								<col width="15%"/>
+								<col width="40%"/>
+								<col width="40%"/>
+								<col width="5%"/>
+							</colgroup>
+							<c:forEach items="${user.partners}" var="partner" varStatus="partnerStatus">
+								<tr>
+									<td><c:out value="${partner.partnerNumber}"/></td>
+									<td><c:out value="${partner.partnerName1}"/></td>
+									<td><c:out value="${partner.partnerName2}"/></td>
+									<td><doc41:translate label="PartnerType${partner.partnerType}"/></td>
+								</tr>
+							</c:forEach>
+						</table>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
+	
+	<div class="portlet-section-body">
+		<div class="section-separator"><doc41:translate label="TitelCountries" /></div>
+		<table cellpadding="4" cellspacing="0" class="nohover">
+			<thead class="portlet-table-header">
+			</thead>
+			<tbody class="portlet-table-body">		
+				
+				<tr>
+					
+					<th style="width: 15%"><doc41:translate label="CountryCodes"/></th>
+					<td style="width: 35%">
+					
+						<table id="countrylist">
+							<colgroup>
+								<col width="100%"/>
+							</colgroup>
+							<c:forEach items="${user.countries}" var="country" varStatus="countryStatus">
+								<tr>
+									<td><c:out value="${country}"/></td>
+								</tr>
+							</c:forEach>
+						</table>
+					</td>
+					<th style="width: 15%">
+					<td style="width: 35%">
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="portlet-section-body">
+		<div class="section-separator"><doc41:translate label="TitelPlants" /></div>
+		<table cellpadding="4" cellspacing="0" class="nohover">
+			<thead class="portlet-table-header">
+			</thead>
+			<tbody class="portlet-table-body">		
+				
+				<tr>
+					
+					<th style="width: 15%"><doc41:translate label="Plants"/></th>
+					<td style="width: 35%">
+					
+						<table id="plantlist">
+							<colgroup>
+								<col width="100%"/>
+							</colgroup>
+							<c:forEach items="${user.plants}" var="plant" varStatus="plantStatus">
+								<tr>
+									<td><c:out value="${plant}"/></td>
+								</tr>
+							</c:forEach>
+						</table>
+					</td>
+					<th style="width: 15%">
+					<td style="width: 35%">
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
 	</c:if>
 </form:form>
 </doc41:layout>
