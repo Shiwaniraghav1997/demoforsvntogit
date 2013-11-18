@@ -18,7 +18,8 @@ title="User Management">
 				<doc41:translate label="EditUser"/>
 			</div>
 			<a class="portlet-form-button" href='userlist'><doc41:translate label="ButtonCancel"/></a>
-			<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
+			<a class="portlet-form-button" href='#' onclick="userEditForm.submit();"><doc41:translate label="ButtonSave"/></a>
+<%-- 			<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" /> --%>
 		</div>
 	
 		<div class="portlet-section-body">
