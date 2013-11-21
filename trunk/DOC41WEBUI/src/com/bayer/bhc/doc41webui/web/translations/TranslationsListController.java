@@ -32,11 +32,9 @@ import com.bayer.bhc.doc41webui.container.TranslationsForm;
 import com.bayer.bhc.doc41webui.domain.Translation;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
-import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
 import com.bayer.bhc.doc41webui.usecase.TranslationsUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.bhc.doc41webui.web.Doc41Tags;
-import com.bayer.ecim.foundation.basic.ConfigMap;
 import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
@@ -75,12 +73,7 @@ public class TranslationsListController extends AbstractDoc41Controller {
 
     @ModelAttribute("editable")
 	public Boolean isEditable() {
-        @SuppressWarnings("unchecked")
-		Map<Object,Object> fdtConfig = ConfigMap.get().getSubConfig(TranslationsRepository.COMPONENT_KEY, TranslationsRepository.CONFIG_KEY);
-        if (fdtConfig != null && "true".equals(fdtConfig.get("enabled"))) {
-            return Boolean.TRUE;
-        }
-        return Boolean.FALSE;
+        return translationsUC.isEditable();
     }
     
     @ModelAttribute(JSP_LIST)

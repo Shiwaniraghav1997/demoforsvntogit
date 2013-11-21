@@ -26,6 +26,7 @@ import com.bayer.bhc.doc41webui.domain.Translation;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.TranslationsUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 @Controller
 public class TranslationAddController extends AbstractDoc41Controller {
@@ -53,9 +54,16 @@ public class TranslationAddController extends AbstractDoc41Controller {
     }
     
     @RequestMapping(value="/translations/translationAdd",method = RequestMethod.GET)
-    public TranslationsForm get() throws Doc41ExceptionBase {
+    public TranslationsForm get(String tagName,String language) throws Doc41ExceptionBase {
 		TranslationsForm translationForm = new TranslationsForm();
-    	translationForm.setLanguage(lastUsedLanguage);
+		if(!StringTool.isTrimmedEmptyOrNull(tagName)){
+			translationForm.setTagName(tagName);
+		}
+		if(!StringTool.isTrimmedEmptyOrNull(language)){
+			translationForm.setLanguage(language);
+		} else {
+			translationForm.setLanguage(lastUsedLanguage);
+		}
     	return translationForm;
     }
     

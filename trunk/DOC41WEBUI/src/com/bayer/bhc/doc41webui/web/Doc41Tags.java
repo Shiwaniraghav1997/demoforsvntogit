@@ -1,8 +1,10 @@
 package com.bayer.bhc.doc41webui.web;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
@@ -13,28 +15,42 @@ public class Doc41Tags extends Tags {
 
 	private static final long serialVersionUID = 5719632430028215053L;
 	
-	private static Set<String> untranslatedLabels = new HashSet<String>();
+	private static Map<String,Set<String>> untranslatedLabels = new HashMap<String,Set<String>>();
+	
+	private String language;
 
 	public Doc41Tags(String pMandant, String pComponent, String pPageName,
 			Locale pLocale) throws BATranslationsException {
 		super(pMandant, pComponent, pPageName, pLocale);
+		language = pLocale.getLanguage();
 	}
 
-	public Doc41Tags(String pMandant, String pComponent, String pPageName,
-			String pLanguage, String pCountry, boolean pAddWatcher,
-			boolean pLoadFromDB, boolean pWarnMissing)
-			throws BATranslationsException {
-		super(pMandant, pComponent, pPageName, pLanguage, pCountry, pAddWatcher,
-				pLoadFromDB, pWarnMissing);
-	}
+//	public Doc41Tags(String pMandant, String pComponent, String pPageName,
+//			String pLanguage, String pCountry, boolean pAddWatcher,
+//			boolean pLoadFromDB, boolean pWarnMissing)
+//			throws BATranslationsException {
+//		super(pMandant, pComponent, pPageName, pLanguage, pCountry, pAddWatcher,
+//				pLoadFromDB, pWarnMissing);
+//		language = pLanguage;
+//	}
 
-	public Doc41Tags(String pMandant, String pComponent, String pPageName,
-			String pLanguage, String pCountry) throws BATranslationsException {
-		super(pMandant, pComponent, pPageName, pLanguage, pCountry);
+//	public Doc41Tags(String pMandant, String pComponent, String pPageName,
+//			String pLanguage, String pCountry) throws BATranslationsException {
+//		super(pMandant, pComponent, pPageName, pLanguage, pCountry);
+//		language = pLanguage;
+//	}
+	
+	public static Map<String, Set<String>> getUntranslatedLabels() {
+		return untranslatedLabels;
 	}
 	
-	public static Set<String> getUntranslatedLabels() {
-		return untranslatedLabels;
+	public static void addLabel(String language,String label){
+		Set<String> labelsForLanguage = untranslatedLabels.get(language);
+		if(labelsForLanguage==null){
+			labelsForLanguage = new TreeSet<String>();
+			untranslatedLabels.put(language, labelsForLanguage);
+		}
+		labelsForLanguage.add(label);
 	}
 	
 	@Override
@@ -42,7 +58,7 @@ public class Doc41Tags extends Tags {
 		String value = getTagNoEscNoUntranslatedMonitor(pTag);
 		if(value==null || value.startsWith("[")){
 			// memorize untranslated Labels
-            getUntranslatedLabels().add(pTag);
+            addLabel(language,pTag);
 		}
 		return value;
 	}
@@ -56,7 +72,7 @@ public class Doc41Tags extends Tags {
 		String value = super.getTagNoEsc(pTag, values, keys);
 		if(value==null || value.startsWith("[")){
 			// memorize untranslated Labels
-            getUntranslatedLabels().add(pTag);
+			addLabel(language,pTag);
 		}
 		return value;
 	}

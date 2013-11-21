@@ -16,6 +16,7 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.container.TranslationPagingRequest;
 import com.bayer.bhc.doc41webui.domain.Translation;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
+import com.bayer.ecim.foundation.basic.ConfigMap;
 
 /**
  * Implements the Translations Usecase.
@@ -131,5 +132,14 @@ public class TranslationsUC {
     public int isTagExist(Translation translation) throws Doc41ExceptionBase {
         return this.translationsRepository.isTagExist(translation);
     }
+
+	public Boolean isEditable() {
+		@SuppressWarnings("unchecked")
+		Map<Object,Object> fdtConfig = ConfigMap.get().getSubConfig(TranslationsRepository.COMPONENT_KEY, TranslationsRepository.CONFIG_KEY);
+        if (fdtConfig != null && "true".equals(fdtConfig.get("enabled"))) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+	}
 
 }

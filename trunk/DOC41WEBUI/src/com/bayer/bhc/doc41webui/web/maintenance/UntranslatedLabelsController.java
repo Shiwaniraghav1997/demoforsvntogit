@@ -1,9 +1,11 @@
 package com.bayer.bhc.doc41webui.web.maintenance;
 
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.domain.User;
+import com.bayer.bhc.doc41webui.usecase.TranslationsUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.bhc.doc41webui.web.Doc41Tags;
 
 @Controller
 public class UntranslatedLabelsController extends AbstractDoc41Controller {
 	
+	@Autowired
+    private TranslationsUC translationsUC;
 	
 	@Override
 	protected boolean hasPermission(User usr, HttpServletRequest request) {
@@ -27,14 +32,33 @@ public class UntranslatedLabelsController extends AbstractDoc41Controller {
 	@RequestMapping(value="/maintenance/untranslatedLabels", method=RequestMethod.GET)
     public void get(ModelMap model) throws Doc41TechnicalException {
 		// Untranslated Labels
-		Set<String> untranslatedLabelsSet = Doc41Tags.getUntranslatedLabels();
 		StringBuilder sb = new StringBuilder();
-		for (String label : untranslatedLabelsSet) {
-			sb.append(label + "\n");
+		Map<String, Set<String>> untranslatedLabels = Doc41Tags.getUntranslatedLabels();
+		for (String language : untranslatedLabels.keySet()) {
+			sb.append("<hr>\n");
+			sb.append("Language: ");
+			sb.append(language);
+			sb.append("<br>\n");
+			sb.append("<hr>\n");
+			sb.append("<ul>\n");
+			Set<String> untranslatedLabelsSet = untranslatedLabels.get(language);
+			for (String label : untranslatedLabelsSet) {
+				//<li><a href="../translations/translationAdd?tagName=label&language=language">label</a></li>
+				sb.append("<li><a href='../translations/translationAdd?tagName=");
+				sb.append(label);
+				sb.append("&language=");
+				sb.append(language);
+				sb.append("'>");
+				sb.append(label);
+				sb.append("</a></li>\n");
+			}
+			sb.append("</ul>\n");
 		}
 		
+		
 		Form form = new Form();
-		form.setUntranslatedLabels(sb.toString());
+		form.setUntranslatedLabels(untranslatedLabels);
+		form.setEditable(translationsUC.isEditable());
 		model.addAttribute("command", form);
     }
 	
@@ -47,14 +71,26 @@ public class UntranslatedLabelsController extends AbstractDoc41Controller {
 	
 	
 	public static class Form {
-		private String untranslatedLabels;
+		private Map<String, Set<String>> untranslatedLabels;
+		private boolean editable;
 
-		public String getUntranslatedLabels() {
+		public Set<String> getLanguages(){
+			return untranslatedLabels.keySet();
+		}
+		public Map<String, Set<String>> getUntranslatedLabels() {
 			return untranslatedLabels;
 		}
 
-		public void setUntranslatedLabels(String untranslatedLabels) {
+		public void setUntranslatedLabels(Map<String, Set<String>> untranslatedLabels) {
 			this.untranslatedLabels = untranslatedLabels;
+		}
+		
+		public boolean isEditable(){
+			return editable;
+		}
+		
+		public void setEditable(boolean editable) {
+			this.editable = editable;
 		}
 	}
 }

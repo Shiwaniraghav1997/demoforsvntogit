@@ -15,7 +15,23 @@
 	<form:form commandName="command" action="untranslatedLabels/reset" method="post">
 		<input type="submit" name="_finish" class="portlet-form-button" value="<doc41:translate label="ButtonReset"/>" /></span>
 	</form:form>
-	<textarea cols="80" rows="30" id="rfcDumpBox" >${command.untranslatedLabels}</textarea>
+	<c:forEach items="${command.languages}" var="language" varStatus="languageStatus">
+		<div class="portlet-section-body">
+		<div class="section-separator"><doc41:translate label="Language"/>:&nbsp;<c:out value="${language}"/></div>
+		<ul>
+		<c:forEach items="${command.untranslatedLabels[language]}" var="label" varStatus="labelStatus">
+			<c:choose>
+				<c:when test="${command.editable }">
+				<li><a href="../translations/translationAdd?tagName=${label}&language=${language}"><c:out value="${label}"/></a></li>
+				</c:when>
+				<c:otherwise>
+				<li><c:out value="${label}"/></li>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+		</ul>
+		</div>
+	</c:forEach>
 </div>
 </div>
 </doc41:layout>
