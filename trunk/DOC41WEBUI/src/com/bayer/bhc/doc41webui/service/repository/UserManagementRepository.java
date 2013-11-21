@@ -37,6 +37,7 @@ import com.bayer.bhc.doc41webui.integration.db.dc.UserPlantDC;
 import com.bayer.bhc.doc41webui.service.mapping.UserMapper;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.SendMail;
+import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.dbx.QueryException;
 import com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC;
 import com.bayer.ecim.foundation.web.usermanagementN.UMProfileNDC;
@@ -229,6 +230,7 @@ public class UserManagementRepository extends AbstractRepository {
 	}
 	private void updateLdapGroup(User pUser) throws Doc41RepositoryException {
 		try {
+			addPermissionsToUser(pUser);
         	if(pUser.getActive()!=null){
 	        	if (pUser.getType().equals(User.TYPE_EXTERNAL)) {
 	        		if(pUser.getActive()){
@@ -256,6 +258,32 @@ public class UserManagementRepository extends AbstractRepository {
 	}
 	
 	
+	private void addPermissionsToUser(User pUser) throws Doc41RepositoryException {
+		try{
+			List<String> oldPermissions = pUser.getPermissions();
+			if(oldPermissions!=null && !oldPermissions.isEmpty()){
+				return;
+			}
+			if(StringTool.isTrimmedEmptyOrNull(pUser.getCwid())){
+				throw new IllegalArgumentException("addPermissionsToUser: cwid is empty");
+			}
+			UMUserNDC userDC = userManagementDAO.getUserByCWID(pUser.getCwid());
+			userDC.loadResolvedUserPermissions(pUser.getLocale());
+			
+			@SuppressWarnings("unchecked")
+			List<UMPermissionNDC> permissionDCs = userDC.getResolvedUserPermissions();
+			List<String> permissions = new ArrayList<String>();
+			for (UMPermissionNDC permissionDC : permissionDCs) {                    
+	            Doc41Log.get().debug(this.getClass(), "System", "getPermission Code: " + permissionDC.getCode());
+	            permissions.add(permissionDC.getCode());
+	        }
+			pUser.setPermissions(permissions);
+		} catch (QueryException e) {
+			throw new Doc41RepositoryException("UserManagementRepository.addPermissionsToUser", e);
+		} catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("UserManagementRepository.addPermissionsToUser", e);
+		}
+	}
 	public void updateUser(User pUser, boolean updateRoles,boolean updateLdap,boolean updatePartner,boolean updateCountries,boolean updatePlants) throws Doc41RepositoryException, Doc41BusinessException {
         checkUser(Doc41ErrorMessageKeys.USR_MGT_UPDATE_USER_FAILED);
         
