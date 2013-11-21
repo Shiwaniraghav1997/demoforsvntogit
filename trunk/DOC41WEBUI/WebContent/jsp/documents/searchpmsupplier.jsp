@@ -10,12 +10,12 @@
 	<doc41:searchtemplate action="searchpmsupplier">
 		<jsp:attribute name="fragmentCustomSearchFields">
 			<tr class="portlet-table">
-				<th><doc41:translate label="PONumber" /></th>
+				<th class="required"><doc41:translate label="PONumber" /></th>
 				<td>
 					<input id="${keyPONumber}"
 						class="portlet-form-input-field portlet-mandatory" maxlength="70"
 						name="viewAttributes['${keyPONumber}']"
-						value="${searchForm.viewAttributes[keyPONumber]}" />*
+						value="${searchForm.viewAttributes[keyPONumber]}" />
 						<doc41:error path="viewAttributes['${keyPONumber}']" />
 				</td>
 			</tr>

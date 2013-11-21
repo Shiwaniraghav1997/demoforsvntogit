@@ -217,4 +217,8 @@ table#doc41table tbody tr td:nth-child(10) {
 	background-image:	     -o-linear-gradient(left top , #EBF8FF 50%, #FFFFFF 100%);
 }
 
+.required:after { content:" *"; }
+
+.optional { padding-right:20px !important; }
+
 

@@ -53,15 +53,15 @@
 						
 						<c:if test="${uploadForm.partnerNumberUsed && (empty showPartnerNumber or showPartnerNumber)}">
 						<tr>
-							<th><doc41:translate label="PartnerNumber" /></th>
-							<td><form:select path="partnerNumber" items="${uploadForm.partners}" cssClass="portlet-form-input-field portlet-mandatory" itemLabel="partnerLabel" itemValue="partnerNumber"/>*<doc41:error path="partnerNumber" /></td>
+							<th class="required"><doc41:translate label="PartnerNumber" /></th>
+							<td><form:select path="partnerNumber" items="${uploadForm.partners}" cssClass="portlet-form-input-field portlet-mandatory" itemLabel="partnerLabel" itemValue="partnerNumber"/><doc41:error path="partnerNumber" /></td>
 						</tr>
 						</c:if>
 						
 						<c:if test="${empty showObjectId or showObjectId}">
 						 	<tr class="portlet-table-alternate">
-								<th><doc41:translate label="ObjectId${uploadForm.type}" /></th>
-								<td><form:input path="objectId" cssClass="portlet-form-input-field portlet-mandatory"  maxlength="70"/><doc41:error path="objectId" />*</td>
+								<th class="required"><doc41:translate label="ObjectId${uploadForm.type}" /></th>
+								<td><form:input path="objectId" cssClass="portlet-form-input-field portlet-mandatory"  maxlength="70"/><doc41:error path="objectId" /></td>
 							</tr>
 						</c:if>
 						
@@ -72,7 +72,7 @@
 						<c:if test="${empty showCustomAttributes or showCustomAttributes}">
 						 	<c:forEach items="${uploadForm.attributeValues}" var="attributeValue" varStatus="status">
 							    <tr	<c:if test="${lovStatus.count % 2 != 0}">class="portlet-table-alternate"</c:if>>
-							        <th><c:out value="${uploadForm.attributeLabels[attributeValue.key]}"/>
+							        <th class="${searchForm.attributeMandatory[attributeValue.key]?'required':'optional'}"><c:out value="${uploadForm.attributeLabels[attributeValue.key]}"/>
 							        <input type="hidden" name="attributeLabels['${attributeValue.key}']" value="${uploadForm.attributeLabels[attributeValue.key]}"/>
 							        </th>
 							        <td>
@@ -86,11 +86,9 @@
 										</c:choose>		            	
 							         		</c:forEach>
 							         	</select>
-							         	<c:out value="${searchForm.attributeMandatory[attributeValue.key]?'*':''}"/>
 							         </c:when>
 							         <c:otherwise>
 							          <input id="${attributeValue.key}" class="portlet-form-input-field${searchForm.attributeMandatory[attributeValue.key]?'-mandatory':''}"  maxlength="70" name="attributeValues['${attributeValue.key}']" value="${attributeValue.value}"/>
-							          <c:out value="${searchForm.attributeMandatory[attributeValue.key]?'*':''}"/>
 							         </c:otherwise>
 							        </c:choose>
 							        <doc41:error path="attributeValues['${attributeValue.key}']" />
@@ -115,11 +113,11 @@
 					</thead>
 					<tbody class="portlet-table-body">
 						<tr>
-							<th><doc41:translate label="SelectFile" /></th>
+							<th class="required"><doc41:translate label="SelectFile" /></th>
 							<td>
 							<c:choose>
 								<c:when test="${empty uploadForm.fileId}">
-									<input name="file" type="file" class="portlet-form-input-field portlet-mandatory"/>*<doc41:error path="file" />
+									<input name="file" type="file" class="portlet-form-input-field portlet-mandatory"/><doc41:error path="file" />
 								</c:when>
 								<c:otherwise>
 									<doc41:translate label="FileAlreadyUploaded" />
@@ -145,7 +143,7 @@
 					</thead>
 					<tbody class="portlet-table-body">
 						<tr>
-							<th><doc41:translate label="NotificationEMailAddress" /></th>
+							<th class="optional"><doc41:translate label="NotificationEMailAddress" /></th>
 							<td>
 								<form:input path="notificationEMail" cssClass="portlet-form-input-field"  maxlength="200"/><doc41:error path="notificationEMail" />	
 							</td>
