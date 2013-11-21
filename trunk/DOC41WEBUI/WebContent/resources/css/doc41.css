@@ -127,9 +127,9 @@ table.tablesorter tr:hover
 /* Tooltip */
 .ui-tooltip {
      background: url("../img/toolTipBack.png") repeat-x scroll left top #006FA1;
-     border-radius: 5px 5px 5px 5px;
+/*      border-radius: 5px 5px 5px 5px; */
      border: 0px solid #CCCCCC;
-     box-shadow: 0px 0px 4px #222222;
+     box-shadow: 0px 0px 4px #999999;
      color: #FFFFFF;
      display: block;
      font-size: 10px;
