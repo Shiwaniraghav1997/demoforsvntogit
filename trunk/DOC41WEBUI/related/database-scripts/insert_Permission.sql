@@ -655,3 +655,16 @@ VALUES
   'Show Navigation Untranslated Labels',
   'NAV_UNTRANSLATEDLABELS'
 );
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'NavApplogs',
+  'Show Navigation Application Logs',
+  'NAV_APPLOGS'
+);
