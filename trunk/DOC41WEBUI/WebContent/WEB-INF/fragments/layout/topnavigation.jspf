@@ -39,7 +39,7 @@
 			  
 			  <doc41:topNavEntry href="monitoring/monitoringOverview" title="navMaintenance" id="maintenance" permission="TOPNAV_MAINTENANCE">
 			  	<doc41:navEntry href="SupportConsole" title="Support Console" id="supportConsole" cssclass="first-child" permission="NAV_SUPPORTCONSOLE"/>
-			  	<doc41:navEntry href="applogs" title="Application Logs" id="applogs" cssclass="first-child" permission="NAV_APPLOGS"/>
+			  	<doc41:navEntry href="applogs" title="Application Logs" id="applogs" permission="NAV_APPLOGS"/>
 			  	<doc41:navEntry href="translations/translationOverview" title="Translations" id="translations" permission="NAV_TRANSLATIONS"/>
 			  	<!-- doc41:navEntry href="busedit" title="System Administration" id="systemAdministration"/-->
 			  	<doc41:navEntry href="monitoring/monitoringOverview" title="Interface Monitoring" id="interfaceMonitoring" permission="NAV_MONITORING"/>
