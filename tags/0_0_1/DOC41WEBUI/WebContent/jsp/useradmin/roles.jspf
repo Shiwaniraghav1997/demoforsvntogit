@@ -1,0 +1,126 @@
+<%@page import="com.bayer.bhc.doc41webui.domain.User"%>
+
+<div class="portlet-section-body">
+	<table cellpadding="4" cellspacing="0" class="nohover">
+		<thead class="portlet-table-header">
+			<tr>
+				<th colspan="4" class="required"><doc41:translate label="TitelUserRoles"/></th>
+			</tr>
+		</thead>
+		<tbody class="portlet-table-body">		
+			<tr>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_BUSINESS_ADMIN %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_BUSINESS_ADMIN %>" disabled="true"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_BUSINESS_ADMIN %>"/>
+					</c:if>
+				</td>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_TECH_ADMIN %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_TECH_ADMIN %>" disabled="true"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_TECH_ADMIN %>"/>
+					</c:if>
+				</td>
+			</tr>
+			<tr class="portlet-table-alternate">
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_CARRIER %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_CARRIER %>"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_CARRIER %>" disabled="true"/>
+					</c:if>
+				</td>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_CUSTOMS_BROKER %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMS_BROKER %>"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMS_BROKER %>" disabled="true"/>
+					</c:if>
+				</td>
+			</tr>
+			
+			<tr>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_MATERIAL_SUPPLIER %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_MATERIAL_SUPPLIER %>"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_MATERIAL_SUPPLIER %>" disabled="true"/>
+					</c:if>
+				</td>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_PRODUCT_SUPPLIER %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_PRODUCT_SUPPLIER %>"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_PRODUCT_SUPPLIER %>" disabled="true"/>
+					</c:if>
+				</td>
+			</tr>
+			
+			<tr>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_DEL_CERT_VIEWER_COUNTRY %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_DEL_CERT_VIEWER_COUNTRY %>"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_DEL_CERT_VIEWER_COUNTRY %>" disabled="true"/>
+					</c:if>
+				</td>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_DEL_CERT_VIEWER_CUSTOMER %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_DEL_CERT_VIEWER_CUSTOMER %>"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_DEL_CERT_VIEWER_CUSTOMER %>" disabled="true"/>
+					</c:if>
+				</td>
+			</tr>
+			
+			<tr>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_LAYOUT_SUPPLIER %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_LAYOUT_SUPPLIER %>"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_LAYOUT_SUPPLIER %>" disabled="true"/>
+					</c:if>
+				</td>
+				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_PM_SUPPLIER %>"/></th>
+				<td style="width: 35%">
+					<c:if test="${userEditForm.type eq 'external'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_PM_SUPPLIER %>"/>
+					</c:if>
+					<c:if test="${userEditForm.type eq 'internal'}">
+						<form:checkbox path="roles" value="<%=User.ROLE_PM_SUPPLIER %>" disabled="true"/>
+					</c:if>
+				</td>
+			</tr>
+			
+			<tr class="portlet-table-alternate">
+				
+				<th><doc41:translate label="<%=User.ROLE_OBSERVER %>"/></th>
+				<td>
+					<form:checkbox path="roles" value="<%=User.ROLE_OBSERVER %>"/>
+				</td>
+				<th>&nbsp;</th>
+				<td>&nbsp;</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
