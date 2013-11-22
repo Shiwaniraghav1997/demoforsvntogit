@@ -22,6 +22,7 @@ import com.bayer.ecim.foundation.dbx.QueryException;
 import com.bayer.ecim.foundation.dbx.ResultObject;
 import com.bayer.ecim.foundation.dbx.StoreException;
 import com.bayer.ecim.foundation.web.usermanagementN.OTUserManagementN;
+import com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC;
 import com.bayer.ecim.foundation.web.usermanagementN.UMProfileNDC;
 import com.bayer.ecim.foundation.web.usermanagementN.UMUserNDC;
 import com.bayer.ecim.foundation.web.usermanagementN.UMUserProfileNDC;
@@ -407,4 +408,13 @@ public class UserManagementDAO extends AbstractDAOImpl {
 		}
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<UMPermissionNDC> getPermissionsByProfile(Long profileId, Locale pLoc) throws Doc41TechnicalException {
+        try {
+            return OTUserManagementN.get().getPermissionsByProfile(profileId,null,null,pLoc);
+        } catch (QueryException e) {
+            throw new Doc41TechnicalException(this.getClass(), "getPermissionsByProfile", e);
+        }
+	}
 }

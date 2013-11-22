@@ -267,19 +267,17 @@ public class UserManagementRepository extends AbstractRepository {
 			if(StringTool.isTrimmedEmptyOrNull(pUser.getCwid())){
 				throw new IllegalArgumentException("addPermissionsToUser: cwid is empty");
 			}
-			UMUserNDC userDC = userManagementDAO.getUserByCWID(pUser.getCwid());
-			userDC.loadResolvedUserPermissions(pUser.getLocale());
 			
-			@SuppressWarnings("unchecked")
-			List<UMPermissionNDC> permissionDCs = userDC.getResolvedUserPermissions();
 			List<String> permissions = new ArrayList<String>();
-			for (UMPermissionNDC permissionDC : permissionDCs) {                    
-	            Doc41Log.get().debug(this.getClass(), "System", "getPermission Code: " + permissionDC.getCode());
-	            permissions.add(permissionDC.getCode());
-	        }
+			List<String> roles = pUser.getRoles();
+			for (String roleName : roles) {
+				UMProfileNDC profile = userManagementDAO.getProfileByName(roleName, pUser.getLocale());
+				ArrayList<UMPermissionNDC> permissionDCs = userManagementDAO.getPermissionsByProfile(profile.getObjectID(),pUser.getLocale());
+				for (UMPermissionNDC permissionDC : permissionDCs) {
+		            permissions.add(permissionDC.getCode());
+				}
+			}
 			pUser.setPermissions(permissions);
-		} catch (QueryException e) {
-			throw new Doc41RepositoryException("UserManagementRepository.addPermissionsToUser", e);
 		} catch (Doc41TechnicalException e) {
 			throw new Doc41RepositoryException("UserManagementRepository.addPermissionsToUser", e);
 		}
