@@ -379,8 +379,12 @@ public class SAPSingleton extends Singleton {
 		return pRFCCaller.processResult( bFunction );
 	}
 
-	public String dumpMetadata(String pRFCName) throws SAPException,
-			JCoException {
+	public String dumpMetadata(String pRFCName) throws SAPException, JCoException {
+		JCoFunction bFunction = getJCoFunction(pRFCName);
+		return RFCMetaDataDumper.dumpFunction(bFunction);
+	}
+	
+	public JCoFunction getJCoFunction(String pRFCName) throws SAPException, JCoException{
 		Map<String, String> mRFCConfig = cRFCs.get(pRFCName);
 		if (mRFCConfig == null) {
 			throw new SAPException("No configuration for RFC \"" + pRFCName
@@ -397,7 +401,7 @@ public class SAPSingleton extends Singleton {
 		JCoFunctionTemplate bTemplate = pSAPRep.getFunctionTemplate(bSAPRFCName
 				.toUpperCase());
 		JCoFunction bFunction = bTemplate.getFunction();
-		return RFCMetaDataDumper.dumpFunction(bFunction);
+		return bFunction;
 	}
 	
 	public Set<String> getRFCNames() {
