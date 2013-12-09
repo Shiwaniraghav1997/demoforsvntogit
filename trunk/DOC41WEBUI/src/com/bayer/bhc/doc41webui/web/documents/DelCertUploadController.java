@@ -138,6 +138,6 @@ public class DelCertUploadController extends UploadController {
 	
 	@Override
 	protected String getSuccessURL() {
-		return "delcertupload";
+		return "delcertupinput";
 	}
 }
