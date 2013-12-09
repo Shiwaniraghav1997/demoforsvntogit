@@ -86,7 +86,7 @@ public class SearchController extends AbstractDoc41Controller {
 					}
 					if(!result.hasErrors()){
 							List<HitListEntry> documents = documentUC.searchDocuments(type, 
-									objectIds, allAttributeValues, MAX_RESULTS+1, true);
+									objectIds, allAttributeValues, MAX_RESULTS+1, false);
 						if(documents.size()>MAX_RESULTS){
 							result.rejectValue("table", "ToManyResults");
 						} else {
