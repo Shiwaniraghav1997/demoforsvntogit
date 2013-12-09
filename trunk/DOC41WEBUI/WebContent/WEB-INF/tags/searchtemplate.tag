@@ -16,6 +16,8 @@
 	<script type="text/javascript">
 		tswidgets = [ 'zebra' ];
 		
+		tssorting = [[2,1]];
+		
 		function openDocument(key,type){
 			window.location ="download?type="+type+"&key="+key;
 		}
