@@ -120,8 +120,8 @@
 	background-color: #FFDDDD;
 }
 
-.portlet-fullsize {
-	width: 100%;
+.portlet-big {
+	width: 600px;
 }
 
 .portlet-section-header {

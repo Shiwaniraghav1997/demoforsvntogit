@@ -37,9 +37,9 @@ title="Upload Document">
 						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="Country" /></th>
 							<td>
-								<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${userCountrySIList}" cssClass="portlet-form-input-field" itemValue="value" itemLabel="label"/><doc41:error path="attributeValues['${keyCountry}']" />
+								<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${userCountrySIList}" cssClass="portlet-form-input-field portlet-big" itemValue="value" itemLabel="label"/><doc41:error path="attributeValues['${keyCountry}']" />
 								
-								<%-- <select id="${keyCountry}" class="portlet-form-input-field"  name="attributeValues['${keyCountry}']">
+								<%-- <select id="${keyCountry}" class="portlet-form-input-field portlet-big"  name="attributeValues['${keyCountry}']">
 									<c:forEach items="${uploadForm.attributePredefValues[keyCountry]}" var="predefValue" varStatus="pdstatus">
 										<c:choose>
 											<c:when test="${attributeValue.value ==  predefValue}"><option selected="selected">${predefValue}</option></c:when>
