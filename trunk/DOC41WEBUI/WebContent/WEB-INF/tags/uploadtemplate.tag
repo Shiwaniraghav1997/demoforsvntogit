@@ -117,7 +117,7 @@
 							<td>
 							<c:choose>
 								<c:when test="${empty uploadForm.fileId}">
-									<input name="file" type="file" class="portlet-form-input-field portlet-mandatory"/><doc41:error path="file" />
+									<input name="file" type="file" class="portlet-form-input-field portlet-mandatory portlet-fullsize"/><doc41:error path="file" />
 								</c:when>
 								<c:otherwise>
 									<doc41:translate label="FileAlreadyUploaded" />

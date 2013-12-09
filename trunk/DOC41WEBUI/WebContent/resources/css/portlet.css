@@ -120,6 +120,10 @@
 	background-color: #FFDDDD;
 }
 
+.portlet-fullsize {
+	width: 100%;
+}
+
 .portlet-section-header {
 	font-family: 		Verdana, Arial, Helvetica, sans-serif;
 	font-size: 			14px;
