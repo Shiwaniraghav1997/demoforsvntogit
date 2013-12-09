@@ -69,7 +69,7 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
 		StringBuilder sb = new StringBuilder();
 		sb.append('|');
 		if(!attribValues.containsKey("PLANT")){
-			sb.append("|PLANT=XXXX|");
+			sb.append("PLANT=XXXX|");
 		}
 		Set<String> keySet = attribValues.keySet();
 		for (String key : keySet) {
