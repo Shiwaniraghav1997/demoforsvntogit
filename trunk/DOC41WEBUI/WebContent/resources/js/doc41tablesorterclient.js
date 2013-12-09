@@ -24,6 +24,11 @@ $(function(){
 	if(typeof tswidgets === "undefined"){
 		tswidgets=['zebra', 'filter'];
 	}
+	
+	//tssorting can be used to preselect sorting
+	if(typeof tssorting === "undefined"){
+		tssorting=[];
+	}
 
   // define pager options
   var pagerOptions = {
@@ -61,10 +66,12 @@ $(function(){
       theme: 'blue',
       headerTemplate : '{content} {icon}', // new in v2.7. Needed to add the bootstrap icon!
       widthFixed: true,
-      widgets: tswidgets
+      widgets: tswidgets,
+      sortList: tssorting
     })
 
     // initialize the pager plugin
     // ****************************
     .tablesorterPager(pagerOptions);
+  
 });
