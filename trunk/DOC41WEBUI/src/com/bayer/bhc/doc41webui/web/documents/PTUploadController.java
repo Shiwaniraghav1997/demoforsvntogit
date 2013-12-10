@@ -15,8 +15,8 @@ public class PTUploadController extends UploadController {
 
 	
 	@RequestMapping(value="/documents/ptupload",method = RequestMethod.GET)
-	public UploadForm get(@RequestParam() String type) throws Doc41BusinessException{
-		return super.get(type);
+	public UploadForm get(@RequestParam() String type,@RequestParam(required=false) String partnerNumber) throws Doc41BusinessException{
+		return super.get(type,partnerNumber);
 	}
 	
 	@RequestMapping(value="/documents/ptuploadpost",method = RequestMethod.POST)

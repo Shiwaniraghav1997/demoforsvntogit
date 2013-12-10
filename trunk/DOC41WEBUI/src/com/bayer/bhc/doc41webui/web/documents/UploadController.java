@@ -45,10 +45,13 @@ public abstract class UploadController extends AbstractDoc41Controller {
     }
 
 	//default implementation
-	public UploadForm get(@RequestParam() String type) throws Doc41BusinessException{
+	public UploadForm get(@RequestParam() String type,@RequestParam(required=false) String partnerNumber) throws Doc41BusinessException{
 		String language = LocaleInSession.get().getLanguage();
 		UploadForm uploadForm = createNewForm();
 		uploadForm.setType(type);
+		if(!StringTool.isTrimmedEmptyOrNull(partnerNumber)){
+			uploadForm.setPartnerNumber(partnerNumber);
+		}
 		uploadForm.initPartnerNumber(documentUC.getPartnerNumberType(type));
 //		uploadForm.setTypeLabel(documentUC.getTypeLabel(type, language));
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type,true);
@@ -109,7 +112,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		}
 		
 		
-		return "redirect:/documents/uploadsuccess?type="+type+"&uploadurl="+getSuccessURL();
+		return "redirect:/documents/uploadsuccess?type="+type+"&uploadurl="+getSuccessURL()+"&partnerNumber="+uploadForm.getPartnerNumber();
 	}
 
 	private String getTypeName(String type,boolean userLocale)  {
