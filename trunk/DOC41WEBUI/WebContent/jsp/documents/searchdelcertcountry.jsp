@@ -11,7 +11,7 @@
 	<doc41:searchtemplate action="searchdelcertcountry" showCustomAttributes="false" showObjectId="false" showPartnerNumber="false">
 		<jsp:attribute name="fragmentCustomSearchFields">
 			<tr>
-				<th class="required"><doc41:translate label="Country" /></th>
+				<th><label for="${keyCountry}"><doc41:translate label="Country" /></label></th>
 				<td>
 					<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${userCountrySIList}" cssClass="portlet-form-input-field portlet-mandatory" itemValue="value" itemLabel="label"/><doc41:error path="attributeValues['${keyCountry}']" />
 					
@@ -27,7 +27,7 @@
 				</td>
 			</tr>
 			<tr class="portlet-table-alternate">
-				<th class="optional"><doc41:translate label="MaterialNumber" /></th>
+				<th><label for="${keyMaterial}"><doc41:translate label="MaterialNumber" /></label></th>
 				<td>
 					<input id="${keyMaterial}"
 						class="portlet-form-input-field" maxlength="70"
@@ -37,7 +37,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th class="optional"><doc41:translate label="Batch" /></th>
+				<th><label for="${keyBatch}"><doc41:translate label="Batch" /></label></th>
 				<td>
 					<input id="${keyBatch}"
 						class="portlet-form-input-field" maxlength="70"

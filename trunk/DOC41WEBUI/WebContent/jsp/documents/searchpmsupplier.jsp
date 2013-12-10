@@ -10,7 +10,7 @@
 	<doc41:searchtemplate action="searchpmsupplier">
 		<jsp:attribute name="fragmentCustomSearchFields">
 			<tr class="portlet-table">
-				<th class="required"><doc41:translate label="PONumber" /></th>
+				<th><label for="${keyPONumber}"><doc41:translate label="PONumber" /></label></th>
 				<td>
 					<input id="${keyPONumber}"
 						class="portlet-form-input-field portlet-mandatory" maxlength="70"

@@ -56,15 +56,15 @@
 						</spring:hasBindErrors>
 
 						<tr>
-							<th class="required"><doc41:translate label="PartnerNumber" /></th>
+							<th><label for="partnerNumber"><doc41:translate label="PartnerNumber" /></label></th>
 							<td><form:select path="partnerNumber" items="${vendorBatchForm.partners}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" itemLabel="partnerLabel" itemValue="partnerNumber"/><doc41:error path="partnerNumber" /></td>
 						</tr>
 						<tr class="portlet-table-alternate">
-							<th class="required"><doc41:translate label="VendorBatch" /></th>
+							<th><label for="vendorBatch"><doc41:translate label="VendorBatch" /></label></th>
 							<td><form:input path="vendorBatch" cssClass="portlet-form-input-field portlet-mandatory portlet-big"  maxlength="70"/><doc41:error path="vendorBatch" /></td>
 						</tr>
 						<tr>
-							<th class="required"><doc41:translate label="Plant" /></th>
+							<th><label for="plant"><doc41:translate label="Plant" /></label></th>
 							<td><form:select path="plant" items="${user.plants}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" /><doc41:error path="plant" /></td>
 						</tr>
 						

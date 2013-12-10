@@ -64,7 +64,7 @@
 
 						<tr>
 							<c:if test="${searchForm.partnerNumberUsed && (empty showPartnerNumber or showPartnerNumber)}">
-								<th class="required"><doc41:translate label="PartnerNumber" /></th>
+								<th><label for="partnerNumber"><doc41:translate label="PartnerNumber" /></label></th>
 								<td><form:select path="partnerNumber"
 										items="${searchForm.partners}" cssClass="portlet-form-input-field portlet-mandatory"
 										itemLabel="partnerLabel"
@@ -72,7 +72,7 @@
 									<doc41:error path="partnerNumber" /></td>
 							</c:if>
 							<c:if test="${empty showObjectId or showObjectId}">
-								<th class="required"><doc41:translate label="ObjectId${searchForm.type}" /></th>
+								<th><label for="objectId"><doc41:translate label="ObjectId${searchForm.type}" /></label></th>
 								<td><form:input path="objectId"
 										cssClass="portlet-form-input-field portlet-mandatory" maxlength="70" />
 									<doc41:error path="objectId" /></td>
@@ -90,8 +90,9 @@
 									<tr
 										<c:if test="${lovStatus.count % 4 != 0}">class="portlet-table-alternate"</c:if>>
 								</c:if>
-								<th class="optional"><c:out
+								<th><label for="${attributeValue.key}"><c:out
 										value="${searchForm.attributeLabels[attributeValue.key]}" /> <%-- <input type="hidden" name="attributeLabels['${attributeValue.key}']" value="${searchForm.attributeLabels[attributeValue.key]}"/> --%>
+										</label>
 								</th>
 								<td><c:choose>
 										<c:when

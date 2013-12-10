@@ -52,14 +52,14 @@
 						
 						<c:if test="${uploadForm.partnerNumberUsed && (empty showPartnerNumber or showPartnerNumber)}">
 						<tr>
-							<th class="required"><doc41:translate label="PartnerNumber" /></th>
+							<th><label for="partnerNumber"><doc41:translate label="PartnerNumber" /></label></th>
 							<td><form:select path="partnerNumber" items="${uploadForm.partners}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" itemLabel="partnerLabel" itemValue="partnerNumber"/><doc41:error path="partnerNumber" /></td>
 						</tr>
 						</c:if>
 						
 						<c:if test="${empty showObjectId or showObjectId}">
 						 	<tr class="portlet-table-alternate">
-								<th class="required"><doc41:translate label="ObjectId${uploadForm.type}" /></th>
+								<th><label for="objectId"><doc41:translate label="ObjectId${uploadForm.type}" /></label></th>
 								<td><form:input path="objectId" cssClass="portlet-form-input-field portlet-mandatory portlet-big"  maxlength="70"/><doc41:error path="objectId" /></td>
 							</tr>
 						</c:if>
@@ -71,7 +71,7 @@
 						<c:if test="${empty showCustomAttributes or showCustomAttributes}">
 						 	<c:forEach items="${uploadForm.attributeValues}" var="attributeValue" varStatus="status">
 							    <tr	<c:if test="${lovStatus.count % 2 != 0}">class="portlet-table-alternate"</c:if>>
-							        <th class="${searchForm.attributeMandatory[attributeValue.key]?'required':'optional'}"><c:out value="${uploadForm.attributeLabels[attributeValue.key]}"/>
+							        <th><label for="${attributeValue.key}"><c:out value="${uploadForm.attributeLabels[attributeValue.key]}"/></label>
 							        <input type="hidden" name="attributeLabels['${attributeValue.key}']" value="${uploadForm.attributeLabels[attributeValue.key]}"/>
 							        </th>
 							        <td>
@@ -112,7 +112,7 @@
 					</thead>
 					<tbody class="portlet-table-body">
 						<tr>
-							<th class="required"><doc41:translate label="SelectFile" /></th>
+							<th><label for="file"><doc41:translate label="SelectFile" /></label></th>
 							<td>
 							<c:choose>
 								<c:when test="${empty uploadForm.fileId}">
@@ -142,7 +142,7 @@
 					</thead>
 					<tbody class="portlet-table-body">
 						<tr>
-							<th class="optional"><doc41:translate label="NotificationEMailAddress" /></th>
+							<th><label for="notificationEMail"><doc41:translate label="NotificationEMailAddress" /></label></th>
 							<td>
 								<form:input path="notificationEMail" cssClass="portlet-form-input-field portlet-big"  maxlength="200"/><doc41:error path="notificationEMail" />	
 							</td>

@@ -43,7 +43,7 @@ title="User Management">
 						</tr>
 					</spring:hasBindErrors>				
 					<tr>
-						<th style="width: 15%" class="required"><doc41:translate label="Surname"/></th> 
+						<th style="width: 15%"><label for="surname"><doc41:translate label="Surname"/></label></th> 
 						<td style="width: 35%">
 							<c:if test="${userEditForm.type eq 'external'}">
 								<form:input path="surname" cssClass="portlet-form-input-field portlet-mandatory" maxlength="70"/>
@@ -53,7 +53,7 @@ title="User Management">
 								<form:hidden path="surname"/>
 							</c:if>
 						</td>
-						<th style="width: 15%" class="required"><doc41:translate label="Password"/></th>
+						<th style="width: 15%"><label for="password"><doc41:translate label="Password"/></label></th>
 						<td style="width: 35%">
 							<c:if test="${userEditForm.type eq 'external'}">
 								<form:password path="password" cssClass="portlet-form-input-field portlet-mandatory"/>
@@ -64,7 +64,7 @@ title="User Management">
 						</td>
 					</tr>
 					<tr class="portlet-table-alternate">
-						<th class="required"><doc41:translate label="Firstname"/></th>
+						<th><label for="firstname"><doc41:translate label="Firstname"/></label></th>
 						<td>
 							<c:if test="${userEditForm.type eq 'external'}">
 								<form:input path="firstname" cssClass="portlet-form-input-field portlet-mandatory"  maxlength="30"/>
@@ -74,7 +74,7 @@ title="User Management">
 								<form:hidden path="firstname"/>
 							</c:if>
 						</td>
-						<th class="required"><doc41:translate label="RepeatPassword"/></th>
+						<th><label for="passwordRepeated"><doc41:translate label="RepeatPassword"/></label></th>
 						<td>
 							<c:if test="${userEditForm.type eq 'external'}">
 								<form:password path="passwordRepeated" cssClass="portlet-form-input-field portlet-mandatory" />
@@ -85,11 +85,11 @@ title="User Management">
 						</td>
 					</tr>
 					<tr>
-						<th class="optional"><doc41:translate label="Cwid"/></th>
+						<th><label for="cwid"><doc41:translate label="Cwid"/></label></th>
 						<td>
 							<c:out value="${userEditForm.cwid}"/> <form:hidden path="cwid"/>
 						</td>
-						<th class="optional"><doc41:translate label="Company"/></th>
+						<th><label for="company"><doc41:translate label="Company"/></label></th>
 						<td>
 							<c:if test="${userEditForm.type eq 'external'}">
 								<form:input path="company" cssClass="portlet-form-input-field"   maxlength="70"/>
@@ -101,7 +101,7 @@ title="User Management">
 						</td>
 					</tr>
 					<tr class="portlet-table-alternate">
-						<th class="required"><doc41:translate label="Email"/></th>
+						<th><label for="email"><doc41:translate label="Email"/></label></th>
 						<td>
 							<c:if test="${userEditForm.type eq 'external'}">
 								<form:input path="email" cssClass="portlet-form-input-field portlet-mandatory"  maxlength="70"/>
@@ -111,7 +111,7 @@ title="User Management">
 								<form:hidden path="email"/>
 							</c:if>
 						</td>
-						<th class="optional"><doc41:translate label="Phone"/></th>
+						<th><label for="phone"><doc41:translate label="Phone"/></label></th>
 						<td>
 							<c:if test="${userEditForm.type eq 'external'}">
 								<form:input path="phone" cssClass="portlet-form-input-field"   maxlength="35"/>
@@ -123,24 +123,24 @@ title="User Management">
 						</td>
 					</tr>				
 					<tr>
-						<th class="required"><doc41:translate label="TimeZone"/></th>
+						<th><label for="timeZone"><doc41:translate label="TimeZone"/></label></th>
 						<td>
 						    <form:select path="timeZone" cssClass="portlet-form-input-field portlet-mandatory">
 								<form:options items="${timeZoneList}" itemValue="code" itemLabel="label"/>
 							</form:select>
 						</td>
-						<th class="optional"><doc41:translate label="Type"/></th>
+						<th><label for="type"><doc41:translate label="Type"/></label></th>
 						<td><c:out value="${userEditForm.type}"/></td>
 					</tr>
 					
 					<tr class="portlet-table-alternate">
-						<th class="required"><doc41:translate label="Language"/></th>
+						<th><label for="languageCountry"><doc41:translate label="Language"/></label></th>
 						<td>
 						    <form:select path="languageCountry" cssClass="portlet-form-input-field portlet-mandatory">
 								<form:options items="${languageCountryList}" itemValue="code" itemLabel="label"/>
 							</form:select>
 						</td>
-						<th class="required"><doc41:translate label="Status"/></th>
+						<th><label for="active"><doc41:translate label="Status"/></label></th>
 						<td>
 							<form:select path="active" cssClass="portlet-form-input-field portlet-mandatory">
 								<form:option value="false"><doc41:translate label="Inactive"/></form:option>

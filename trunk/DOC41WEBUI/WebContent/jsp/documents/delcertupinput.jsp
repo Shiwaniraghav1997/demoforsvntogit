@@ -56,23 +56,23 @@
 						</spring:hasBindErrors>
 
 						<tr>
-							<th class="required"><doc41:translate label="PartnerNumber" /></th>
+							<th><label for="partnerNumber"><doc41:translate label="PartnerNumber" /></label></th>
 							<td><form:select path="partnerNumber" items="${batchObjectForm.partners}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" itemLabel="partnerLabel" itemValue="partnerNumber"/><doc41:error path="partnerNumber" /></td>
 						</tr>
 						<tr>
-							<th class="required"><doc41:translate label="Plant" /></th>
+							<th><label for="plant"><doc41:translate label="Plant" /></label></th>
 							<td><form:select path="plant" items="${user.plants}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" /><doc41:error path="plant" /></td>
 						</tr>
 						<tr class="portlet-table-alternate">
-							<th class="optional"><doc41:translate label="Material" /></th>
+							<th><label for="material"><doc41:translate label="Material" /></label></th>
 							<td><form:input path="material" cssClass="portlet-form-input-field portlet-big"  maxlength="70"/><doc41:error path="material" /></td>
 						</tr>
 						<tr class="portlet-table-alternate">
-							<th class="optional"><doc41:translate label="Batch" /></th>
+							<th><label for="batch"><doc41:translate label="Batch" /></label></th>
 							<td><form:input path="batch" cssClass="portlet-form-input-field portlet-big"  maxlength="70"/><doc41:error path="batch" /></td>
 						</tr>
 						<tr class="portlet-table-alternate">
-							<th class="optional"><doc41:translate label="Order" /></th>
+							<th><label for="order"><doc41:translate label="Order" /></label></th>
 							<td><form:input path="order" cssClass="portlet-form-input-field portlet-big"  maxlength="70"/><doc41:error path="order" /></td>
 						</tr>
 						

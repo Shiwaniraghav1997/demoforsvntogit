@@ -38,26 +38,26 @@ title="User Management">
 							</tr>
 						</spring:hasBindErrors>	
 						<tr>
-							<th style="width: 15%" class="optional"><doc41:translate label="Surname"/></th> 
+							<th style="width: 15%"><label for="surname"><doc41:translate label="Surname"/></label></th> 
 							<td style="width: 35%">
 								<doc41:translate label="AutomaticImport"/>
 							</td>
-							<th style="width: 15%" class="optional"><doc41:translate label="Password"/></th>
+							<th style="width: 15%"><label for="password"><doc41:translate label="Password"/></label></th>
 							<td style="width: 35%"><doc41:translate label="NotChangeable"/></td>
 						</tr>
 						<tr class="portlet-table-alternate">
-							<th class="optional"><doc41:translate label="Firstname"/></th>
+							<th><label for="firstname"><doc41:translate label="Firstname"/></label></th>
 							<td>
 								<doc41:translate label="AutomaticImport"/>
 							</td>
-							<th class="optional"><doc41:translate label="RepeatPassword"/></th>
+							<th><label for="passwordRepeated"><doc41:translate label="RepeatPassword"/></label></th>
 							<td><doc41:translate label="NotChangeable"/></td>
 						</tr>
 						<tr>
-							<th class="required"><doc41:translate label="Cwid"/></th>
+							<th><label for="cwid"><doc41:translate label="Cwid"/></label></th>
 							<td><form:input id="cwid" path="cwid" cssClass="portlet-form-input-field portlet-mandatory"/></td>
 							
-							<th class="optional"><doc41:translate label="Company"/></th>
+							<th><label for="company"><doc41:translate label="Company"/></label></th>
 							<td>
 								<doc41:translate label="AutomaticImport"/>
 							</td>
