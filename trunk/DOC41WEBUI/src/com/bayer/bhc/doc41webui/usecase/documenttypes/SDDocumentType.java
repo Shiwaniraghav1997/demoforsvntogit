@@ -64,15 +64,15 @@ public abstract class SDDocumentType implements DocumentType {
 //		if(true)return;
 		
 		if(objectIds.size()==0){
-			throw new Doc41BusinessException("no objectId");
+			errors.rejectValue("objectId","MandatoryField");
 		} else if(objectIds.size()>1){
-			throw new Doc41BusinessException("more than one objectId");
+			errors.rejectValue("objectId","more than one objectId");
+		} else {
+			SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(partnerNumber, objectIds.get(0));
+			if(!deliveryCheck.isOk()){
+				errors.rejectValue("objectId",""+deliveryCheck.getError());
+			} 
 		}
-		
-		SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(partnerNumber, objectIds.get(0));
-		if(!deliveryCheck.isOk()){
-			errors.rejectValue("objectId",""+deliveryCheck.getError());
-		} 
 		return new CheckForDownloadResult(null);
 	}
 	
