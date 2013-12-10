@@ -45,9 +45,7 @@
 					<thead class="portlet-table-header">
 						<colcolgroup>
 						<col width="15%" />
-						<col width="35%" />
-						<col width="15%" />
-						<col width="35%" />
+						<col width="85%" />
 						</colcolgroup>
 					</thead>
 					<tbody class="portlet-table-body">
@@ -66,15 +64,17 @@
 							<c:if test="${searchForm.partnerNumberUsed && (empty showPartnerNumber or showPartnerNumber)}">
 								<th><label for="partnerNumber"><doc41:translate label="PartnerNumber" /></label></th>
 								<td><form:select path="partnerNumber"
-										items="${searchForm.partners}" cssClass="portlet-form-input-field portlet-mandatory"
+										items="${searchForm.partners}" cssClass="portlet-form-input-field portlet-mandatory portlet-big"
 										itemLabel="partnerLabel"
 										itemValue="partnerNumber" />
 									<doc41:error path="partnerNumber" /></td>
 							</c:if>
+						</tr>
+						<tr>
 							<c:if test="${empty showObjectId or showObjectId}">
 								<th><label for="objectId"><doc41:translate label="ObjectId${searchForm.type}" /></label></th>
 								<td><form:input path="objectId"
-										cssClass="portlet-form-input-field portlet-mandatory" maxlength="70" />
+										cssClass="portlet-form-input-field portlet-mandatory portlet-big" maxlength="70" />
 									<doc41:error path="objectId" /></td>
 							</c:if>
 						</tr>
@@ -86,10 +86,7 @@
 						<c:if test="${empty showCustomAttributes or showCustomAttributes}">
 							<c:forEach items="${searchForm.attributeValues}"
 								var="attributeValue" varStatus="status">
-								<c:if test="${lovStatus.count % 2 == 0}">
-									<tr
-										<c:if test="${lovStatus.count % 4 != 0}">class="portlet-table-alternate"</c:if>>
-								</c:if>
+								<tr	<c:if test="${lovStatus.count % 2 != 0}">class="portlet-table-alternate"</c:if>>
 								<th><label for="${attributeValue.key}"><c:out
 										value="${searchForm.attributeLabels[attributeValue.key]}" /> <%-- <input type="hidden" name="attributeLabels['${attributeValue.key}']" value="${searchForm.attributeLabels[attributeValue.key]}"/> --%>
 										</label>
@@ -98,7 +95,7 @@
 										<c:when
 											test="${fn:length(searchForm.attributePredefValues[attributeValue.key])>0}">
 											<select id="${attributeValue.key}"
-												class="portlet-form-input-field"
+												class="portlet-form-input-field portlet-big"
 												name="attributeValues['${attributeValue.key}']">
 												<c:forEach
 													items="${searchForm.attributePredefValues[attributeValue.key]}"
@@ -116,7 +113,7 @@
 										</c:when>
 										<c:otherwise>
 											<input id="${attributeValue.key}"
-												class="portlet-form-input-field" maxlength="70"
+												class="portlet-form-input-field portlet-big" maxlength="70"
 												name="attributeValues['${attributeValue.key}']"
 												value="${attributeValue.value}" />
 										</c:otherwise>
@@ -124,9 +121,7 @@
 								</td>
 	
 	
-								<c:if test="${lovStatus.count % 2 != 0}">
-									</tr>
-								</c:if>
+								</tr>
 	
 							</c:forEach>
 						</c:if>

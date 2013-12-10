@@ -13,7 +13,7 @@
 			<tr>
 				<th><label for="${keyCountry}"><doc41:translate label="Country" /></label></th>
 				<td>
-					<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${allCountryList}" cssClass="portlet-form-input-field portlet-mandatory" itemValue="value" itemLabel="label"/><doc41:error path="attributeValues['${keyCountry}']" />
+					<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${allCountryList}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" itemValue="value" itemLabel="label"/><doc41:error path="attributeValues['${keyCountry}']" />
 					
 					<%-- <select id="${keyCountry}" class="portlet-form-input-field"  name="attributeValues['${keyCountry}']">
 						<c:forEach items="${searchForm.attributePredefValues[keyCountry]}" var="predefValue" varStatus="pdstatus">
@@ -30,7 +30,7 @@
 				<th><label for="${keyDeliveryNumber}"><doc41:translate label="DeliveryNumber" /></label></th>
 				<td>
 					<input id="${keyDeliveryNumber}"
-						class="portlet-form-input-field portlet-mandatory" maxlength="70"
+						class="portlet-form-input-field portlet-mandatory portlet-big" maxlength="70"
 						name="viewAttributes['${keyDeliveryNumber}']"
 						value="${searchForm.viewAttributes[keyDeliveryNumber]}" />
 						<doc41:error path="viewAttributes['${keyDeliveryNumber}']" />
@@ -40,7 +40,7 @@
 				<th><label for="${keyMaterial}"><doc41:translate label="MaterialNumber" /></label></th>
 				<td>
 					<input id="${keyMaterial}"
-						class="portlet-form-input-field" maxlength="70"
+						class="portlet-form-input-field portlet-big" maxlength="70"
 						name="attributeValues['${keyMaterial}']"
 						value="${searchForm.attributeValues[keyMaterial]}" />
 						<doc41:error path="attributeValues['${keyMaterial}']" />
@@ -50,7 +50,7 @@
 				<th><label for="${keyBatch}"><doc41:translate label="Batch" /></label></th>
 				<td>
 					<input id="${keyBatch}"
-						class="portlet-form-input-field" maxlength="70"
+						class="portlet-form-input-field portlet-big" maxlength="70"
 						name="attributeValues['${keyBatch}']"
 						value="${searchForm.attributeValues[keyBatch]}" />
 						<doc41:error path="attributeValues['${keyBatch}']" />

@@ -13,7 +13,7 @@
 				<th><label for="${keyPONumber}"><doc41:translate label="PONumber" /></label></th>
 				<td>
 					<input id="${keyPONumber}"
-						class="portlet-form-input-field portlet-mandatory" maxlength="70"
+						class="portlet-form-input-field portlet-mandatory portlet-big" maxlength="70"
 						name="viewAttributes['${keyPONumber}']"
 						value="${searchForm.viewAttributes[keyPONumber]}" />
 						<doc41:error path="viewAttributes['${keyPONumber}']" />
