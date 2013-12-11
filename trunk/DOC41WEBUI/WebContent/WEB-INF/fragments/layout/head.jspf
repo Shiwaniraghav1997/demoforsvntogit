@@ -63,7 +63,7 @@
 	 			$('.portlet-mandatory').each(function() { 
 	 				   $this = $(this);
 	 				   $label = $('label[for="'+ $this.attr('id') +'"]');
-	 				   if ($label.length > 0 ) {
+	 				   if ($label.length > 0 && $label.html().indexOf('*')==-1) {
 	 				       //this input has a label associated with it, lets do something!
 	 					   $label.html($label.html()+'<span title="'+mandatoryFieldTitle+'"> *</span>');
 	 				       $label.css('margin-right','-10px');
