@@ -25,9 +25,10 @@ import com.bayer.ecim.foundation.basic.StringTool;
 public class SupCoaUploadController extends UploadController {
 	
 	@RequestMapping(value="/documents/supcoaupinput",method = RequestMethod.GET)
-	public VendorBatchForm getVBatch(@RequestParam() String type,@RequestParam(required=false) String partnerNumber) throws Doc41BusinessException{
+	public VendorBatchForm getVBatch(@RequestParam() String type) throws Doc41BusinessException{
 		VendorBatchForm form = new VendorBatchForm();
 		form.setType(type);
+		String partnerNumber = getLastPartnerNumberFromSession();
 		if(!StringTool.isTrimmedEmptyOrNull(partnerNumber)){
 			form.setPartnerNumber(partnerNumber);
 		}
@@ -88,7 +89,7 @@ public class SupCoaUploadController extends UploadController {
 	
 	@RequestMapping(value="/documents/supcoaupload",method = RequestMethod.GET)
 	public ModelMap getUpload(@RequestParam() String type,InspectionLot inspectionLot) throws Doc41BusinessException{
-		UploadForm uploadForm =  super.get(type,null);
+		UploadForm uploadForm =  super.get(type);
 		uploadForm.setObjectId(inspectionLot.getNumber());
 		uploadForm.setPartnerNumber(inspectionLot.getVendor());
 		Map<String, String> avalues = new HashMap<String, String>();

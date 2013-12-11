@@ -31,6 +31,8 @@ import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
 public abstract class UploadController extends AbstractDoc41Controller {
 	
+	private static final int MAX_FILE_NAME_SIZE=64;
+	
 	@Autowired
 	protected DocumentUC documentUC;
 	
@@ -45,14 +47,11 @@ public abstract class UploadController extends AbstractDoc41Controller {
     }
 
 	//default implementation
-	public UploadForm get(@RequestParam() String type,@RequestParam(required=false) String partnerNumber) throws Doc41BusinessException{
+	public UploadForm get(@RequestParam() String type) throws Doc41BusinessException{
 		String language = LocaleInSession.get().getLanguage();
 		UploadForm uploadForm = createNewForm();
 		uploadForm.setType(type);
-		if(!StringTool.isTrimmedEmptyOrNull(partnerNumber)){
-			uploadForm.setPartnerNumber(partnerNumber);
-		}
-		uploadForm.initPartnerNumber(documentUC.getPartnerNumberType(type));
+		uploadForm.initPartnerNumber(documentUC.getPartnerNumberType(type),getLastPartnerNumberFromSession());
 //		uploadForm.setTypeLabel(documentUC.getTypeLabel(type, language));
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type,true);
 		uploadForm.initAttributes(attributeDefinitions,language);
@@ -67,7 +66,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result) throws Doc41BusinessException { //ggf. kein modelattribute wegen sessionattribute
 		String failedURL = getFailedURL();
 		String type = uploadForm.getType();
-		uploadForm.initPartnerNumber(documentUC.getPartnerNumberType(type));
+		uploadForm.initPartnerNumber(documentUC.getPartnerNumberType(type),null);
 		checkPartnerNumber(result,type,uploadForm.getPartnerNumber());
 		checkAndFillObjectId(result,type,uploadForm);
 		checkFileParameter(result,uploadForm.getFile(),uploadForm.getFileId(),uploadForm.getFileName());
@@ -94,7 +93,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 				result.reject("VirusDetected");
 				return failedURL;
 			}
-			String fileName = file.getOriginalFilename();
+			String fileName = limitFilenameSize(file.getOriginalFilename());
 			String fileId = documentUC.uploadDocument(type,localFile,file.getContentType(),fileName);
 			uploadForm.setFileId(fileId);
 			uploadForm.setFileName(fileName);
@@ -112,7 +111,27 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		}
 		
 		
-		return "redirect:/documents/uploadsuccess?type="+type+"&uploadurl="+getSuccessURL()+"&partnerNumber="+uploadForm.getPartnerNumber();
+		return "redirect:/documents/uploadsuccess?type="+type+"&uploadurl="+getSuccessURL();
+	}
+
+	private String limitFilenameSize(String originalFilename) {
+		if(originalFilename==null || originalFilename.length()<MAX_FILE_NAME_SIZE){
+			return originalFilename;
+		}
+		int indexExtensionDot = originalFilename.lastIndexOf('.');
+		String extension;
+		String nameWOExtension;
+		if(indexExtensionDot>-1){
+			extension=originalFilename.substring(indexExtensionDot);
+			nameWOExtension=originalFilename.substring(0,indexExtensionDot);
+		} else {
+			extension="";
+			nameWOExtension=originalFilename;
+		}
+		int maxLengthNameWOExtension = MAX_FILE_NAME_SIZE - extension.length();
+		String shortNameWOExtension = nameWOExtension.substring(0, maxLengthNameWOExtension);
+		
+		return shortNameWOExtension+extension;
 	}
 
 	private String getTypeName(String type,boolean userLocale)  {
@@ -153,6 +172,8 @@ public abstract class UploadController extends AbstractDoc41Controller {
 			} else {
 				if(!UserInSession.get().hasPartner(partnerNumber)){
 					errors.rejectValue("partnerNumber","PartnerNotAssignedToUser");
+				} else {
+					setLastPartnerNumberFromSession(partnerNumber);
 				}
 			}
 		}

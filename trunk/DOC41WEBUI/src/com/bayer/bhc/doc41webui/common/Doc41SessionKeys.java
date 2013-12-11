@@ -35,5 +35,6 @@ public interface Doc41SessionKeys {
 
     String USER_EDIT_FORM 				= "USER_EDIT_FORM";
     
+    String LAST_PARTNER_NUMBER			= "LAST_PARTNER_NUMBER";
 
 }

@@ -82,10 +82,16 @@ public abstract class CustomizedDocumentForm {
 	public boolean isPartnerNumberUsed() {
 		return partnerNumberUsed;
 	}
-	public void initPartnerNumber(String partnerNumberType) {
+	public void initPartnerNumber(String partnerNumberType,String lastPartnerNumberFromSession) {
 		this.partnerNumberUsed = !StringTool.isTrimmedEmptyOrNull(partnerNumberType);
 		if(partnerNumberUsed){
 			partners = UserInSession.get().getPartnersByType(partnerNumberType);
+				
+			if(StringTool.isTrimmedEmptyOrNull(getPartnerNumber())){
+				if(!StringTool.isTrimmedEmptyOrNull(lastPartnerNumberFromSession)){
+					setPartnerNumber(lastPartnerNumberFromSession);
+				}
+			}
 		}
 	}
 	public List<UserPartner> getPartners() {

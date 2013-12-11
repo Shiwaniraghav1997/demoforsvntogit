@@ -59,13 +59,14 @@ public class SearchController extends AbstractDoc41Controller {
 		if(StringTool.isTrimmedEmptyOrNull(type)){
 			throw new Doc41BusinessException("typeIsMissing");
 		}
-		searchForm.initPartnerNumber(documentUC.getPartnerNumberType(type));
+		searchForm.initPartnerNumber(documentUC.getPartnerNumberType(type),getLastPartnerNumberFromSession());
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type,false);
 		searchForm.initAttributes(attributeDefinitions,language);
 		
 		if(!StringTool.isTrimmedEmptyOrNull(ButtonSearch)){
 			if(searchForm.isSearchFilled()){
-				checkPartnerNumber(result,type,searchForm.getPartnerNumber());
+				String searchFormPartnerNumber = searchForm.getPartnerNumber();
+				checkPartnerNumber(result,type,searchFormPartnerNumber);
 				if(!result.hasErrors()){
 					String singleObjectId = searchForm.getObjectId();
 					List<String> objectIds = new ArrayList<String>();
@@ -78,7 +79,7 @@ public class SearchController extends AbstractDoc41Controller {
 						objectIds.add(singleObjectId);
 					}
 					Map<String, String> attributeValues = searchForm.getAttributeValues();
-					CheckForDownloadResult checkResult = documentUC.checkForDownload(result, type, searchForm.getPartnerNumber(), objectIds, attributeValues, searchForm.getViewAttributes());
+					CheckForDownloadResult checkResult = documentUC.checkForDownload(result, type, searchFormPartnerNumber, objectIds, attributeValues, searchForm.getViewAttributes());
 					Map<String, String> allAttributeValues = new HashMap<String, String>(attributeValues);
 					Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
 					if(additionalAttributes!=null){
@@ -175,6 +176,8 @@ public class SearchController extends AbstractDoc41Controller {
 			} else {
 				if(!UserInSession.get().hasPartner(partnerNumber)){
 					errors.rejectValue("partnerNumber","PartnerNotAssignedToUser");
+				} else {
+					setLastPartnerNumberFromSession(partnerNumber);
 				}
 			}
 		}

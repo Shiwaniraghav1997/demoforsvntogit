@@ -25,9 +25,10 @@ import com.bayer.ecim.foundation.basic.StringTool;
 public class DelCertUploadController extends UploadController {
 	
 	@RequestMapping(value="/documents/delcertupinput",method = RequestMethod.GET)
-	public BatchObjectForm getInput(@RequestParam() String type,@RequestParam(required=false) String partnerNumber) throws Doc41BusinessException{
+	public BatchObjectForm getInput(@RequestParam() String type) throws Doc41BusinessException{
 		BatchObjectForm form = new BatchObjectForm();
 		form.setType(type);
+		String partnerNumber = getLastPartnerNumberFromSession();
 		if(!StringTool.isTrimmedEmptyOrNull(partnerNumber)){
 			form.setPartnerNumber(partnerNumber);
 		}
@@ -91,7 +92,7 @@ public class DelCertUploadController extends UploadController {
 	
 	@RequestMapping(value="/documents/delcertupload",method = RequestMethod.GET)
 	public ModelMap getUpload(@RequestParam() String type,QMBatchObject batchObject,String supplier) throws Doc41BusinessException{
-		UploadForm uploadForm =  super.get(type,null);
+		UploadForm uploadForm =  super.get(type);
 		uploadForm.setObjectId(batchObject.getObjectId());
 		uploadForm.setPartnerNumber(supplier);
 		Map<String, String> avalues = new HashMap<String, String>();

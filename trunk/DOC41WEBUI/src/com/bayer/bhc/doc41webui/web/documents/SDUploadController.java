@@ -15,8 +15,8 @@ public class SDUploadController extends UploadController {
 
 	
 	@RequestMapping(value="/documents/sdupload",method = RequestMethod.GET)
-	public UploadForm get(@RequestParam() String type,@RequestParam(required=false) String partnerNumber) throws Doc41BusinessException{
-		return super.get(type,partnerNumber);
+	public UploadForm get(@RequestParam() String type) throws Doc41BusinessException{
+		return super.get(type);
 	}
 	
 	@RequestMapping(value="/documents/sduploadpost",method = RequestMethod.POST)
