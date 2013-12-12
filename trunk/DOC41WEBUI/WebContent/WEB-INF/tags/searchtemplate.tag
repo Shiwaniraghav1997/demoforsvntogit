@@ -50,14 +50,13 @@
 					</thead>
 					<tbody class="portlet-table-body">
 						<spring:hasBindErrors name="searchForm">
+							<c:forEach items="${errors.globalErrors}" var="error">
 							<tr>
-								<td colspan="2"><c:forEach items="${errors.globalErrors}"
-										var="error">
-										<tr style="color: red">
-											<doc41:translate label="${error.code}" />
-										</tr>
-									</c:forEach></td>
+								<td colspan="2" style="color: red">
+									<doc41:translate label="${error.code}" />
+								</td>
 							</tr>
+							</c:forEach>
 						</spring:hasBindErrors>
 
 						<tr>
