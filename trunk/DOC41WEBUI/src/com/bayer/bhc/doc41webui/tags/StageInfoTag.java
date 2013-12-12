@@ -28,8 +28,8 @@ public class StageInfoTag extends TagSupport {
 			welcome		= String.format("<b>%s %s %s</b>  ", getTranslation("welcome"), user.getFirstname(), user.getSurname()); 
 		}
 		welcome += "<br/>";
-		String stageDescription = ""+getTranslation((String) ConfigMap.get().get("doc41.stagedescriptiontag"))+"<br/>";
-		String stageInfo = welcome + stageDescription + " <<< " + cwidString + ConfigMap.get().getHostId() +" / "+ConfigMap.get().get("common.all.version")+" >>>";
+//		String stageDescription = ""+getTranslation((String) ConfigMap.get().get("doc41.stagedescriptiontag"))+"<br/>";
+		String stageInfo = welcome/* + stageDescription*/ + " <<< " + cwidString + ConfigMap.get().getHostId() +" / "+ConfigMap.get().get("common.all.version")+" >>>";
 		
 		JspWriter printer = pageContext.getOut();
 		try {
