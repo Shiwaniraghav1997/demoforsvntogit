@@ -44,6 +44,7 @@ import com.bayer.bhc.doc41webui.domain.QMBatchObject;
 import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
+import com.bayer.bhc.doc41webui.integration.sap.service.BwRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
@@ -86,6 +87,9 @@ public class DocumentUC {
 	
 	@Autowired
 	private KgsRFCService kgsRFCService;
+	
+	@Autowired
+	private BwRFCService bwRFCService;
 	
 	@Autowired
 	private TranslationsRepository translationsRepository;
@@ -365,7 +369,7 @@ public class DocumentUC {
 			List<String> sapObjList = docDef.getSapObjList();
 			List<HitListEntry> allResults = new ArrayList<HitListEntry>();
 			for (String sapObj : sapObjList) {
-				List<HitListEntry> oneResult = kgsRFCService.findDocs(d41id, sapObj, objectIds, attributeValues, maxResults, maxVersionOnly);
+				List<HitListEntry> oneResult = bwRFCService.findDocs(d41id, sapObj, objectIds, attributeValues, maxResults, maxVersionOnly);
 				allResults.addAll(oneResult);
 			}
 			for (HitListEntry hitListEntry : allResults) {

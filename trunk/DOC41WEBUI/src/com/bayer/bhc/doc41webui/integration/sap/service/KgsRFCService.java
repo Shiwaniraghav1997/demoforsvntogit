@@ -20,7 +20,6 @@ import com.bayer.bhc.doc41webui.domain.DocInfoComponent;
 import com.bayer.bhc.doc41webui.domain.DocMetadata;
 import com.bayer.bhc.doc41webui.domain.DocTypeDef;
 import com.bayer.bhc.doc41webui.domain.DocumentStatus;
-import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.KeyValue;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -36,7 +35,6 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_CREATE_HTTP_DVS_PUT = "CreateHttpDvsPut";
 	private static final String RFC_NAME_GET_DOC_STATUS = "GetDocStatus";
 	private static final String RFC_NAME_PROCESS_DR_REQ = "ProcessDrReq";
-	private static final String RFC_NAME_FIND_DOCS = "FindDocs";
 	private static final String RFC_NAME_GET_DOC_URL = "GetDocUrl";
 	private static final String RFC_NAME_GET_DOC_INFO = "GetDocInfo";
 	
@@ -257,20 +255,6 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		} else {
 			return result.get(0);
 		}
-	}
-
-	public List<HitListEntry> findDocs(String d41id,String sapObj,List<String> objectIds,Map<String, String> attributeValues,int maxResults,boolean maxVersionOnly)
-	 throws Doc41ServiceException{
-		List<Object> params = new ArrayList<Object>();
-		params.add(d41id);
-		params.add(sapObj);
-		params.add(objectIds);
-		params.add(maxResults);
-		params.add(maxVersionOnly);
-		params.add(attributeValues);
-		
-		List<HitListEntry> result = performRFC(params, RFC_NAME_FIND_DOCS);
-		return result;
 	}
 	
 	public URI getDocURL(String contentRepository,String docId, String compId)
