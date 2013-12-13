@@ -44,6 +44,17 @@ public class RFCMetaDataDumper {
 				tmpBuffer.append("Export Parameters: null\n\n");
 			}
 			tmpBuffer.append("\n\n\n");
+			
+			// changing
+			JCoParameterList changingParameterList = pFunction
+					.getChangingParameterList();
+			if (changingParameterList != null) {
+				outputRecord(tmpBuffer, "Changing Parameters:",
+						changingParameterList, 0);
+			} else {
+				tmpBuffer.append("Changing Parameters: null");
+			}
+			tmpBuffer.append("\n\n\n"); 
 
 			// tables
 			JCoParameterList tableParameterList = pFunction
