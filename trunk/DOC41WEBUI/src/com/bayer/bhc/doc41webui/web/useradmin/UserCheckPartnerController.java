@@ -16,6 +16,7 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.SapPartner;
 import com.bayer.bhc.doc41webui.usecase.UserManagementUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 @Controller
 public class UserCheckPartnerController extends AbstractDoc41Controller {
@@ -35,8 +36,8 @@ public class UserCheckPartnerController extends AbstractDoc41Controller {
 			} else {
 				map.put("successful", true);
 				map.put("partnerNumber", partner.getPartnerNumber());
-				map.put("partnerName1", partner.getPartnerName1());
-				map.put("partnerName2", partner.getPartnerName2());
+				map.put("partnerName1", StringTool.nullToEmpty(partner.getPartnerName1()));
+				map.put("partnerName2", StringTool.nullToEmpty(partner.getPartnerName2()));
 				map.put("partnerType", partner.getPartnerType());
 			}
 		} catch (Doc41BusinessException e) {
