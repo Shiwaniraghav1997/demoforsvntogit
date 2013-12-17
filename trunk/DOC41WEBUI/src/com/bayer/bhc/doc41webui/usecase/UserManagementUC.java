@@ -201,7 +201,7 @@ public class UserManagementUC {
     	try {
     		SapPartner partner = getUserManagementRepository().loadSAPPartner(partnerNumber);
 
-    		//alternative if import is not finished
+    		//alternative if import is not finished TODO remove when import is finished
 //			if(partner == null){
 //				SAPPartner partnerFromSAP = authorizationRFCService.checkPartner(partnerNumber);
 //				if(partnerFromSAP!=null){
