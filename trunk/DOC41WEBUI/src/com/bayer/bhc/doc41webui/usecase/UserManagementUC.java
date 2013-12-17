@@ -12,7 +12,7 @@ import com.bayer.bhc.doc41webui.common.Doc41ErrorMessageKeys;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryException;
-import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
+//import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.logging.Doc41LogEntry;
 import com.bayer.bhc.doc41webui.common.paging.PagingData;
@@ -21,8 +21,8 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserListFilter;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.domain.User;
-import com.bayer.bhc.doc41webui.domain.UserPartner;
-import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
+import com.bayer.bhc.doc41webui.domain.SapPartner;
+//import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.service.repository.UserManagementRepository;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -35,8 +35,8 @@ import com.bayer.ecim.foundation.basic.StringTool;
 public class UserManagementUC {
 	@Autowired
     private UserManagementRepository userMgmtRepo;
-	@Autowired
-	private AuthorizationRFCService authorizationRFCService;
+//	@Autowired
+//	private AuthorizationRFCService authorizationRFCService;
     
 	/**
 	 * creates a new user in the usermanagement DB
@@ -197,11 +197,24 @@ public class UserManagementUC {
         return userMgmtRepo;
     }
     
-    public UserPartner checkPartner(String partnerNumber) throws Doc41BusinessException{
+    public SapPartner checkPartner(String partnerNumber) throws Doc41BusinessException{
     	try {
-			return authorizationRFCService.checkPartner(partnerNumber);
-		} catch (Doc41ServiceException e) {
+    		SapPartner partner = getUserManagementRepository().loadSAPPartner(partnerNumber);
+
+    		//alternative if import is not finished
+//			if(partner == null){
+//				SAPPartner partnerFromSAP = authorizationRFCService.checkPartner(partnerNumber);
+//				if(partnerFromSAP!=null){
+//					getUserManagementRepository().createSAPPartner(partnerFromSAP);
+//					partner = partnerFromSAP;
+//				}
+//			}
+			
+			return partner;
+		} catch (Doc41RepositoryException e) {
 			throw new Doc41BusinessException("checkDeliveryForPartner",e);
+//		} catch (Doc41ServiceException e) {
+//			throw new Doc41BusinessException("checkDeliveryForPartner",e);
 		}
     }
 

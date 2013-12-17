@@ -27,21 +27,9 @@ public class UserPartnerDC
 	Long cUserId;
 	public static final String FIELD_USERID = "UserId";
 
-	/** Maps DB-Column: partner_Number */
-	String cPartnerNumber;
-	public static final String FIELD_PARTNERNUMBER = "PartnerNumber";
-
-	/** Maps DB-Column: partner_Name1 */
-	String cPartnerName1;
-	public static final String FIELD_PARTNERNAME1 = "PartnerName1";
-
-	/** Maps DB-Column: partner_Name2 */
-	String cPartnerName2;
-	public static final String FIELD_PARTNERNAME2 = "PartnerName2";
-
-	/** Maps DB-Column: partner_type */
-	String cPartnerType;
-	public static final String FIELD_PARTNERTYPE = "PartnerType";
+	/** Maps DB-Column: partner_Id */
+	Long cPartnerId;
+	public static final String FIELD_PARTNERID = "PartnerId";
 
 	/** The master Class of this class. */
 	public final Class<DataCarrier> MASTER_CLASS = DataCarrier.class;
@@ -51,21 +39,18 @@ public class UserPartnerDC
 		setDBTablename( UserPartnerDC.class, "[DOC41WEB_MGR].D41_USER_PARTNER" );
 	}
 
-	private static final long serialVersionUID = 20131008015429145L;
+	private static final long serialVersionUID = 20131217125425752L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_USERPARTNERDC = java.math.BigDecimal.class;
 
 	@SuppressWarnings("unchecked")
 	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_USERID, FIELD_PARTNERNUMBER, FIELD_PARTNERNAME1, FIELD_PARTNERNAME2, FIELD_PARTNERTYPE};
+	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_USERID, FIELD_PARTNERID};
 	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
 
 	static {
 		try {
 			FIELD_META.put( FIELD_USERID,	new BasicDCFieldMeta( "IDS",	"ID",	Long.class,	null ) );
-			FIELD_META.put( FIELD_PARTNERNUMBER,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
-			FIELD_META.put( FIELD_PARTNERNAME1,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
-			FIELD_META.put( FIELD_PARTNERNAME2,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
-			FIELD_META.put( FIELD_PARTNERTYPE,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
+			FIELD_META.put( FIELD_PARTNERID,	new BasicDCFieldMeta( "IDS",	"ID",	Long.class,	null ) );
 		} catch ( Exception e ) {
 			throw new InitException( "Failed to detect return types of the getter methods of UserPartnerDC!", null );
 		}
@@ -323,380 +308,98 @@ public class UserPartnerDC
 	// END Method getColumnMetaDataUserId
 
 
-	// START Method getPartnerNumber generated
+	// START Method getPartnerId generated
 	/**
-	 * Maps DB-Column: partner_Number
-	 * Logical type: STRING
+	 * Maps DB-Column: partner_Id
+	 * Logical type: Id
 	 */
-	public String getPartnerNumber() {
-		return cPartnerNumber;
+	public Long getPartnerId() {
+		return cPartnerId;
 	}
-	// END Method getPartnerNumber
+	// END Method getPartnerId
 
 
-	// START Method setPartnerNumber generated
+	// START Method setPartnerId generated
 	/**
-	 * Maps DB-Column: partner_Number
-	 * Logical type: STRING
+	 * Maps DB-Column: partner_Id
+	 * Logical type: Id
 	 */
-	public void setPartnerNumber( String pPartnerNumber ) {
-		cPartnerNumber = StringTool.trimmedEmptyToNull( pPartnerNumber );
-		forgetOriginalValue( FIELD_PARTNERNUMBER );
-		touchField( FIELD_PARTNERNUMBER );
+	public void setPartnerId( Long pPartnerId ) {
+		cPartnerId = pPartnerId;
+		forgetOriginalValue( FIELD_PARTNERID );
+		touchField( FIELD_PARTNERID );
 	}
-	// END Method setPartnerNumber
+	// END Method setPartnerId
 
 
-	// START Method getFormattedPartnerNumber generated
+	// START Method getFormattedPartnerId generated
 	/**
-	 * Maps DB-Column: partner_Number
-	 * Logical type: STRING
+	 * Maps DB-Column: partner_Id
+	 * Logical type: Id
 	 */
-	public String getFormattedPartnerNumber() {
-		return hasInvalidValue( FIELD_PARTNERNUMBER ) ? getOriginalValue( FIELD_PARTNERNUMBER ) : getPool().formatString( cPartnerNumber );
+	public String getFormattedPartnerId() {
+		return hasInvalidValue( FIELD_PARTNERID ) ? getOriginalValue( FIELD_PARTNERID ) : getPool().formatId( "Id", "#", getPartnerId() );
 	}
-	// END Method getFormattedPartnerNumber
+	// END Method getFormattedPartnerId
 
 
-	// START Method setFormattedPartnerNumber generated
+	// START Method setFormattedPartnerId generated
 	/**
-	 * Maps DB-Column: partner_Number
-	 * Logical type: STRING
+	 * Maps DB-Column: partner_Id
+	 * Logical type: Id
 	 */
-	public void setFormattedPartnerNumber( String pPartnerNumber )
+	public void setFormattedPartnerId( String pPartnerId )
 		throws java.text.ParseException
 	{
-		setPartnerNumber( null );
-		memorizeOriginalValue( FIELD_PARTNERNUMBER, pPartnerNumber );
-		setPartnerNumber( getPool().parseString( pPartnerNumber ) );
+		setPartnerId( null );
+		memorizeOriginalValue( FIELD_PARTNERID, pPartnerId );
+		setPartnerId( getPool().parseId( "Id", "#", pPartnerId ) );
 	}
-	// END Method setFormattedPartnerNumber
+	// END Method setFormattedPartnerId
 
 
-	// START Method getFormattedHTMLPartnerNumber generated
+	// START Method getFormattedHTMLPartnerId generated
 	/**
-	 * Maps DB-Column: partner_Number
-	 * Logical type: STRING
+	 * Maps DB-Column: partner_Id
+	 * Logical type: Id
 	 */
-	public String getFormattedHTMLPartnerNumber() {
-		return StringTool.escapeHTML( getFormattedPartnerNumber() );
+	public String getFormattedHTMLPartnerId() {
+		return StringTool.escapeHTML( getFormattedPartnerId() );
 	}
-	// END Method getFormattedHTMLPartnerNumber
+	// END Method getFormattedHTMLPartnerId
 
 
-	// START Method getToStringPartnerNumber generated
+	// START Method getToStringPartnerId generated
 	/**
-	 * Maps DB-Column: partner_Number
-	 * Logical type: STRING
+	 * Maps DB-Column: partner_Id
+	 * Logical type: Id
 	 */
-	public String getPartnerNumberToString() {
-		return StringTool.nullToEmpty(getPartnerNumber());
+	public String getPartnerIdToString() {
+		return StringTool.nullToEmpty(getPartnerId());
 	}
-	// END Method getToStringPartnerNumber
+	// END Method getToStringPartnerId
 
 
-	// START Method setFromStringPartnerNumber generated
+	// START Method setFromStringPartnerId generated
 	/**
-	 * Maps DB-Column: partner_Number
-	 * Logical type: STRING
+	 * Maps DB-Column: partner_Id
+	 * Logical type: Id
 	 */
-	public void setPartnerNumberFromString( String pPartnerNumber ) {
-		setPartnerNumber( StringTool.emptyToNull( pPartnerNumber ) );
+	public void setPartnerIdFromString( String pPartnerId ) {
+		setPartnerId( NumberTool.parseLong( pPartnerId, null ) );
 	}
-	// END Method setFromStringPartnerNumber
+	// END Method setFromStringPartnerId
 
 
-	// START Method getColumnMetaDataPartnerNumber generated
+	// START Method getColumnMetaDataPartnerId generated
 	/**
-	 * Maps DB-Column: partner_Number
-	 * Logical type: STRING
+	 * Maps DB-Column: partner_Id
+	 * Logical type: Id
 	 */
-	public BasicDCColumnMetaData getColumnMetaDataForPartnerNumber() {
-		return getBasicDCColumnMetaData( FIELD_PARTNERNUMBER );
+	public BasicDCColumnMetaData getColumnMetaDataForPartnerId() {
+		return getBasicDCColumnMetaData( FIELD_PARTNERID );
 	}
-	// END Method getColumnMetaDataPartnerNumber
-
-
-	// START Method getPartnerName1 generated
-	/**
-	 * Maps DB-Column: partner_Name1
-	 * Logical type: STRING
-	 */
-	public String getPartnerName1() {
-		return cPartnerName1;
-	}
-	// END Method getPartnerName1
-
-
-	// START Method setPartnerName1 generated
-	/**
-	 * Maps DB-Column: partner_Name1
-	 * Logical type: STRING
-	 */
-	public void setPartnerName1( String pPartnerName1 ) {
-		cPartnerName1 = StringTool.trimmedEmptyToNull( pPartnerName1 );
-		forgetOriginalValue( FIELD_PARTNERNAME1 );
-		touchField( FIELD_PARTNERNAME1 );
-	}
-	// END Method setPartnerName1
-
-
-	// START Method getFormattedPartnerName1 generated
-	/**
-	 * Maps DB-Column: partner_Name1
-	 * Logical type: STRING
-	 */
-	public String getFormattedPartnerName1() {
-		return hasInvalidValue( FIELD_PARTNERNAME1 ) ? getOriginalValue( FIELD_PARTNERNAME1 ) : getPool().formatString( cPartnerName1 );
-	}
-	// END Method getFormattedPartnerName1
-
-
-	// START Method setFormattedPartnerName1 generated
-	/**
-	 * Maps DB-Column: partner_Name1
-	 * Logical type: STRING
-	 */
-	public void setFormattedPartnerName1( String pPartnerName1 )
-		throws java.text.ParseException
-	{
-		setPartnerName1( null );
-		memorizeOriginalValue( FIELD_PARTNERNAME1, pPartnerName1 );
-		setPartnerName1( getPool().parseString( pPartnerName1 ) );
-	}
-	// END Method setFormattedPartnerName1
-
-
-	// START Method getFormattedHTMLPartnerName1 generated
-	/**
-	 * Maps DB-Column: partner_Name1
-	 * Logical type: STRING
-	 */
-	public String getFormattedHTMLPartnerName1() {
-		return StringTool.escapeHTML( getFormattedPartnerName1() );
-	}
-	// END Method getFormattedHTMLPartnerName1
-
-
-	// START Method getToStringPartnerName1 generated
-	/**
-	 * Maps DB-Column: partner_Name1
-	 * Logical type: STRING
-	 */
-	public String getPartnerName1ToString() {
-		return StringTool.nullToEmpty(getPartnerName1());
-	}
-	// END Method getToStringPartnerName1
-
-
-	// START Method setFromStringPartnerName1 generated
-	/**
-	 * Maps DB-Column: partner_Name1
-	 * Logical type: STRING
-	 */
-	public void setPartnerName1FromString( String pPartnerName1 ) {
-		setPartnerName1( StringTool.emptyToNull( pPartnerName1 ) );
-	}
-	// END Method setFromStringPartnerName1
-
-
-	// START Method getColumnMetaDataPartnerName1 generated
-	/**
-	 * Maps DB-Column: partner_Name1
-	 * Logical type: STRING
-	 */
-	public BasicDCColumnMetaData getColumnMetaDataForPartnerName1() {
-		return getBasicDCColumnMetaData( FIELD_PARTNERNAME1 );
-	}
-	// END Method getColumnMetaDataPartnerName1
-
-
-	// START Method getPartnerName2 generated
-	/**
-	 * Maps DB-Column: partner_Name2
-	 * Logical type: STRING
-	 */
-	public String getPartnerName2() {
-		return cPartnerName2;
-	}
-	// END Method getPartnerName2
-
-
-	// START Method setPartnerName2 generated
-	/**
-	 * Maps DB-Column: partner_Name2
-	 * Logical type: STRING
-	 */
-	public void setPartnerName2( String pPartnerName2 ) {
-		cPartnerName2 = StringTool.trimmedEmptyToNull( pPartnerName2 );
-		forgetOriginalValue( FIELD_PARTNERNAME2 );
-		touchField( FIELD_PARTNERNAME2 );
-	}
-	// END Method setPartnerName2
-
-
-	// START Method getFormattedPartnerName2 generated
-	/**
-	 * Maps DB-Column: partner_Name2
-	 * Logical type: STRING
-	 */
-	public String getFormattedPartnerName2() {
-		return hasInvalidValue( FIELD_PARTNERNAME2 ) ? getOriginalValue( FIELD_PARTNERNAME2 ) : getPool().formatString( cPartnerName2 );
-	}
-	// END Method getFormattedPartnerName2
-
-
-	// START Method setFormattedPartnerName2 generated
-	/**
-	 * Maps DB-Column: partner_Name2
-	 * Logical type: STRING
-	 */
-	public void setFormattedPartnerName2( String pPartnerName2 )
-		throws java.text.ParseException
-	{
-		setPartnerName2( null );
-		memorizeOriginalValue( FIELD_PARTNERNAME2, pPartnerName2 );
-		setPartnerName2( getPool().parseString( pPartnerName2 ) );
-	}
-	// END Method setFormattedPartnerName2
-
-
-	// START Method getFormattedHTMLPartnerName2 generated
-	/**
-	 * Maps DB-Column: partner_Name2
-	 * Logical type: STRING
-	 */
-	public String getFormattedHTMLPartnerName2() {
-		return StringTool.escapeHTML( getFormattedPartnerName2() );
-	}
-	// END Method getFormattedHTMLPartnerName2
-
-
-	// START Method getToStringPartnerName2 generated
-	/**
-	 * Maps DB-Column: partner_Name2
-	 * Logical type: STRING
-	 */
-	public String getPartnerName2ToString() {
-		return StringTool.nullToEmpty(getPartnerName2());
-	}
-	// END Method getToStringPartnerName2
-
-
-	// START Method setFromStringPartnerName2 generated
-	/**
-	 * Maps DB-Column: partner_Name2
-	 * Logical type: STRING
-	 */
-	public void setPartnerName2FromString( String pPartnerName2 ) {
-		setPartnerName2( StringTool.emptyToNull( pPartnerName2 ) );
-	}
-	// END Method setFromStringPartnerName2
-
-
-	// START Method getColumnMetaDataPartnerName2 generated
-	/**
-	 * Maps DB-Column: partner_Name2
-	 * Logical type: STRING
-	 */
-	public BasicDCColumnMetaData getColumnMetaDataForPartnerName2() {
-		return getBasicDCColumnMetaData( FIELD_PARTNERNAME2 );
-	}
-	// END Method getColumnMetaDataPartnerName2
-
-
-	// START Method getPartnerType generated
-	/**
-	 * Maps DB-Column: partner_type
-	 * Logical type: STRING
-	 */
-	public String getPartnerType() {
-		return cPartnerType;
-	}
-	// END Method getPartnerType
-
-
-	// START Method setPartnerType generated
-	/**
-	 * Maps DB-Column: partner_type
-	 * Logical type: STRING
-	 */
-	public void setPartnerType( String pPartnerType ) {
-		cPartnerType = StringTool.trimmedEmptyToNull( pPartnerType );
-		forgetOriginalValue( FIELD_PARTNERTYPE );
-		touchField( FIELD_PARTNERTYPE );
-	}
-	// END Method setPartnerType
-
-
-	// START Method getFormattedPartnerType generated
-	/**
-	 * Maps DB-Column: partner_type
-	 * Logical type: STRING
-	 */
-	public String getFormattedPartnerType() {
-		return hasInvalidValue( FIELD_PARTNERTYPE ) ? getOriginalValue( FIELD_PARTNERTYPE ) : getPool().formatString( cPartnerType );
-	}
-	// END Method getFormattedPartnerType
-
-
-	// START Method setFormattedPartnerType generated
-	/**
-	 * Maps DB-Column: partner_type
-	 * Logical type: STRING
-	 */
-	public void setFormattedPartnerType( String pPartnerType )
-		throws java.text.ParseException
-	{
-		setPartnerType( null );
-		memorizeOriginalValue( FIELD_PARTNERTYPE, pPartnerType );
-		setPartnerType( getPool().parseString( pPartnerType ) );
-	}
-	// END Method setFormattedPartnerType
-
-
-	// START Method getFormattedHTMLPartnerType generated
-	/**
-	 * Maps DB-Column: partner_type
-	 * Logical type: STRING
-	 */
-	public String getFormattedHTMLPartnerType() {
-		return StringTool.escapeHTML( getFormattedPartnerType() );
-	}
-	// END Method getFormattedHTMLPartnerType
-
-
-	// START Method getToStringPartnerType generated
-	/**
-	 * Maps DB-Column: partner_type
-	 * Logical type: STRING
-	 */
-	public String getPartnerTypeToString() {
-		return StringTool.nullToEmpty(getPartnerType());
-	}
-	// END Method getToStringPartnerType
-
-
-	// START Method setFromStringPartnerType generated
-	/**
-	 * Maps DB-Column: partner_type
-	 * Logical type: STRING
-	 */
-	public void setPartnerTypeFromString( String pPartnerType ) {
-		setPartnerType( StringTool.emptyToNull( pPartnerType ) );
-	}
-	// END Method setFromStringPartnerType
-
-
-	// START Method getColumnMetaDataPartnerType generated
-	/**
-	 * Maps DB-Column: partner_type
-	 * Logical type: STRING
-	 */
-	public BasicDCColumnMetaData getColumnMetaDataForPartnerType() {
-		return getBasicDCColumnMetaData( FIELD_PARTNERTYPE );
-	}
-	// END Method getColumnMetaDataPartnerType
+	// END Method getColumnMetaDataPartnerId
 
 
 	// START Protected ( insert your personal code here ) -- do not modify this line!!

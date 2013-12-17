@@ -94,7 +94,7 @@ public class User extends DomainObject {
 	
 	private List<String> roles = new ArrayList<String>();
 	
-	private List<UserPartner> partners = new ArrayList<UserPartner>();
+	private List<SapPartner> partners = new ArrayList<SapPartner>();
 	
 	private List<String> countries = new ArrayList<String>();
 	
@@ -249,13 +249,13 @@ public class User extends DomainObject {
 		this.roles = roles;
 	}
 	
-	public List<UserPartner> getPartners() {
+	public List<SapPartner> getPartners() {
 		return partners;
 	}
 	
-	public void setPartners(List<UserPartner> partners) {
+	public void setPartners(List<SapPartner> partners) {
 		if(partners ==null){
-			partners = new ArrayList<UserPartner>();
+			partners = new ArrayList<SapPartner>();
 		}
 		this.partners = partners;
 	}
@@ -394,7 +394,7 @@ public class User extends DomainObject {
 			return null;
 		}
 		List<String> numbers = new ArrayList<String>();
-		for (UserPartner up : partners) {
+		for (SapPartner up : partners) {
 			numbers.add(up.getPartnerNumber());
 		}
 		return numbers;
@@ -402,7 +402,7 @@ public class User extends DomainObject {
 
 	public boolean hasPartner(String partnerNumber){
 		if(partners!=null){
-			for (UserPartner userPartner : partners) {
+			for (SapPartner userPartner : partners) {
 				if(StringTool.equals(partnerNumber, userPartner.getPartnerNumber())){
 					return true;
 				}
@@ -422,9 +422,9 @@ public class User extends DomainObject {
 		return false;
 	}
 	
-	public List<UserPartner> getPartnersByType(String partnerNumberType) {
-		List<UserPartner> filteredPartners = new ArrayList<UserPartner>();
-		for (UserPartner userPartner : partners) {
+	public List<SapPartner> getPartnersByType(String partnerNumberType) {
+		List<SapPartner> filteredPartners = new ArrayList<SapPartner>();
+		for (SapPartner userPartner : partners) {
 			if(StringTool.equals(userPartner.getPartnerType(),partnerNumberType)){
 				filteredPartners.add(userPartner);
 			}

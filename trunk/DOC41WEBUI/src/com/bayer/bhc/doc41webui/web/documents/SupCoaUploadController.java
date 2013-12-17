@@ -17,7 +17,7 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.container.VendorBatchForm;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
-import com.bayer.bhc.doc41webui.domain.UserPartner;
+import com.bayer.bhc.doc41webui.domain.SapPartner;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.SupplierCOADocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -32,14 +32,14 @@ public class SupCoaUploadController extends UploadController {
 		if(!StringTool.isTrimmedEmptyOrNull(partnerNumber)){
 			form.setPartnerNumber(partnerNumber);
 		}
-		List<UserPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
+		List<SapPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
 		form.setPartners(partners);
 		return form;
 	}
 	
 	@RequestMapping(value="/documents/supcoauplist",method = RequestMethod.GET)
 	public ModelAndView getInspLots(String type,VendorBatchForm vendorBatchForm,BindingResult result, ModelAndView mav) throws Doc41BusinessException{
-		List<UserPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
+		List<SapPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
 		vendorBatchForm.setPartners(partners);
 		
 		String partnerNumber = vendorBatchForm.getPartnerNumber();

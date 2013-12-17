@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.domain.UserPartner;
+import com.bayer.bhc.doc41webui.domain.SapPartner;
 import com.bayer.bhc.doc41webui.usecase.UserManagementUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 
@@ -28,7 +28,7 @@ public class UserCheckPartnerController extends AbstractDoc41Controller {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
-			UserPartner partner = userManagementUC.checkPartner(partnerNumber);
+			SapPartner partner = userManagementUC.checkPartner(partnerNumber);
 			
 			if(partner==null){
 				map.put("successful", false);

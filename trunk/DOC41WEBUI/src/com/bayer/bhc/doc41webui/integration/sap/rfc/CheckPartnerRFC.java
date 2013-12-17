@@ -5,13 +5,13 @@ import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
-import com.bayer.bhc.doc41webui.domain.UserPartner;
+import com.bayer.bhc.doc41webui.domain.SapPartner;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
-public class CheckPartnerRFC extends AbstractDoc41RFC<UserPartner>{
+public class CheckPartnerRFC extends AbstractDoc41RFC<SapPartner>{
 	private static final String IN_PARTNER = "IV_LIFNR";
 	private static final String OUT_RETURNCODE = "EV_RETURN";
 	private static final String OUT_NAME1 = "EV_NAME1";
@@ -45,16 +45,16 @@ public class CheckPartnerRFC extends AbstractDoc41RFC<UserPartner>{
 	}
 
 	@Override
-	public List<UserPartner> processResult(JCoFunction pFunction)
+	public List<SapPartner> processResult(JCoFunction pFunction)
 			throws SAPException {
 		Doc41Log.get().debug(CheckPartnerRFC.class, null, "processResult():ENTRY");
-		ArrayList<UserPartner> mResult = new ArrayList<UserPartner>();
+		ArrayList<SapPartner> mResult = new ArrayList<SapPartner>();
         if (pFunction != null) {
 //            processReturnTable(pFunction);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
             if(!StringTool.equals(returnCode, RETURNCODE_NOT_FOUND)){
-            	UserPartner up = new UserPartner();
+            	SapPartner up = new SapPartner();
             	up.setPartnerNumber(pFunction.getImportParameterList().getString(IN_PARTNER));
             	up.setPartnerName1(exportParameterList.getString(OUT_NAME1));
             	up.setPartnerName2(exportParameterList.getString(OUT_NAME2));

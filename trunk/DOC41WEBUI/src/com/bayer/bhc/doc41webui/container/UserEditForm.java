@@ -10,7 +10,7 @@ import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.domain.User;
-import com.bayer.bhc.doc41webui.domain.UserPartner;
+import com.bayer.bhc.doc41webui.domain.SapPartner;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 public class UserEditForm implements Serializable{
@@ -31,7 +31,7 @@ public class UserEditForm implements Serializable{
 	private Boolean active;
 	private String type;
 	private List<String> roles;
-	private List<UserPartner> partners;
+	private List<SapPartner> partners;
 	private List<String> countries;
 	private List<String> plants;
 	
@@ -46,7 +46,7 @@ public class UserEditForm implements Serializable{
 			errors.rejectValue("passwordRepeated", "pwDifferent", "password and passwordRepeated do not match.");
 		}
 		if(partners!=null){
-			for (UserPartner partner : partners) {
+			for (SapPartner partner : partners) {
 				if(partner==null || partner.getPartnerNumber()==null){
 					errors.rejectValue("partners", "partnerNumberNull", "partner number null");
 				}
@@ -82,11 +82,11 @@ public class UserEditForm implements Serializable{
 		}
 	}
 	
-	private static boolean partnersContainPartnerType(List<UserPartner> partners2,String partnerType2) {
+	private static boolean partnersContainPartnerType(List<SapPartner> partners2,String partnerType2) {
 		if(partners2==null){
 			return false;
 		}
-		for (UserPartner userPartner : partners2) {
+		for (SapPartner userPartner : partners2) {
 			String partnerType = userPartner.getPartnerType();
 			if(StringTool.equals(partnerType, partnerType2)){
 				return true;
@@ -282,12 +282,12 @@ public class UserEditForm implements Serializable{
 		this.objectID = objectID;
 	}
 	
-	public List<UserPartner> getPartners() {
+	public List<SapPartner> getPartners() {
 		return partners;
 	}
-	public void setPartners(List<UserPartner> partners) {
+	public void setPartners(List<SapPartner> partners) {
 		if(partners==null){
-			partners = new ArrayList<UserPartner>();
+			partners = new ArrayList<SapPartner>();
 		}
 		this.partners = partners;
 	}
@@ -304,10 +304,10 @@ public class UserEditForm implements Serializable{
 	}
 	
 	public void setPartnerStrings(List<String> partnerStrings){
-		List<UserPartner> partnerList = new ArrayList<UserPartner>();
+		List<SapPartner> partnerList = new ArrayList<SapPartner>();
 		for (String partnerString : partnerStrings) {
 			String[] split = partnerString.split("###");
-			UserPartner up = new UserPartner();
+			SapPartner up = new SapPartner();
 			up.setPartnerNumber(split[0]);
 			if(split.length>1){
 				up.setPartnerName1(split[1]);

@@ -3,7 +3,7 @@ package com.bayer.bhc.doc41webui.container;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.domain.UserPartner;
+import com.bayer.bhc.doc41webui.domain.SapPartner;
 
 public class BatchObjectForm {
 
@@ -13,7 +13,7 @@ public class BatchObjectForm {
 	private String material;
 	private String batch;
 	private String order;
-	private List<UserPartner> partners;
+	private List<SapPartner> partners;
 	public String getType() {
 		return type;
 	}
@@ -50,7 +50,7 @@ public class BatchObjectForm {
 	public void setOrder(String order) {
 		this.order = order;
 	}
-	public List<UserPartner> getPartners() {
+	public List<SapPartner> getPartners() {
 		return partners;
 	}
 //	public void setPartners(List<UserPartner> partners) {

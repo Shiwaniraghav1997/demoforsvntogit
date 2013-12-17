@@ -9,7 +9,7 @@ import java.util.Map;
 
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
-import com.bayer.bhc.doc41webui.domain.UserPartner;
+import com.bayer.bhc.doc41webui.domain.SapPartner;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 public abstract class CustomizedDocumentForm {
@@ -28,7 +28,7 @@ public abstract class CustomizedDocumentForm {
 	
 	private boolean partnerNumberUsed;
 	
-	private List<UserPartner> partners;
+	private List<SapPartner> partners;
 	
 	public String getType() {
 		return type;
@@ -94,7 +94,7 @@ public abstract class CustomizedDocumentForm {
 			}
 		}
 	}
-	public List<UserPartner> getPartners() {
+	public List<SapPartner> getPartners() {
 		return partners;
 	}
 //	public void setPartners(List<UserPartner> partners) {

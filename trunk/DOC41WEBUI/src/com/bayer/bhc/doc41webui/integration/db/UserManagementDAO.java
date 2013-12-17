@@ -12,6 +12,7 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.SapPartnerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserCountryDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPartnerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPlantDC;
@@ -39,6 +40,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	
 	private static final String GET_PARTNERS_BY_USER		= "getPartnersByUser";
 	private static final String GET_USER_PARTNER			= "getUserPartner";
+	private static final String GET_PARTNER_BY_NUMBER		= "getPartnerByNumber";
 	private static final String GET_COUNTRIES_BY_USER		= "getCountriesByUser";
 	private static final String GET_USER_COUNTRY			= "getUserCountry";
 	private static final String GET_PLANTS_BY_USER			= "getPlantsByUser";
@@ -224,14 +226,14 @@ public class UserManagementDAO extends AbstractDAOImpl {
 
 	//---- partners
 	
-	public List<UserPartnerDC> getPartnersByUser(Long objectID) throws Doc41TechnicalException {
+	public List<SapPartnerDC> getPartnersByUser(Long objectID) throws Doc41TechnicalException {
 		try {
 			String[] parameterNames			= { "USER_ID" };
 	        Object[] parameterValues		= { objectID };
 	        String templateName				= GET_PARTNERS_BY_USER;
-	        Class<UserPartnerDC> dcClass	= UserPartnerDC.class;        
+	        Class<SapPartnerDC> dcClass	= SapPartnerDC.class;        
 	        
-	        List<UserPartnerDC> dcs = find(parameterNames, parameterValues, templateName, dcClass);	                		
+	        List<SapPartnerDC> dcs = find(parameterNames, parameterValues, templateName, dcClass);	                		
 			
 			return dcs;
 		} catch (Exception e) {
@@ -275,6 +277,21 @@ public class UserManagementDAO extends AbstractDAOImpl {
 			return dc;
 		} catch (Exception e) {
 			throw new Doc41TechnicalException(this.getClass(), "getUserPartner", e);
+		}
+	}
+	
+	public SapPartnerDC getSapPartnerByNumber(String partnerNumber) throws Doc41TechnicalException {
+		try {
+			String[] parameterNames			= { "PARTNER_NUMBER" };
+	        Object[] parameterValues		= { partnerNumber };
+	        String templateName				= GET_PARTNER_BY_NUMBER;
+	        Class<SapPartnerDC> dcClass		= SapPartnerDC.class;        
+	        
+	        SapPartnerDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
+			
+			return dc;
+		} catch (Exception e) {
+			throw new Doc41TechnicalException(this.getClass(), "getSapPartnerByNumber", e);
 		}
 	}
 	

@@ -13,7 +13,7 @@ import com.bayer.bhc.doc41webui.domain.DeliveryOrShippingUnit;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
 import com.bayer.bhc.doc41webui.domain.QMBatchObject;
 import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
-import com.bayer.bhc.doc41webui.domain.UserPartner;
+import com.bayer.bhc.doc41webui.domain.SapPartner;
 
 @Component
 public class AuthorizationRFCService extends AbstractSAPJCOService {
@@ -62,16 +62,16 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		return deliveries ;
 	}
 	
-	public UserPartner checkPartner(String partner) throws Doc41ServiceException{
+	public SapPartner checkPartner(String partner) throws Doc41ServiceException{
 		 Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
         		"checkPartner() - partner="+partner+".");
        
         List<Object> params = new ArrayList<Object>();
         params.add(partner);
         
-        List<UserPartner> ups = performRFC(params,RFC_NAME_CHECK_PARTNER);
+        List<SapPartner> ups = performRFC(params,RFC_NAME_CHECK_PARTNER);
         
-        UserPartner up=null;
+        SapPartner up=null;
         if(!ups.isEmpty()){
         	up = ups.get(0);
         }
