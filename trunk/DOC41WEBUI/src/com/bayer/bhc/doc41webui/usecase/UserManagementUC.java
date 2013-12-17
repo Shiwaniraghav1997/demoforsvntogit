@@ -205,7 +205,7 @@ public class UserManagementUC {
 //			if(partner == null){
 //				SAPPartner partnerFromSAP = authorizationRFCService.checkPartner(partnerNumber);
 //				if(partnerFromSAP!=null){
-//					getUserManagementRepository().createSAPPartner(partnerFromSAP);
+//					getUserManagementRepository().createSAPPartner(partnerFromSAP); //create sap partner row in database
 //					partner = partnerFromSAP;
 //				}
 //			}
