@@ -1,0 +1,71 @@
+#DEFINITION for SapPartnerDC:
+#--------------------------------
+
+Package=com.bayer.bhc.doc41webui.integration.db.dc
+DCClassName=SapPartnerDC
+Tablename=[DOC41WEB_MGR].SAP_PARTNER
+Superclass=com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
+ImplementedInterfaces=
+Imports=
+ClassComment=<my description of the dc>
+
+
+Column.1.Name=PartnerNumber
+Column.1.Type=STRING
+Column.1.Comment=Maps DB-Column: partner_Number
+#Column.1.DBDefault="..."/new ...
+
+Column.2.Name=PartnerType
+Column.2.Type=STRING
+Column.2.Comment=Maps DB-Column: partner_Type
+#Column.2.DBDefault="..."/new ...
+
+Column.3.Name=Name1
+Column.3.Type=STRING
+Column.3.Comment=Maps DB-Column: name1
+#Column.3.DBDefault="..."/new ...
+
+Column.4.Name=Name2
+Column.4.Type=STRING
+Column.4.Comment=Maps DB-Column: name2
+#Column.4.DBDefault="..."/new ...
+
+Column.5.Name=Street
+Column.5.Type=STRING
+Column.5.Comment=Maps DB-Column: street
+#Column.5.DBDefault="..."/new ...
+
+Column.6.Name=PostalCode
+Column.6.Type=STRING
+Column.6.Comment=Maps DB-Column: postal_Code
+#Column.6.DBDefault="..."/new ...
+
+Column.7.Name=City
+Column.7.Type=STRING
+Column.7.Comment=Maps DB-Column: city
+#Column.7.DBDefault="..."/new ...
+
+Column.8.Name=CountryIsoCode
+Column.8.Type=STRING
+Column.8.Comment=Maps DB-Column: country_Iso_Code
+#Column.8.DBDefault="..."/new ...
+
+Column.9.Name=IsDeleted
+Column.9.Type=BOOLEAN
+Column.9.Comment=Maps DB-Column: is_Deleted
+#Column.9.DBDefault="..."/new ...
+
+Column.10.Name=SapChanged
+Column.10.Type=DATE/MONTH/TIMESTAMP/TIMESTAMPSHORT/TZDATE
+Column.10.Comment=Maps DB-Column: sap_Changed
+#Column.10.DBDefault="..."/new ...
+
+#Cols ignored, defined by super class:
+#-------------------------------------
+#CHANGED
+#CHANGEDBY
+#CHANGEDON
+#CREATED
+#CREATEDBY
+#CREATEDON
+#OBJECT_ID
