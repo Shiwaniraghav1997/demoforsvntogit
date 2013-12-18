@@ -18,8 +18,8 @@ showHeader="false">
 		      
 		       <!-- thead text will be updated from the JSON; make sure the number of columns matches the JSON data -->
 		       <!-- header update currently disabled to put names in the jsp instead of in java  -->
-		    <th><doc41:translate label="DeliveryNumber" /></th>
-			<th><doc41:translate label="ShippingUnitNumber" /></th>
+		    <th><doc41:translate label="ReferenceNumber" /></th>
+			<th><doc41:translate label="Flag" /></th>
 			<th><doc41:translate label="ShipTo" /></th>
 			<th><doc41:translate label="SoldTo" /></th>
 			<th><doc41:translate label="From" /></th>
