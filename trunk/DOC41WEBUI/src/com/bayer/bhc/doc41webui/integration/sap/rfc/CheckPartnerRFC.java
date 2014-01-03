@@ -11,6 +11,7 @@ import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
+//TODO remove when partner import is finished
 public class CheckPartnerRFC extends AbstractDoc41RFC<SapPartner>{
 	private static final String IN_PARTNER = "IV_LIFNR";
 	private static final String OUT_RETURNCODE = "EV_RETURN";
