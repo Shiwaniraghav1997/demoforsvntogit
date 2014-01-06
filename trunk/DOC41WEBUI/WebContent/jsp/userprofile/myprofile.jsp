@@ -141,6 +141,7 @@ title="My Profile">
 	
 	<c:if test="${user.type eq 'external'}">
 	
+	<c:if test="${!empty user.customers }">
 	<div class="portlet-section-body">
 		<div class="section-separator"><doc41:translate label="TitleCustomers" /></div>
 		<table cellpadding="4" cellspacing="0" class="nohover">
@@ -172,7 +173,9 @@ title="My Profile">
 			</tbody>
 		</table>
 	</div>
+	</c:if>
 	
+	<c:if test="${!empty user.vendors }">
 	<div class="portlet-section-body">
 		<div class="section-separator"><doc41:translate label="TitleVendors" /></div>
 		<table cellpadding="4" cellspacing="0" class="nohover">
@@ -205,7 +208,9 @@ title="My Profile">
 			</tbody>
 		</table>
 	</div>
+	</c:if>
 	
+	<c:if test="${!empty user.countries }">
 	<div class="portlet-section-body">
 		<div class="section-separator"><doc41:translate label="TitelCountries" /></div>
 		<table cellpadding="4" cellspacing="0" class="nohover">
@@ -235,7 +240,9 @@ title="My Profile">
 			</tbody>
 		</table>
 	</div>
+	</c:if>
 	
+	<c:if test="${!empty user.plants }">
 	<div class="portlet-section-body">
 		<div class="section-separator"><doc41:translate label="TitelPlants" /></div>
 		<table cellpadding="4" cellspacing="0" class="nohover">
@@ -265,6 +272,7 @@ title="My Profile">
 			</tbody>
 		</table>
 	</div>
+	</c:if>
 	
 	</c:if>
 </form:form>
