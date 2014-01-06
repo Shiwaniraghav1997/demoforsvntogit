@@ -19,17 +19,13 @@ import com.bayer.ecim.foundation.dbx.*;
 /**
  * <my description of the dc>
  */
-public class SapPartnerDC
+public class SapVendorDC
 	extends com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
 {
 
 	/** Maps DB-Column: partner_Number */
 	String cPartnerNumber;
 	public static final String FIELD_PARTNERNUMBER = "PartnerNumber";
-
-	/** Maps DB-Column: partner_Type */
-	String cPartnerType;
-	public static final String FIELD_PARTNERTYPE = "PartnerType";
 
 	/** Maps DB-Column: name1 */
 	String cName1;
@@ -68,21 +64,20 @@ public class SapPartnerDC
 
 	/** Set the database tablename (null if unspecified) for this DC. */
 	static {
-		setDBTablename( SapPartnerDC.class, "[DOC41WEB_MGR].SAP_PARTNER" );
+		setDBTablename( SapVendorDC.class, "[DOC41WEB_MGR].SAP_VENDOR" );
 	}
 
-	private static final long serialVersionUID = 20131217010441658L;
-	protected static final Class<java.math.BigDecimal> _BD_CLASS_SAPPARTNERDC = java.math.BigDecimal.class;
+	private static final long serialVersionUID = 20140103053443088L;
+	protected static final Class<java.math.BigDecimal> _BD_CLASS_SAPVENDORDC = java.math.BigDecimal.class;
 
 	@SuppressWarnings("unchecked")
 	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PARTNERNUMBER, FIELD_PARTNERTYPE, FIELD_NAME1, FIELD_NAME2, FIELD_STREET, FIELD_POSTALCODE, FIELD_CITY, FIELD_COUNTRYISOCODE, FIELD_ISDELETED, FIELD_SAPCHANGED};
+	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PARTNERNUMBER, FIELD_NAME1, FIELD_NAME2, FIELD_STREET, FIELD_POSTALCODE, FIELD_CITY, FIELD_COUNTRYISOCODE, FIELD_ISDELETED, FIELD_SAPCHANGED};
 	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
 
 	static {
 		try {
 			FIELD_META.put( FIELD_PARTNERNUMBER,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
-			FIELD_META.put( FIELD_PARTNERTYPE,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_NAME1,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_NAME2,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_STREET,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
@@ -92,31 +87,31 @@ public class SapPartnerDC
 			FIELD_META.put( FIELD_ISDELETED,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 			FIELD_META.put( FIELD_SAPCHANGED,	new BasicDCFieldMeta( "DATE",	"DATE/MONTH/TIMESTAMP/TIMESTAMPSHORT/TZDATE",	Object.class,	null ) );
 		} catch ( Exception e ) {
-			throw new InitException( "Failed to detect return types of the getter methods of SapPartnerDC!", null );
+			throw new InitException( "Failed to detect return types of the getter methods of SapVendorDC!", null );
 		}
 	}
 
 	/**
 	 * The Constructor.
-	 * (a)deprecated Use: static SapPartnerDC newInstanceOfSapPartnerDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * (a)deprecated Use: static SapVendorDC newInstanceOfSapVendorDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
-	public SapPartnerDC() {
+	public SapVendorDC() {
 		super( (Boolean)null );
 	}
 
 	/**
 	 * Temporary Constructor.
 	 */
-	protected SapPartnerDC( Boolean pVal ) {
+	protected SapVendorDC( Boolean pVal ) {
 		super( pVal );
 		pVal = null;
 	}
 
 	/**
 	 * The Copy Constructor.
-	 * (a)deprecated Use: static SapPartnerDC newInstanceOfSapPartnerDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * (a)deprecated Use: static SapVendorDC newInstanceOfSapVendorDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
-	public SapPartnerDC( BasicDataCarrier pDC )
+	public SapVendorDC( BasicDataCarrier pDC )
 		throws InitException
 	{
 		super( (Boolean)null );
@@ -128,8 +123,8 @@ public class SapPartnerDC
 	 * Create a new instance, supports replacement by subclass!!!
 	 * @throws InitException if the instanciation failes.
 	 */
-	public static SapPartnerDC newInstanceOfSapPartnerDC() throws InitException {
-		return (SapPartnerDC)newInstanceOf( SapPartnerDC.class );
+	public static SapVendorDC newInstanceOfSapVendorDC() throws InitException {
+		return (SapVendorDC)newInstanceOf( SapVendorDC.class );
 	}
 
 	/**
@@ -137,8 +132,8 @@ public class SapPartnerDC
 	 * @param pLoc java.util.Locale the Locale to localize the new instance to, automatically.
 	 * @throws InitException if the instanciation failes.
 	 */
-	public static SapPartnerDC newInstanceOfSapPartnerDC( Locale pLoc ) throws InitException {
-		return (SapPartnerDC)localizeDC( newInstanceOfSapPartnerDC(), pLoc );
+	public static SapVendorDC newInstanceOfSapVendorDC( Locale pLoc ) throws InitException {
+		return (SapVendorDC)localizeDC( newInstanceOfSapVendorDC(), pLoc );
 	}
 
 	/**
@@ -146,8 +141,8 @@ public class SapPartnerDC
 	 * @param pDC dc to copy the attributes from.
 	 * @throws InitException if the instanciation failes.
 	 */
-	public static SapPartnerDC newInstanceOfSapPartnerDC( BasicDataCarrier pDC ) throws InitException {
-		return (SapPartnerDC)newInstanceOfSapPartnerDC().copyFrom( pDC );
+	public static SapVendorDC newInstanceOfSapVendorDC( BasicDataCarrier pDC ) throws InitException {
+		return (SapVendorDC)newInstanceOfSapVendorDC().copyFrom( pDC );
 	}
 
 //	/**
@@ -160,7 +155,7 @@ public class SapPartnerDC
 //		return (((Object)this) instanceof com.bayer.ecim.foundation.dbx.DataCarrier) ? (com.bayer.ecim.foundation.dbx.DataCarrier)(Object)this : null;
 //	}
 	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
-	public static final int CHECK_SAPPARTNERDC = com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.CHECK_USERCHANGEABLEDATACARRIER;
+	public static final int CHECK_SAPVENDORDC = com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.CHECK_USERCHANGEABLEDATACARRIER;
 
 	/**
 	 * Copy the parameter DC pOther into this.
@@ -169,7 +164,7 @@ public class SapPartnerDC
 
 	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
 		super.copyFrom(pOther);
-		if (SapPartnerDC.class.isAssignableFrom(pOther.getClass())) {
+		if (SapVendorDC.class.isAssignableFrom(pOther.getClass())) {
 			BasicDCColumnMetaData m = null;
 			for (int i = 0; i < LOCAL_FIELD_LIST.length; i++) {
 				m = pOther.getBasicDCColumnMetaData( LOCAL_FIELD_LIST[i] );
@@ -207,7 +202,7 @@ public class SapPartnerDC
 	public static BasicDCGeneratorMeta localGetCVSMeta() {
 		return new BasicDCGeneratorMeta(
 			"com.bayer.bhc.doc41webui.integration.db.dc",
-			"SapPartnerDC",
+			"SapVendorDC",
 			"com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier",
 			"Date: 2012/10/05 12:22:39 ",
 			"Revision: 1.82 ",
@@ -225,7 +220,7 @@ public class SapPartnerDC
 	 * Get the CVS metadata of this DC and it's used generator.
 	 */
 	public BasicDCGeneratorMeta getCVSMeta() {
-		return SapPartnerDC.localGetCVSMeta();
+		return SapVendorDC.localGetCVSMeta();
 	}
 
 	/**
@@ -243,7 +238,7 @@ public class SapPartnerDC
 	}
 
 	public BasicDCFieldMeta getFieldMeta( String pFieldName ) {
-		return SapPartnerDC.localGetFieldMeta( pFieldName );
+		return SapVendorDC.localGetFieldMeta( pFieldName );
 	}
 
 	/**
@@ -346,100 +341,6 @@ public class SapPartnerDC
 		return getBasicDCColumnMetaData( FIELD_PARTNERNUMBER );
 	}
 	// END Method getColumnMetaDataPartnerNumber
-
-
-	// START Method getPartnerType generated
-	/**
-	 * Maps DB-Column: partner_Type
-	 * Logical type: STRING
-	 */
-	public String getPartnerType() {
-		return cPartnerType;
-	}
-	// END Method getPartnerType
-
-
-	// START Method setPartnerType generated
-	/**
-	 * Maps DB-Column: partner_Type
-	 * Logical type: STRING
-	 */
-	public void setPartnerType( String pPartnerType ) {
-		cPartnerType = StringTool.trimmedEmptyToNull( pPartnerType );
-		forgetOriginalValue( FIELD_PARTNERTYPE );
-		touchField( FIELD_PARTNERTYPE );
-	}
-	// END Method setPartnerType
-
-
-	// START Method getFormattedPartnerType generated
-	/**
-	 * Maps DB-Column: partner_Type
-	 * Logical type: STRING
-	 */
-	public String getFormattedPartnerType() {
-		return hasInvalidValue( FIELD_PARTNERTYPE ) ? getOriginalValue( FIELD_PARTNERTYPE ) : getPool().formatString( cPartnerType );
-	}
-	// END Method getFormattedPartnerType
-
-
-	// START Method setFormattedPartnerType generated
-	/**
-	 * Maps DB-Column: partner_Type
-	 * Logical type: STRING
-	 */
-	public void setFormattedPartnerType( String pPartnerType )
-		throws java.text.ParseException
-	{
-		setPartnerType( null );
-		memorizeOriginalValue( FIELD_PARTNERTYPE, pPartnerType );
-		setPartnerType( getPool().parseString( pPartnerType ) );
-	}
-	// END Method setFormattedPartnerType
-
-
-	// START Method getFormattedHTMLPartnerType generated
-	/**
-	 * Maps DB-Column: partner_Type
-	 * Logical type: STRING
-	 */
-	public String getFormattedHTMLPartnerType() {
-		return StringTool.escapeHTML( getFormattedPartnerType() );
-	}
-	// END Method getFormattedHTMLPartnerType
-
-
-	// START Method getToStringPartnerType generated
-	/**
-	 * Maps DB-Column: partner_Type
-	 * Logical type: STRING
-	 */
-	public String getPartnerTypeToString() {
-		return StringTool.nullToEmpty(getPartnerType());
-	}
-	// END Method getToStringPartnerType
-
-
-	// START Method setFromStringPartnerType generated
-	/**
-	 * Maps DB-Column: partner_Type
-	 * Logical type: STRING
-	 */
-	public void setPartnerTypeFromString( String pPartnerType ) {
-		setPartnerType( StringTool.emptyToNull( pPartnerType ) );
-	}
-	// END Method setFromStringPartnerType
-
-
-	// START Method getColumnMetaDataPartnerType generated
-	/**
-	 * Maps DB-Column: partner_Type
-	 * Logical type: STRING
-	 */
-	public BasicDCColumnMetaData getColumnMetaDataForPartnerType() {
-		return getBasicDCColumnMetaData( FIELD_PARTNERTYPE );
-	}
-	// END Method getColumnMetaDataPartnerType
 
 
 	// START Method getName1 generated

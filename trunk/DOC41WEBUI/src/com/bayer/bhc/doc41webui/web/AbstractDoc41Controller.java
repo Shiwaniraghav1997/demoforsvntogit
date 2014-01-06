@@ -65,13 +65,23 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
 		return "<img src='../resources/img/common/"+iconName+"' alt='"+altText+"' style='border: 0px;'>";
 	}
 	
-	protected String getLastPartnerNumberFromSession(){
-		return (String) session().getAttribute(LAST_PARTNER_NUMBER);
+	protected String getLastCustomerNumberFromSession(){
+		return (String) session().getAttribute(LAST_CUSTOMER_NUMBER);
 	}
 	
-	protected void setLastPartnerNumberFromSession(String partnerNumber){
-		if(!StringTool.isTrimmedEmptyOrNull(partnerNumber)){
-			session().setAttribute(LAST_PARTNER_NUMBER,partnerNumber);
+	protected void setLastCustomerNumberFromSession(String customerNumber){
+		if(!StringTool.isTrimmedEmptyOrNull(customerNumber)){
+			session().setAttribute(LAST_CUSTOMER_NUMBER,customerNumber);
+		}
+	}
+	
+	protected String getLastVendorNumberFromSession(){
+		return (String) session().getAttribute(LAST_VENDOR_NUMBER);
+	}
+	
+	protected void setLastVendorNumberFromSession(String vendorNumber){
+		if(!StringTool.isTrimmedEmptyOrNull(vendorNumber)){
+			session().setAttribute(LAST_VENDOR_NUMBER,vendorNumber);
 		}
 	}
 	

@@ -7,7 +7,7 @@ title="Upload Document">
 <%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
-	<doc41:uploadtemplate action="supcoauploadpost" showObjectId="false" showPartnerNumber="false" showCustomAttributes="false">
+	<doc41:uploadtemplate action="supcoauploadpost" showObjectId="false" showCustomerNumber="false" showVendorNumber="false" showCustomAttributes="false">
 		<jsp:attribute name="fragmentCustomSearchFields">
 						<tr>
 							<th><doc41:translate label="InspectionLot" /></th>
@@ -15,7 +15,7 @@ title="Upload Document">
 						</tr>
 						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="Vendor" /></th>
-							<td><c:out value="${uploadForm.partnerNumber }"/><form:hidden path="partnerNumber"/></td>
+							<td><c:out value="${uploadForm.vendorNumber }"/><form:hidden path="vendorNumber"/></td>
 						</tr>
 						<tr>
 							<th><doc41:translate label="VendorBatch" /></th>

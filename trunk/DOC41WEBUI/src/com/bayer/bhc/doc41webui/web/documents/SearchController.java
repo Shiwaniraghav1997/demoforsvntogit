@@ -59,14 +59,17 @@ public class SearchController extends AbstractDoc41Controller {
 		if(StringTool.isTrimmedEmptyOrNull(type)){
 			throw new Doc41BusinessException("typeIsMissing");
 		}
-		searchForm.initPartnerNumber(documentUC.getPartnerNumberType(type),getLastPartnerNumberFromSession());
+		searchForm.initPartnerNumbers(documentUC.hasCustomerNumber(type),getLastCustomerNumberFromSession(),
+				documentUC.hasVendorNumber(type),getLastVendorNumberFromSession());
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type,false);
 		searchForm.initAttributes(attributeDefinitions,language);
 		
 		if(!StringTool.isTrimmedEmptyOrNull(ButtonSearch)){
 			if(searchForm.isSearchFilled()){
-				String searchFormPartnerNumber = searchForm.getPartnerNumber();
-				checkPartnerNumber(result,type,searchFormPartnerNumber);
+				String searchFormCustomerNumber = searchForm.getCustomerNumber();
+				String searchFormVendorNumber = searchForm.getVendorNumber();
+				checkPartnerNumbers(result,type,searchFormCustomerNumber,searchFormVendorNumber);
+				
 				if(!result.hasErrors()){
 					String singleObjectId = searchForm.getObjectId();
 					List<String> objectIds = new ArrayList<String>();
@@ -79,7 +82,7 @@ public class SearchController extends AbstractDoc41Controller {
 						objectIds.add(singleObjectId);
 					}
 					Map<String, String> attributeValues = searchForm.getAttributeValues();
-					CheckForDownloadResult checkResult = documentUC.checkForDownload(result, type, searchFormPartnerNumber, objectIds, attributeValues, searchForm.getViewAttributes());
+					CheckForDownloadResult checkResult = documentUC.checkForDownload(result, type, searchFormCustomerNumber,searchFormVendorNumber, objectIds, attributeValues, searchForm.getViewAttributes());
 					Map<String, String> allAttributeValues = new HashMap<String, String>(attributeValues);
 					Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
 					if(additionalAttributes!=null){
@@ -172,16 +175,30 @@ public class SearchController extends AbstractDoc41Controller {
 		documentUC.downloadDocument(response,type,docId,filename);
 	}
 	
-	private void checkPartnerNumber(BindingResult errors, String type,
-			String partnerNumber) throws Doc41BusinessException {
-		if(documentUC.isPartnerNumberUsed(type)){
-			if(StringTool.isTrimmedEmptyOrNull(partnerNumber)){
-				errors.rejectValue("partnerNumber","PartnerNumberMissing");
+	private void checkPartnerNumbers(BindingResult errors, String type,
+			String customerNumber,String vendorNumber) throws Doc41BusinessException {
+		//customer
+		if(documentUC.hasCustomerNumber(type)){
+			if(StringTool.isTrimmedEmptyOrNull(customerNumber)){
+				errors.rejectValue("customerNumber","CustomerNumberMissing");
 			} else {
-				if(!UserInSession.get().hasPartner(partnerNumber)){
-					errors.rejectValue("partnerNumber","PartnerNotAssignedToUser");
+				if(!UserInSession.get().hasCustomer(customerNumber)){
+					errors.rejectValue("customerNumber","CustomerNotAssignedToUser");
 				} else {
-					setLastPartnerNumberFromSession(partnerNumber);
+					setLastCustomerNumberFromSession(customerNumber);
+				}
+			}
+		}
+		
+		//vendor
+		if(documentUC.hasVendorNumber(type)){
+			if(StringTool.isTrimmedEmptyOrNull(vendorNumber)){
+				errors.rejectValue("vendorNumber","VendorNumberMissing");
+			} else {
+				if(!UserInSession.get().hasVendor(vendorNumber)){
+					errors.rejectValue("vendorNumber","VendorNotAssignedToUser");
+				} else {
+					setLastVendorNumberFromSession(vendorNumber);
 				}
 			}
 		}

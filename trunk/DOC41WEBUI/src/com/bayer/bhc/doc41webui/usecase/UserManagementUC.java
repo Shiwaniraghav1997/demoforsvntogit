@@ -7,12 +7,10 @@ package com.bayer.bhc.doc41webui.usecase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.Doc41ErrorMessageKeys;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryException;
-//import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.logging.Doc41LogEntry;
 import com.bayer.bhc.doc41webui.common.paging.PagingData;
@@ -20,9 +18,9 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserListFilter;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
+import com.bayer.bhc.doc41webui.domain.SapCustomer;
+import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.domain.User;
-import com.bayer.bhc.doc41webui.domain.SapPartner;
-//import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.service.repository.UserManagementRepository;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -197,30 +195,25 @@ public class UserManagementUC {
         return userMgmtRepo;
     }
     
-    public SapPartner checkPartner(String partnerNumber) throws Doc41BusinessException{
+    public SapCustomer checkCustomer(String customerNumber) throws Doc41BusinessException{
     	try {
-    		SapPartner partner = getUserManagementRepository().loadSAPPartner(partnerNumber);
+    		SapCustomer customer = getUserManagementRepository().loadSAPCustomer(customerNumber);
 
-    		//alternative if import is not finished TODO remove when import is finished
-//			if(partner == null){
-//				SAPPartner partnerFromSAP = authorizationRFCService.checkPartner(partnerNumber);
-//				if(partnerFromSAP!=null){
-//					getUserManagementRepository().createSAPPartner(partnerFromSAP); //create sap partner row in database
-//					partner = partnerFromSAP;
-//				}
-//			}
-			
-			return partner;
+			return customer;
 		} catch (Doc41RepositoryException e) {
-			throw new Doc41BusinessException("checkDeliveryForPartner",e);
-//		} catch (Doc41ServiceException e) {
-//			throw new Doc41BusinessException("checkDeliveryForPartner",e);
+			throw new Doc41BusinessException("checkDeliveryForCustomer",e);
 		}
     }
+    
+    public SapVendor checkVendor(String vendorNumber) throws Doc41BusinessException{
+    	try {
+    		SapVendor vendor = getUserManagementRepository().loadSAPVendor(vendorNumber);
 
-	public String[] getSupportedPartnerTypes() {
-		return Doc41Constants.SUPPORTED_PARTNER_TYPES;
-	}
+			return vendor;
+		} catch (Doc41RepositoryException e) {
+			throw new Doc41BusinessException("checkDeliveryForVendor",e);
+		}
+    }
 	
 	private void logWebMetrix(User changedUser, String action){
 		String loggedInUser = UserInSession.getCwid();

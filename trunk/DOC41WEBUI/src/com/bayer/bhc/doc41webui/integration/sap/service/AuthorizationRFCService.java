@@ -22,7 +22,6 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 //	private static final String RFC_NAME_CHECK_DELIVERY_EXISTS							="CheckDeliveryNumberExists";
 	private static final String RFC_NAME_CHECK_ARTWORK_LAYOUT_FOR_VENDOR				="CheckArtworkLayoutForVendor";
 	private static final String RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR				="CheckPOAndMaterialForVendor";
-//	private static final String RFC_NAME_CHECK_PARTNER									="CheckPartner";
 	private static final String RFC_NAME_GET_INSPECTION_LOTS_FOR_VENDOR_BATCH			="GetInspectionLotsForVendorBatch";
 	private static final String RFC_NAME_GET_BATCH_OBJECTS_FOR_SUPPLIER					="GetBatchObjectsForSupplier";
 	private static final String RFC_NAME_GET_BATCH_OBJECTS_FOR_CUSTOMER					="GetBatchObjectsForCustomer";
@@ -61,24 +60,6 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		return deliveries ;
 	}
 	
-	//TODO remove when partner import is finished
-//	public SapPartner checkPartner(String partner) throws Doc41ServiceException{
-//		 Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
-//        		"checkPartner() - partner="+partner+".");
-//       
-//        List<Object> params = new ArrayList<Object>();
-//        params.add(partner);
-//        
-//        List<SapPartner> ups = performRFC(params,RFC_NAME_CHECK_PARTNER);
-//        
-//        SapPartner up=null;
-//        if(!ups.isEmpty()){
-//        	up = ups.get(0);
-//        }
-//		return up ;
-//	}
-
-
 	public String checkArtworkLayoutForVendor(String vendorNumber,String sapDocType) throws Doc41ServiceException{
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
         		"checkArtworkForVendor() - vendorNumber="+vendorNumber+".");

@@ -1,9 +1,9 @@
-#DEFINITION for SapPartnerDC:
+#DEFINITION for SapVendorDC:
 #--------------------------------
 
 Package=com.bayer.bhc.doc41webui.integration.db.dc
-DCClassName=SapPartnerDC
-Tablename=[DOC41WEB_MGR].SAP_PARTNER
+DCClassName=SapVendorDC
+Tablename=[DOC41WEB_MGR].SAP_VENDOR
 Superclass=com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
 ImplementedInterfaces=
 Imports=
@@ -14,11 +14,6 @@ Column.1.Name=PartnerNumber
 Column.1.Type=STRING
 Column.1.Comment=Maps DB-Column: partner_Number
 #Column.1.DBDefault="..."/new ...
-
-Column.2.Name=PartnerType
-Column.2.Type=STRING
-Column.2.Comment=Maps DB-Column: partner_Type
-#Column.2.DBDefault="..."/new ...
 
 Column.3.Name=Name1
 Column.3.Type=STRING

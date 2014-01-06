@@ -12,14 +12,14 @@ public class SDReferenceCheckResult extends DomainObject {
 	private String referenceNumber;
 	private int referenceType;
 	private String vkOrg;
-	private boolean connectedToPartner;
+	private boolean connectedToVendor;
 	
 	public SDReferenceCheckResult(String referenceNumber, int referenceType,
-			boolean connectedToPartner) {
+			boolean connectedToVendor) {
 		super();
 		this.referenceNumber = referenceNumber;
 		this.referenceType = referenceType;
-		this.connectedToPartner = connectedToPartner;
+		this.connectedToVendor = connectedToVendor;
 	}
 	public String getReferenceNumber() {
 		return referenceNumber;
@@ -37,13 +37,13 @@ public class SDReferenceCheckResult extends DomainObject {
 	public String getError() {
 		return getError(false);
 	}
-	public String getError(boolean ignorePartner) {
+	public String getError(boolean ignoreVendor) {
 		if(isDeliveryNumber()){
-			if(!ignorePartner && !connectedToPartner){
+			if(!ignoreVendor && !connectedToVendor){
 				return "DeliveryDoesNotBelongToCarrier";
 			}
 		} else if (isShippingUnitNumber()){
-			if(!ignorePartner && !connectedToPartner){
+			if(!ignoreVendor && !connectedToVendor){
 				return "ShippingUnitDoesNotBelongToCarrier";
 			}
 		} else {
@@ -54,8 +54,8 @@ public class SDReferenceCheckResult extends DomainObject {
 	public boolean isOk(){
 		return isOk(false);
 	}
-	public boolean isOk(boolean ignorePartner){
-		return referenceType>=0 && (ignorePartner || connectedToPartner);
+	public boolean isOk(boolean ignoreVendor){
+		return referenceType>=0 && (ignoreVendor || connectedToVendor);
 	}
 	
 	public boolean isDeliveryNumber(){

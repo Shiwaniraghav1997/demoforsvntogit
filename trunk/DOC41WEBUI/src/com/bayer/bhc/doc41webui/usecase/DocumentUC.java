@@ -425,8 +425,8 @@ public class DocumentUC {
 		}
 	}
 	
-	public CheckForUpdateResult checkForUpload(Errors errors, String type, String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException{
-		CheckForUpdateResult checkResult = getDocTypeForUpload(type).checkForUpload(errors, this, partnerNumber, objectId, attributeValues,viewAttributes);
+	public CheckForUpdateResult checkForUpload(Errors errors, String type, String customerNumber, String vendorNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException{
+		CheckForUpdateResult checkResult = getDocTypeForUpload(type).checkForUpload(errors, this, customerNumber, vendorNumber, objectId, attributeValues,viewAttributes);
 		if(errors.hasErrors()){
 			return null;
 		}
@@ -452,8 +452,8 @@ public class DocumentUC {
 		return checkResult;
 	}
 	
-	public CheckForDownloadResult checkForDownload(Errors errors, String type, String partnerNumber, List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException{
-		return getDocTypeForDownload(type).checkForDownload(errors, this, partnerNumber, objectIds, attributeValues,viewAttributes);
+	public CheckForDownloadResult checkForDownload(Errors errors, String type, String customerNumber, String vendorNumber, List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException{
+		return getDocTypeForDownload(type).checkForDownload(errors, this, customerNumber, vendorNumber, objectIds, attributeValues,viewAttributes);
 	}
 	
 	public CheckForDownloadResult checkForDirectDownload(String type, String objectId) throws Doc41BusinessException{
@@ -492,10 +492,13 @@ public class DocumentUC {
 		return documentType;
 	}
 
-	public String getPartnerNumberType(String type) throws Doc41BusinessException {
-		return getDocType(type).getPartnerNumberType();
+	public boolean hasCustomerNumber(String type) throws Doc41BusinessException {
+		return getDocType(type).hasCustomerNumber();
 	}
 	
+	public boolean hasVendorNumber(String type) throws Doc41BusinessException {
+		return getDocType(type).hasVendorNumber();
+	}
 
 	public String getUploadPermission(String type) throws Doc41BusinessException {
 		return getDocTypeForUpload(type).getPermissionUpload();
@@ -599,11 +602,6 @@ public class DocumentUC {
 			throw new Doc41BusinessException("getBatchObjectsForCustomer",e);
 		}
 	}
-
-	public boolean isPartnerNumberUsed(String type) throws Doc41BusinessException {
-		return !StringTool.isTrimmedEmptyOrNull(getPartnerNumberType(type));
-	}
-	
 	
 	private void logWebMetrix(String action, String docId, String statusText) {
 		String loggedInUser = UserInSession.getCwid();

@@ -5,7 +5,8 @@
 <%@attribute name="fragmentCustomSearchFields"		required="false" fragment="true"%>
 <%@attribute name="showCustomAttributes"		required="false"%>
 <%@attribute name="showObjectId"		required="false"%>
-<%@attribute name="showPartnerNumber"		required="false"%>
+<%@attribute name="showCustomerNumber"		required="false"%>
+<%@attribute name="showVendorNumber"		required="false"%>
 <%@taglib prefix="doc41" uri="doc41-tags" %>
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn"		uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -60,13 +61,23 @@
 						</spring:hasBindErrors>
 
 						<tr>
-							<c:if test="${searchForm.partnerNumberUsed && (empty showPartnerNumber or showPartnerNumber)}">
-								<th><label for="partnerNumber"><doc41:translate label="PartnerNumber" /></label></th>
-								<td><form:select path="partnerNumber"
-										items="${searchForm.partners}" cssClass="portlet-form-input-field portlet-mandatory portlet-big"
-										itemLabel="partnerLabel"
-										itemValue="partnerNumber" />
-									<doc41:error path="partnerNumber" /></td>
+							<c:if test="${searchForm.customerNumberUsed && (empty showCustomerNumber or showCustomerNumber)}">
+								<th><label for="customerNumber"><doc41:translate label="CustomerNumber" /></label></th>
+								<td><form:select path="customerNumber"
+										items="${searchForm.customers}" cssClass="portlet-form-input-field portlet-mandatory portlet-big"
+										itemLabel="label"
+										itemValue="number" />
+									<doc41:error path="customerNumber" /></td>
+							</c:if>
+						</tr>
+						<tr>
+							<c:if test="${searchForm.vendorNumberUsed && (empty showVendorNumber or showVendorNumber)}">
+								<th><label for="vendorNumber"><doc41:translate label="VendorNumber" /></label></th>
+								<td><form:select path="vendorNumber"
+										items="${searchForm.vendors}" cssClass="portlet-form-input-field portlet-mandatory portlet-big"
+										itemLabel="label"
+										itemValue="number" />
+									<doc41:error path="vendorNumber" /></td>
 							</c:if>
 						</tr>
 						<tr>

@@ -63,9 +63,9 @@ public class User extends DomainObject {
 			ROLE_DEL_CERT_VIEWER_COUNTRY, ROLE_DEL_CERT_VIEWER_CUSTOMER, ROLE_LAYOUT_SUPPLIER,
 			ROLE_PM_SUPPLIER,ROLE_BUSINESS_ADMIN, ROLE_TECH_ADMIN, ROLE_OBSERVER };
 	
-	public static final String[] ROLES_WITH_CUSTOMER_PARTNER = new String[] {ROLE_DEL_CERT_VIEWER_CUSTOMER};
+	public static final String[] ROLES_WITH_CUSTOMERS = new String[] {ROLE_DEL_CERT_VIEWER_CUSTOMER};
 	
-	public static final String[] ROLES_WITH_VENDOR_PARTNER = new String[] {
+	public static final String[] ROLES_WITH_VENDORS = new String[] {
 		ROLE_CARRIER, ROLE_MATERIAL_SUPPLIER, ROLE_PRODUCT_SUPPLIER,
 		ROLE_LAYOUT_SUPPLIER, ROLE_PM_SUPPLIER };
 	
@@ -94,7 +94,9 @@ public class User extends DomainObject {
 	
 	private List<String> roles = new ArrayList<String>();
 	
-	private List<SapPartner> partners = new ArrayList<SapPartner>();
+	private List<SapVendor> vendors = new ArrayList<SapVendor>();
+	
+	private List<SapCustomer> customers = new ArrayList<SapCustomer>();
 	
 	private List<String> countries = new ArrayList<String>();
 	
@@ -249,15 +251,26 @@ public class User extends DomainObject {
 		this.roles = roles;
 	}
 	
-	public List<SapPartner> getPartners() {
-		return partners;
+	public List<SapVendor> getVendors() {
+		return vendors;
 	}
 	
-	public void setPartners(List<SapPartner> partners) {
-		if(partners ==null){
-			partners = new ArrayList<SapPartner>();
+	public void setVendors(List<SapVendor> vendors) {
+		if(vendors ==null){
+			vendors = new ArrayList<SapVendor>();
 		}
-		this.partners = partners;
+		this.vendors = vendors;
+	}
+	
+	public List<SapCustomer> getCustomers() {
+		return customers;
+	}
+	
+	public void setCustomers(List<SapCustomer> customers) {
+		if(customers ==null){
+			customers = new ArrayList<SapCustomer>();
+		}
+		this.customers = customers;
 	}
 	
 	public List<String> getCountries() {
@@ -374,7 +387,8 @@ public class User extends DomainObject {
 		return "User [cwid=" + cwid + ", surname=" + surname + ", firstname="
 				+ firstname + ", email=" + email + ", phone=" + phone
 				+ ", type=" + type + ", active=" + active + ", roles=" + roles
-				+ ", partners=" + partners + ", countries=" + countries
+				+ ", customers=" + customers + ", vendors=" + vendors
+				+ ", countries=" + countries
 				+ ", plants=" + plants + ", locale=" + locale + ", readOnly="
 				+ readOnly + ", timeZone=" + timeZone + ", permissions="
 				+ permissions + ", company=" + company + "]";
@@ -384,26 +398,48 @@ public class User extends DomainObject {
 		return "cwid=" + cwid + ", surname=" + surname + ", firstname="
 				+ firstname + ", email=" + email + ", phone=" + phone
 				+ ", type=" + type + ", active=" + active + ", roles=" + roles
-				+ ", partners=" + getPartnerNumbers() + ", countries=" + countries
+				+ ", customers=" + getCustomerNumbers()+ ", vendors=" + getVendorNumbers() + ", countries=" + countries
 				+ ", plants=" + plants + ", locale=" + locale + ", readOnly="
 				+ readOnly + ", timeZone=" + timeZone + ", company=" + company;
 	}
 	
-	private List<String> getPartnerNumbers() {
-		if(partners==null){
+	private List<String> getCustomerNumbers() {
+		if(customers==null){
 			return null;
 		}
 		List<String> numbers = new ArrayList<String>();
-		for (SapPartner up : partners) {
-			numbers.add(up.getPartnerNumber());
+		for (SapCustomer up : customers) {
+			numbers.add(up.getNumber());
+		}
+		return numbers;
+	}
+	
+	private List<String> getVendorNumbers() {
+		if(vendors==null){
+			return null;
+		}
+		List<String> numbers = new ArrayList<String>();
+		for (SapVendor up : vendors) {
+			numbers.add(up.getNumber());
 		}
 		return numbers;
 	}
 
-	public boolean hasPartner(String partnerNumber){
-		if(partners!=null){
-			for (SapPartner userPartner : partners) {
-				if(StringTool.equals(partnerNumber, userPartner.getPartnerNumber())){
+	public boolean hasCustomer(String customerNumber){
+		if(customers!=null){
+			for (SapCustomer userCustomer : customers) {
+				if(StringTool.equals(customerNumber, userCustomer.getNumber())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean hasVendor(String vendorNumber){
+		if(vendors!=null){
+			for (SapVendor userVendor : vendors) {
+				if(StringTool.equals(vendorNumber, userVendor.getNumber())){
 					return true;
 				}
 			}
@@ -421,15 +457,5 @@ public class User extends DomainObject {
 		}
 		return false;
 	}
-	
-	public List<SapPartner> getPartnersByType(String partnerNumberType) {
-		List<SapPartner> filteredPartners = new ArrayList<SapPartner>();
-		for (SapPartner userPartner : partners) {
-			if(StringTool.equals(userPartner.getPartnerType(),partnerNumberType)){
-				filteredPartners.add(userPartner);
-			}
-		}
-		return filteredPartners;
-	}
-	
+
 }

@@ -5,7 +5,8 @@
 <%@attribute name="fragmentCustomSearchFields"		required="false" fragment="true"%>
 <%@attribute name="showCustomAttributes"		required="false"%>
 <%@attribute name="showObjectId"		required="false"%>
-<%@attribute name="showPartnerNumber"		required="false"%>
+<%@attribute name="showCustomerNumber"		required="false"%>
+<%@attribute name="showVendorNumber"		required="false"%>
 <%@taglib prefix="doc41" uri="doc41-tags" %>
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn"		uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -48,10 +49,17 @@
 							</c:forEach>
 						</spring:hasBindErrors>
 						
-						<c:if test="${uploadForm.partnerNumberUsed && (empty showPartnerNumber or showPartnerNumber)}">
+						<c:if test="${uploadForm.customerNumberUsed && (empty showCustomerNumber or showCustomerNumber)}">
 						<tr>
-							<th><label for="partnerNumber"><doc41:translate label="PartnerNumber" /></label></th>
-							<td><form:select path="partnerNumber" items="${uploadForm.partners}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" itemLabel="partnerLabel" itemValue="partnerNumber"/><doc41:error path="partnerNumber" /></td>
+							<th><label for="customerNumber"><doc41:translate label="CustomerNumber" /></label></th>
+							<td><form:select path="customerNumber" items="${uploadForm.customers}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" itemLabel="label" itemValue="number"/><doc41:error path="customerNumber" /></td>
+						</tr>
+						</c:if>
+						
+						<c:if test="${uploadForm.vendorNumberUsed && (empty showVendorNumber or showVendorNumber)}">
+						<tr>
+							<th><label for="vendorNumber"><doc41:translate label="VendorNumber" /></label></th>
+							<td><form:select path="vendorNumber" items="${uploadForm.vendors}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" itemLabel="label" itemValue="number"/><doc41:error path="vendorNumber" /></td>
 						</tr>
 						</c:if>
 						

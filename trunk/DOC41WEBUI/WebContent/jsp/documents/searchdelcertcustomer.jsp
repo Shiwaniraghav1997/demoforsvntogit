@@ -8,7 +8,7 @@
 	<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 	
 	
-	<doc41:searchtemplate action="searchdelcertcustomer" showCustomAttributes="false" showObjectId="false" showPartnerNumber="true">
+	<doc41:searchtemplate action="searchdelcertcustomer" showCustomAttributes="false" showObjectId="false" showCustomerNumber="true" showVendorNumber="false">
 		<jsp:attribute name="fragmentCustomSearchFields">
 			<tr>
 				<th><label for="${keyCountry}"><doc41:translate label="Country" /></label></th>

@@ -3,28 +3,28 @@ package com.bayer.bhc.doc41webui.container;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.domain.SapPartner;
+import com.bayer.bhc.doc41webui.domain.SapVendor;
 
 public class BatchObjectForm {
 
 	private String type;
-	private String partnerNumber;
+	private String vendorNumber;
 	private String plant;
 	private String material;
 	private String batch;
 	private String order;
-	private List<SapPartner> partners;
+	private List<SapVendor> vendors;
 	public String getType() {
 		return type;
 	}
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getPartnerNumber() {
-		return partnerNumber;
+	public String getVendorNumber() {
+		return vendorNumber;
 	}
-	public void setPartnerNumber(String partnerNumber) {
-		this.partnerNumber = partnerNumber;
+	public void setVendorNumber(String vendorNumber) {
+		this.vendorNumber = vendorNumber;
 	}
 	public String getPlant() {
 		return plant;
@@ -50,24 +50,18 @@ public class BatchObjectForm {
 	public void setOrder(String order) {
 		this.order = order;
 	}
-	public List<SapPartner> getPartners() {
-		return partners;
+	public List<SapVendor> getVendors() {
+		return vendors;
 	}
-//	public void setPartners(List<UserPartner> partners) {
-//		this.partners = partners;
-//	}
-	public void initPartnerNumber(String partnerNumberType) {
-//		this.partnerNumberUsed = !StringTool.isTrimmedEmptyOrNull(partnerNumberType);
-//		if(partnerNumberUsed){
-			partners = UserInSession.get().getPartnersByType(partnerNumberType);
-//		}
+	public void initVendors() {
+		vendors = UserInSession.get().getVendors();
 	}
 	@Override
 	public String toString() {
-		return "BatchObjectForm [type=" + type + ", partnerNumber="
-				+ partnerNumber + ", plant=" + plant + ", material=" + material
-				+ ", batch=" + batch + ", order=" + order + ", partners="
-				+ partners + "]";
+		return "BatchObjectForm [type=" + type + ", vendorNumber="
+				+ vendorNumber + ", plant=" + plant + ", material=" + material
+				+ ", batch=" + batch + ", order=" + order + ", vendors="
+				+ vendors + "]";
 	}
 	
 	

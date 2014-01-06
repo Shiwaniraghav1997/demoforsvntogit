@@ -24,8 +24,13 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 	public static final String VIEW_ATTRIB_MATERIAL_TEXT = "materialText";
 
 	@Override
-	public String getPartnerNumberType() {
-		return Doc41Constants.PARTNER_TYPE_VENDOR_MASTER; //SUPPLIER;
+	public boolean hasCustomerNumber() {
+		return false;
+	}
+	
+	@Override
+	public boolean hasVendorNumber() {
+		return true;
 	}
 
 	@Override
@@ -45,7 +50,7 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 
 	@Override
 	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
-			String partnerNumber,
+			String customerNumber, String vendorNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
 
@@ -62,10 +67,10 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 			return null;
 		}
 		
-		checkInspectionLot(errors, documentUC, partnerNumber, vendorBatch, plant, objectId);
+		checkInspectionLot(errors, documentUC, vendorNumber, vendorBatch, plant, objectId);
 		
 		Map<String, String> additionalAttributes = new HashMap<String, String>();
-		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, partnerNumber);
+		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
 
 		
 		//TODO SAP OBJECT
@@ -73,8 +78,8 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 	}
 
 	private void checkInspectionLot(Errors errors, DocumentUC documentUC,
-			String partnerNumber, String vendorBatch, String plant, String objectId) throws Doc41BusinessException {
-		List<InspectionLot> deliveryCheck = documentUC.getInspectionLotsForVendorBatch(partnerNumber, vendorBatch, plant);
+			String vendorNumber, String vendorBatch, String plant, String objectId) throws Doc41BusinessException {
+		List<InspectionLot> deliveryCheck = documentUC.getInspectionLotsForVendorBatch(vendorNumber, vendorBatch, plant);
 		for (InspectionLot inspectionLot : deliveryCheck) {
 			if(StringTool.equals(inspectionLot.getNumber(), objectId)){
 				return;

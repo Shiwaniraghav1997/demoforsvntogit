@@ -16,8 +16,8 @@ function setDeliveryNumber(refNumber,shipunit){
 }
 
 function popupAppendFunction(){
-	var pn = $("#partnerNumber").val();
-	return '&partnerNumber='+pn;
+	var pn = $("#vendorNumber").val();
+	return '&vendorNumber='+pn;
 }
 </script>
 

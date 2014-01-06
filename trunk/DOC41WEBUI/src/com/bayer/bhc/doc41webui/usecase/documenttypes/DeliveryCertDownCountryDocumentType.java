@@ -15,8 +15,13 @@ public class DeliveryCertDownCountryDocumentType extends
 		AbstractDeliveryCertDocumentType implements DownloadDocumentType {
 	
 	@Override
-	public String getPartnerNumberType() {
-		return null;
+	public boolean hasCustomerNumber() {
+		return false;
+	}
+	
+	@Override
+	public boolean hasVendorNumber() {
+		return false;
 	}
 	
 	@Override
@@ -31,7 +36,7 @@ public class DeliveryCertDownCountryDocumentType extends
 	
 	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-			String partnerNumber, List<String> objectIds,
+			String customerNumber, String vendorNumber, List<String> objectIds,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
 		String countryCode = attributeValues.get(ATTRIB_COUNTRY);

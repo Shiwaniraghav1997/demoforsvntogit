@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.validation.Errors;
 
-import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.domain.QMBatchObject;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
@@ -14,9 +13,15 @@ import com.bayer.ecim.foundation.basic.StringTool;
 
 public class DeliveryCertUploadDocumentType extends
 		AbstractDeliveryCertDocumentType implements UploadDocumentType{
+	
 	@Override
-	public String getPartnerNumberType() {
-		return Doc41Constants.PARTNER_TYPE_VENDOR_MASTER;//SUPPLIER
+	public boolean hasCustomerNumber() {
+		return false;
+	}
+	
+	@Override
+	public boolean hasVendorNumber() {
+		return true;
 	}
 	
 	@Override
@@ -31,7 +36,7 @@ public class DeliveryCertUploadDocumentType extends
 
 	@Override
 	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
-			String partnerNumber,
+			String customerNumber, String vendorNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
 
@@ -47,7 +52,7 @@ public class DeliveryCertUploadDocumentType extends
 		String plant = attributeValues.get(ATTRIB_PLANT);
 		String material = attributeValues.get(ATTRIB_MATERIAL);
 		String batch = attributeValues.get(ATTRIB_BATCH);
-		List<QMBatchObject> bos = documentUC.getBatchObjectsForSupplier(partnerNumber, plant, material, batch, null);
+		List<QMBatchObject> bos = documentUC.getBatchObjectsForSupplier(vendorNumber, plant, material, batch, null);
 		if(bos.size()==0){
 			errors.reject("BatchObjectNotFoundOrNotForSupplier");
 		} else if(bos.size()==0){

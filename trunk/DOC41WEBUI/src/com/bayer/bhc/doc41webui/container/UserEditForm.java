@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
+import com.bayer.bhc.doc41webui.domain.SapCustomer;
+import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.domain.User;
-import com.bayer.bhc.doc41webui.domain.SapPartner;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 public class UserEditForm implements Serializable{
@@ -31,7 +32,8 @@ public class UserEditForm implements Serializable{
 	private Boolean active;
 	private String type;
 	private List<String> roles;
-	private List<SapPartner> partners;
+	private List<SapCustomer> customers;
+	private List<SapVendor> vendors;
 	private List<String> countries;
 	private List<String> plants;
 	
@@ -45,18 +47,34 @@ public class UserEditForm implements Serializable{
 		if(!StringTool.equals(getPassword(), getPasswordRepeated())){
 			errors.rejectValue("passwordRepeated", "pwDifferent", "password and passwordRepeated do not match.");
 		}
-		if(partners!=null){
-			for (SapPartner partner : partners) {
-				if(partner==null || partner.getPartnerNumber()==null){
-					errors.rejectValue("partners", "partnerNumberNull", "partner number null");
+		if(customers!=null){
+			for (SapCustomer customer : customers) {
+				if(customer==null || customer.getNumber()==null){
+					errors.rejectValue("customers", "customerNumberNull", "customer number null");
 				}
-				if(partner!=null && partner.getPartnerNumber()!=null && partner.getPartnerNumber().length()>Doc41Constants.FIELD_SIZE_PARTNER_NUMBER){
-					errors.rejectValue("partners", "partnerNumberTooLong", "partner number too long");
+				if(customer!=null && customer.getNumber()!=null && customer.getNumber().length()>Doc41Constants.FIELD_SIZE_CUSTOMER_NUMBER){
+					errors.rejectValue("customers", "customerNumberTooLong", "customer number too long");
 				} else {
 					try {
-						Integer.parseInt(partner.getPartnerNumber());
+						Integer.parseInt(customer.getNumber());
 					} catch (NumberFormatException e) {
-						errors.rejectValue("partners", "OnlyNumbersInPartnerNumber", "only number in partner number allowed");
+						errors.rejectValue("customers", "OnlyNumbersInCustomersNumber", "only number in customer number allowed");
+					}
+				}
+			}
+		}
+		if(vendors!=null){
+			for (SapVendor vendor : vendors) {
+				if(vendor==null || vendor.getNumber()==null){
+					errors.rejectValue("vendors", "vendorNumberNull", "vendor number null");
+				}
+				if(vendor!=null && vendor.getNumber()!=null && vendor.getNumber().length()>Doc41Constants.FIELD_SIZE_VENDOR_NUMBER){
+					errors.rejectValue("vendors", "vendorNumberTooLong", "vendor number too long");
+				} else {
+					try {
+						Integer.parseInt(vendor.getNumber());
+					} catch (NumberFormatException e) {
+						errors.rejectValue("vendors", "OnlyNumbersInVendorNumber", "only number in vendor number allowed");
 					}
 				}
 			}
@@ -65,12 +83,12 @@ public class UserEditForm implements Serializable{
 			errors.reject("noRoles", "at least one role must be selected.");
 		}
 		
-		if(containsRoleFromList(roles,User.ROLES_WITH_CUSTOMER_PARTNER) && !partnersContainPartnerType(partners,Doc41Constants.PARTNER_TYPE_CUSTOMER_MASTER)){
-			errors.rejectValue("partners", "customerPartnerNeededForRole", "for the selected roles at least one customer partner is required");
+		if(containsRoleFromList(roles,User.ROLES_WITH_CUSTOMERS) && isEmpty(customers)){
+			errors.rejectValue("customers", "customerPartnerNeededForRole", "for the selected roles at least one customer is required");
 		}
 		
-		if(containsRoleFromList(roles,User.ROLES_WITH_VENDOR_PARTNER) && !partnersContainPartnerType(partners,Doc41Constants.PARTNER_TYPE_VENDOR_MASTER)){
-			errors.rejectValue("partners", "vendorPartnerNeededForRole", "for the selected roles at least one vendor partner is required");
+		if(containsRoleFromList(roles,User.ROLES_WITH_VENDORS) && isEmpty(vendors)){
+			errors.rejectValue("vendors", "vendorPartnerNeededForRole", "for the selected roles at least one vendor is required");
 		}
 		
 		if(containsRoleFromList(roles,User.ROLES_WITH_COUNTRY) && isEmpty(countries)){
@@ -81,21 +99,8 @@ public class UserEditForm implements Serializable{
 			errors.rejectValue("plants", "plantNeededForRole", "for the selected roles at least one plant is required");
 		}
 	}
-	
-	private static boolean partnersContainPartnerType(List<SapPartner> partners2,String partnerType2) {
-		if(partners2==null){
-			return false;
-		}
-		for (SapPartner userPartner : partners2) {
-			String partnerType = userPartner.getPartnerType();
-			if(StringTool.equals(partnerType, partnerType2)){
-				return true;
-			}
-		}
-		return false;
-	}
 
-	private static boolean isEmpty(List<String> list) {
+	private static boolean isEmpty(List<?> list) {
 		return (list==null || list.isEmpty());
 	}
 
@@ -139,7 +144,8 @@ public class UserEditForm implements Serializable{
 		setActive			(user.getActive());   
 		setType				(user.getType());     
 		setRoles			(user.getRoles());  
-		setPartners			(user.getPartners());
+		setCustomers		(user.getCustomers());
+		setVendors			(user.getVendors());
 		setCountries		(user.getCountries());
 		setPlants			(user.getPlants());
 		setObjectID(user.getDcId());
@@ -161,9 +167,10 @@ public class UserEditForm implements Serializable{
 		user.setActive		(getActive		());
 		user.setType		(getType		());
 		user.setRoles		(getRoles		());
-		user.setPartners	(getPartners());
-		user.setCountries	(getCountries());
-		user.setPlants		(getPlants());
+		user.setCustomers	(getCustomers	());
+		user.setVendors		(getVendors		());
+		user.setCountries	(getCountries	());
+		user.setPlants		(getPlants		());
 		
 		return user;
 	}
@@ -282,14 +289,24 @@ public class UserEditForm implements Serializable{
 		this.objectID = objectID;
 	}
 	
-	public List<SapPartner> getPartners() {
-		return partners;
+	public List<SapCustomer> getCustomers() {
+		return customers;
 	}
-	public void setPartners(List<SapPartner> partners) {
-		if(partners==null){
-			partners = new ArrayList<SapPartner>();
+	public void setCustomers(List<SapCustomer> customers) {
+		if(customers==null){
+			customers = new ArrayList<SapCustomer>();
 		}
-		this.partners = partners;
+		this.customers = customers;
+	}
+	
+	public List<SapVendor> getVendors() {
+		return vendors;
+	}
+	public void setVendors(List<SapVendor> vendors) {
+		if(vendors==null){
+			vendors = new ArrayList<SapVendor>();
+		}
+		this.vendors = vendors;
 	}
 	
 	@Override
@@ -299,29 +316,46 @@ public class UserEditForm implements Serializable{
 				+ ", company=" + company + ", email="
 				+ email + ", phone=" + phone + ", timeZone=" + timeZone
 				+ ", languageCountry=" + languageCountry + ", active=" + active
-				+ ", type=" + type + ", roles=" + roles + ", partners="
-				+ partners + "]";
+				+ ", type=" + type + ", roles=" + roles 
+				+ ", customers="+ customers 
+				+ ", vendors="+ vendors
+				+ "]";
 	}
 	
-	public void setPartnerStrings(List<String> partnerStrings){
-		List<SapPartner> partnerList = new ArrayList<SapPartner>();
-		for (String partnerString : partnerStrings) {
-			String[] split = partnerString.split("###");
-			SapPartner up = new SapPartner();
-			up.setPartnerNumber(split[0]);
+	public void setCustomerStrings(List<String> customerStrings){
+		List<SapCustomer> customerList = new ArrayList<SapCustomer>();
+		for (String customerString : customerStrings) {
+			String[] split = customerString.split("###");
+			SapCustomer up = new SapCustomer();
+			up.setNumber(split[0]);
 			if(split.length>1){
-				up.setPartnerName1(split[1]);
+				up.setName1(split[1]);
 				if(split.length>2){
-					up.setPartnerName2(split[2]);
-					if(split.length>3){
-						up.setPartnerType(split[3]);
-					}
+					up.setName2(split[2]);
 				}
 			}
 			
-			partnerList.add(up);
+			customerList.add(up);
 		}
-		setPartners(partnerList );
+		setCustomers(customerList );
+	}
+	
+	public void setVendorStrings(List<String> vendorStrings){
+		List<SapVendor> vendorList = new ArrayList<SapVendor>();
+		for (String vendorString : vendorStrings) {
+			String[] split = vendorString.split("###");
+			SapVendor up = new SapVendor();
+			up.setNumber(split[0]);
+			if(split.length>1){
+				up.setName1(split[1]);
+				if(split.length>2){
+					up.setName2(split[2]);
+				}
+			}
+			
+			vendorList.add(up);
+		}
+		setVendors(vendorList );
 	}
 	
 	public List<String> getCountries() {
@@ -336,12 +370,6 @@ public class UserEditForm implements Serializable{
 		for (String countryString : countryStrings) {
 			String[] split = countryString.split("###");
 			String country = split[0];
-//			if(split.length>1){
-//				up.setPartnerName1(split[1]);
-//				if(split.length>2){
-//					up.setPartnerName2(split[2]);
-//				}
-//			}
 			
 			countryList.add(country);
 		}
@@ -361,12 +389,6 @@ public class UserEditForm implements Serializable{
 		for (String plantString : plantStrings) {
 			String[] split = plantString.split("###");
 			String plant = split[0];
-//			if(split.length>1){
-//				up.setPartnerName1(split[1]);
-//				if(split.length>2){
-//					up.setPartnerName2(split[2]);
-//				}
-//			}
 			
 			plantList.add(plant);
 		}

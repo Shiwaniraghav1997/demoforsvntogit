@@ -9,7 +9,8 @@ import java.util.Map;
 
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
-import com.bayer.bhc.doc41webui.domain.SapPartner;
+import com.bayer.bhc.doc41webui.domain.SapCustomer;
+import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 public abstract class CustomizedDocumentForm {
@@ -24,11 +25,17 @@ public abstract class CustomizedDocumentForm {
 	
 	private Map<String, String> viewAttributes = new HashMap<String, String>();
 	
-	private String partnerNumber;
+	private String customerNumber;
 	
-	private boolean partnerNumberUsed;
+	private boolean isCustomerNumberUsed;
 	
-	private List<SapPartner> partners;
+	private List<SapCustomer> customers;
+	
+	private String vendorNumber;
+	
+	private boolean isVendorNumberUsed;
+	
+	private List<SapVendor> vendors;	
 	
 	public String getType() {
 		return type;
@@ -73,33 +80,60 @@ public abstract class CustomizedDocumentForm {
 		return attributeMandatory;
 	}
 
-	public String getPartnerNumber() {
-		return partnerNumber;
+	public String getCustomerNumber() {
+		return customerNumber;
 	}
-	public void setPartnerNumber(String partnerNumber) {
-		this.partnerNumber = partnerNumber;
+	public void setCustomerNumber(String customerNumber) {
+		this.customerNumber = customerNumber;
 	}
-	public boolean isPartnerNumberUsed() {
-		return partnerNumberUsed;
+	public boolean isCustomerNumberUsed() {
+		return isCustomerNumberUsed;
 	}
-	public void initPartnerNumber(String partnerNumberType,String lastPartnerNumberFromSession) {
-		this.partnerNumberUsed = !StringTool.isTrimmedEmptyOrNull(partnerNumberType);
-		if(partnerNumberUsed){
-			partners = UserInSession.get().getPartnersByType(partnerNumberType);
+	private void initCustomerNumber(boolean isCustomerNumberUsed,String lastCustomerNumberFromSession) {
+		this.isCustomerNumberUsed = isCustomerNumberUsed;
+		if(isCustomerNumberUsed){
+			customers = UserInSession.get().getCustomers();
 				
-			if(StringTool.isTrimmedEmptyOrNull(getPartnerNumber())){
-				if(!StringTool.isTrimmedEmptyOrNull(lastPartnerNumberFromSession)){
-					setPartnerNumber(lastPartnerNumberFromSession);
+			if(StringTool.isTrimmedEmptyOrNull(getCustomerNumber())){
+				if(!StringTool.isTrimmedEmptyOrNull(lastCustomerNumberFromSession)){
+					setCustomerNumber(lastCustomerNumberFromSession);
 				}
 			}
 		}
 	}
-	public List<SapPartner> getPartners() {
-		return partners;
+	public List<SapCustomer> getCustomers() {
+		return customers;
 	}
-//	public void setPartners(List<UserPartner> partners) {
-//		this.partners = partners;
-//	}
+	
+	public String getVendorNumber() {
+		return vendorNumber;
+	}
+	public void setVendorNumber(String vendorNumber) {
+		this.vendorNumber = vendorNumber;
+	}
+	public boolean isVendorNumberUsed() {
+		return isVendorNumberUsed;
+	}
+	private void initVendorNumber(boolean isVendorNumberUsed,String lastVendorNumberFromSession) {
+		this.isVendorNumberUsed = isVendorNumberUsed;
+		if(isVendorNumberUsed){
+			vendors = UserInSession.get().getVendors();
+				
+			if(StringTool.isTrimmedEmptyOrNull(getVendorNumber())){
+				if(!StringTool.isTrimmedEmptyOrNull(lastVendorNumberFromSession)){
+					setVendorNumber(lastVendorNumberFromSession);
+				}
+			}
+		}
+	}
+	public List<SapVendor> getVendors() {
+		return vendors;
+	}
+	
+	public void initPartnerNumbers(boolean isCustomerNumberUsed,String lastCustomerNumberFromSession,boolean isVendorNumberUsed,String lastVendorNumberFromSession) {
+		initCustomerNumber(isCustomerNumberUsed, lastCustomerNumberFromSession);
+		initVendorNumber(isVendorNumberUsed, lastVendorNumberFromSession);
+	}
 
 	
 	public void initAttributes(List<Attribute> attributeDefinitions,String languageCode) {
@@ -135,8 +169,12 @@ public abstract class CustomizedDocumentForm {
 				+ objectId + ", attributeLabels=" + attributeLabels
 				+ ", attributeValues=" + attributeValues
 				+ ", attributePredefValues=" + attributePredefValues
-				+ ", partnerNumber=" + partnerNumber + ", partnerNumberUsed="
-				+ partnerNumberUsed + "]";
+				+ ", attributeMandatory=" + attributeMandatory
+				+ ", viewAttributes=" + viewAttributes + ", customerNumber="
+				+ customerNumber + ", isCustomerNumberUsed="
+				+ isCustomerNumberUsed + ", customers=" + customers
+				+ ", vendorNumber=" + vendorNumber + ", isVendorNumberUsed="
+				+ isVendorNumberUsed + ", vendors=" + vendors + "]";
 	}
 	public List<String> getCustomizedValuesLabels(){
 		Collection<String> labels = attributeLabels.values();

@@ -51,7 +51,8 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		String language = LocaleInSession.get().getLanguage();
 		UploadForm uploadForm = createNewForm();
 		uploadForm.setType(type);
-		uploadForm.initPartnerNumber(documentUC.getPartnerNumberType(type),getLastPartnerNumberFromSession());
+		uploadForm.initPartnerNumbers(documentUC.hasCustomerNumber(type),getLastCustomerNumberFromSession(),
+				documentUC.hasVendorNumber(type),getLastVendorNumberFromSession());
 //		uploadForm.setTypeLabel(documentUC.getTypeLabel(type, language));
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type,true);
 		uploadForm.initAttributes(attributeDefinitions,language);
@@ -66,8 +67,9 @@ public abstract class UploadController extends AbstractDoc41Controller {
 	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result) throws Doc41BusinessException { //ggf. kein modelattribute wegen sessionattribute
 		String failedURL = getFailedURL();
 		String type = uploadForm.getType();
-		uploadForm.initPartnerNumber(documentUC.getPartnerNumberType(type),null);
-		checkPartnerNumber(result,type,uploadForm.getPartnerNumber());
+		uploadForm.initPartnerNumbers(documentUC.hasCustomerNumber(type),null,
+				documentUC.hasVendorNumber(type),null);
+		checkPartnerNumbers(result,type,uploadForm.getCustomerNumber(),uploadForm.getVendorNumber());
 		checkAndFillObjectId(result,type,uploadForm);
 		checkFileParameter(result,uploadForm.getFile(),uploadForm.getFileId(),uploadForm.getFileName());
 		if(result.hasErrors()){
@@ -75,8 +77,8 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		}
 		Map<String, String> attributeValues = uploadForm.getAttributeValues();
 		CheckForUpdateResult checkResult = documentUC.checkForUpload(result, type, 
-				uploadForm.getPartnerNumber(), uploadForm.getObjectId(), attributeValues,
-				uploadForm.getViewAttributes());
+				uploadForm.getCustomerNumber(), uploadForm.getVendorNumber(), uploadForm.getObjectId(),
+				attributeValues, uploadForm.getViewAttributes());
 		if(result.hasErrors()){
 			return failedURL;
 		}
@@ -164,16 +166,28 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		}
 	}
 
-	private void checkPartnerNumber(BindingResult errors, String type,
-			String partnerNumber) throws Doc41BusinessException {
-		if(documentUC.isPartnerNumberUsed(type)){
-			if(StringTool.isTrimmedEmptyOrNull(partnerNumber)){
-				errors.rejectValue("partnerNumber","PartnerNumberMissing");
+	private void checkPartnerNumbers(BindingResult errors, String type,
+			String customerNumber,String vendorNumber) throws Doc41BusinessException {
+		//customer
+		if(documentUC.hasCustomerNumber(type)){
+			if(StringTool.isTrimmedEmptyOrNull(customerNumber)){
+				errors.rejectValue("customerNumber","CustomerNumberMissing");
 			} else {
-				if(!UserInSession.get().hasPartner(partnerNumber)){
-					errors.rejectValue("partnerNumber","PartnerNotAssignedToUser");
+				if(!UserInSession.get().hasCustomer(customerNumber)){
+					errors.rejectValue("customerNumber","CustomerNotAssignedToUser");
 				} else {
-					setLastPartnerNumberFromSession(partnerNumber);
+					setLastCustomerNumberFromSession(customerNumber);
+				}
+			}
+		}
+		if(documentUC.hasVendorNumber(type)){
+			if(StringTool.isTrimmedEmptyOrNull(vendorNumber)){
+				errors.rejectValue("vendorNumber","VendorNumberMissing");
+			} else {
+				if(!UserInSession.get().hasVendor(vendorNumber)){
+					errors.rejectValue("partnerNumber","VendorNotAssignedToUser");
+				} else {
+					setLastVendorNumberFromSession(vendorNumber);
 				}
 			}
 		}

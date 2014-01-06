@@ -21,13 +21,18 @@ public abstract class SDDocumentType implements DocumentType {
 	protected static final String SAP_OBJECT_SHIPPING_UNIT = "YTMSA";
 
 	@Override
-	public String getPartnerNumberType() {
-		return Doc41Constants.PARTNER_TYPE_VENDOR_MASTER; //CARRIER;
+	public boolean hasCustomerNumber() {
+		return false;
 	}
-
+	
+	@Override
+	public boolean hasVendorNumber() {
+		return true;
+	}
+	
 	//implements method from UploadDocumentType
 	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
-			String partnerNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException {
+			String customerNumber, String vendorNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException {
 //		if(true)return SAP_OBJECT_DELIVERY;
 		
 //		String shippingUnitNumber = attributeValues.get(SHIPPING_UNIT_NUMBER);
@@ -39,7 +44,7 @@ public abstract class SDDocumentType implements DocumentType {
 			return null;
 		}
 		
-		SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(partnerNumber, objectId);
+		SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(vendorNumber, objectId);
 		if(!deliveryCheck.isOk()){
 			errors.rejectValue("objectId",""+deliveryCheck.getError());
 		} 
@@ -59,7 +64,7 @@ public abstract class SDDocumentType implements DocumentType {
 
 	//implements method from DownloadDocumentType
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-			String partnerNumber, List<String> objectIds,
+			String customerNumber, String vendorNumber, List<String> objectIds,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 //		if(true)return;
 		
@@ -68,7 +73,7 @@ public abstract class SDDocumentType implements DocumentType {
 		} else if(objectIds.size()>1){
 			errors.rejectValue("objectId","more than one objectId");
 		} else {
-			SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(partnerNumber, objectIds.get(0));
+			SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(vendorNumber, objectIds.get(0));
 			if(!deliveryCheck.isOk()){
 				errors.rejectValue("objectId",""+deliveryCheck.getError());
 			} 

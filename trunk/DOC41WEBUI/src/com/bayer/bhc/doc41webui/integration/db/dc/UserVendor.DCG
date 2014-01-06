@@ -1,9 +1,9 @@
-#DEFINITION for UserPartnerDC:
+#DEFINITION for UserVendorDC:
 #--------------------------------
 
 Package=com.bayer.bhc.doc41webui.integration.db.dc
-DCClassName=UserPartnerDC
-Tablename=[DOC41WEB_MGR].D41_USER_PARTNER
+DCClassName=UserVendorDC
+Tablename=[DOC41WEB_MGR].D41_USER_VENDOR
 Superclass=com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
 ImplementedInterfaces=
 Imports=
@@ -15,9 +15,9 @@ Column.1.Type=ID
 Column.1.Comment=Maps DB-Column: user_Id
 #Column.1.DBDefault="..."/new ...
 
-Column.2.Name=PartnerId
+Column.2.Name=VendorId
 Column.2.Type=ID
-Column.2.Comment=Maps DB-Column: partner_Id
+Column.2.Comment=Maps DB-Column: vendor_Id
 #Column.2.DBDefault="..."/new ...
 
 #Cols ignored, defined by super class:

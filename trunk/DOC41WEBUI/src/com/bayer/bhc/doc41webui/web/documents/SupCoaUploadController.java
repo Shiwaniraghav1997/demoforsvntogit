@@ -17,7 +17,7 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.container.VendorBatchForm;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
-import com.bayer.bhc.doc41webui.domain.SapPartner;
+import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.SupplierCOADocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -28,23 +28,23 @@ public class SupCoaUploadController extends UploadController {
 	public VendorBatchForm getVBatch(@RequestParam() String type) throws Doc41BusinessException{
 		VendorBatchForm form = new VendorBatchForm();
 		form.setType(type);
-		String partnerNumber = getLastPartnerNumberFromSession();
-		if(!StringTool.isTrimmedEmptyOrNull(partnerNumber)){
-			form.setPartnerNumber(partnerNumber);
+		String vendorNumber = getLastVendorNumberFromSession();
+		if(!StringTool.isTrimmedEmptyOrNull(vendorNumber)){
+			form.setVendorNumber(vendorNumber);
 		}
-		List<SapPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
-		form.setPartners(partners);
+		List<SapVendor> vendors = UserInSession.get().getVendors();
+		form.setVendors(vendors);
 		return form;
 	}
 	
 	@RequestMapping(value="/documents/supcoauplist",method = RequestMethod.GET)
 	public ModelAndView getInspLots(String type,VendorBatchForm vendorBatchForm,BindingResult result, ModelAndView mav) throws Doc41BusinessException{
-		List<SapPartner> partners = UserInSession.get().getPartnersByType(documentUC.getPartnerNumberType(type));
-		vendorBatchForm.setPartners(partners);
+		List<SapVendor> vendors = UserInSession.get().getVendors();
+		vendorBatchForm.setVendors(vendors);
 		
-		String partnerNumber = vendorBatchForm.getPartnerNumber();
-		if(StringTool.isTrimmedEmptyOrNull(partnerNumber)){
-			result.rejectValue("partnerNumber","VendorMissing");
+		String vendorNumber = vendorBatchForm.getVendorNumber();
+		if(StringTool.isTrimmedEmptyOrNull(vendorNumber)){
+			result.rejectValue("vendorNumber","VendorMissing");
 		}
 		String vendorBatch = vendorBatchForm.getVendorBatch();
 		if(StringTool.isTrimmedEmptyOrNull(vendorBatch)){
@@ -61,7 +61,7 @@ public class SupCoaUploadController extends UploadController {
 			return mav;
 		}
 		
-		List<InspectionLot> ilots = documentUC.getInspectionLotsForVendorBatch(partnerNumber,
+		List<InspectionLot> ilots = documentUC.getInspectionLotsForVendorBatch(vendorNumber,
 				vendorBatch, plant);
 		if(ilots.isEmpty()){
 			mav.addObject(vendorBatchForm);
@@ -91,7 +91,7 @@ public class SupCoaUploadController extends UploadController {
 	public ModelMap getUpload(@RequestParam() String type,InspectionLot inspectionLot) throws Doc41BusinessException{
 		UploadForm uploadForm =  super.get(type);
 		uploadForm.setObjectId(inspectionLot.getNumber());
-		uploadForm.setPartnerNumber(inspectionLot.getVendor());
+		uploadForm.setVendorNumber(inspectionLot.getVendor());
 		Map<String, String> avalues = new HashMap<String, String>();
 		avalues.put(SupplierCOADocumentType.ATTRIB_VENDOR_BATCH,inspectionLot.getVendorBatch());
 		avalues.put(SupplierCOADocumentType.ATTRIB_PLANT,inspectionLot.getPlant());

@@ -28,14 +28,17 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
+import com.bayer.bhc.doc41webui.domain.SapCustomer;
+import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.domain.User;
-import com.bayer.bhc.doc41webui.domain.SapPartner;
 import com.bayer.bhc.doc41webui.integration.db.LdapDAO;
 import com.bayer.bhc.doc41webui.integration.db.UserManagementDAO;
-import com.bayer.bhc.doc41webui.integration.db.dc.SapPartnerDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.SapCustomerDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.SapVendorDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserCountryDC;
-import com.bayer.bhc.doc41webui.integration.db.dc.UserPartnerDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.UserCustomerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPlantDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.UserVendorDC;
 import com.bayer.bhc.doc41webui.service.mapping.UserMapper;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.SendMail;
@@ -200,10 +203,16 @@ public class UserManagementRepository extends AbstractRepository {
                 			addUserToProfileInDB(userDC, roleName, pUser.getLocale());
                 		}
                 	}
-                	List<SapPartner> partners = pUser.getPartners();
-                	if (partners != null) {
-                		for (SapPartner partner : partners) {                			
-                			addPartnerToUserInDB(userDC, partner, pUser.getLocale());
+                	List<SapCustomer> customers = pUser.getCustomers();
+                	if (customers != null) {
+                		for (SapCustomer customer : customers) {                			
+                			addCustomerToUserInDB(userDC, customer, pUser.getLocale());
+                		}
+                	}
+                	List<SapVendor> vendors = pUser.getVendors();
+                	if (vendors != null) {
+                		for (SapVendor vendor : vendors) {                			
+                			addVendorToUserInDB(userDC, vendor, pUser.getLocale());
                 		}
                 	}
                 }
@@ -366,26 +375,49 @@ public class UserManagementRepository extends AbstractRepository {
 	        }
         	
         	if (updatePartner) {
-	            List<SapPartnerDC> partnersInDB = getPartnersFromDB(userDC.getObjectID());
-	            Set<String> partnersToDelete = new HashSet<String>();
-	            for (SapPartnerDC sapPartnerDC : partnersInDB) {
-	            	partnersToDelete.add(sapPartnerDC.getPartnerNumber());
+        		//Customers
+	            List<SapCustomerDC> customersInDB = getCustomersFromDB(userDC.getObjectID());
+	            Set<String> customersToDelete = new HashSet<String>();
+	            for (SapCustomerDC sapCustomerDC : customersInDB) {
+	            	customersToDelete.add(sapCustomerDC.getPartnerNumber());
 				}
-	            Set<SapPartner> partnersFromInput = new LinkedHashSet<SapPartner>(pUser.getPartners());
+	            Set<SapCustomer> customersFromInput = new LinkedHashSet<SapCustomer>(pUser.getCustomers());
 	            
-	            for (SapPartner partner : partnersFromInput) {
-					if(!partnersToDelete.remove(partner.getPartnerNumber())){
-						addPartnerToUserInDB(userDC, partner, pUser.getLocale());
+	            for (SapCustomer customer : customersFromInput) {
+					if(!customersToDelete.remove(customer.getNumber())){
+						addCustomerToUserInDB(userDC, customer, pUser.getLocale());
 					}
 				}
 	            
-	            for (String partnerToDelete : partnersToDelete) {
-					removePartnerFromUserInDB(userDC, partnerToDelete, pUser.getLocale());
+	            for (String customerToDelete : customersToDelete) {
+					removeCustomerFromUserInDB(userDC, customerToDelete, pUser.getLocale());
+				}
+
+	            //Vendors
+	            List<SapVendorDC> vendorsInDB = getVendorsFromDB(userDC.getObjectID());
+	            Set<String> vendorsToDelete = new HashSet<String>();
+	            for (SapVendorDC sapVendorDC : vendorsInDB) {
+	            	vendorsToDelete.add(sapVendorDC.getPartnerNumber());
+				}
+	            Set<SapVendor> vendorsFromInput = new LinkedHashSet<SapVendor>(pUser.getVendors());
+	            
+	            for (SapVendor vendor : vendorsFromInput) {
+					if(!vendorsToDelete.remove(vendor.getNumber())){
+						addVendorToUserInDB(userDC, vendor, pUser.getLocale());
+					}
+				}
+	            
+	            for (String vendorToDelete : vendorsToDelete) {
+					removeVendorFromUserInDB(userDC, vendorToDelete, pUser.getLocale());
 				}
 	        } else {
-	        	// refresh partners
-	        	List<SapPartnerDC> partnersInDB = getPartnersFromDB(userDC.getObjectID());
-	    		pUser.setPartners(copyDcToDomainPartners(partnersInDB) );		
+	        	// refresh customers
+	        	List<SapCustomerDC> customersInDB = getCustomersFromDB(userDC.getObjectID());
+	    		pUser.setCustomers(copyDcToDomainCustomers(customersInDB) );
+	    		
+	    		// refresh vendors
+	        	List<SapVendorDC> vendorsInDB = getVendorsFromDB(userDC.getObjectID());
+	    		pUser.setVendors(copyDcToDomainVendors(vendorsInDB) );
 	        }
         	
         	if (updateCountries) {
@@ -445,18 +477,31 @@ public class UserManagementRepository extends AbstractRepository {
             throw new Doc41RepositoryException(Doc41ErrorMessageKeys.USR_MGT_UPDATE_USER_FAILED, e);
         }
     }
-	private List<SapPartner> copyDcToDomainPartners(
-			List<SapPartnerDC> partnersInDB) {
-		List<SapPartner> newPartnerList = new ArrayList<SapPartner>();
-		for (SapPartnerDC sapPartnerDC : partnersInDB) {
-			SapPartner newPartner = new SapPartner();
-			newPartner.setPartnerNumber(sapPartnerDC.getPartnerNumber());
-			newPartner.setPartnerName1(sapPartnerDC.getName1());
-			newPartner.setPartnerName2(sapPartnerDC.getName2());
-			newPartner.setPartnerType(sapPartnerDC.getPartnerType());
-			newPartnerList.add(newPartner );
+	
+	private List<SapCustomer> copyDcToDomainCustomers(
+			List<SapCustomerDC> customersInDB) {
+		List<SapCustomer> newCustomerList = new ArrayList<SapCustomer>();
+		for (SapCustomerDC sapCustomerDC : customersInDB) {
+			SapCustomer newCustomer = new SapCustomer();
+			newCustomer.setNumber(sapCustomerDC.getPartnerNumber());
+			newCustomer.setName1(sapCustomerDC.getName1());
+			newCustomer.setName2(sapCustomerDC.getName2());
+			newCustomerList.add(newCustomer );
 		}
-		return newPartnerList;
+		return newCustomerList;
+	}
+	
+	private List<SapVendor> copyDcToDomainVendors(
+			List<SapVendorDC> vendorsInDB) {
+		List<SapVendor> newVendorList = new ArrayList<SapVendor>();
+		for (SapVendorDC sapVendorDC : vendorsInDB) {
+			SapVendor newVendor = new SapVendor();
+			newVendor.setNumber(sapVendorDC.getPartnerNumber());
+			newVendor.setName1(sapVendorDC.getName1());
+			newVendor.setName2(sapVendorDC.getName2());
+			newVendorList.add(newVendor );
+		}
+		return newVendorList;
 	}
 	
 	private List<String> copyDcToDomainCountries(
@@ -521,43 +566,83 @@ public class UserManagementRepository extends AbstractRepository {
         }
     }
     
-   //----- partners
+   //----- customers
     
-	private List<SapPartnerDC> getPartnersFromDB(Long objectID) throws Doc41RepositoryException {
+	private List<SapCustomerDC> getCustomersFromDB(Long objectID) throws Doc41RepositoryException {
 		try {
-			List<SapPartnerDC> partners = userManagementDAO.getPartnersByUser(objectID);
-			return partners;
+			List<SapCustomerDC> customers = userManagementDAO.getCustomersByUser(objectID);
+			return customers;
 		} catch (Doc41TechnicalException e) {
-			throw new Doc41RepositoryException("Error during getPartnersFromDB.", e);
+			throw new Doc41RepositoryException("Error during getCustomersFromDB.", e);
 		}
 	}
 	
-	private void addPartnerToUserInDB(UMUserNDC userDC, SapPartner partner,
+	private void addCustomerToUserInDB(UMUserNDC userDC, SapCustomer customer,
 			Locale locale) throws Doc41RepositoryException {
 		try{
-			SapPartnerDC sapPartner = userManagementDAO.getSapPartnerByNumber(partner.getPartnerNumber());
-			if(sapPartner==null){
-				throw new Doc41RepositoryException("partner "+partner.getPartnerNumber()+" not found", null);
+			SapCustomerDC sapCustomer = userManagementDAO.getSapCustomerByNumber(customer.getNumber());
+			if(sapCustomer==null){
+				throw new Doc41RepositoryException("customer "+customer.getNumber()+" not found", null);
 			}
 			User usr = UserInSession.get();
-            UserPartnerDC newPartner = userManagementDAO.createUserPartner(locale);
-			newPartner.setUserId(userDC.getObjectID());
-			newPartner.setPartnerId(sapPartner.getObjectID());
-			newPartner.setChangedBy(usr.getCwid());
-			newPartner.setCreatedBy(usr.getCwid());
-			userManagementDAO.saveUserPartner(newPartner);
+            UserCustomerDC newCustomer = userManagementDAO.createUserCustomer(locale);
+			newCustomer.setUserId(userDC.getObjectID());
+			newCustomer.setCustomerId(sapCustomer.getObjectID());
+			newCustomer.setChangedBy(usr.getCwid());
+			newCustomer.setCreatedBy(usr.getCwid());
+			userManagementDAO.saveUserCustomer(newCustomer);
 		}catch (Doc41TechnicalException e) {
-			throw new Doc41RepositoryException("Error during addPartnerToUserInDB.", e);
+			throw new Doc41RepositoryException("Error during addCustomerToUserInDB.", e);
 		}
 	}
 	
-	private void removePartnerFromUserInDB(UMUserNDC userDC,
-			String partnerToDelete, Locale locale) throws Doc41RepositoryException {
+	private void removeCustomerFromUserInDB(UMUserNDC userDC,
+			String customerToDelete, Locale locale) throws Doc41RepositoryException {
 		try{
-			UserPartnerDC partner = userManagementDAO.getUserPartner(userDC.getObjectID(),partnerToDelete);
-			userManagementDAO.deleteUserPartner(partner);
+			UserCustomerDC customer = userManagementDAO.getUserCustomer(userDC.getObjectID(),customerToDelete);
+			userManagementDAO.deleteUserCustomer(customer);
 		} catch (Doc41TechnicalException e) {
-			throw new Doc41RepositoryException("Error during removePartnerFromUserInDB.", e);
+			throw new Doc41RepositoryException("Error during removeCustomerFromUserInDB.", e);
+		}
+	}
+	
+	//----- vendors
+
+	private List<SapVendorDC> getVendorsFromDB(Long objectID) throws Doc41RepositoryException {
+		try {
+			List<SapVendorDC> vendors = userManagementDAO.getVendorsByUser(objectID);
+			return vendors;
+		} catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during getVendorsFromDB.", e);
+		}
+	}
+	
+	private void addVendorToUserInDB(UMUserNDC userDC, SapVendor vendor,
+			Locale locale) throws Doc41RepositoryException {
+		try{
+			SapVendorDC sapVendor = userManagementDAO.getSapVendorByNumber(vendor.getNumber());
+			if(sapVendor==null){
+				throw new Doc41RepositoryException("vendor "+vendor.getNumber()+" not found", null);
+			}
+			User usr = UserInSession.get();
+            UserVendorDC newVendor = userManagementDAO.createUserVendor(locale);
+			newVendor.setUserId(userDC.getObjectID());
+			newVendor.setVendorId(sapVendor.getObjectID());
+			newVendor.setChangedBy(usr.getCwid());
+			newVendor.setCreatedBy(usr.getCwid());
+			userManagementDAO.saveUserVendor(newVendor);
+		}catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during addVendorToUserInDB.", e);
+		}
+	}
+	
+	private void removeVendorFromUserInDB(UMUserNDC userDC,
+			String vendorToDelete, Locale locale) throws Doc41RepositoryException {
+		try{
+			UserVendorDC vendor = userManagementDAO.getUserVendor(userDC.getObjectID(),vendorToDelete);
+			userManagementDAO.deleteUserVendor(vendor);
+		} catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during removeVendorFromUserInDB.", e);
 		}
 	}
 	
@@ -651,8 +736,11 @@ public class UserManagementRepository extends AbstractRepository {
 	        }
 			domainUser.setRoles(roles);
 			
-			List<SapPartnerDC> partnersInDB = getPartnersFromDB(pUserDC.getObjectID());
-			domainUser.setPartners(copyDcToDomainPartners(partnersInDB));
+			List<SapCustomerDC> customersInDB = getCustomersFromDB(pUserDC.getObjectID());
+			domainUser.setCustomers(copyDcToDomainCustomers(customersInDB));
+			
+			List<SapVendorDC> vendorsInDB = getVendorsFromDB(pUserDC.getObjectID());
+			domainUser.setVendors(copyDcToDomainVendors(vendorsInDB));
 			
 			List<UserCountryDC> countriesInDB = getCountriesFromDB(pUserDC.getObjectID());
 			domainUser.setCountries(copyDcToDomainCountries(countriesInDB));
@@ -713,19 +801,35 @@ public class UserManagementRepository extends AbstractRepository {
 		return userDC;
 	}
 
-	public SapPartner loadSAPPartner(String partnerNumber) throws Doc41RepositoryException {
+	public SapCustomer loadSAPCustomer(String customerNumber) throws Doc41RepositoryException {
 		try {
-			Doc41Log.get().debug(this.getClass(), "System", "Entering UserManagementRepositoryImpl.loadSAPPartner(): " + partnerNumber);
-			SapPartnerDC partnerDC = userManagementDAO.getSapPartnerByNumber(partnerNumber);
-			if(partnerDC==null){return null;}
-			SapPartner domainPartner = null;
-			List<SapPartner> domainPartnerList = copyDcToDomainPartners(Collections.singletonList(partnerDC));
-			domainPartner=domainPartnerList.get(0);
+			Doc41Log.get().debug(this.getClass(), "System", "Entering UserManagementRepositoryImpl.loadSAPCustomer(): " + customerNumber);
+			SapCustomerDC customerDC = userManagementDAO.getSapCustomerByNumber(customerNumber);
+			if(customerDC==null){return null;}
+			SapCustomer domainCustomer = null;
+			List<SapCustomer> domainCustomerList = copyDcToDomainCustomers(Collections.singletonList(customerDC));
+			domainCustomer=domainCustomerList.get(0);
 
-			Doc41Log.get().debug(this.getClass(), "System", "Exiting UserManagementRepositoryImpl.loadSAPPartner(): " + partnerNumber);
-			return domainPartner;
+			Doc41Log.get().debug(this.getClass(), "System", "Exiting UserManagementRepositoryImpl.loadSAPCustomer(): " + customerNumber);
+			return domainCustomer;
 		} catch (Doc41TechnicalException e) {
-			throw new Doc41RepositoryException("Error during loadSAPPartner.", e);
+			throw new Doc41RepositoryException("Error during loadSAPCustomer.", e);
+		}
+	}
+	
+	public SapVendor loadSAPVendor(String vendorNumber) throws Doc41RepositoryException {
+		try {
+			Doc41Log.get().debug(this.getClass(), "System", "Entering UserManagementRepositoryImpl.loadSAPVendor(): " + vendorNumber);
+			SapVendorDC vendorDC = userManagementDAO.getSapVendorByNumber(vendorNumber);
+			if(vendorDC==null){return null;}
+			SapVendor domainVendor = null;
+			List<SapVendor> domainVendorList = copyDcToDomainVendors(Collections.singletonList(vendorDC));
+			domainVendor=domainVendorList.get(0);
+
+			Doc41Log.get().debug(this.getClass(), "System", "Exiting UserManagementRepositoryImpl.loadSAPVendor(): " + vendorNumber);
+			return domainVendor;
+		} catch (Doc41TechnicalException e) {
+			throw new Doc41RepositoryException("Error during loadSAPVendor.", e);
 		}
 	}
 }

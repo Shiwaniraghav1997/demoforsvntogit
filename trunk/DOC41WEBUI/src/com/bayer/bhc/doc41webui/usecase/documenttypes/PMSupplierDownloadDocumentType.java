@@ -17,12 +17,17 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 	public static final String VIEW_ATTRIB_PO_NUMBER = "poNumber";
 
 	@Override
-	public String getPartnerNumberType() {
-		return Doc41Constants.PARTNER_TYPE_VENDOR_MASTER; //VENDOR;
+	public boolean hasCustomerNumber() {
+		return false;
+	}
+	
+	@Override
+	public boolean hasVendorNumber() {
+		return true;
 	}
 
 	@Override
-	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String partnerNumber,
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber,
 			List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 
 		String matNumber = null;
@@ -37,7 +42,7 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 		}
 		
 		if(!errors.hasErrors()){
-			String deliveryCheck = documentUC.checkPOAndMaterialForVendor(partnerNumber, poNumber, matNumber);
+			String deliveryCheck = documentUC.checkPOAndMaterialForVendor(vendorNumber, poNumber, matNumber);
 			if(deliveryCheck != null){
 				errors.reject(""+deliveryCheck);
 			}

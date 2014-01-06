@@ -5,7 +5,8 @@ import java.util.Set;
 
 public interface DocumentType {
 
-	public String getPartnerNumberType();
+	public boolean hasCustomerNumber();
+	public boolean hasVendorNumber();
 	public String getTypeConst();
 	public String getSapTypeId();
 	public int getObjectIdFillLength();

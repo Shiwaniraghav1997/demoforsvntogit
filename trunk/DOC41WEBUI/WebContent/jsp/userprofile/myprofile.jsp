@@ -142,7 +142,7 @@ title="My Profile">
 	<c:if test="${user.type eq 'external'}">
 	
 	<div class="portlet-section-body">
-		<div class="section-separator"><doc41:translate label="TitelPartners" /></div>
+		<div class="section-separator"><doc41:translate label="TitleCustomers" /></div>
 		<table cellpadding="4" cellspacing="0" class="nohover">
 			<thead class="portlet-table-header">
 			</thead>
@@ -150,22 +150,53 @@ title="My Profile">
 				
 				<tr>
 					
-					<th style="width: 15%"><doc41:translate label="PartnerNumbers"/></th>
+					<th style="width: 15%"><doc41:translate label="CustomerNumbers"/></th>
 					<td style="width: 85%">
 					
-						<table id="partnerlist">
+						<table id="customerlist">
+							<colgroup>
+								<col width="20%"/>
+								<col width="40%"/>
+								<col width="40%"/>
+							</colgroup>
+							<c:forEach items="${user.customers}" var="customer" varStatus="customerStatus">
+								<tr>
+									<td><c:out value="${customer.number}"/></td>
+									<td><c:out value="${customer.name1}"/></td>
+									<td><c:out value="${customer.name2}"/></td>
+								</tr>
+							</c:forEach>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="portlet-section-body">
+		<div class="section-separator"><doc41:translate label="TitleVendors" /></div>
+		<table cellpadding="4" cellspacing="0" class="nohover">
+			<thead class="portlet-table-header">
+			</thead>
+			<tbody class="portlet-table-body">		
+				
+				<tr>
+					
+					<th style="width: 15%"><doc41:translate label="VendorNumbers"/></th>
+					<td style="width: 85%">
+					
+						<table id="vendorlist">
 							<colgroup>
 								<col width="15%"/>
 								<col width="40%"/>
 								<col width="40%"/>
 								<col width="5%"/>
 							</colgroup>
-							<c:forEach items="${user.partners}" var="partner" varStatus="partnerStatus">
+							<c:forEach items="${user.vendors}" var="vendor" varStatus="vendorStatus">
 								<tr>
-									<td><c:out value="${partner.partnerNumber}"/></td>
-									<td><c:out value="${partner.partnerName1}"/></td>
-									<td><c:out value="${partner.partnerName2}"/></td>
-									<td><doc41:translate label="PartnerType${partner.partnerType}"/></td>
+									<td><c:out value="${vendor.number}"/></td>
+									<td><c:out value="${vendor.name1}"/></td>
+									<td><c:out value="${vendor.name2}"/></td>
 								</tr>
 							</c:forEach>
 						</table>

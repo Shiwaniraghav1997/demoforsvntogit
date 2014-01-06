@@ -12,10 +12,12 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionDC;
-import com.bayer.bhc.doc41webui.integration.db.dc.SapPartnerDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.SapCustomerDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.SapVendorDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserCountryDC;
-import com.bayer.bhc.doc41webui.integration.db.dc.UserPartnerDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.UserCustomerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPlantDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.UserVendorDC;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.dbx.DeleteException;
@@ -38,9 +40,12 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	
 	private static final String TEMPLATE_COMPONENT_NAME	= "userManagement";	
 	
-	private static final String GET_PARTNERS_BY_USER		= "getPartnersByUser";
-	private static final String GET_USER_PARTNER			= "getUserPartner";
-	private static final String GET_PARTNER_BY_NUMBER		= "getPartnerByNumber";
+	private static final String GET_CUSTOMERS_BY_USER		= "getCustomersByUser";
+	private static final String GET_USER_CUSTOMER			= "getUserCustomer";
+	private static final String GET_CUSTOMER_BY_NUMBER		= "getCustomerByNumber";
+	private static final String GET_VENDORS_BY_USER			= "getVendorsByUser";
+	private static final String GET_USER_VENDOR				= "getUserVendor";
+	private static final String GET_VENDOR_BY_NUMBER		= "getVendorByNumber";
 	private static final String GET_COUNTRIES_BY_USER		= "getCountriesByUser";
 	private static final String GET_USER_COUNTRY			= "getUserCountry";
 	private static final String GET_PLANTS_BY_USER			= "getPlantsByUser";
@@ -224,74 +229,145 @@ public class UserManagementDAO extends AbstractDAOImpl {
             throw new Doc41TechnicalException(this.getClass(), getClass().getSimpleName() + "." + pCallingMethod + ": Obligatory parameter '" + pParamName + "' not available, value is null!", null );
     }
 
-	//---- partners
+	//---- customers
 	
-	public List<SapPartnerDC> getPartnersByUser(Long objectID) throws Doc41TechnicalException {
+	public List<SapCustomerDC> getCustomersByUser(Long objectID) throws Doc41TechnicalException {
 		try {
 			String[] parameterNames			= { "USER_ID" };
 	        Object[] parameterValues		= { objectID };
-	        String templateName				= GET_PARTNERS_BY_USER;
-	        Class<SapPartnerDC> dcClass	= SapPartnerDC.class;        
+	        String templateName				= GET_CUSTOMERS_BY_USER;
+	        Class<SapCustomerDC> dcClass	= SapCustomerDC.class;        
 	        
-	        List<SapPartnerDC> dcs = find(parameterNames, parameterValues, templateName, dcClass);	                		
+	        List<SapCustomerDC> dcs = find(parameterNames, parameterValues, templateName, dcClass);	                		
 			
 			return dcs;
 		} catch (Exception e) {
-			throw new Doc41TechnicalException(this.getClass(), "getPartnersByUser", e);
+			throw new Doc41TechnicalException(this.getClass(), "getCustomersByUser", e);
 		}
 	}
 
-	public UserPartnerDC createUserPartner(Locale locale) throws Doc41TechnicalException {
+	public UserCustomerDC createUserCustomer(Locale locale) throws Doc41TechnicalException {
 		checkUser();
-		UserPartnerDC newPartner = new UserPartnerDC();
-		return newPartner;
+		UserCustomerDC newCustomer = new UserCustomerDC();
+		return newCustomer;
 	}
 
-	public void saveUserPartner(UserPartnerDC newPartner) throws Doc41TechnicalException {
+	public void saveUserCustomer(UserCustomerDC newCustomer) throws Doc41TechnicalException {
 		checkUser();
         try {
-            OTUserManagementN.get().storeDC(newPartner);
+            OTUserManagementN.get().storeDC(newCustomer);
         } catch (StoreException e) {
-            throw new Doc41TechnicalException(this.getClass(), "saveUserPartner", e);
+            throw new Doc41TechnicalException(this.getClass(), "saveUserCustomer", e);
         }
 	}
 
-	public void deleteUserPartner(UserPartnerDC partner) throws Doc41TechnicalException {
+	public void deleteUserCustomer(UserCustomerDC customer) throws Doc41TechnicalException {
 		checkUser();
         try {
-            OTUserManagementN.get().deleteDC(partner);
+            OTUserManagementN.get().deleteDC(customer);
         } catch (DeleteException e) {
-            throw new Doc41TechnicalException(this.getClass(), "deleteUserPartner", e);
+            throw new Doc41TechnicalException(this.getClass(), "deleteUserCustomer", e);
         }
 	}
 
-	public UserPartnerDC getUserPartner(Long userId, String partnerNumber) throws Doc41TechnicalException {
+	public UserCustomerDC getUserCustomer(Long userId, String customerNumber) throws Doc41TechnicalException {
 		try {
 			String[] parameterNames			= { "USER_ID", "PARTNER_NUMBER" };
-	        Object[] parameterValues		= { userId, partnerNumber };
-	        String templateName				= GET_USER_PARTNER;
-	        Class<UserPartnerDC> dcClass	= UserPartnerDC.class;        
+	        Object[] parameterValues		= { userId, customerNumber };
+	        String templateName				= GET_USER_CUSTOMER;
+	        Class<UserCustomerDC> dcClass	= UserCustomerDC.class;        
 	        
-	        UserPartnerDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
+	        UserCustomerDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
 			
 			return dc;
 		} catch (Exception e) {
-			throw new Doc41TechnicalException(this.getClass(), "getUserPartner", e);
+			throw new Doc41TechnicalException(this.getClass(), "getUserCustomer", e);
 		}
 	}
 	
-	public SapPartnerDC getSapPartnerByNumber(String partnerNumber) throws Doc41TechnicalException {
+	public SapCustomerDC getSapCustomerByNumber(String customerNumber) throws Doc41TechnicalException {
 		try {
 			String[] parameterNames			= { "PARTNER_NUMBER" };
-	        Object[] parameterValues		= { partnerNumber };
-	        String templateName				= GET_PARTNER_BY_NUMBER;
-	        Class<SapPartnerDC> dcClass		= SapPartnerDC.class;        
+	        Object[] parameterValues		= { customerNumber };
+	        String templateName				= GET_CUSTOMER_BY_NUMBER;
+	        Class<SapCustomerDC> dcClass		= SapCustomerDC.class;        
 	        
-	        SapPartnerDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
+	        SapCustomerDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
 			
 			return dc;
 		} catch (Exception e) {
-			throw new Doc41TechnicalException(this.getClass(), "getSapPartnerByNumber", e);
+			throw new Doc41TechnicalException(this.getClass(), "getSapCustomerByNumber", e);
+		}
+	}
+	
+	//---- vendors
+	
+	public List<SapVendorDC> getVendorsByUser(Long objectID) throws Doc41TechnicalException {
+		try {
+			String[] parameterNames			= { "USER_ID" };
+	        Object[] parameterValues		= { objectID };
+	        String templateName				= GET_VENDORS_BY_USER;
+	        Class<SapVendorDC> dcClass	= SapVendorDC.class;        
+	        
+	        List<SapVendorDC> dcs = find(parameterNames, parameterValues, templateName, dcClass);	                		
+			
+			return dcs;
+		} catch (Exception e) {
+			throw new Doc41TechnicalException(this.getClass(), "getVendorsByUser", e);
+		}
+	}
+
+	public UserVendorDC createUserVendor(Locale locale) throws Doc41TechnicalException {
+		checkUser();
+		UserVendorDC newVendor = new UserVendorDC();
+		return newVendor;
+	}
+
+	public void saveUserVendor(UserVendorDC newVendor) throws Doc41TechnicalException {
+		checkUser();
+        try {
+            OTUserManagementN.get().storeDC(newVendor);
+        } catch (StoreException e) {
+            throw new Doc41TechnicalException(this.getClass(), "saveUserVendor", e);
+        }
+	}
+
+	public void deleteUserVendor(UserVendorDC vendor) throws Doc41TechnicalException {
+		checkUser();
+        try {
+            OTUserManagementN.get().deleteDC(vendor);
+        } catch (DeleteException e) {
+            throw new Doc41TechnicalException(this.getClass(), "deleteUserVendor", e);
+        }
+	}
+
+	public UserVendorDC getUserVendor(Long userId, String vendorNumber) throws Doc41TechnicalException {
+		try {
+			String[] parameterNames			= { "USER_ID", "PARTNER_NUMBER" };
+	        Object[] parameterValues		= { userId, vendorNumber };
+	        String templateName				= GET_USER_VENDOR;
+	        Class<UserVendorDC> dcClass	= UserVendorDC.class;        
+	        
+	        UserVendorDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
+			
+			return dc;
+		} catch (Exception e) {
+			throw new Doc41TechnicalException(this.getClass(), "getUserVendor", e);
+		}
+	}
+	
+	public SapVendorDC getSapVendorByNumber(String vendorNumber) throws Doc41TechnicalException {
+		try {
+			String[] parameterNames			= { "PARTNER_NUMBER" };
+	        Object[] parameterValues		= { vendorNumber };
+	        String templateName				= GET_VENDOR_BY_NUMBER;
+	        Class<SapVendorDC> dcClass		= SapVendorDC.class;        
+	        
+	        SapVendorDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
+			
+			return dc;
+		} catch (Exception e) {
+			throw new Doc41TechnicalException(this.getClass(), "getSapVendorByNumber", e);
 		}
 	}
 	

@@ -56,8 +56,8 @@
 						</spring:hasBindErrors>
 
 						<tr>
-							<th><label for="partnerNumber"><doc41:translate label="PartnerNumber" /></label></th>
-							<td><form:select path="partnerNumber" items="${batchObjectForm.partners}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" itemLabel="partnerLabel" itemValue="partnerNumber"/><doc41:error path="partnerNumber" /></td>
+							<th><label for="vendorNumber"><doc41:translate label="VendorNumber" /></label></th>
+							<td><form:select path="vendorNumber" items="${batchObjectForm.vendors}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" itemLabel="label" itemValue="number"/><doc41:error path="vendorNumber" /></td>
 						</tr>
 						<tr>
 							<th><label for="plant"><doc41:translate label="Plant" /></label></th>

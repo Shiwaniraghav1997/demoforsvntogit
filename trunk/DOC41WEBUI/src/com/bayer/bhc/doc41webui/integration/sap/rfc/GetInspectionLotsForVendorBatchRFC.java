@@ -35,13 +35,13 @@ public class GetInspectionLotsForVendorBatchRFC extends AbstractDoc41RFC<Inspect
     	
         if (pFunction != null) {
             if (pInputParms != null) {
-            	String partnerNumber = (String) pInputParms.get(0);
+            	String vendorNumber = (String) pInputParms.get(0);
                 String batch = (String) pInputParms.get(1);
                 String plant = (String) pInputParms.get(2);
                 
                 JCoParameterList sapInput = pFunction.getImportParameterList();
 				
-				sapInput.setValue(IN_VENDOR,partnerNumber);
+				sapInput.setValue(IN_VENDOR,vendorNumber);
 				sapInput.setValue(IN_VENDOR_BATCH,batch);
 				sapInput.setValue(IN_PLANT,plant);
             } else {

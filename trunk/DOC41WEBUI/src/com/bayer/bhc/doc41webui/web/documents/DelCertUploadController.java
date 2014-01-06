@@ -28,21 +28,21 @@ public class DelCertUploadController extends UploadController {
 	public BatchObjectForm getInput(@RequestParam() String type) throws Doc41BusinessException{
 		BatchObjectForm form = new BatchObjectForm();
 		form.setType(type);
-		String partnerNumber = getLastPartnerNumberFromSession();
-		if(!StringTool.isTrimmedEmptyOrNull(partnerNumber)){
-			form.setPartnerNumber(partnerNumber);
+		String vendorNumber = getLastVendorNumberFromSession();
+		if(!StringTool.isTrimmedEmptyOrNull(vendorNumber)){
+			form.setVendorNumber(vendorNumber);
 		}
-		form.initPartnerNumber(documentUC.getPartnerNumberType(type));
+		form.initVendors();
 		return form;
 	}
 	
 	@RequestMapping(value="/documents/delcertuplist",method = RequestMethod.GET)
 	public ModelAndView getInspLots(String type,BatchObjectForm batchObjectForm,BindingResult result, ModelAndView mav) throws Doc41BusinessException{
-		batchObjectForm.initPartnerNumber(documentUC.getPartnerNumberType(type));
+		batchObjectForm.initVendors();
 		
-		String partnerNumber = batchObjectForm.getPartnerNumber();
-		if(StringTool.isTrimmedEmptyOrNull(partnerNumber)){
-			result.rejectValue("partnerNumber","VendorMissing");
+		String vendorNumber = batchObjectForm.getVendorNumber();
+		if(StringTool.isTrimmedEmptyOrNull(vendorNumber)){
+			result.rejectValue("vendorNumber","VendorMissing");
 		}
 		String plant = batchObjectForm.getPlant();
 		if(StringTool.isTrimmedEmptyOrNull(plant)){
@@ -65,7 +65,7 @@ public class DelCertUploadController extends UploadController {
 			return mav;
 		}
 		
-		List<QMBatchObject> bos = documentUC.getBatchObjectsForSupplier(partnerNumber,plant, material, batch, order);
+		List<QMBatchObject> bos = documentUC.getBatchObjectsForSupplier(vendorNumber,plant, material, batch, order);
 		if(bos.isEmpty()){
 			mav.addObject(batchObjectForm);
 			result.reject("NoBatchObjectFound");
@@ -77,11 +77,11 @@ public class DelCertUploadController extends UploadController {
 					+ "&materialText="+bo.getMaterialText()
 					+ "&plant="+bo.getPlant()
 					+ "&batch="+bo.getBatch()
-					+ "&supplier="+partnerNumber
+					+ "&supplier="+vendorNumber
 					);
 		} else {
 			mav.addObject("type",type);
-			mav.addObject("supplier",partnerNumber);
+			mav.addObject("supplier",vendorNumber);
 			mav.addObject(bos);
 			mav.setViewName("documents/delcertuplist");
 		}
@@ -94,7 +94,7 @@ public class DelCertUploadController extends UploadController {
 	public ModelMap getUpload(@RequestParam() String type,QMBatchObject batchObject,String supplier) throws Doc41BusinessException{
 		UploadForm uploadForm =  super.get(type);
 		uploadForm.setObjectId(batchObject.getObjectId());
-		uploadForm.setPartnerNumber(supplier);
+		uploadForm.setVendorNumber(supplier);
 		Map<String, String> avalues = new HashMap<String, String>();
 		avalues.put(AbstractDeliveryCertDocumentType.ATTRIB_PLANT,batchObject.getPlant());
 		avalues.put(AbstractDeliveryCertDocumentType.ATTRIB_BATCH,batchObject.getBatch());

@@ -19,7 +19,7 @@ import com.bayer.ecim.foundation.dbx.*;
 /**
  * <my description of the dc>
  */
-public class UserPartnerDC
+public class UserVendorDC
 	extends com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
 {
 
@@ -27,56 +27,56 @@ public class UserPartnerDC
 	Long cUserId;
 	public static final String FIELD_USERID = "UserId";
 
-	/** Maps DB-Column: partner_Id */
-	Long cPartnerId;
-	public static final String FIELD_PARTNERID = "PartnerId";
+	/** Maps DB-Column: vendor_Id */
+	Long cVendorId;
+	public static final String FIELD_VENDORID = "VendorId";
 
 	/** The master Class of this class. */
 	public final Class<DataCarrier> MASTER_CLASS = DataCarrier.class;
 
 	/** Set the database tablename (null if unspecified) for this DC. */
 	static {
-		setDBTablename( UserPartnerDC.class, "[DOC41WEB_MGR].D41_USER_PARTNER" );
+		setDBTablename( UserVendorDC.class, "[DOC41WEB_MGR].D41_USER_VENDOR" );
 	}
 
-	private static final long serialVersionUID = 20131217125425752L;
-	protected static final Class<java.math.BigDecimal> _BD_CLASS_USERPARTNERDC = java.math.BigDecimal.class;
+	private static final long serialVersionUID = 20140106120322997L;
+	protected static final Class<java.math.BigDecimal> _BD_CLASS_USERVENDORDC = java.math.BigDecimal.class;
 
 	@SuppressWarnings("unchecked")
 	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_USERID, FIELD_PARTNERID};
+	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_USERID, FIELD_VENDORID};
 	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
 
 	static {
 		try {
 			FIELD_META.put( FIELD_USERID,	new BasicDCFieldMeta( "IDS",	"ID",	Long.class,	null ) );
-			FIELD_META.put( FIELD_PARTNERID,	new BasicDCFieldMeta( "IDS",	"ID",	Long.class,	null ) );
+			FIELD_META.put( FIELD_VENDORID,	new BasicDCFieldMeta( "IDS",	"ID",	Long.class,	null ) );
 		} catch ( Exception e ) {
-			throw new InitException( "Failed to detect return types of the getter methods of UserPartnerDC!", null );
+			throw new InitException( "Failed to detect return types of the getter methods of UserVendorDC!", null );
 		}
 	}
 
 	/**
 	 * The Constructor.
-	 * (a)deprecated Use: static UserPartnerDC newInstanceOfUserPartnerDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * (a)deprecated Use: static UserVendorDC newInstanceOfUserVendorDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
-	public UserPartnerDC() {
+	public UserVendorDC() {
 		super( (Boolean)null );
 	}
 
 	/**
 	 * Temporary Constructor.
 	 */
-	protected UserPartnerDC( Boolean pVal ) {
+	protected UserVendorDC( Boolean pVal ) {
 		super( pVal );
 		pVal = null;
 	}
 
 	/**
 	 * The Copy Constructor.
-	 * (a)deprecated Use: static UserPartnerDC newInstanceOfUserPartnerDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * (a)deprecated Use: static UserVendorDC newInstanceOfUserVendorDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
-	public UserPartnerDC( BasicDataCarrier pDC )
+	public UserVendorDC( BasicDataCarrier pDC )
 		throws InitException
 	{
 		super( (Boolean)null );
@@ -88,8 +88,8 @@ public class UserPartnerDC
 	 * Create a new instance, supports replacement by subclass!!!
 	 * @throws InitException if the instanciation failes.
 	 */
-	public static UserPartnerDC newInstanceOfUserPartnerDC() throws InitException {
-		return (UserPartnerDC)newInstanceOf( UserPartnerDC.class );
+	public static UserVendorDC newInstanceOfUserVendorDC() throws InitException {
+		return (UserVendorDC)newInstanceOf( UserVendorDC.class );
 	}
 
 	/**
@@ -97,8 +97,8 @@ public class UserPartnerDC
 	 * @param pLoc java.util.Locale the Locale to localize the new instance to, automatically.
 	 * @throws InitException if the instanciation failes.
 	 */
-	public static UserPartnerDC newInstanceOfUserPartnerDC( Locale pLoc ) throws InitException {
-		return (UserPartnerDC)localizeDC( newInstanceOfUserPartnerDC(), pLoc );
+	public static UserVendorDC newInstanceOfUserVendorDC( Locale pLoc ) throws InitException {
+		return (UserVendorDC)localizeDC( newInstanceOfUserVendorDC(), pLoc );
 	}
 
 	/**
@@ -106,8 +106,8 @@ public class UserPartnerDC
 	 * @param pDC dc to copy the attributes from.
 	 * @throws InitException if the instanciation failes.
 	 */
-	public static UserPartnerDC newInstanceOfUserPartnerDC( BasicDataCarrier pDC ) throws InitException {
-		return (UserPartnerDC)newInstanceOfUserPartnerDC().copyFrom( pDC );
+	public static UserVendorDC newInstanceOfUserVendorDC( BasicDataCarrier pDC ) throws InitException {
+		return (UserVendorDC)newInstanceOfUserVendorDC().copyFrom( pDC );
 	}
 
 //	/**
@@ -120,7 +120,7 @@ public class UserPartnerDC
 //		return (((Object)this) instanceof com.bayer.ecim.foundation.dbx.DataCarrier) ? (com.bayer.ecim.foundation.dbx.DataCarrier)(Object)this : null;
 //	}
 	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
-	public static final int CHECK_USERPARTNERDC = com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.CHECK_USERCHANGEABLEDATACARRIER;
+	public static final int CHECK_USERVENDORDC = com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.CHECK_USERCHANGEABLEDATACARRIER;
 
 	/**
 	 * Copy the parameter DC pOther into this.
@@ -129,7 +129,7 @@ public class UserPartnerDC
 
 	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
 		super.copyFrom(pOther);
-		if (UserPartnerDC.class.isAssignableFrom(pOther.getClass())) {
+		if (UserVendorDC.class.isAssignableFrom(pOther.getClass())) {
 			BasicDCColumnMetaData m = null;
 			for (int i = 0; i < LOCAL_FIELD_LIST.length; i++) {
 				m = pOther.getBasicDCColumnMetaData( LOCAL_FIELD_LIST[i] );
@@ -167,7 +167,7 @@ public class UserPartnerDC
 	public static BasicDCGeneratorMeta localGetCVSMeta() {
 		return new BasicDCGeneratorMeta(
 			"com.bayer.bhc.doc41webui.integration.db.dc",
-			"UserPartnerDC",
+			"UserVendorDC",
 			"com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier",
 			"Date: 2012/10/05 12:22:39 ",
 			"Revision: 1.82 ",
@@ -185,7 +185,7 @@ public class UserPartnerDC
 	 * Get the CVS metadata of this DC and it's used generator.
 	 */
 	public BasicDCGeneratorMeta getCVSMeta() {
-		return UserPartnerDC.localGetCVSMeta();
+		return UserVendorDC.localGetCVSMeta();
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class UserPartnerDC
 	}
 
 	public BasicDCFieldMeta getFieldMeta( String pFieldName ) {
-		return UserPartnerDC.localGetFieldMeta( pFieldName );
+		return UserVendorDC.localGetFieldMeta( pFieldName );
 	}
 
 	/**
@@ -308,98 +308,98 @@ public class UserPartnerDC
 	// END Method getColumnMetaDataUserId
 
 
-	// START Method getPartnerId generated
+	// START Method getVendorId generated
 	/**
-	 * Maps DB-Column: partner_Id
+	 * Maps DB-Column: vendor_Id
 	 * Logical type: Id
 	 */
-	public Long getPartnerId() {
-		return cPartnerId;
+	public Long getVendorId() {
+		return cVendorId;
 	}
-	// END Method getPartnerId
+	// END Method getVendorId
 
 
-	// START Method setPartnerId generated
+	// START Method setVendorId generated
 	/**
-	 * Maps DB-Column: partner_Id
+	 * Maps DB-Column: vendor_Id
 	 * Logical type: Id
 	 */
-	public void setPartnerId( Long pPartnerId ) {
-		cPartnerId = pPartnerId;
-		forgetOriginalValue( FIELD_PARTNERID );
-		touchField( FIELD_PARTNERID );
+	public void setVendorId( Long pVendorId ) {
+		cVendorId = pVendorId;
+		forgetOriginalValue( FIELD_VENDORID );
+		touchField( FIELD_VENDORID );
 	}
-	// END Method setPartnerId
+	// END Method setVendorId
 
 
-	// START Method getFormattedPartnerId generated
+	// START Method getFormattedVendorId generated
 	/**
-	 * Maps DB-Column: partner_Id
+	 * Maps DB-Column: vendor_Id
 	 * Logical type: Id
 	 */
-	public String getFormattedPartnerId() {
-		return hasInvalidValue( FIELD_PARTNERID ) ? getOriginalValue( FIELD_PARTNERID ) : getPool().formatId( "Id", "#", getPartnerId() );
+	public String getFormattedVendorId() {
+		return hasInvalidValue( FIELD_VENDORID ) ? getOriginalValue( FIELD_VENDORID ) : getPool().formatId( "Id", "#", getVendorId() );
 	}
-	// END Method getFormattedPartnerId
+	// END Method getFormattedVendorId
 
 
-	// START Method setFormattedPartnerId generated
+	// START Method setFormattedVendorId generated
 	/**
-	 * Maps DB-Column: partner_Id
+	 * Maps DB-Column: vendor_Id
 	 * Logical type: Id
 	 */
-	public void setFormattedPartnerId( String pPartnerId )
+	public void setFormattedVendorId( String pVendorId )
 		throws java.text.ParseException
 	{
-		setPartnerId( null );
-		memorizeOriginalValue( FIELD_PARTNERID, pPartnerId );
-		setPartnerId( getPool().parseId( "Id", "#", pPartnerId ) );
+		setVendorId( null );
+		memorizeOriginalValue( FIELD_VENDORID, pVendorId );
+		setVendorId( getPool().parseId( "Id", "#", pVendorId ) );
 	}
-	// END Method setFormattedPartnerId
+	// END Method setFormattedVendorId
 
 
-	// START Method getFormattedHTMLPartnerId generated
+	// START Method getFormattedHTMLVendorId generated
 	/**
-	 * Maps DB-Column: partner_Id
+	 * Maps DB-Column: vendor_Id
 	 * Logical type: Id
 	 */
-	public String getFormattedHTMLPartnerId() {
-		return StringTool.escapeHTML( getFormattedPartnerId() );
+	public String getFormattedHTMLVendorId() {
+		return StringTool.escapeHTML( getFormattedVendorId() );
 	}
-	// END Method getFormattedHTMLPartnerId
+	// END Method getFormattedHTMLVendorId
 
 
-	// START Method getToStringPartnerId generated
+	// START Method getToStringVendorId generated
 	/**
-	 * Maps DB-Column: partner_Id
+	 * Maps DB-Column: vendor_Id
 	 * Logical type: Id
 	 */
-	public String getPartnerIdToString() {
-		return StringTool.nullToEmpty(getPartnerId());
+	public String getVendorIdToString() {
+		return StringTool.nullToEmpty(getVendorId());
 	}
-	// END Method getToStringPartnerId
+	// END Method getToStringVendorId
 
 
-	// START Method setFromStringPartnerId generated
+	// START Method setFromStringVendorId generated
 	/**
-	 * Maps DB-Column: partner_Id
+	 * Maps DB-Column: vendor_Id
 	 * Logical type: Id
 	 */
-	public void setPartnerIdFromString( String pPartnerId ) {
-		setPartnerId( NumberTool.parseLong( pPartnerId, null ) );
+	public void setVendorIdFromString( String pVendorId ) {
+		setVendorId( NumberTool.parseLong( pVendorId, null ) );
 	}
-	// END Method setFromStringPartnerId
+	// END Method setFromStringVendorId
 
 
-	// START Method getColumnMetaDataPartnerId generated
+	// START Method getColumnMetaDataVendorId generated
 	/**
-	 * Maps DB-Column: partner_Id
+	 * Maps DB-Column: vendor_Id
 	 * Logical type: Id
 	 */
-	public BasicDCColumnMetaData getColumnMetaDataForPartnerId() {
-		return getBasicDCColumnMetaData( FIELD_PARTNERID );
+	public BasicDCColumnMetaData getColumnMetaDataForVendorId() {
+		return getBasicDCColumnMetaData( FIELD_VENDORID );
 	}
-	// END Method getColumnMetaDataPartnerId
+	// END Method getColumnMetaDataVendorId
 
 
 	// START Protected ( insert your personal code here ) -- do not modify this line!!

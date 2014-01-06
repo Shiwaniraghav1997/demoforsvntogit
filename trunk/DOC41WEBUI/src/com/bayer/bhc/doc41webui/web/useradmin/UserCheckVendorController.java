@@ -13,32 +13,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.domain.SapPartner;
+import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.usecase.UserManagementUC;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 @Controller
-public class UserCheckPartnerController extends AbstractDoc41Controller {
+public class UserCheckVendorController extends AbstractDoc41Controller {
 	@Autowired
 	private UserManagementUC userManagementUC;
 
-	@RequestMapping(value="/useradmin/checkpartner", method=RequestMethod.GET,produces="application/json") 
+	@RequestMapping(value="/useradmin/checkvendor", method=RequestMethod.GET,produces="application/json") 
     @ResponseBody
-    public Map<String, Object> checkPartner(@RequestParam String partnerNumber) {
+    public Map<String, Object> checkVendor(@RequestParam String vendorNumber) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
-			SapPartner partner = userManagementUC.checkPartner(partnerNumber);
+			SapVendor vendor = userManagementUC.checkVendor(vendorNumber);
 			
-			if(partner==null){
+			if(vendor==null){
 				map.put("successful", false);
 			} else {
 				map.put("successful", true);
-				map.put("partnerNumber", partner.getPartnerNumber());
-				map.put("partnerName1", StringTool.nullToEmpty(partner.getPartnerName1()));
-				map.put("partnerName2", StringTool.nullToEmpty(partner.getPartnerName2()));
-				map.put("partnerType", partner.getPartnerType());
+				map.put("number", vendor.getNumber());
+				map.put("name1", StringTool.nullToEmpty(vendor.getName1()));
+				map.put("name2", StringTool.nullToEmpty(vendor.getName2()));
 			}
 		} catch (Doc41BusinessException e) {
 			Doc41Log.get().error(getClass(), UserInSession.getCwid(), e);

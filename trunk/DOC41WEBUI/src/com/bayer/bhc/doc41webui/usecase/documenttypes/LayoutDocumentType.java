@@ -18,8 +18,13 @@ public class LayoutDocumentType implements DownloadDocumentType,
 	private static final String SAP_OBJECT = "MARA";
 
 	@Override
-	public String getPartnerNumberType() {
-		return Doc41Constants.PARTNER_TYPE_VENDOR_MASTER;//VENDOR;
+	public boolean hasCustomerNumber() {
+		return false;
+	}
+	
+	@Override
+	public boolean hasVendorNumber() {
+		return true;
 	}
 
 	@Override
@@ -39,11 +44,11 @@ public class LayoutDocumentType implements DownloadDocumentType,
 
 	@Override
 	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
-			String partnerNumber,
+			String customerNumber, String vendorNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
 			throws Doc41BusinessException {
 		Map<String, String> additionalAttributes = new HashMap<String, String>();
-		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, partnerNumber);
+		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
 		
 		// no RFC check needed
 
@@ -58,20 +63,20 @@ public class LayoutDocumentType implements DownloadDocumentType,
 
 	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-			String partnerNumber, List<String> objectIds,
+			String customerNumber, String vendorNumber, List<String> objectIds,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
 		if(objectIds.size()==0){
 			errors.rejectValue("objectId","MatNoMissing");
 		}
 		
-		String deliveryCheck = documentUC.checkArtworkLayoutForVendor(partnerNumber,getSapTypeId());
+		String deliveryCheck = documentUC.checkArtworkLayoutForVendor(vendorNumber,getSapTypeId());
 		if(deliveryCheck != null){
 			errors.reject(""+deliveryCheck);
 		}
 		
 		Map<String, String> additionalAttributes = new HashMap<String, String>();
-		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, partnerNumber);
+		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
 		
 		return new CheckForDownloadResult(additionalAttributes);
 	}

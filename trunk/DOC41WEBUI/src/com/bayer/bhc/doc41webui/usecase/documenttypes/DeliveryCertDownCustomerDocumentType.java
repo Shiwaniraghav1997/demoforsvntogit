@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.validation.Errors;
 
-import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.domain.QMBatchObject;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
@@ -16,8 +15,13 @@ public class DeliveryCertDownCustomerDocumentType extends
 		AbstractDeliveryCertDocumentType implements DownloadDocumentType {
 	
 	@Override
-	public String getPartnerNumberType() {
-		return Doc41Constants.PARTNER_TYPE_CUSTOMER_MASTER;//CUSTOMER
+	public boolean hasCustomerNumber() {
+		return true;
+	}
+	
+	@Override
+	public boolean hasVendorNumber() {
+		return false;
 	}
 	
 	@Override
@@ -32,7 +36,7 @@ public class DeliveryCertDownCustomerDocumentType extends
 	
 	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-			String partnerNumber, List<String> objectIds,
+			String customerNumber, String vendorNumber, List<String> objectIds,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
 		String countryCode = attributeValues.get(ATTRIB_COUNTRY);
@@ -53,7 +57,7 @@ public class DeliveryCertDownCustomerDocumentType extends
 		}
 		
 		if(!errors.hasErrors()){
-			List<QMBatchObject> bos = documentUC.getBatchObjectsForCustomer(partnerNumber, delivery, material, batch, countryCode);
+			List<QMBatchObject> bos = documentUC.getBatchObjectsForCustomer(customerNumber, delivery, material, batch, countryCode);
 
 			for (QMBatchObject qmBatchObject : bos) {
 				String objectId = qmBatchObject.getObjectId();
