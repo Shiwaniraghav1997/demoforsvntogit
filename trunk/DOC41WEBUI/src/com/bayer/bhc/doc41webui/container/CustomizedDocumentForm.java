@@ -159,6 +159,13 @@ public abstract class CustomizedDocumentForm {
 			attributePredefValues.put(key,predefValues);
 			attributeMandatory.put(key, attribute.getMandatory());
 		}
+		if(oldAttributeValuesMap!=null){
+			for (String oldAttrKey : oldAttributeValuesMap.keySet()) {
+				if(!attributeValues.containsKey(oldAttrKey)){
+					throw new IllegalArgumentException("attribute "+oldAttrKey+" no longer in customizing");
+				}
+			}
+		}
 	}
 
 	
