@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.SapCustomer;
@@ -159,12 +160,19 @@ public abstract class CustomizedDocumentForm {
 			attributePredefValues.put(key,predefValues);
 			attributeMandatory.put(key, attribute.getMandatory());
 		}
+		StringBuilder missingAttrKeysInCustomizing = new StringBuilder();
 		if(oldAttributeValuesMap!=null){
 			for (String oldAttrKey : oldAttributeValuesMap.keySet()) {
 				if(!attributeValues.containsKey(oldAttrKey)){
-					throw new IllegalArgumentException("attribute "+oldAttrKey+" no longer in customizing");
+					if(missingAttrKeysInCustomizing.length()>0){
+						missingAttrKeysInCustomizing.append(", ");
+					}
+					missingAttrKeysInCustomizing.append(oldAttrKey);
 				}
 			}
+		}
+		if(missingAttrKeysInCustomizing.length()>0){
+			Doc41Log.get().error(getClass(), UserInSession.getCwid(), "CustomizingMissmatch: attributes "+missingAttrKeysInCustomizing+" no longer in customizing");
 		}
 	}
 
