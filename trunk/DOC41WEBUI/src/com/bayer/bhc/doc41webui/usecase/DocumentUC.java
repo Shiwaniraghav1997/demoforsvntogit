@@ -249,6 +249,7 @@ public class DocumentUC {
 				attributeValues.put(metadata.getFileNameAttibKey(), fileName);
 			}
 			//TODO do something with vkOrg
+			checkAttribsWithCustomizing(attributeValues,metadata.getAttributes(false));
 			String docClass;
 			Map<String, String> kgsAttributeValues;
 			if(docDef.isDvs()){
@@ -361,6 +362,8 @@ public class DocumentUC {
 					throws Doc41BusinessException {
 		try{
 			List<Attribute> attributeDefinitions = getAttributeDefinitions(type,false);
+			checkAttribsWithCustomizing(attributeValues,attributeDefinitions);
+			
 			Map<Integer, String> seqToKey = getSeqToKeyFromDefinitions(attributeDefinitions);
 			DocMetadata metadata = getMetadata(type);
 //			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
@@ -636,6 +639,30 @@ public class DocumentUC {
 			Doc41Log.get().error(getClass(), UserInSession.getCwid(), 
 					"Exception in sendUploadNotification("+notificationEMail+", "+typeName+", "+fileName+", "+guid+")");
 			Doc41Log.get().error(getClass(), UserInSession.getCwid(), e);
+		}
+		
+	}
+	
+	public void checkAttribsWithCustomizing(Map<String, String> attributeValues,
+			List<Attribute> attributeDefinitions) {
+		Set<String> definedAttribKeys = new HashSet<String>();
+		for (Attribute attribute : attributeDefinitions) {
+			definedAttribKeys.add(attribute.getName());
+		}
+		
+		StringBuilder missingAttrKeysInCustomizing = new StringBuilder();
+		if(attributeValues!=null){
+			for (String attrKey : attributeValues.keySet()) {
+				if(!definedAttribKeys.contains(attrKey)){
+					if(missingAttrKeysInCustomizing.length()>0){
+						missingAttrKeysInCustomizing.append(", ");
+					}
+					missingAttrKeysInCustomizing.append(attrKey);
+				}
+			}
+		}
+		if(missingAttrKeysInCustomizing.length()>0){
+			Doc41Log.get().error(getClass(), UserInSession.getCwid(), "CustomizingMissmatch: attributes "+missingAttrKeysInCustomizing+" no longer in customizing");
 		}
 		
 	}
