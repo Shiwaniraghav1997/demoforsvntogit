@@ -139,8 +139,6 @@ title="My Profile">
 		</table>
 	</div>
 	
-	<c:if test="${user.type eq 'external'}">
-	
 	<c:if test="${!empty user.customers }">
 	<div class="portlet-section-body">
 		<div class="section-separator"><doc41:translate label="TitleCustomers" /></div>
@@ -274,6 +272,5 @@ title="My Profile">
 	</div>
 	</c:if>
 	
-	</c:if>
 </form:form>
 </doc41:layout>
