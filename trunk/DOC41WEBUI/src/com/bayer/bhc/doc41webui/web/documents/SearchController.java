@@ -72,21 +72,27 @@ public class SearchController extends AbstractDoc41Controller {
 				
 				if(!result.hasErrors()){
 					String singleObjectId = searchForm.getObjectId();
-					List<String> objectIds = new ArrayList<String>();
 					if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
 						int objectIdFillLength = documentUC.getDocumentFillLength(type);
 						if(singleObjectId.length()<objectIdFillLength){
 							singleObjectId = StringTool.minLString(singleObjectId, objectIdFillLength, '0');
 							searchForm.setObjectId(singleObjectId);
 						}
-						objectIds.add(singleObjectId);
 					}
 					Map<String, String> attributeValues = searchForm.getAttributeValues();
-					CheckForDownloadResult checkResult = documentUC.checkForDownload(result, type, searchFormCustomerNumber,searchFormVendorNumber, objectIds, attributeValues, searchForm.getViewAttributes());
+					CheckForDownloadResult checkResult = documentUC.checkForDownload(result, type, searchFormCustomerNumber,searchFormVendorNumber, singleObjectId, attributeValues, searchForm.getViewAttributes());
 					Map<String, String> allAttributeValues = new HashMap<String, String>(attributeValues);
 					Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
 					if(additionalAttributes!=null){
 						allAttributeValues.putAll(additionalAttributes);
+					}
+					List<String> objectIds = new ArrayList<String>();
+					if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
+						objectIds.add(singleObjectId);
+					}
+					List<String> additionalObjectIds = checkResult.getAdditionalObjectIds();
+					if(additionalObjectIds!=null && !additionalObjectIds.isEmpty()){
+						objectIds.addAll(additionalObjectIds);
 					}
 					if(!result.hasErrors()){
 						List<HitListEntry> documents = documentUC.searchDocuments(type, 

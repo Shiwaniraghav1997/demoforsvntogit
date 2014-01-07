@@ -452,8 +452,8 @@ public class DocumentUC {
 		return checkResult;
 	}
 	
-	public CheckForDownloadResult checkForDownload(Errors errors, String type, String customerNumber, String vendorNumber, List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException{
-		return getDocTypeForDownload(type).checkForDownload(errors, this, customerNumber, vendorNumber, objectIds, attributeValues,viewAttributes);
+	public CheckForDownloadResult checkForDownload(Errors errors, String type, String customerNumber, String vendorNumber, String objectId, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException{
+		return getDocTypeForDownload(type).checkForDownload(errors, this, customerNumber, vendorNumber, objectId, attributeValues,viewAttributes);
 	}
 	
 	public CheckForDownloadResult checkForDirectDownload(String type, String objectId) throws Doc41BusinessException{

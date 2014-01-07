@@ -2,7 +2,6 @@ package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,6 +10,7 @@ import org.springframework.validation.Errors;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 public class LayoutDocumentType implements DownloadDocumentType,
 		UploadDocumentType {
@@ -63,10 +63,10 @@ public class LayoutDocumentType implements DownloadDocumentType,
 
 	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-			String customerNumber, String vendorNumber, List<String> objectIds,
+			String customerNumber, String vendorNumber, String objectId,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
-		if(objectIds.size()==0){
+		if(StringTool.isTrimmedEmptyOrNull(objectId)){
 			errors.rejectValue("objectId","MatNoMissing");
 		}
 		
@@ -78,7 +78,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 		Map<String, String> additionalAttributes = new HashMap<String, String>();
 		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
 		
-		return new CheckForDownloadResult(additionalAttributes);
+		return new CheckForDownloadResult(additionalAttributes,null);
 	}
 	
 	@Override

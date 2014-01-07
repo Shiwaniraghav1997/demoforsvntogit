@@ -14,15 +14,7 @@
 				<th><label for="${keyCountry}"><doc41:translate label="Country" /></label></th>
 				<td>
 					<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${userCountrySIList}" cssClass="portlet-form-input-field portlet-mandatory" itemValue="value" itemLabel="label"/><doc41:error path="attributeValues['${keyCountry}']" />
-					
-					<%-- <select id="${keyCountry}" class="portlet-form-input-field"  name="attributeValues['${keyCountry}']">
-						<c:forEach items="${searchForm.attributePredefValues[keyCountry]}" var="predefValue" varStatus="pdstatus">
-							<c:choose>
-								<c:when test="${attributeValue.value ==  predefValue}"><option selected="selected">${predefValue}</option></c:when>
-								<c:otherwise><option>${predefValue}</option></c:otherwise>
-							</c:choose>		            	
-		         		</c:forEach>
-		         	</select> --%>
+
 				
 				</td>
 			</tr>
@@ -46,6 +38,27 @@
 						<doc41:error path="attributeValues['${keyBatch}']" />
 				</td>
 			</tr>
+			
+			<%-- TODO use if rfc should be used <tr class="portlet-table-alternate">
+				<th><label for="${keyMaterial}"><doc41:translate label="MaterialNumber" /></label></th>
+				<td>
+					<input id="${keyMaterial}"
+						class="portlet-form-input-field" maxlength="70"
+						name="viewAttributes['${keyMaterial}']"
+						value="${searchForm.viewAttributes[keyMaterial]}" />
+						<doc41:error path="viewAttributes['${keyMaterial}']" />
+				</td>
+			</tr>
+			<tr>
+				<th><label for="${keyBatch}"><doc41:translate label="Batch" /></label></th>
+				<td>
+					<input id="${keyBatch}"
+						class="portlet-form-input-field" maxlength="70"
+						name="viewAttributes['${keyBatch}']"
+						value="${searchForm.viewAttributes[keyBatch]}" />
+						<doc41:error path="viewAttributes['${keyBatch}']" />
+				</td>
+			</tr> --%>
 		</jsp:attribute>
 	</doc41:searchtemplate>
 

@@ -1,7 +1,6 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,13 +27,13 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 
 	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber,
-			List<String> objectIds, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
+			String objectId, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 
 		String matNumber = null;
-		if(objectIds.size()==0){
+		if(StringTool.isTrimmedEmptyOrNull(objectId)){
 			errors.rejectValue("objectId","MatNoMissing");
 		} else {
-			matNumber = objectIds.get(0);
+			matNumber = objectId;
 		}
 		String poNumber = viewAttributes.get(VIEW_ATTRIB_PO_NUMBER);
 		if(StringTool.isTrimmedEmptyOrNull(poNumber)){
@@ -47,7 +46,7 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 				errors.reject(""+deliveryCheck);
 			}
 		}
-		return new CheckForDownloadResult(null);
+		return new CheckForDownloadResult(null,null);
 
 	}
 

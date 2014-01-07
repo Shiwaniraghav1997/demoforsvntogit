@@ -6,6 +6,7 @@ import java.util.Set;
 
 public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 	
+	//TODO rename some to view attrib, if rfc should be used
 	public static final String ATTRIB_COUNTRY = "COUNTRY";
 	public static final String ATTRIB_MATERIAL = "MATERIAL";
 	public static final String ATTRIB_BATCH = "BATCH";

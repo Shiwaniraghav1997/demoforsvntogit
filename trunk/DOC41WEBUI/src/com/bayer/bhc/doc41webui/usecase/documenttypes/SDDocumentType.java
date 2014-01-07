@@ -1,7 +1,6 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -64,21 +63,19 @@ public abstract class SDDocumentType implements DocumentType {
 
 	//implements method from DownloadDocumentType
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-			String customerNumber, String vendorNumber, List<String> objectIds,
+			String customerNumber, String vendorNumber, String objectId,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 //		if(true)return;
 		
-		if(objectIds.size()==0){
+		if(StringTool.isTrimmedEmptyOrNull(objectId)){
 			errors.rejectValue("objectId","MandatoryField");
-		} else if(objectIds.size()>1){
-			errors.rejectValue("objectId","more than one objectId");
 		} else {
-			SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(vendorNumber, objectIds.get(0));
+			SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(vendorNumber, objectId);
 			if(!deliveryCheck.isOk()){
 				errors.rejectValue("objectId",""+deliveryCheck.getError());
 			} 
 		}
-		return new CheckForDownloadResult(null);
+		return new CheckForDownloadResult(null,null);
 	}
 	
 	public CheckForDownloadResult checkForDirectDownload(DocumentUC documentUC, String objectId)throws Doc41BusinessException{
@@ -89,7 +86,7 @@ public abstract class SDDocumentType implements DocumentType {
 		if(!deliveryCheck.isOk(true)){
 			throw new Doc41BusinessException(""+deliveryCheck.getError());
 		}
-		return new CheckForDownloadResult(null);
+		return new CheckForDownloadResult(null,null);
 	}
 	
 	@Override
