@@ -3,9 +3,11 @@ package com.bayer.bhc.doc41webui.container;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -138,6 +140,7 @@ public abstract class CustomizedDocumentForm {
 
 	
 	public void initAttributes(List<Attribute> attributeDefinitions,String languageCode) {
+		checkAttribsWithCustomizing(attributeDefinitions);
 		attributeLabels = new LinkedHashMap<String, String>();
 		Map<String, String> oldAttributeValuesMap = null;
 		if(attributeValues!=null){
@@ -160,24 +163,33 @@ public abstract class CustomizedDocumentForm {
 			attributePredefValues.put(key,predefValues);
 			attributeMandatory.put(key, attribute.getMandatory());
 		}
+	}
+
+	
+	
+	public void checkAttribsWithCustomizing(
+			List<Attribute> attributeDefinitions) {
+		Set<String> definedAttribKeys = new HashSet<String>();
+		for (Attribute attribute : attributeDefinitions) {
+			definedAttribKeys.add(attribute.getName());
+		}
+		
 		StringBuilder missingAttrKeysInCustomizing = new StringBuilder();
-		if(oldAttributeValuesMap!=null){
-			for (String oldAttrKey : oldAttributeValuesMap.keySet()) {
-				if(!attributeValues.containsKey(oldAttrKey)){
+		if(attributeValues!=null){
+			for (String attrKey : attributeValues.keySet()) {
+				if(!definedAttribKeys.contains(attrKey)){
 					if(missingAttrKeysInCustomizing.length()>0){
 						missingAttrKeysInCustomizing.append(", ");
 					}
-					missingAttrKeysInCustomizing.append(oldAttrKey);
+					missingAttrKeysInCustomizing.append(attrKey);
 				}
 			}
 		}
 		if(missingAttrKeysInCustomizing.length()>0){
 			Doc41Log.get().error(getClass(), UserInSession.getCwid(), "CustomizingMissmatch: attributes "+missingAttrKeysInCustomizing+" no longer in customizing");
 		}
+		
 	}
-
-	
-	
 	@Override
 	public String toString() {
 		return "CustomizedDocumentForm [type=" + type + ", objectId="

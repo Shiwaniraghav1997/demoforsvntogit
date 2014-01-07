@@ -69,6 +69,10 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		String type = uploadForm.getType();
 		uploadForm.initPartnerNumbers(documentUC.hasCustomerNumber(type),null,
 				documentUC.hasVendorNumber(type),null);
+		
+		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type,false);
+		uploadForm.checkAttribsWithCustomizing(attributeDefinitions);
+		
 		checkPartnerNumbers(result,type,uploadForm.getCustomerNumber(),uploadForm.getVendorNumber());
 		checkAndFillObjectId(result,type,uploadForm);
 		checkFileParameter(result,uploadForm.getFile(),uploadForm.getFileId(),uploadForm.getFileName());
