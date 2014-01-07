@@ -1,0 +1,68 @@
+# IMPORT Partner data from SAP
+#############################################################################
+# author:  Ingeborg Menge (KEI)
+# history: v1.1    18.12.2013  Initial version
+#          v1.2    ...         ...
+#          v1.3    ...         ...
+#############################################################################
+#
+##chainmanager.execute=2-
+#
+pathcsv=var/csv
+pathrep=var/report
+#
+#########################################
+########## Process 1: Map Data ##########
+#########################################
+#
+chainmanager.process-1.prefix=mapper
+mapper.chain.class=com.bayer.ecim.tools.CSVColumnMapper
+#
+mapper.inputfile[]=[pathrep]/SAP_Partner.csv
+mapper.logfile[]=[pathcsv]/SAP_Partner-mapper-log.csv
+mapper.outputfile[]=[pathcsv]/SAP_Partner-mapped.csv
+mapper.maxremoves=0
+#
+mapper.add-1.column=CREATEDBY
+#
+mapper.renaming-1.columnname=STRAS
+mapper.renaming-1.newcolumnname=STREET
+mapper.renaming-2.columnname=PLZ
+mapper.renaming-2.newcolumnname=POSTAL_CODE
+mapper.renaming-3.columnname=COUNTRY
+mapper.renaming-3.newcolumnname=COUNTRY_ISO_CODE
+mapper.renaming-4.columnname=DELETION_FLAG
+mapper.renaming-4.newcolumnname=IS_DELETED
+mapper.renaming-5.columnname=CHANGEDATE
+mapper.renaming-5.newcolumnname=SAP_CHANGED
+#
+##mapper.deleting-1.column=DIVISION
+#
+mapper.template-1.column=CREATEDBY
+mapper.template-1.template=_IMPP_
+mapper.template-2.column=DELETION_FLAG
+mapper.template-2.template=[DELETION_FLAG.default("0").switch("1","X")]
+mapper.template-3.column=CHANGEDATE
+mapper.template-3.template=[CHANGEDATE.clear("00000000").formatDate("yyyyMMdd","yyyy'-'MM'-'dd").default("<NULL>")]
+mapper.template-4.column=PARTNER_TYPE
+mapper.template-4.template=[PARTNER_TYPE.default("?")]
+#
+############################################################
+########## Process 2: Import CSV data to Database ##########
+############################################################
+#
+chainmanager.process-2.prefix=dbscr-imp
+dbscr-imp.chain.class=com.bayer.ecim.foundation.db.DBObjectSQLServerScript
+#
+# Scripts:
+dbscr-imp.script1=Import_Partner.sql
+#dbscr-imp.script2=...
+#
+# Script-Options:
+dbscr-imp.csv-file[]=[pathcsv]/SAP_Partner-mapped
+dbscr-imp.csvdelimiter=;
+#
+# include configuration:
+dbscr-imp.chain.include=inc/ORA-GBO-DOC41WEB-Connect.inc
+#
+###### End Of Chain ######
