@@ -6,6 +6,7 @@
 #               Host CHAIN_DOC41WEBHOST (same as for BOE2)
 # author:       Ingeborg Menge (KEI)
 # changed:      18.12.2013
+#               03.01.2014 KEI: Change log name
 # arguments:    $1: extension of the logfiles -> Chain-$1[-Run].log
 #               $2: SAP data file name 	i.e. BUS_CUST.txt
 #               $3: data name     			i.e. BUS_Customer
@@ -21,7 +22,7 @@ CHAINLOGID=${1}
 REPORTNAME=${2}
 REPORTLOCAL=${3}
 CHAIN1=${CHAIN}/${4}.chn
-LOG=${CHAIN_LOG}/${CHAINENV}.log
+LOG=${CHAIN_LOG}/${CHAINENV}-Transfer.log
 REMOTEDIR=${CHAIN_DOC41WEBDIR:+cd ${CHAIN_DOC41WEBDIR}}
 
 cd ${CHAIN_BIN}/${CHAIN_REPORT}

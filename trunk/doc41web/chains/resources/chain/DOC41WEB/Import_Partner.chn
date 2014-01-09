@@ -2,11 +2,11 @@
 #############################################################################
 # author:  Ingeborg Menge (KEI)
 # history: v1.1    18.12.2013  Initial version
-#          v1.2    ...         ...
+#          v1.2    06.01.2014  KEI: UTF-8; Partner -> Customer & Vendor
 #          v1.3    ...         ...
 #############################################################################
 #
-##chainmanager.execute=2-
+##chainmanager.execute=3-
 #
 pathcsv=var/csv
 pathrep=var/report
@@ -47,22 +47,59 @@ mapper.template-3.template=[CHANGEDATE.clear("00000000").formatDate("yyyyMMdd","
 mapper.template-4.column=PARTNER_TYPE
 mapper.template-4.template=[PARTNER_TYPE.default("?")]
 #
+##########################################################
+###### Process 2: Split out Customer K and Vendor L ######
+##########################################################
+
+chainmanager.process-2.prefix=splitter
+splitter.chain.class=com.bayer.ecim.tools.CSVSplitter
+
+splitter.inputfile[]=[pathcsv]/SAP_Partner-mapped.csv
+splitter.logfile[]=[pathcsv]/SAP_Partner-splitter-log.csv
+splitter.outputfiles[]=[pathcsv]/SAP_Partner-#-splitter.csv
+splitter.split.column=PARTNER_TYPE
+splitter.split.values=K|L
+splitter.maxremoves=100%
+#splitter.split.values.separator=|
+#
 ############################################################
-########## Process 2: Import CSV data to Database ##########
+########## Process 3: Import CSV data to Database ##########
 ############################################################
 #
-chainmanager.process-2.prefix=dbscr-imp
-dbscr-imp.chain.class=com.bayer.ecim.foundation.db.DBObjectSQLServerScript
+chainmanager.process-3.prefix=dbscr-imp-c
+dbscr-imp-c.chain.class=com.bayer.ecim.foundation.db.DBObjectSQLServerScript
 #
 # Scripts:
-dbscr-imp.script1=Import_Partner.sql
-#dbscr-imp.script2=...
+dbscr-imp-c.script1=Import_Partner.sql
+#dbscr-imp-c.script2=...
 #
 # Script-Options:
-dbscr-imp.csv-file[]=[pathcsv]/SAP_Partner-mapped
-dbscr-imp.csvdelimiter=;
+dbscr-imp-c.csv-file[]=[pathcsv]/SAP_Partner-K-splitter
+dbscr-imp-c.csvdelimiter=;
+dbscr-imp-c.encoding=UTF-8
+dbscr-imp-c.table-name=SAP_CUSTOMER
 #
 # include configuration:
-dbscr-imp.chain.include=inc/ORA-GBO-DOC41WEB-Connect.inc
+dbscr-imp-c.chain.include=inc/ORA-GBO-DOC41WEB-Connect.inc
+#
+############################################################
+########## Process 4: Import CSV data to Database ##########
+############################################################
+#
+chainmanager.process-4.prefix=dbscr-imp-v
+dbscr-imp-v.chain.class=com.bayer.ecim.foundation.db.DBObjectSQLServerScript
+#
+# Scripts:
+dbscr-imp-v.script1=Import_Partner.sql
+#dbscr-imp-v.script2=...
+#
+# Script-Options:
+dbscr-imp-v.csv-file[]=[pathcsv]/SAP_Partner-L-splitter
+dbscr-imp-v.csvdelimiter=;
+dbscr-imp-v.encoding=UTF-8
+dbscr-imp-v.table-name=SAP_VENDOR
+#
+# include configuration:
+dbscr-imp-v.chain.include=inc/ORA-GBO-DOC41WEB-Connect.inc
 #
 ###### End Of Chain ######

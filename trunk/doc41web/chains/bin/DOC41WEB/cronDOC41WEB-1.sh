@@ -5,6 +5,7 @@
 # task:      Import SAP Data
 # author:    Ingeborg Menge (KEI)
 # changed:   20.12.2013
+#            03.01.2014  KEI: SAP_PARTNER -> SAP_Partner
 # arguments: none
 ##################################################################
 
@@ -16,7 +17,7 @@ set -e
 set +e
 
 ### Import SAP_PARTNER
-${CHAIN_BIN_PRJ}/cronDOC41WEBSAP-DB.sh "DOC41WEB-1" "D41_PARTNER.txt" "SAP_PARTNER.csv" "Import_Partner"
+${CHAIN_BIN_PRJ}/cronDOC41WEBSAP-DB.sh "DOC41WEB-1" "D41_PARTNER.txt" "SAP_Partner.csv" "Import_Partner"
 
 ### Save Logs ###
 ./saveLogs.sh DOC41WEB-1
