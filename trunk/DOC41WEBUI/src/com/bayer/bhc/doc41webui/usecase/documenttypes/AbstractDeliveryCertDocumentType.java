@@ -58,7 +58,7 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 		if(StringTool.isTrimmedEmptyOrNull(subString)){
 			return StringTool.minLString("", fieldSize, '+');
 		} else {
-			return StringTool.normLRString(subString, fieldSize, '0');
+			return StringTool.minLString(subString, fieldSize, '0');
 		}
 	}
 
