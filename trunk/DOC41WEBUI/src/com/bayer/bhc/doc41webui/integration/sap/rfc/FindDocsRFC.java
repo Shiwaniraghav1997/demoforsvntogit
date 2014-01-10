@@ -112,7 +112,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 		for (String objectId : objectIds) {
 			table.appendRow();
 			table.setValue(IN_SIGN, "I");
-			table.setValue(IN_OPTION, "EQ");
+			table.setValue(IN_OPTION, "CP");
 			table.setValue(IN_LOW,objectId);
 		}
 	}

@@ -36,7 +36,7 @@
 						<doc41:error path="viewAttributes['${keyDeliveryNumber}']" />
 				</td>
 			</tr>
-			<tr class="portlet-table-alternate">
+			<%--TODO use for attributes <tr class="portlet-table-alternate">
 				<th><label for="${keyMaterial}"><doc41:translate label="MaterialNumber" /></label></th>
 				<td>
 					<input id="${keyMaterial}"
@@ -54,6 +54,29 @@
 						name="attributeValues['${keyBatch}']"
 						value="${searchForm.attributeValues[keyBatch]}" />
 						<doc41:error path="attributeValues['${keyBatch}']" />
+				</td>
+			</tr> --%>
+			
+			<%-- TODO use if rfc should be used --%>
+			<%-- TODO use for concatenated String --%>
+			<tr class="portlet-table-alternate">
+				<th><label for="${keyMaterial}"><doc41:translate label="MaterialNumber" /></label></th>
+				<td>
+					<input id="${keyMaterial}"
+						class="portlet-form-input-field portlet-big" maxlength="70"
+						name="viewAttributes['${keyMaterial}']"
+						value="${searchForm.viewAttributes[keyMaterial]}" />
+						<doc41:error path="viewAttributes['${keyMaterial}']" />
+				</td>
+			</tr>
+			<tr>
+				<th><label for="${keyBatch}"><doc41:translate label="Batch" /></label></th>
+				<td>
+					<input id="${keyBatch}"
+						class="portlet-form-input-field portlet-big" maxlength="70"
+						name="viewAttributes['${keyBatch}']"
+						value="${searchForm.viewAttributes[keyBatch]}" />
+						<doc41:error path="viewAttributes['${keyBatch}']" />
 				</td>
 			</tr>
 		</jsp:attribute>

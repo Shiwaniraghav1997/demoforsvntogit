@@ -1,6 +1,5 @@
 package com.bayer.bhc.doc41webui.web.documents;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.BatchObjectForm;
@@ -47,6 +47,9 @@ public class DelCertUploadController extends UploadController {
 		String plant = batchObjectForm.getPlant();
 		if(StringTool.isTrimmedEmptyOrNull(plant)){
 			result.rejectValue("plant","PlantMissing");
+		} else {
+			plant = StringTool.minLString(plant, Doc41Constants.FIELD_SIZE_PLANT, '0');
+			batchObjectForm.setPlant(plant);
 		}
 		
 		String material = batchObjectForm.getMaterial();
@@ -57,6 +60,15 @@ public class DelCertUploadController extends UploadController {
 			result.rejectValue("batch","MaterialBatchOrderMissing");
 			result.rejectValue("order","MaterialBatchOrderMissing");
 		}
+		if(!StringTool.isTrimmedEmptyOrNull(material)){
+			material = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
+			batchObjectForm.setMaterial(material);
+		}
+		if(!StringTool.isTrimmedEmptyOrNull(batch)){
+			batch = StringTool.minLString(batch, Doc41Constants.FIELD_SIZE_BATCH, '0');
+			batchObjectForm.setBatch(batch);
+		}
+		
 		
 		if(result.hasErrors()){
 			mav.addObject(batchObjectForm);
@@ -95,13 +107,13 @@ public class DelCertUploadController extends UploadController {
 		UploadForm uploadForm =  super.get(type);
 		uploadForm.setObjectId(batchObject.getObjectId());
 		uploadForm.setVendorNumber(supplier);
-		Map<String, String> avalues = new HashMap<String, String>();
-		avalues.put(AbstractDeliveryCertDocumentType.ATTRIB_PLANT,batchObject.getPlant());
-		avalues.put(AbstractDeliveryCertDocumentType.ATTRIB_BATCH,batchObject.getBatch());
-		avalues.put(AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL,batchObject.getMaterialNumber());
-		uploadForm.setAttributeValues(avalues);
+//		Map<String, String> avalues = new HashMap<String, String>();
+//		uploadForm.setAttributeValues(avalues);
 		
 		Map<String, String> viewAttributes = uploadForm.getViewAttributes();
+		viewAttributes.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_PLANT,batchObject.getPlant());
+		viewAttributes.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_BATCH,batchObject.getBatch());
+		viewAttributes.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL,batchObject.getMaterialNumber());
 		viewAttributes.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL_TEXT,batchObject.getMaterialText());
 		
 		ModelMap map = new ModelMap();
@@ -116,9 +128,9 @@ public class DelCertUploadController extends UploadController {
 		
 		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
 		
-		map.addAttribute("keyPlant",AbstractDeliveryCertDocumentType.ATTRIB_PLANT);
-		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
-		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
+		map.addAttribute("keyPlant",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_PLANT);
+		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_BATCH);
+		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL);
 		
 		map.addAttribute("keyMaterialText",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL_TEXT);
 		
