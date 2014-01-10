@@ -372,7 +372,7 @@ public class DocumentUC {
 			List<String> sapObjList = docDef.getSapObjList();
 			List<HitListEntry> allResults = new ArrayList<HitListEntry>();
 			for (String sapObj : sapObjList) {
-				List<HitListEntry> oneResult = bwRFCService.findDocs(d41id, sapObj, objectIds, attributeValues, maxResults, maxVersionOnly);
+				List<HitListEntry> oneResult = bwRFCService.findDocs(d41id, sapObj, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKey);
 				allResults.addAll(oneResult);
 			}
 			for (HitListEntry hitListEntry : allResults) {
