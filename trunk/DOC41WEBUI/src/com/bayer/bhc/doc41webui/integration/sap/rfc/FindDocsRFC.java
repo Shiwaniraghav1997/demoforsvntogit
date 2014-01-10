@@ -52,6 +52,8 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
                 Boolean maxVersionOnly = (Boolean) pInputParms.get(4);
                 @SuppressWarnings("unchecked")
 				Map<String, String> attribValues = (Map<String, String>) pInputParms.get(5);
+                @SuppressWarnings("unchecked")
+				Map<Integer, String> seqToKey = (Map<Integer, String>) pInputParms.get(6);
                 
                 JCoParameterList sapInput = pFunction.getImportParameterList();
 				
@@ -62,11 +64,16 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 				if(objectIds!=null && !objectIds.isEmpty()){
 					setParamObjectIDs(objectIds,sapObj,1,sapInput,tableParameterList);
 				}
-				int attribParamNumber=1;
-				for (String key : attribValues.keySet()) {
+				for(int seqno=1;seqno<=seqToKey.size();seqno++){
+					String key = seqToKey.get(seqno);
+					if(key==null){
+						throw new SAPException("seqno in attributes have to be consecutively numbered starting with 1",null);
+					}
 					String value = attribValues.get(key);
 					if(!StringTool.isTrimmedEmptyOrNull(value)){
-						setParamValue(key,value,sapObj,attribParamNumber++,sapInput,tableParameterList);
+						setParamValue(key,value,seqno,sapInput,tableParameterList);
+					} else {
+						setEmptyParam(key,seqno,sapInput,tableParameterList);
 					}
 				}
             } else {
@@ -80,9 +87,8 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
         Doc41Log.get().debug(FindDocsRFC.class, null, "prepareCall():EXIT");
 	}
 
-	private void setParamValue(String key, String value, String sapObj, int paramNumber,
+	private void setParamValue(String key, String value, int paramNumber,
 			JCoParameterList sapInput, JCoParameterList tableParameterList) {
-//		sapInput.setValue(IN_OBJ_TYPE+paramNumber, sapObj);
 		sapInput.setValue(IN_ATT_NAME+paramNumber, key);
 		
 		JCoTable table = tableParameterList.getTable(IT_VALUE_RANGE+paramNumber);
@@ -90,6 +96,11 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 		table.setValue(IN_SIGN, "I");
 		table.setValue(IN_OPTION, "EQ");
 		table.setValue(IN_LOW,value.toUpperCase());
+	}
+	
+	private void setEmptyParam(String key, int paramNumber,
+			JCoParameterList sapInput, JCoParameterList tableParameterList) {
+		sapInput.setValue(IN_ATT_NAME+paramNumber, key);
 	}
 
 	private void setParamObjectIDs(List<String> objectIds, String sapObj, int paramNumber,
