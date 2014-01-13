@@ -17,7 +17,8 @@
 	<script type="text/javascript">
 		tswidgets = [ 'zebra' ];
 		
-		tssorting = [[2,1]];
+		tssorting = [[1,1]];
+		/* tssorting = [[2,1]]; */
 		
 		function openDocument(key,type){
 			window.location ="download?type="+type+"&key="+key;
@@ -161,9 +162,9 @@
 					
 				</tr>
 			<colgroup>
+				<col width="25%" />
 				<col width="15%" />
-				<col width="20%" />
-				<col width="10%" />
+				<col width="5%" />
 				<%-- <col width="10%" />
 				<col width="15%" />
 				<col width="15%" />
@@ -180,7 +181,7 @@
 					varStatus="status">
 					<tr style="cursor: pointer;"
 						onclick="openDocument('${document.key}','${searchForm.type}')">
-						<td><c:out value="${document.objectId}" /></td>
+						<td><doc41:spaceToNbsp><c:out value="${document.objectId}" /></doc41:spaceToNbsp></td>
 						<%-- <td>
 							<doc41:formatDate date="${document.storageDate}" zone="${user.timeZone}"></doc41:formatDate>
 						</td> --%>
