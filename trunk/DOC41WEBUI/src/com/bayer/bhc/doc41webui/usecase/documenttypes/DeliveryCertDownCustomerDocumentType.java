@@ -83,7 +83,7 @@ public class DeliveryCertDownCustomerDocumentType extends
 		if(!errors.hasErrors()){
 			List<QMBatchObject> bos = documentUC.getBatchObjectsForCustomer(customerNumber, delivery, material, batch, countryCode);
 			if(bos.isEmpty()){
-				errors.reject("BatchObjectNotFound");
+				errors.reject("NoBatchObjectFound");
 			}
 
 			for (QMBatchObject qmBatchObject : bos) {
