@@ -74,10 +74,10 @@ public class DeliveryCertDownCustomerDocumentType extends
 			material = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
 			viewAttributes.put(VIEW_ATTRIB_MATERIAL, material);
 		}
-		if(!StringTool.isTrimmedEmptyOrNull(batch)){
-			batch = StringTool.minLString(batch, Doc41Constants.FIELD_SIZE_BATCH, '0');
-			viewAttributes.put(VIEW_ATTRIB_BATCH, batch);
-		}
+//		if(!StringTool.isTrimmedEmptyOrNull(batch)){
+//			batch = StringTool.minLString(batch, Doc41Constants.FIELD_SIZE_BATCH, '0');
+//			viewAttributes.put(VIEW_ATTRIB_BATCH, batch);
+//		}
 		
 		List<String> additionalObjectIds = new ArrayList<String>();
 		if(!errors.hasErrors()){

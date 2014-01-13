@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
+import com.bayer.bhc.doc41webui.domain.QMBatchObject;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 
@@ -51,14 +52,14 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 		String searchMaterial = getCPOptionalSubString(material,Doc41Constants.FIELD_SIZE_MATNR);
 		String searchBatch = getCPOptionalSubString(batch,Doc41Constants.FIELD_SIZE_BATCH);
 		String searchPlant = getCPOptionalSubString(plant,Doc41Constants.FIELD_SIZE_PLANT);
-		return searchMaterial+searchBatch+searchPlant;
+		return QMBatchObject.getObjectId(searchMaterial, searchBatch, searchPlant);
 	}
 
 	private String getCPOptionalSubString(String subString, int fieldSize) {
 		if(StringTool.isTrimmedEmptyOrNull(subString)){
 			return StringTool.minLString("", fieldSize, '+');
 		} else {
-			return StringTool.minLString(subString, fieldSize, '0');
+			return subString;
 		}
 	}
 

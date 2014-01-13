@@ -1,20 +1,17 @@
 package com.bayer.bhc.doc41webui.domain;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
+import com.bayer.ecim.foundation.basic.StringTool;
+
 public class QMBatchObject extends DomainObject {
 
 	private static final long serialVersionUID = 4981318741741554853L;
 
-	private String objectId;
 	private String materialNumber;
 	private String materialText;
 	private String plant;
 	private String batch;
-	public String getObjectId() {
-		return objectId;
-	}
-	public void setObjectId(String objectId) {
-		this.objectId = objectId;
-	}
+	
 	public String getMaterialNumber() {
 		return materialNumber;
 	}
@@ -41,10 +38,20 @@ public class QMBatchObject extends DomainObject {
 	}
 	@Override
 	public String toString() {
-		return "QMBatchObject [objectId=" + objectId + ", materialNumber="
+		return "QMBatchObject [materialNumber="
 				+ materialNumber + ", materialText=" + materialText
 				+ ", plant=" + plant + ", batch=" + batch + "]";
 	}
 	
+	public String getObjectId() {
+		return getObjectId(materialNumber, batch, plant);
+	}
 	
+	public static String getObjectId(String material, String batch, 
+			String plant) {
+		String paddedMaterial = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
+		String paddedBatch = StringTool.minRString(batch, Doc41Constants.FIELD_SIZE_BATCH, ' ');
+		String paddedPlant = StringTool.minRString(plant, Doc41Constants.FIELD_SIZE_PLANT, ' ');
+		return paddedMaterial+paddedBatch+paddedPlant;
+	}
 }

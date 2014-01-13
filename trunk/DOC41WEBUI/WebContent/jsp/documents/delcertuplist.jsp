@@ -10,8 +10,8 @@
 	<script type="text/javascript">
 		tswidgets = [ 'zebra' ];
 		
-		function chooseBatchObject(type,objectId,materialNumber,materialText,plant,batch,supplier){
-			window.location ="delcertupload?type="+type+"&objectId="+objectId
+		function chooseBatchObject(type,materialNumber,materialText,plant,batch,supplier){
+			window.location ="delcertupload?type="+type
 			+ "&materialNumber="+materialNumber
 			+ "&materialText="+materialText
 			+ "&plant="+plant
@@ -59,14 +59,13 @@
 					varStatus="status">
 					<tr style="cursor: pointer;"
 						onclick="chooseBatchObject('${type}'
-						,'${bo.objectId}'
 						,'${bo.materialNumber}'
 						,'${bo.materialText}'
 						,'${bo.plant}'
 						,'${bo.batch}'
 						,'${supplier}')">
 						
-						<td><c:out value="${bo.objectId}" /></td>
+						<td><doc41:spaceToNbsp><c:out value="${bo.objectId}" /></doc41:spaceToNbsp></td>
 						<td><c:out value="${bo.materialNumber}" /></td>
 						<td><c:out value="${bo.materialText}" /></td>
 						<td><c:out value="${bo.plant}" /></td>

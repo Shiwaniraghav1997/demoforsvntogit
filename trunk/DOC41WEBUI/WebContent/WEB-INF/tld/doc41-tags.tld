@@ -426,4 +426,12 @@
 		<display-name>Pager</display-name>
 		<description>Pager</description>
 	</tag>
+	
+	<tag id="spaceToNbsp">
+		<name>spaceToNbsp</name>
+		<tag-class>com.bayer.bhc.doc41webui.tags.SpaceToNbspRendererTag</tag-class>
+		<body-content>scriptless</body-content>
+		<display-name>spaceToNbsp</display-name>
+		<description>convert spaces to nbsp</description>
+	</tag>
 </taglib>

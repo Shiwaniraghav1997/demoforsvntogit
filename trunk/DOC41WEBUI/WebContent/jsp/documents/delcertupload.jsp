@@ -11,7 +11,7 @@ title="Upload Document">
 		<jsp:attribute name="fragmentCustomSearchFields">
 						<tr>
 							<th><doc41:translate label="BatchObjectId" /></th>
-							<td><c:out value="${uploadForm.objectId }"/><form:hidden path="objectId"/></td>
+							<td><doc41:spaceToNbsp><c:out value="${uploadForm.objectId }"/></doc41:spaceToNbsp><form:hidden path="objectId"/></td>
 						</tr>
 						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="Supplier" /></th>

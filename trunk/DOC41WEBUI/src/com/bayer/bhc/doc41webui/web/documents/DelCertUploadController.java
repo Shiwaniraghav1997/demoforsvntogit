@@ -47,10 +47,11 @@ public class DelCertUploadController extends UploadController {
 		String plant = batchObjectForm.getPlant();
 		if(StringTool.isTrimmedEmptyOrNull(plant)){
 			result.rejectValue("plant","PlantMissing");
-		} else {
-			plant = StringTool.minLString(plant, Doc41Constants.FIELD_SIZE_PLANT, '0');
-			batchObjectForm.setPlant(plant);
-		}
+		} 
+//		else {
+//			plant = StringTool.minLString(plant, Doc41Constants.FIELD_SIZE_PLANT, '0');
+//			batchObjectForm.setPlant(plant);
+//		}
 		
 		String material = batchObjectForm.getMaterial();
 		String batch = batchObjectForm.getBatch();
@@ -64,10 +65,10 @@ public class DelCertUploadController extends UploadController {
 			material = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
 			batchObjectForm.setMaterial(material);
 		}
-		if(!StringTool.isTrimmedEmptyOrNull(batch)){
-			batch = StringTool.minLString(batch, Doc41Constants.FIELD_SIZE_BATCH, '0');
-			batchObjectForm.setBatch(batch);
-		}
+//		if(!StringTool.isTrimmedEmptyOrNull(batch)){
+//			batch = StringTool.minLString(batch, Doc41Constants.FIELD_SIZE_BATCH, '0');
+//			batchObjectForm.setBatch(batch);
+//		}
 		
 		
 		if(result.hasErrors()){
