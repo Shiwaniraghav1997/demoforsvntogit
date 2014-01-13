@@ -18,7 +18,7 @@
 				
 				</td>
 			</tr>
-			<%--TODO use for attributes
+			<%--TODO use for attributes--%>
 			 <tr class="portlet-table-alternate">
 				<th><label for="${keyMaterial}"><doc41:translate label="MaterialNumber" /></label></th>
 				<td>
@@ -38,11 +38,11 @@
 						value="${searchForm.attributeValues[keyBatch]}" />
 						<doc41:error path="attributeValues['${keyBatch}']" />
 				</td>
-			</tr> --%>
+			</tr> 
 			
 			<%-- TODO use if rfc should be used --%>
 			<%-- TODO use for concatenated String --%> 
-			<tr class="portlet-table-alternate">
+			<%-- <tr class="portlet-table-alternate">
 				<th><label for="${keyMaterial}"><doc41:translate label="MaterialNumber" /></label></th>
 				<td>
 					<input id="${keyMaterial}"
@@ -61,7 +61,7 @@
 						value="${searchForm.viewAttributes[keyBatch]}" />
 						<doc41:error path="viewAttributes['${keyBatch}']" />
 				</td>
-			</tr>
+			</tr> --%>
 		</jsp:attribute>
 	</doc41:searchtemplate>
 

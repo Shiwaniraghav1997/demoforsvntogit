@@ -125,8 +125,8 @@ public class SearchController extends AbstractDoc41Controller {
 		map.addAttribute(searchForm2);
 		
 		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
-		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_BATCH);
-		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL);
+		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
+		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
 		
 		List<SelectionItem> userCountries = displaytextUC.getCountrySIs(UserInSession.get().getCountries());
 		map.addAttribute("userCountrySIList",userCountries);
@@ -140,8 +140,8 @@ public class SearchController extends AbstractDoc41Controller {
 		map.addAttribute(searchForm2);
 		
 		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
-		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_BATCH);
-		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL);
+		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
+		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
 		map.addAttribute("keyDeliveryNumber",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_DELIVERY_NUMBER);
 		
 		List<SelectionItem> allCountries = getDisplaytextUC().getCountryCodes();

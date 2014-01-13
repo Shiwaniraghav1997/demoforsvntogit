@@ -1,12 +1,9 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.validation.Errors;
 
-import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
@@ -37,30 +34,30 @@ public class DeliveryCertDownCountryDocumentType extends
 	}
 	
 //	TODO use for attributes
-//	@Override
-//	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-//			String customerNumber, String vendorNumber, String objectId,
-//			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
-//		
-//		String countryCode = attributeValues.get(ATTRIB_COUNTRY);
-//		if(StringTool.isTrimmedEmptyOrNull(countryCode)){
-//			errors.rejectValue("attributeValues['"+ATTRIB_COUNTRY+"']","CountryMissing");
-//		}
-//		
-//		boolean hasCountry = UserInSession.get().hasCountry(countryCode);
-//		
-//		if(!hasCountry){
-//			errors.rejectValue("attributeValues['"+ATTRIB_COUNTRY+"']","Country does not belong to User");
-//		}
-//		
-//		String material = attributeValues.get(ATTRIB_MATERIAL);
-//		String batch = attributeValues.get(ATTRIB_BATCH);
-//		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch)){
-//			errors.rejectValue("attributeValues['"+ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
-//			errors.rejectValue("attributeValues['"+ATTRIB_BATCH+"']","MaterialAndBatchMissing");
-//		}
-//		return new CheckForDownloadResult(null,null);
-//	}
+	@Override
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
+			String customerNumber, String vendorNumber, String objectId,
+			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
+		
+		String countryCode = attributeValues.get(ATTRIB_COUNTRY);
+		if(StringTool.isTrimmedEmptyOrNull(countryCode)){
+			errors.rejectValue("attributeValues['"+ATTRIB_COUNTRY+"']","CountryMissing");
+		}
+		
+		boolean hasCountry = UserInSession.get().hasCountry(countryCode);
+		
+		if(!hasCountry){
+			errors.rejectValue("attributeValues['"+ATTRIB_COUNTRY+"']","Country does not belong to User");
+		}
+		
+		String material = attributeValues.get(ATTRIB_MATERIAL);
+		String batch = attributeValues.get(ATTRIB_BATCH);
+		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch)){
+			errors.rejectValue("attributeValues['"+ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
+			errors.rejectValue("attributeValues['"+ATTRIB_BATCH+"']","MaterialAndBatchMissing");
+		}
+		return new CheckForDownloadResult(null,null);
+	}
 	
 	//TODO use if rfc should be used
 //	@Override
@@ -103,43 +100,43 @@ public class DeliveryCertDownCountryDocumentType extends
 //	}
 	
 	//TODO use for concatenated String
-	@Override
-	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-			String customerNumber, String vendorNumber, String objectId,
-			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
-		
-		String countryCode = attributeValues.get(ATTRIB_COUNTRY);
-		if(StringTool.isTrimmedEmptyOrNull(countryCode)){
-			errors.rejectValue("attributeValues['"+ATTRIB_COUNTRY+"']","CountryMissing");
-		}
-		
-		boolean hasCountry = UserInSession.get().hasCountry(countryCode);
-		
-		if(!hasCountry){
-			errors.rejectValue("viewAttributes['"+ATTRIB_COUNTRY+"']","Country does not belong to User");
-		}
-		
-		String material = viewAttributes.get(VIEW_ATTRIB_MATERIAL);
-		String batch = viewAttributes.get(VIEW_ATTRIB_BATCH);
-		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch)){
-			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
-			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_BATCH+"']","MaterialAndBatchMissing");
-		}
-		if(!StringTool.isTrimmedEmptyOrNull(material)){
-			material = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
-			viewAttributes.put(VIEW_ATTRIB_MATERIAL, material);
-		}
-//		if(!StringTool.isTrimmedEmptyOrNull(batch)){
-//			batch = StringTool.minLString(batch, Doc41Constants.FIELD_SIZE_BATCH, '0');
-//			viewAttributes.put(VIEW_ATTRIB_BATCH, batch);
+//	@Override
+//	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
+//			String customerNumber, String vendorNumber, String objectId,
+//			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
+//		
+//		String countryCode = attributeValues.get(ATTRIB_COUNTRY);
+//		if(StringTool.isTrimmedEmptyOrNull(countryCode)){
+//			errors.rejectValue("attributeValues['"+ATTRIB_COUNTRY+"']","CountryMissing");
 //		}
-		
-		
-		List<String> additionalObjectIds = new ArrayList<String>();
-		String addObjectId = getObjectIdSearchString(material,batch,null);
-		additionalObjectIds.add(addObjectId);
-		
-		return new CheckForDownloadResult(null,additionalObjectIds);
-	}
+//		
+//		boolean hasCountry = UserInSession.get().hasCountry(countryCode);
+//		
+//		if(!hasCountry){
+//			errors.rejectValue("viewAttributes['"+ATTRIB_COUNTRY+"']","Country does not belong to User");
+//		}
+//		
+//		String material = viewAttributes.get(VIEW_ATTRIB_MATERIAL);
+//		String batch = viewAttributes.get(VIEW_ATTRIB_BATCH);
+//		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch)){
+//			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
+//			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_BATCH+"']","MaterialAndBatchMissing");
+//		}
+//		if(!StringTool.isTrimmedEmptyOrNull(material)){
+//			material = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
+//			viewAttributes.put(VIEW_ATTRIB_MATERIAL, material);
+//		}
+////		if(!StringTool.isTrimmedEmptyOrNull(batch)){
+////			batch = StringTool.minLString(batch, Doc41Constants.FIELD_SIZE_BATCH, '0');
+////			viewAttributes.put(VIEW_ATTRIB_BATCH, batch);
+////		}
+//		
+//		
+//		List<String> additionalObjectIds = new ArrayList<String>();
+//		String addObjectId = getObjectIdSearchString(material,batch,null);
+//		additionalObjectIds.add(addObjectId);
+//		
+//		return new CheckForDownloadResult(null,additionalObjectIds);
+//	}
 
 }

@@ -55,25 +55,29 @@ public class DeliveryCertDownCustomerDocumentType extends
 		}
 		
 //		//TODO use for attributes
-//		String material = attributeValues.get(ATTRIB_MATERIAL);
-//		String batch = attributeValues.get(ATTRIB_BATCH);
-//		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch)){
-//			errors.rejectValue("attributeValues['"+ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
-//			errors.rejectValue("attributeValues['"+ATTRIB_BATCH+"']","MaterialAndBatchMissing");
-//		}
-		
-		//TODO use if rfc should be used
-		//TODO use for concatenated String
-		String material = viewAttributes.get(VIEW_ATTRIB_MATERIAL);
-		String batch = viewAttributes.get(VIEW_ATTRIB_BATCH);
+		String material = attributeValues.get(ATTRIB_MATERIAL);
+		String batch = attributeValues.get(ATTRIB_BATCH);
 		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch)){
-			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
-			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_BATCH+"']","MaterialAndBatchMissing");
+			errors.rejectValue("attributeValues['"+ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
+			errors.rejectValue("attributeValues['"+ATTRIB_BATCH+"']","MaterialAndBatchMissing");
 		}
 		if(!StringTool.isTrimmedEmptyOrNull(material)){
 			material = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
-			viewAttributes.put(VIEW_ATTRIB_MATERIAL, material);
+			attributeValues.put(ATTRIB_MATERIAL, material);
 		}
+		
+//		//TODO use if rfc should be used
+//		//TODO use for concatenated String
+//		String material = viewAttributes.get(VIEW_ATTRIB_MATERIAL);
+//		String batch = viewAttributes.get(VIEW_ATTRIB_BATCH);
+//		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch)){
+//			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
+//			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_BATCH+"']","MaterialAndBatchMissing");
+//		}
+//		if(!StringTool.isTrimmedEmptyOrNull(material)){
+//			material = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
+//			viewAttributes.put(VIEW_ATTRIB_MATERIAL, material);
+//		}
 //		if(!StringTool.isTrimmedEmptyOrNull(batch)){
 //			batch = StringTool.minLString(batch, Doc41Constants.FIELD_SIZE_BATCH, '0');
 //			viewAttributes.put(VIEW_ATTRIB_BATCH, batch);
