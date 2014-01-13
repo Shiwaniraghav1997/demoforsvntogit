@@ -151,7 +151,7 @@
 					<!-- thead text will be updated from the JSON; make sure the number of columns matches the JSON data -->
 					<!-- header update currently disabled to put names in the jsp instead of in java  -->
 					<th><doc41:translate label="ObjectId${searchForm.type}" /></th>
-					<th data-sorter="moment" data-date-format="${dateMomentPattern}"><doc41:translate label="StorageDate" /></th>
+					<%-- <th data-sorter="moment" data-date-format="${dateMomentPattern}"><doc41:translate label="StorageDate" /></th> --%>
 					<th data-sorter="moment" data-date-format="${dateTimeMomentPattern}"><doc41:translate label="ArchiveLinkDate" /></th>
 					<th><doc41:translate label="DocumentClass" /></th>
 					<c:forEach items="${searchForm.customizedValuesLabels}"
@@ -161,10 +161,13 @@
 					
 				</tr>
 			<colgroup>
+				<col width="15%" />
+				<col width="20%" />
 				<col width="10%" />
+				<%-- <col width="10%" />
 				<col width="15%" />
 				<col width="15%" />
-				<col width="10%" />
+				<col width="10%" /> --%>
 				<c:forEach items="${searchForm.customizedValuesLabels}"
 							var="custValueLabel" varStatus="status">
 				<col width="${searchForm.custColPercent}%" />
@@ -178,9 +181,9 @@
 					<tr style="cursor: pointer;"
 						onclick="openDocument('${document.key}','${searchForm.type}')">
 						<td><c:out value="${document.objectId}" /></td>
-						<td>
+						<%-- <td>
 							<doc41:formatDate date="${document.storageDate}" zone="${user.timeZone}"></doc41:formatDate>
-						</td>
+						</td> --%>
 						<td>
 							<doc41:formatDate date="${document.archiveLinkDate}" zone="${user.timeZone}"></doc41:formatDate>&nbsp;<doc41:formatTime date="${document.archiveLinkDate}" zone="${user.timeZone}"></doc41:formatTime>
 						</td>
