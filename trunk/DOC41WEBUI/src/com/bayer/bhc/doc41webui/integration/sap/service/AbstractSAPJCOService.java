@@ -4,10 +4,8 @@
  */
 package com.bayer.bhc.doc41webui.integration.sap.service;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,9 +14,9 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41AccessDeniedException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.service.Doc41MonitorService;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPSingleton;
+import com.bayer.bhc.doc41webui.service.Doc41MonitorService;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -90,19 +88,11 @@ public abstract class AbstractSAPJCOService  {
 			}
 			if(oneParm == null){
 				sb.append("null");
-			} else if(oneParm instanceof Collection<?>){
-				sb.append("Col(");
-				sb.append(((Collection<?>)oneParm).size());
-				sb.append(")");
-			} else if(oneParm instanceof Map<?,?>){
-				sb.append("Map(");
-				sb.append(((Map<?, ?>)oneParm).size());
-				sb.append(")");
 			} else {
 				sb.append(StringTool.maxRString(oneParm.toString(), 30, "..."));
 			}
 		}
 		
-		return sb.toString();
+		return StringTool.maxRString(sb.toString(),750,"...");
 	}
 }
