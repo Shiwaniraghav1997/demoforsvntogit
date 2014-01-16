@@ -22,7 +22,7 @@ title="Upload Document">
 							<td><c:out value="${uploadForm.attributeValues[keyVendorBatch]}"/><input id="${keyVendorBatch}" type="hidden" name="attributeValues['${keyVendorBatch}']" value="${uploadForm.attributeValues[keyVendorBatch]}"/></td>
 						</tr>
 						<tr class="portlet-table-alternate">
-							<th><doc41:translate label="Plant" />${uploadForm.attributeValues[keyPlant]}</th>
+							<th><doc41:translate label="Plant" /></th>
 							<td><c:out value="${uploadForm.attributeValues[keyPlant]}"/><input id="${keyPlant}" type="hidden" name="attributeValues['${keyPlant}']" value="${uploadForm.attributeValues[keyPlant]}"/></td>
 						</tr>
 						<tr>
