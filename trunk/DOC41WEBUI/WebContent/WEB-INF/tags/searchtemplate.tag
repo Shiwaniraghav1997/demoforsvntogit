@@ -39,7 +39,7 @@
 				<c:if test="${not empty fragmentAdditionalButtons}">
 					<jsp:invoke fragment="fragmentAdditionalButtons"/>
 				</c:if>
-				<a class="portlet-form-button" type="button" href='documentsearch?type=${searchForm.type}'><doc41:translate label="ButtonReset" /></a>
+				<a class="portlet-form-button" type="button" href='${action}?type=${searchForm.type}'><doc41:translate label="ButtonReset" /></a>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSearch"/>" name="ButtonSearch"/>
 			</div>
 			
