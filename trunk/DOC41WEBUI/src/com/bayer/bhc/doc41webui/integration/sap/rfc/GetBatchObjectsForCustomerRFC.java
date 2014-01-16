@@ -15,8 +15,8 @@ public class GetBatchObjectsForCustomerRFC extends AbstractDoc41RFC<QMBatchObjec
 	private static final String IN_CUSTOMER = "IV_SHIPTO";
 	private static final String IN_DELIVERY = "IV_DELIVERY";
 	private static final String IN_MATERIAL = "IV_MATNR";
-	private static final String IN_BATCH = "IV_BATCH";
-	private static final String IN_COUNTRY = "IV_COUNTRY";
+	private static final String IN_BATCH 	= "IV_BATCH";
+	private static final String IN_COUNTRY 	= "IV_COUNTRY";
 	
 	//		private static final String OUT_RETURNCODE = "EV_RETURN";
 
@@ -48,6 +48,7 @@ public class GetBatchObjectsForCustomerRFC extends AbstractDoc41RFC<QMBatchObjec
 				sapInput.setValue(IN_MATERIAL,material);
 				sapInput.setValue(IN_BATCH,batch);
 				sapInput.setValue(IN_COUNTRY,country);
+				Doc41Log.get().debug(GetBatchObjectsForCustomerRFC.class, null, "prepareCall():attributes set");
             } else {
                 throw new SAPException(
                         "GetBatchObjectsForCustomerRFC pInputParms list is null", null);
