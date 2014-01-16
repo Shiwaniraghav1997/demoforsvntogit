@@ -76,6 +76,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 						setEmptyParam(key,seqno,sapInput,tableParameterList);
 					}
 				}
+				Doc41Log.get().debug(FindDocsRFC.class, null, "prepareCall():attributs are set");
             } else {
                 throw new SAPException(
                         "FindDocsRFC pInputParms list is null", null);
