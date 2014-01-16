@@ -248,6 +248,9 @@ public class DocumentUC {
 			if(!StringTool.isTrimmedEmptyOrNull(fileName) && metadata.isFileNameAttribAvailable()){
 				attributeValues.put(metadata.getFileNameAttibKey(), fileName);
 			}
+			if(!StringTool.isTrimmedEmptyOrNull(vkOrg)){
+				attributeValues.put(Doc41Constants.ATTRIB_NAME_VKORG, vkOrg);
+			}
 			//TODO do something with vkOrg
 			checkAttribsWithCustomizing(attributeValues,metadata.getAttributes(false));
 			String docClass;
@@ -662,6 +665,7 @@ public class DocumentUC {
 			}
 		}
 		if(missingAttrKeysInCustomizing.length()>0){
+			//TODO ignore plant and vkorg
 			Doc41Log.get().error(getClass(), UserInSession.getCwid(), "CustomizingMissmatch: attributes "+missingAttrKeysInCustomizing+" no longer in customizing");
 		}
 		
