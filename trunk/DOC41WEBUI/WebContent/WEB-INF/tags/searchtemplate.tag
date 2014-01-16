@@ -1,12 +1,14 @@
 <%@tag description="Search Document Tag" pageEncoding="UTF-8"%>
 
 <%@attribute name="action"		required="true"%>
-<%@attribute name="fragmentAdditionalButtons"		required="false" fragment="true"%>
-<%@attribute name="fragmentCustomSearchFields"		required="false" fragment="true"%>
+<%@attribute name="fragmentAdditionalButtons"	required="false" fragment="true"%>
+<%@attribute name="fragmentCustomSearchFields"	required="false" fragment="true"%>
 <%@attribute name="showCustomAttributes"		required="false"%>
-<%@attribute name="showObjectId"		required="false"%>
-<%@attribute name="showCustomerNumber"		required="false"%>
-<%@attribute name="showVendorNumber"		required="false"%>
+<%@attribute name="showObjectId"				required="false"%>
+<%@attribute name="showCustomerNumber"			required="false"%>
+<%@attribute name="showVendorNumber"			required="false"%>
+<%@attribute name="showTableObjectId"			required="false"%>
+<%@attribute name="showTableDocumentClass"		required="false"%>
 <%@taglib prefix="doc41" uri="doc41-tags" %>
 <%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn"		uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -151,10 +153,14 @@
 
 					<!-- thead text will be updated from the JSON; make sure the number of columns matches the JSON data -->
 					<!-- header update currently disabled to put names in the jsp instead of in java  -->
-					<th><doc41:translate label="ObjectId${searchForm.type}" /></th>
+					<c:if test="${empty showTableObjectId or showTableObjectId}">
+						<th><doc41:translate label="ObjectId${searchForm.type}" /></th>
+					</c:if>
 					<%-- <th data-sorter="moment" data-date-format="${dateMomentPattern}"><doc41:translate label="StorageDate" /></th> --%>
 					<th data-sorter="moment" data-date-format="${dateTimeMomentPattern}"><doc41:translate label="ArchiveLinkDate" /></th>
-					<th><doc41:translate label="DocumentClass" /></th>
+					<c:if test="${empty showTableDocumentClass or showTableDocumentClass}">
+						<th><doc41:translate label="DocumentClass" /></th>
+					</c:if>
 					<c:forEach items="${searchForm.customizedValuesLabels}"
 							var="custValueLabel" varStatus="status">
 					<th><c:out value="${custValueLabel}" /></th>
@@ -162,9 +168,13 @@
 					
 				</tr>
 			<colgroup>
-				<col width="25%" />
+				<c:if test="${empty showTableObjectId or showTableObjectId}">
+					<col width="25%" />
+				</c:if>
 				<col width="15%" />
-				<col width="5%" />
+				<c:if test="${empty showTableDocumentClass or showTableDocumentClass}">
+					<col width="5%" />
+				</c:if>
 				<%-- <col width="10%" />
 				<col width="15%" />
 				<col width="15%" />
@@ -181,14 +191,18 @@
 					varStatus="status">
 					<tr style="cursor: pointer;"
 						onclick="openDocument('${document.key}','${searchForm.type}')">
-						<td><doc41:spaceToNbsp><c:out value="${document.objectId}" /></doc41:spaceToNbsp></td>
+						<c:if test="${empty showTableObjectId or showTableObjectId}">
+							<td><doc41:spaceToNbsp><c:out value="${document.objectId}" /></doc41:spaceToNbsp></td>
+						</c:if>
 						<%-- <td>
 							<doc41:formatDate date="${document.storageDate}" zone="${user.timeZone}"></doc41:formatDate>
 						</td> --%>
 						<td>
 							<doc41:formatDate date="${document.archiveLinkDate}" zone="${user.timeZone}"></doc41:formatDate>&nbsp;<doc41:formatTime date="${document.archiveLinkDate}" zone="${user.timeZone}"></doc41:formatTime>
 						</td>
-						<td><c:out value="${document.documentClass}" /></td>
+						<c:if test="${empty showTableDocumentClass or showTableDocumentClass}">
+							<td><c:out value="${document.documentClass}" /></td>
+						</c:if>
 						<c:forEach items="${searchForm.attributeLabels}"
 							var="attribLabel" varStatus="status">
 						<td><c:out value="${document.customizedValuesByKey[attribLabel.key]}" /></td>
