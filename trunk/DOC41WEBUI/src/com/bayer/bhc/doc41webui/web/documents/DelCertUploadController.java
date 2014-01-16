@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
-import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.BatchObjectForm;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.container.UploadForm;
@@ -139,8 +138,8 @@ public class DelCertUploadController extends UploadController {
 		
 		map.addAttribute("keyMaterialText",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL_TEXT);
 		
-		List<SelectionItem> userCountries = displaytextUC.getCountrySIs(UserInSession.get().getCountries());
-		map.addAttribute("userCountrySIList",userCountries);
+		List<SelectionItem> allCountries = getDisplaytextUC().getCountryCodes();
+		map.addAttribute("allCountryList",allCountries);
 	}
 	
 	@RequestMapping(value="/documents/delcertuploadpost",method = RequestMethod.POST)
