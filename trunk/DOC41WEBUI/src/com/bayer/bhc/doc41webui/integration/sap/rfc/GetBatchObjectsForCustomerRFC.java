@@ -15,7 +15,7 @@ public class GetBatchObjectsForCustomerRFC extends AbstractDoc41RFC<QMBatchObjec
 	private static final String IN_CUSTOMER = "IV_SHIPTO";
 	private static final String IN_DELIVERY = "IV_DELIVERY";
 	private static final String IN_MATERIAL = "IV_MATNR";
-	private static final String IN_BATCH = "IV_MATNR";
+	private static final String IN_BATCH = "IV_BATCH";
 	private static final String IN_COUNTRY = "IV_COUNTRY";
 	
 	//		private static final String OUT_RETURNCODE = "EV_RETURN";
