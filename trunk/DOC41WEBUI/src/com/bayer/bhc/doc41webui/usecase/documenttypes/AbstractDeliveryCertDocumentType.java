@@ -3,6 +3,8 @@ package com.bayer.bhc.doc41webui.usecase.documenttypes;
 import java.util.Collections;
 import java.util.Set;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
+
 
 public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 	
@@ -11,13 +13,13 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 //	TODO use for attributes
 	public static final String ATTRIB_MATERIAL = "MATERIAL";
 	public static final String ATTRIB_BATCH = "BATCH";
-	public static final String ATTRIB_PLANT = "PLANT";
+	public static final String ATTRIB_PLANT = Doc41Constants.ATTRIB_NAME_PLANT;
 	
 //	//TODO use if rfc should be used
 //	//TODO use for concatenated String
 //	public static final String VIEW_ATTRIB_MATERIAL = "MATERIAL";
 //	public static final String VIEW_ATTRIB_BATCH = "BATCH";
-//	public static final String VIEW_ATTRIB_PLANT = "PLANT";
+//	public static final String VIEW_ATTRIB_PLANT = Doc41Constants.ATTRIB_NAME_PLANT;
 	
 	public static final String VIEW_ATTRIB_DELIVERY_NUMBER = "delivery";
 	public static final String VIEW_ATTRIB_MATERIAL_TEXT = "materialText";

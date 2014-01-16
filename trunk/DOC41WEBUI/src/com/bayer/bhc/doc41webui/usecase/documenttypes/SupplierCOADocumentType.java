@@ -16,8 +16,8 @@ import com.bayer.ecim.foundation.basic.StringTool;
 
 public class SupplierCOADocumentType implements UploadDocumentType {
 
-	public static final String ATTRIB_VENDOR_BATCH = "VENDOR-BATCH";
-	public static final String ATTRIB_PLANT = "PLANT";
+	public static final String ATTRIB_VENDOR_BATCH = "VENDORBATCH";
+	public static final String ATTRIB_PLANT = Doc41Constants.ATTRIB_NAME_PLANT;
 	public static final String ATTRIB_BATCH = "BATCH";
 	public static final String ATTRIB_MATERIAL = "MATERIAL";
 	

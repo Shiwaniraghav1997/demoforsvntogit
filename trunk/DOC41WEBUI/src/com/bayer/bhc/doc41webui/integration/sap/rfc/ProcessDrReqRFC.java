@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -69,9 +70,14 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
 	private String getAttribString(Map<String, String> attribValues) {
 		StringBuilder sb = new StringBuilder();
 		sb.append('|');
-		if(!attribValues.containsKey("PLANT")){
-			sb.append("PLANT=XXXX|");
+		if(!attribValues.containsKey(Doc41Constants.ATTRIB_NAME_PLANT)){
+			sb.append(Doc41Constants.ATTRIB_NAME_PLANT);
+			sb.append("=XXXX|");
 		}
+		//TODO maybe add webui user
+//		sb.append("WEBUI-USER=");
+//		sb.append(UserInSession.getCwid());
+//		sb.append("|");
 		Set<String> keySet = attribValues.keySet();
 		for (String key : keySet) {
 			String value = attribValues.get(key);
