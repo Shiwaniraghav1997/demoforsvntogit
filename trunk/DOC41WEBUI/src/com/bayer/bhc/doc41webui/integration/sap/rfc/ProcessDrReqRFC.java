@@ -54,6 +54,7 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
 					sapInput.setValue(IN_DOC_TYPE,docClass);
 				}
 				sapInput.setValue(IN_ATTRIBS,getAttribString(attribValues));
+				Doc41Log.get().debug(FindDocsRFC.class, null, "prepareCall():attributs are set");
             } else {
                 throw new SAPException(
                         "ProcessDrReqRFC pInputParms list is null", null);
