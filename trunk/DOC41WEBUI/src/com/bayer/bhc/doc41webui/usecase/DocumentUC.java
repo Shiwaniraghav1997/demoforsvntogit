@@ -252,7 +252,7 @@ public class DocumentUC {
 				attributeValues.put(Doc41Constants.ATTRIB_NAME_VKORG, vkOrg);
 			}
 			//TODO do something with vkOrg
-			checkAttribsWithCustomizing(attributeValues,metadata.getAttributes(false));
+			checkAttribsWithCustomizing(attributeValues,type);
 			String docClass;
 			Map<String, String> kgsAttributeValues;
 			if(docDef.isDvs()){
@@ -364,9 +364,9 @@ public class DocumentUC {
 			Map<String, String> attributeValues, int maxResults, boolean maxVersionOnly)
 					throws Doc41BusinessException {
 		try{
-			List<Attribute> attributeDefinitions = getAttributeDefinitions(type,false);
-			checkAttribsWithCustomizing(attributeValues,attributeDefinitions);
+			checkAttribsWithCustomizing(attributeValues,type);
 			
+			List<Attribute> attributeDefinitions = getAttributeDefinitions(type,false);
 			Map<Integer, String> seqToKey = getSeqToKeyFromDefinitions(attributeDefinitions);
 			DocMetadata metadata = getMetadata(type);
 //			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
@@ -646,8 +646,11 @@ public class DocumentUC {
 		
 	}
 	
-	public void checkAttribsWithCustomizing(Map<String, String> attributeValues,
-			List<Attribute> attributeDefinitions) {
+	public void checkAttribsWithCustomizing(Map<String, String> attributeValues,String type) throws Doc41BusinessException {
+		List<Attribute> attributeDefinitions = getAttributeDefinitions(type,false);
+		DocumentType docType = getDocType(type);
+		Set<String> excludedAttributes = docType.getExcludedAttributes();
+		
 		Set<String> definedAttribKeys = new HashSet<String>();
 		for (Attribute attribute : attributeDefinitions) {
 			definedAttribKeys.add(attribute.getName());
@@ -656,7 +659,7 @@ public class DocumentUC {
 		StringBuilder missingAttrKeysInCustomizing = new StringBuilder();
 		if(attributeValues!=null){
 			for (String attrKey : attributeValues.keySet()) {
-				if(!definedAttribKeys.contains(attrKey)){
+				if(!definedAttribKeys.contains(attrKey) && !excludedAttributes.contains(attrKey)){
 					if(missingAttrKeysInCustomizing.length()>0){
 						missingAttrKeysInCustomizing.append(", ");
 					}
