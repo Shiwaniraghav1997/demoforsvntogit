@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.validation.Errors;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
@@ -55,6 +56,10 @@ public class DeliveryCertDownCountryDocumentType extends
 		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch)){
 			errors.rejectValue("attributeValues['"+ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
 			errors.rejectValue("attributeValues['"+ATTRIB_BATCH+"']","MaterialAndBatchMissing");
+		}
+		if(!StringTool.isTrimmedEmptyOrNull(material)){
+			material = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
+			attributeValues.put(ATTRIB_MATERIAL, material);
 		}
 		return new CheckForDownloadResult(null,null);
 	}
