@@ -13,7 +13,7 @@
 			<tr>
 				<th><label for="${keyCountry}"><doc41:translate label="Country" /></label></th>
 				<td>
-					<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${userCountrySIList}" cssClass="portlet-form-input-field portlet-mandatory" itemValue="value" itemLabel="label"/><doc41:error path="attributeValues['${keyCountry}']" />
+					<form:select id="${keyCountry}" path="attributeValues['${keyCountry}']" items="${userCountrySIList}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" itemValue="value" itemLabel="label"/><doc41:error path="attributeValues['${keyCountry}']" />
 
 				
 				</td>
@@ -23,7 +23,7 @@
 				<th><label for="${keyMaterial}"><doc41:translate label="MaterialNumber" /></label></th>
 				<td>
 					<input id="${keyMaterial}"
-						class="portlet-form-input-field" maxlength="70"
+						class="portlet-form-input-field portlet-big" maxlength="70"
 						name="attributeValues['${keyMaterial}']"
 						value="${searchForm.attributeValues[keyMaterial]}" />
 						<doc41:error path="attributeValues['${keyMaterial}']" />
@@ -33,7 +33,7 @@
 				<th><label for="${keyBatch}"><doc41:translate label="Batch" /></label></th>
 				<td>
 					<input id="${keyBatch}"
-						class="portlet-form-input-field" maxlength="70"
+						class="portlet-form-input-field portlet-big" maxlength="70"
 						name="attributeValues['${keyBatch}']"
 						value="${searchForm.attributeValues[keyBatch]}" />
 						<doc41:error path="attributeValues['${keyBatch}']" />
