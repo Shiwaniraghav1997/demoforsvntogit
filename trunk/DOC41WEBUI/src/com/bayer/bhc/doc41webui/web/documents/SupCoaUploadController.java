@@ -50,6 +50,10 @@ public class SupCoaUploadController extends UploadController {
 		if(StringTool.isTrimmedEmptyOrNull(vendorBatch)){
 			result.rejectValue("vendorBatch","VendorBatchMissing");
 		}
+		if(!StringTool.isTrimmedEmptyOrNull(vendorBatch)){
+			vendorBatch = vendorBatch.toUpperCase();
+			vendorBatchForm.setVendorBatch(vendorBatch);
+		}
 		String plant = vendorBatchForm.getPlant();
 		if(StringTool.isTrimmedEmptyOrNull(plant)){
 			result.rejectValue("plant","PlantMissing");
