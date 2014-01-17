@@ -61,6 +61,10 @@ public class DeliveryCertDownCountryDocumentType extends
 			material = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
 			attributeValues.put(ATTRIB_MATERIAL, material);
 		}
+		if(!StringTool.isTrimmedEmptyOrNull(batch)){
+			batch = batch.toUpperCase();
+			attributeValues.put(ATTRIB_BATCH, batch);
+		}
 		return new CheckForDownloadResult(null,null);
 	}
 	

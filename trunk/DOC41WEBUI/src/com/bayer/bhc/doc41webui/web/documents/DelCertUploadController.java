@@ -65,10 +65,10 @@ public class DelCertUploadController extends UploadController {
 			material = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
 			batchObjectForm.setMaterial(material);
 		}
-//		if(!StringTool.isTrimmedEmptyOrNull(batch)){
-//			batch = StringTool.minLString(batch, Doc41Constants.FIELD_SIZE_BATCH, '0');
-//			batchObjectForm.setBatch(batch);
-//		}
+		if(!StringTool.isTrimmedEmptyOrNull(batch)){
+			batch = batch.toUpperCase();
+			batchObjectForm.setBatch(batch);
+		}
 		
 		
 		if(result.hasErrors()){
