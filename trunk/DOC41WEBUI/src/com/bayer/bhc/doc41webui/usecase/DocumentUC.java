@@ -366,8 +366,7 @@ public class DocumentUC {
 		try{
 			checkAttribsWithCustomizing(attributeValues,type);
 			
-			List<Attribute> attributeDefinitions = getAttributeDefinitions(type,false);
-			Map<Integer, String> seqToKey = getSeqToKeyFromDefinitions(attributeDefinitions);
+			Map<Integer, String> seqToKey = getSeqToKeyFromDefinitions(type);
 			DocMetadata metadata = getMetadata(type);
 //			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
 			DocTypeDef docDef = metadata.getDocDef();
@@ -398,8 +397,8 @@ public class DocumentUC {
 
 
 
-	private Map<Integer, String> getSeqToKeyFromDefinitions(
-			List<Attribute> attributeDefinitions) {
+	private Map<Integer, String> getSeqToKeyFromDefinitions(String type) throws Doc41BusinessException {
+		List<Attribute> attributeDefinitions = getMetadata(type).getAttributesWithExcluded();
 		Map<Integer, String> attributeSeqToKey = new HashMap<Integer, String>();
 		for (Attribute attribute : attributeDefinitions) {
 			String key = attribute.getName();
@@ -647,7 +646,7 @@ public class DocumentUC {
 	}
 	
 	public void checkAttribsWithCustomizing(Map<String, String> attributeValues,String type) throws Doc41BusinessException {
-		List<Attribute> attributeDefinitions = getAttributeDefinitions(type,false);
+		List<Attribute> attributeDefinitions = getMetadata(type).getAttributesWithExcluded();
 		DocumentType docType = getDocType(type);
 		Set<String> excludedAttributes = docType.getExcludedAttributes();
 		
