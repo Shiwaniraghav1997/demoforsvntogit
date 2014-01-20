@@ -60,7 +60,7 @@ public class ArtworkDocumentType implements DownloadDocumentType {
 	
 	@Override
 	public int getObjectIdFillLength() {
-		return 0;
+		return Doc41Constants.FIELD_SIZE_MATNR;
 	}
 
 	@Override
