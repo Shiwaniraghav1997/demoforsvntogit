@@ -63,7 +63,7 @@ public class CheckArtworkLayoutForVendorRFC extends AbstractDoc41RFC<String>{
 		if(StringTool.equals(returnCode, RETURNCODE_OK)){
 			return null;
 		} else if(StringTool.equals(returnCode, RETURNCODE_NOT_FOUND)){
-			return "NoDocumentFound";
+			return "NoDocumentsFound";
 		}
 		return "UnknownReturnCode";
 	}
