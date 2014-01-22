@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -72,41 +73,49 @@ public class SearchController extends AbstractDoc41Controller {
 				
 				if(!result.hasErrors()){
 					String singleObjectId = searchForm.getObjectId();
-					if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
-						int objectIdFillLength = documentUC.getDocumentFillLength(type);
-						if(singleObjectId.length()<objectIdFillLength){
-							singleObjectId = StringTool.minLString(singleObjectId, objectIdFillLength, '0');
-							searchForm.setObjectId(singleObjectId);
-						}
-					}
+					
 					Map<String, String> attributeValues = searchForm.getAttributeValues();
-					CheckForDownloadResult checkResult = documentUC.checkForDownload(result, type, searchFormCustomerNumber,searchFormVendorNumber, singleObjectId, attributeValues, searchForm.getViewAttributes());
-					Map<String, String> allAttributeValues = new HashMap<String, String>(attributeValues);
-					Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
-					if(additionalAttributes!=null){
-						allAttributeValues.putAll(additionalAttributes);
-					}
-					List<String> objectIds = new ArrayList<String>();
-					if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
-						objectIds.add(singleObjectId);
-					}
-					List<String> additionalObjectIds = checkResult.getAdditionalObjectIds();
-					if(additionalObjectIds!=null && !additionalObjectIds.isEmpty()){
-						objectIds.addAll(additionalObjectIds);
-					}
+					Map<String, String> viewAttributes = searchForm.getViewAttributes();
+					checkForbiddenWildcards(result,"objectId",singleObjectId);
+					checkForbiddenWildcards(result,"attributeValues['","']",attributeValues);
+					checkForbiddenWildcards(result,"viewAttributes['","']",viewAttributes);
 					if(!result.hasErrors()){
-						List<HitListEntry> documents = documentUC.searchDocuments(type, 
-								objectIds, allAttributeValues, MAX_RESULTS+1, false);
-						if(documents.size()==0){
-							result.reject("NoDocumentsFound");
-						} else	if(documents.size()>MAX_RESULTS){
-							result.reject("ToManyResults");
-						} else {
-							searchForm.setDocuments(documents);
+						if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
+							int objectIdFillLength = documentUC.getDocumentFillLength(type);
+							if(singleObjectId.length()<objectIdFillLength){
+								singleObjectId = StringTool.minLString(singleObjectId, objectIdFillLength, '0');
+								searchForm.setObjectId(singleObjectId);
+							}
 						}
-					} else {
-						if(result.hasFieldErrors()){
-							result.reject("PleaseEnterMandatoryFields");
+						
+						CheckForDownloadResult checkResult = documentUC.checkForDownload(result, type, searchFormCustomerNumber,searchFormVendorNumber, singleObjectId, attributeValues, viewAttributes);
+						Map<String, String> allAttributeValues = new HashMap<String, String>(attributeValues);
+						Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
+						if(additionalAttributes!=null){
+							allAttributeValues.putAll(additionalAttributes);
+						}
+						List<String> objectIds = new ArrayList<String>();
+						if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
+							objectIds.add(singleObjectId);
+						}
+						List<String> additionalObjectIds = checkResult.getAdditionalObjectIds();
+						if(additionalObjectIds!=null && !additionalObjectIds.isEmpty()){
+							objectIds.addAll(additionalObjectIds);
+						}
+						if(!result.hasErrors()){
+							List<HitListEntry> documents = documentUC.searchDocuments(type, 
+									objectIds, allAttributeValues, MAX_RESULTS+1, false);
+							if(documents.size()==0){
+								result.reject("NoDocumentsFound");
+							} else	if(documents.size()>MAX_RESULTS){
+								result.reject("ToManyResults");
+							} else {
+								searchForm.setDocuments(documents);
+							}
+						} else {
+							if(result.hasFieldErrors()){
+								result.reject("PleaseEnterMandatoryFields");
+							}
 						}
 					}
 				}
@@ -118,6 +127,23 @@ public class SearchController extends AbstractDoc41Controller {
 		return searchForm;
 	}
 	
+	private void checkForbiddenWildcards(BindingResult result, String fieldNamePrefix,
+			String fieldNameSuffix, Map<String, String> attributes) {
+		Set<String> keySet = attributes.keySet();
+		for (String key : keySet) {
+			String value = attributes.get(key);
+			String fieldName = fieldNamePrefix+key+fieldNameSuffix;
+			checkForbiddenWildcards(result, fieldName , value);			
+		}
+	}
+
+	private void checkForbiddenWildcards(BindingResult result, String fieldName,
+			String value) {
+		if(value!=null && (value.indexOf('*')>=0 || value.indexOf('+')>=0)){
+			result.rejectValue(fieldName,"NoWildCardsAllowed");
+		}
+	}
+
 	@RequestMapping(value="/documents/searchdelcertcountry",method = RequestMethod.GET)
 	public ModelMap getDelCertCountry(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
 		ModelMap map = new ModelMap();
