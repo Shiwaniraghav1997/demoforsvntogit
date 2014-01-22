@@ -8,6 +8,7 @@ import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.domain.QMBatchObject;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -61,6 +62,7 @@ public class DeliveryCertDownCustomerDocumentType extends
 			errors.rejectValue("attributeValues['"+ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
 			errors.rejectValue("attributeValues['"+ATTRIB_BATCH+"']","MaterialAndBatchMissing");
 		}
+		Doc41ValidationUtils.checkMaterialNumber(material, "attributeValues['"+ATTRIB_MATERIAL+"']", errors, false);
 		if(!StringTool.isTrimmedEmptyOrNull(material)){
 			material = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
 			attributeValues.put(ATTRIB_MATERIAL, material);

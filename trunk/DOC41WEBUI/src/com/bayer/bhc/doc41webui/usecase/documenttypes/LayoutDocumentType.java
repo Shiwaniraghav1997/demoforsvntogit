@@ -9,8 +9,8 @@ import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
-import com.bayer.ecim.foundation.basic.StringTool;
 
 public class LayoutDocumentType implements DownloadDocumentType,
 		UploadDocumentType {
@@ -66,9 +66,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 			String customerNumber, String vendorNumber, String objectId,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
-		if(StringTool.isTrimmedEmptyOrNull(objectId)){
-			errors.rejectValue("objectId","MatNoMissing");
-		}
+		Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
 		
 		String deliveryCheck = documentUC.checkArtworkLayoutForVendor(vendorNumber,getSapTypeId());
 		if(deliveryCheck != null){

@@ -8,6 +8,7 @@ import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -29,19 +30,15 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber,
 			String objectId, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 
-		String matNumber = null;
-		if(StringTool.isTrimmedEmptyOrNull(objectId)){
-			errors.rejectValue("objectId","MatNoMissing");
-		} else {
-			matNumber = objectId;
-		}
+		Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
+		
 		String poNumber = viewAttributes.get(VIEW_ATTRIB_PO_NUMBER);
 		if(StringTool.isTrimmedEmptyOrNull(poNumber)){
 			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_PO_NUMBER+"']","PONumberMissing");
 		}
 		
 		if(!errors.hasErrors()){
-			String deliveryCheck = documentUC.checkPOAndMaterialForVendor(vendorNumber, poNumber, matNumber);
+			String deliveryCheck = documentUC.checkPOAndMaterialForVendor(vendorNumber, poNumber, objectId);
 			if(deliveryCheck != null){
 				errors.reject(""+deliveryCheck);
 			}
