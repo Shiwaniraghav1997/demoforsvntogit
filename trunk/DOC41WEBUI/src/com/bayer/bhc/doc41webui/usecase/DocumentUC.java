@@ -212,6 +212,8 @@ public class DocumentUC {
 
 			//create guid
 			String guid = UUID.randomUUID().toString();
+			guid = guid.replace("-", "");
+			
 			//get put url
 			URI putUrl;
 			if(docDef.isDvs()){
@@ -647,8 +649,6 @@ public class DocumentUC {
 	
 	public void checkAttribsWithCustomizing(Map<String, String> attributeValues,String type) throws Doc41BusinessException {
 		List<Attribute> attributeDefinitions = getMetadata(type).getAttributesWithExcluded();
-		DocumentType docType = getDocType(type);
-		Set<String> excludedAttributes = docType.getExcludedAttributes();
 		
 		Set<String> definedAttribKeys = new HashSet<String>();
 		for (Attribute attribute : attributeDefinitions) {
@@ -658,7 +658,7 @@ public class DocumentUC {
 		StringBuilder missingAttrKeysInCustomizing = new StringBuilder();
 		if(attributeValues!=null){
 			for (String attrKey : attributeValues.keySet()) {
-				if(!definedAttribKeys.contains(attrKey) && !excludedAttributes.contains(attrKey)){
+				if(!definedAttribKeys.contains(attrKey) && !Doc41Constants.ATTRIB_NAME_PLANT.equals(attrKey) && !Doc41Constants.ATTRIB_NAME_VKORG.equals(attrKey)){
 					if(missingAttrKeysInCustomizing.length()>0){
 						missingAttrKeysInCustomizing.append(", ");
 					}
@@ -667,7 +667,6 @@ public class DocumentUC {
 			}
 		}
 		if(missingAttrKeysInCustomizing.length()>0){
-			//TODO ignore plant and vkorg
 			Doc41Log.get().error(getClass(), UserInSession.getCwid(), "CustomizingMissmatch: attributes "+missingAttrKeysInCustomizing+" no longer in customizing");
 		}
 		
