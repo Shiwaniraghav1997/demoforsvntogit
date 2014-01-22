@@ -113,7 +113,11 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 		for (String objectId : objectIds) {
 			table.appendRow();
 			table.setValue(IN_SIGN, "I");
-			table.setValue(IN_OPTION, "CP");
+			//TODO use for concatenated String
+//			table.setValue(IN_OPTION, "CP");
+			//TODO use if rfc should be used
+			//TODO use for attributes
+			table.setValue(IN_OPTION, "EQ");
 			table.setValue(IN_LOW,objectId);
 		}
 	}
