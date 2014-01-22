@@ -44,6 +44,7 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 		return Collections.emptySet();
 	}
 	
+	//TODO use for concatenated String
 //	protected String getObjectIdSearchString(String material, String batch, 
 //			String plant) {
 //		
