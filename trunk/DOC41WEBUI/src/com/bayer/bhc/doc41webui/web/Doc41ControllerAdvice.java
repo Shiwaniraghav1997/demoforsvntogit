@@ -3,9 +3,12 @@ package com.bayer.bhc.doc41webui.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
@@ -96,6 +99,12 @@ public class Doc41ControllerAdvice {
 		request.setAttribute(DOC41_EXCEPTION, relevantException);
 		Doc41Log.get().error(getClass(), UserInSession.getCwid(), relevantException);
 		return "exception";
+	}
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		StringTrimmerEditor stringtrimmer = new StringTrimmerEditor(true);
+		binder.registerCustomEditor(String.class, stringtrimmer);
 	}
 	
 }
