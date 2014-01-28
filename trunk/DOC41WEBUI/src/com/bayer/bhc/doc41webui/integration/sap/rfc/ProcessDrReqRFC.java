@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.sap.conn.jco.JCoFunction;
@@ -74,10 +75,12 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
 			sb.append(Doc41Constants.ATTRIB_NAME_PLANT);
 			sb.append("=XXXX|");
 		}
-		//TODO maybe add webui user
-//		sb.append("WEBUI-USER=");
-//		sb.append(UserInSession.getCwid());
-//		sb.append("|");
+		if(!attribValues.containsKey(Doc41Constants.ATTRIB_NAME_WEBUI_USER)){
+			sb.append(Doc41Constants.ATTRIB_NAME_WEBUI_USER);
+			sb.append("=");
+			sb.append(UserInSession.getCwid());
+			sb.append("|");
+		}
 		Set<String> keySet = attribValues.keySet();
 		for (String key : keySet) {
 			String value = attribValues.get(key);

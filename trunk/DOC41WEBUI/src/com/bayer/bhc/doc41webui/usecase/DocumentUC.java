@@ -147,7 +147,10 @@ public class DocumentUC {
 	private Map<String, Set<String>> getExcludedAttributesByD41Id() {
 		Map<String, Set<String>> excludedByD41Id = new HashMap<String, Set<String>>();
 		for (DocumentType docType : documentTypes.values()) {
-			excludedByD41Id.put(docType.getSapTypeId(), docType.getExcludedAttributes());
+			Set<String> excludedAttributes = docType.getExcludedAttributes();
+			Set<String> allExcludedAttributes = new HashSet<String>(excludedAttributes);
+			allExcludedAttributes.add(Doc41Constants.ATTRIB_NAME_WEBUI_USER);
+			excludedByD41Id.put(docType.getSapTypeId(), allExcludedAttributes);
 		}
 		return excludedByD41Id;
 	}
