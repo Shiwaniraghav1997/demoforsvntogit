@@ -21,6 +21,7 @@ import com.bayer.bhc.doc41webui.common.util.DateRenderer;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.TimeRenderer;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
+import com.bayer.ecim.foundation.basic.ConfigMap;
 
 
 /**
@@ -37,6 +38,9 @@ public class Doc41ControllerAdvice {
 	
 	public static final String DATE_TIME_PATTERN = "dateTimePattern";
 	public static final String DATE_TIME_MOMENT_PATTERN = "dateTimeMomentPattern";
+	
+	public static final String STAGE = "stage";
+	
 	public final static String DOC41_EXCEPTION = "doc41exception";
 	
 	@ModelAttribute
@@ -56,6 +60,11 @@ public class Doc41ControllerAdvice {
 		
 		String dateTimeMomentPattern = generateMomentPattern(dateTimePattern);
 		model.addAttribute(DATE_TIME_MOMENT_PATTERN,dateTimeMomentPattern);
+	}
+	
+	@ModelAttribute(STAGE)
+	public String addStage(){
+		return (String) ConfigMap.get().getSubConfig("common.all").get("stage");
 	}
 	
 	private String generateMaskPattern(String datePattern) {
