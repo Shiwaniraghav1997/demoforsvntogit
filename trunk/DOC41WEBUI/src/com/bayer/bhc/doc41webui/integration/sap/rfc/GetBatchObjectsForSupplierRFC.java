@@ -48,6 +48,7 @@ public class GetBatchObjectsForSupplierRFC extends AbstractDoc41RFC<QMBatchObjec
 				sapInput.setValue(IN_MATERIAL,material);
 				sapInput.setValue(IN_BATCH,batch);
 				sapInput.setValue(IN_ORDER,order);
+				Doc41Log.get().debug(GetBatchObjectsForSupplierRFC.class, null, "prepareCall():attributs are set");
             } else {
                 throw new SAPException(
                         "GetBatchObjectsForSupplierRFC pInputParms list is null", null);
