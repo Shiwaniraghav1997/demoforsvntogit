@@ -1,9 +1,10 @@
-package com.bayer.bhc.doc41webui.usecase.documenttypes;
+package com.bayer.bhc.doc41webui.usecase.documenttypes.qm;
 
 import java.util.Collections;
 import java.util.Set;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
 
 
 public abstract class AbstractDeliveryCertDocumentType implements DocumentType {

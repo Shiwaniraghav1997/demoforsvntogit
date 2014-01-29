@@ -1,4 +1,6 @@
-package com.bayer.bhc.doc41webui.usecase.documenttypes;
+package com.bayer.bhc.doc41webui.usecase.documenttypes.sd;
+
+import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 
 
 public class CMRDocumentType extends SDDocumentType implements UploadDocumentType{

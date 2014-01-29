@@ -18,7 +18,7 @@ import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.container.VendorBatchForm;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.SupplierCOADocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.SupplierCOADocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 @Controller

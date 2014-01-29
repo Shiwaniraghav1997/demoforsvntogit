@@ -1,4 +1,4 @@
-package com.bayer.bhc.doc41webui.usecase.documenttypes;
+package com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,12 +11,16 @@ import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 
-public class LayoutDocumentType implements DownloadDocumentType,
-		UploadDocumentType {
+public abstract class LayoutSupplierDocumentType implements DownloadDocumentType,
+UploadDocumentType{
 	
-	private static final String SAP_OBJECT = "MARA";
-
+	protected static final String SAP_OBJECT = "MARA";
+	
 	@Override
 	public boolean hasCustomerNumber() {
 		return false;
@@ -26,22 +30,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 	public boolean hasVendorNumber() {
 		return true;
 	}
-
-	@Override
-	public String getTypeConst() {
-		return "LAYOUT";
-	}
-
-	@Override
-	public String getSapTypeId() {
-		return "DOC41.49";
-	}
-
-	@Override
-	public String getPermissionUpload() {
-		return "DOC_LAYOUT_UP";
-	}
-
+	
 	@Override
 	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber,
@@ -55,12 +44,7 @@ public class LayoutDocumentType implements DownloadDocumentType,
 		
 		return new CheckForUpdateResult(SAP_OBJECT,null,additionalAttributes);
 	}
-
-	@Override
-	public String getPermissionDownload() {
-		return "DOC_LAYOUT_DOWN";
-	}
-
+	
 	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber, String objectId,
@@ -72,7 +56,6 @@ public class LayoutDocumentType implements DownloadDocumentType,
 		if(deliveryCheck != null){
 			errors.reject(""+deliveryCheck);
 		}
-		
 		Map<String, String> additionalAttributes = new HashMap<String, String>();
 		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
 		
@@ -88,5 +71,4 @@ public class LayoutDocumentType implements DownloadDocumentType,
 	public Set<String> getExcludedAttributes() {
 		return Collections.singleton(Doc41Constants.ATTRIB_NAME_VENDOR);
 	}
-
 }

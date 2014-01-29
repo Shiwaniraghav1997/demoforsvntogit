@@ -19,7 +19,7 @@ import com.bayer.bhc.doc41webui.container.BatchObjectForm;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.domain.QMBatchObject;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.AbstractDeliveryCertDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.AbstractDeliveryCertDocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 @Controller

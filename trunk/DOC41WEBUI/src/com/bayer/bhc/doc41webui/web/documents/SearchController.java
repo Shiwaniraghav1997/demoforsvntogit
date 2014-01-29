@@ -29,9 +29,9 @@ import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.AbstractDeliveryCertDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.PMSupplierDownloadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PMSupplierDownloadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.AbstractDeliveryCertDocumentType;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.StringTool;
 

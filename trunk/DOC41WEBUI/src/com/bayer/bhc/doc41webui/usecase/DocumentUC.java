@@ -48,28 +48,28 @@ import com.bayer.bhc.doc41webui.integration.sap.service.BwRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.AWBDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.ArtworkDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.BOLDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.CMRDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.CMROutDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCountryDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertDownCustomerDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.DeliveryCertUploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DirectDownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.FDACertDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.LayoutDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.PZTecDrawingDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.PackMatSpecDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.ShippersDeclDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.SupplierCOADocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.TecPackDelReqDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.WaybillDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.ArtworkForLayoutSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.LayoutForLayoutSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PZTecDrawingForPMSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PackMatSpecForPMSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.TecPackDelReqForPMSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertDownCountryDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertDownCustomerDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertUploadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.SupplierCOADocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.AWBDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.BOLDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.CMRDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.CMROutDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.FDACertDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.ShippersDeclDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.WaybillDocumentType;
 import com.bayer.ecim.foundation.basic.ConfigMap;
 import com.bayer.ecim.foundation.basic.DateTool;
 import com.bayer.ecim.foundation.basic.InitException;
@@ -103,22 +103,26 @@ public class DocumentUC {
 	
 	public DocumentUC() {
 		documentTypes = new HashMap<String, DocumentType>();
-		addDocumentType(new PackMatSpecDocumentType());
-		addDocumentType(new PZTecDrawingDocumentType());
-		addDocumentType(new CMROutDocumentType());
-		addDocumentType(new ShippersDeclDocumentType());
-		addDocumentType(new BOLDocumentType());
-		addDocumentType(new WaybillDocumentType());
+		
 		addDocumentType(new AWBDocumentType());
-		addDocumentType(new FDACertDocumentType());
-		addDocumentType(new SupplierCOADocumentType());
+		addDocumentType(new BOLDocumentType());
 		addDocumentType(new CMRDocumentType());
+		addDocumentType(new CMROutDocumentType());
+		addDocumentType(new FDACertDocumentType());
+		addDocumentType(new ShippersDeclDocumentType());
+		addDocumentType(new WaybillDocumentType());
+		
 		addDocumentType(new DeliveryCertDownCountryDocumentType());
 		addDocumentType(new DeliveryCertDownCustomerDocumentType());
 		addDocumentType(new DeliveryCertUploadDocumentType());
-		addDocumentType(new ArtworkDocumentType());
-		addDocumentType(new LayoutDocumentType());
-		addDocumentType(new TecPackDelReqDocumentType());
+		addDocumentType(new SupplierCOADocumentType());
+		
+		addDocumentType(new ArtworkForLayoutSupplierDocumentType());
+		addDocumentType(new LayoutForLayoutSupplierDocumentType());
+		
+		addDocumentType(new PackMatSpecForPMSupplierDocumentType());
+		addDocumentType(new PZTecDrawingForPMSupplierDocumentType());
+		addDocumentType(new TecPackDelReqForPMSupplierDocumentType());
 	}
 	
 	private void addDocumentType(DocumentType documentType) {

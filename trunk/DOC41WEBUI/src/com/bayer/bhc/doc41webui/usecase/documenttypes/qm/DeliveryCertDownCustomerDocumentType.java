@@ -1,4 +1,4 @@
-package com.bayer.bhc.doc41webui.usecase.documenttypes;
+package com.bayer.bhc.doc41webui.usecase.documenttypes.qm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,8 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.domain.QMBatchObject;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 

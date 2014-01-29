@@ -1,4 +1,6 @@
-package com.bayer.bhc.doc41webui.usecase.documenttypes;
+package com.bayer.bhc.doc41webui.usecase.documenttypes.sd;
+
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 
 
 public class CMROutDocumentType extends SDDocumentType implements DownloadDocumentType {

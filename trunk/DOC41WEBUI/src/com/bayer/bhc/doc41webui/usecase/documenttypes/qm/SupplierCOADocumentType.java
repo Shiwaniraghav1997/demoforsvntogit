@@ -1,4 +1,4 @@
-package com.bayer.bhc.doc41webui.usecase.documenttypes;
+package com.bayer.bhc.doc41webui.usecase.documenttypes.qm;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,6 +12,8 @@ import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 public class SupplierCOADocumentType implements UploadDocumentType {

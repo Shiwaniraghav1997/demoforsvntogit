@@ -1,4 +1,7 @@
-package com.bayer.bhc.doc41webui.usecase.documenttypes;
+package com.bayer.bhc.doc41webui.usecase.documenttypes.sd;
+
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DirectDownloadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 
 
 public class WaybillDocumentType extends SDDocumentType implements DownloadDocumentType,DirectDownloadDocumentType {

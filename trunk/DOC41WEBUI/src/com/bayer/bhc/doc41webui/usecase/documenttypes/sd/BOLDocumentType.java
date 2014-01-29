@@ -1,4 +1,8 @@
-package com.bayer.bhc.doc41webui.usecase.documenttypes;
+package com.bayer.bhc.doc41webui.usecase.documenttypes.sd;
+
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DirectDownloadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 
 
 public class BOLDocumentType extends SDDocumentType implements DownloadDocumentType,UploadDocumentType,DirectDownloadDocumentType{

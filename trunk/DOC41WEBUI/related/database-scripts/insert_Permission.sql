@@ -290,31 +290,7 @@ INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
 (PERMISSIONNAME,PERMISSIONDESCRIPTION,CODE) VALUES
 ('TopNavDownload','Show TopNav Entry Download','TOPNAV_DOWNLOAD');
 
-INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
-(
-  PERMISSIONNAME,
-  PERMISSIONDESCRIPTION,
-  CODE
-)
-VALUES
-(
-  'DocumentPackagingMaterialSpecification',
-  'Download Packaging Material Specification',
-  'DOC_PMS_DOWN'
-);
 
-INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
-(
-  PERMISSIONNAME,
-  PERMISSIONDESCRIPTION,
-  CODE
-)
-VALUES
-(
-  'DocumentTechnicalDrawingPZ',
-  'Download Technical Drawing PZ',
-  'DOC_PZ_DOWN'
-);
 
 INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
 (
@@ -420,57 +396,7 @@ VALUES
   'DOC_DELCERT_UP'
 );
 
-INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
-(
-  PERMISSIONNAME,
-  PERMISSIONDESCRIPTION,
-  CODE
-)
-VALUES
-(
-  'DocumentArtworkLowRes',
-  'Download Artwork Low Res',
-  'DOC_ARTWORK_DOWN'
-);
 
-INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
-(
-  PERMISSIONNAME,
-  PERMISSIONDESCRIPTION,
-  CODE
-)
-VALUES
-(
-  'DocumentLayoutHighResUpload',
-  'Upload Layout High Res',
-  'DOC_LAYOUT_UP'
-);
-
-INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
-(
-  PERMISSIONNAME,
-  PERMISSIONDESCRIPTION,
-  CODE
-)
-VALUES
-(
-  'DocumentLayoutHighRes',
-  'Download Layout High Res',
-  'DOC_LAYOUT_DOWN'
-);
-
-INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
-(
-  PERMISSIONNAME,
-  PERMISSIONDESCRIPTION,
-  CODE
-)
-VALUES
-(
-  'DocumentTechPackandDelivRequirements',
-  'Download Tech. Pack. and Deliv. Requirements',
-  'DOC_TPACKDELREQ_DOWN'
-);
 
 INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
 (
@@ -511,21 +437,6 @@ VALUES
   'DOC_DELCERT_DOWN_CUSTOMER'
 );
 
-
-
-INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
-(
-  PERMISSIONNAME,
-  PERMISSIONDESCRIPTION,
-  CODE
-)
-VALUES
-(
-  'DocumentAirWaybillDirectDown',
-  'Download Air Waybill DirectDown',
-  'DOC_AWB_DIRECT_DOWN'
-);
-
 INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
 (
   PERMISSIONNAME,
@@ -550,6 +461,19 @@ VALUES
   'DocumentWaybillDirectDown',
   'Download Waybill DirectDown',
   'DOC_WB_DIRECT_DOWN'
+);
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'DocumentAirWaybillDirectDown',
+  'Download Air Waybill DirectDown',
+  'DOC_AWB_DIRECT_DOWN'
 );
 
 INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
@@ -669,6 +593,8 @@ VALUES
   'NAV_APPLOGS'
 );
 
+--PTMS Layout Supplier
+
 INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
 (
   PERMISSIONNAME,
@@ -677,7 +603,143 @@ INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
 )
 VALUES
 (
-  'DocumentArtworkLowResUpload',
-  'Upload Artwork Low Res',
-  'DOC_ARTWORK_UP'
+  'DocumentArtworkLowResUploadLS',
+  'Upload Artwork Low Res LS',
+  'DOC_ARTWORK_UP_LS'
+);
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'DocumentLayoutHighResUploadLS',
+  'Upload Layout High Res LS',
+  'DOC_LAYOUT_UP_LS'
+);
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'DocumentArtworkLowResLS',
+  'Download Artwork Low Res LS',
+  'DOC_ARTWORK_DOWN_LS'
+);
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'DocumentLayoutHighResLS',
+  'Download Layout High Res LS',
+  'DOC_LAYOUT_DOWN_LS'
+);
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'DocumentPackagingMaterialSpecificationLS',
+  'Download Packaging Material Specification LS',
+  'DOC_PMS_DOWN_LS'
+);
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'DocumentTechnicalDrawingPZLS',
+  'Download Technical Drawing PZ LS',
+  'DOC_PZ_DOWN_LS'
+);
+
+
+
+--PTMS PM Supplier
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'DocumentArtworkLowResPM',
+  'Download Artwork Low Res PM',
+  'DOC_ARTWORK_DOWN_PM'
+);
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'DocumentLayoutHighResPM',
+  'Download Layout High Res PM',
+  'DOC_LAYOUT_DOWN_PM'
+);
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'DocumentPackagingMaterialSpecificationPM',
+  'Download Packaging Material Specification PM',
+  'DOC_PMS_DOWN_PM'
+);
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'DocumentTechnicalDrawingPZPM',
+  'Download Technical Drawing PZ PM',
+  'DOC_PZ_DOWN_PM'
+);
+
+
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'DocumentTechPackandDelivRequirementsPM',
+  'Download Tech. Pack. and Deliv. Requirements PM',
+  'DOC_TPACKDELREQ_DOWN_PM'
 );
