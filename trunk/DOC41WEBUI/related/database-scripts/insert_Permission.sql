@@ -668,3 +668,16 @@ VALUES
   'Show Navigation Application Logs',
   'NAV_APPLOGS'
 );
+
+INSERT INTO DOC41WEB_FDT.UM_PERMISSIONS
+(
+  PERMISSIONNAME,
+  PERMISSIONDESCRIPTION,
+  CODE
+)
+VALUES
+(
+  'DocumentArtworkLowResUpload',
+  'Upload Artwork Low Res',
+  'DOC_ARTWORK_UP'
+);

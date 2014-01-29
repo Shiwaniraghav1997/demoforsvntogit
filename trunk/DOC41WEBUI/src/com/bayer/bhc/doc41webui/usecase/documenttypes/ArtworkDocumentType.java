@@ -12,7 +12,10 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 
-public class ArtworkDocumentType implements DownloadDocumentType {
+public class ArtworkDocumentType implements DownloadDocumentType,
+UploadDocumentType {
+	
+	private static final String SAP_OBJECT = "MARA";
 
 	@Override
 	public boolean hasCustomerNumber() {
@@ -32,6 +35,25 @@ public class ArtworkDocumentType implements DownloadDocumentType {
 	@Override
 	public String getSapTypeId() {
 		return "DOC41.48";
+	}
+	
+	@Override
+	public String getPermissionUpload() {
+		return "DOC_ARTWORK_UP";
+	}
+
+	@Override
+	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
+			String customerNumber, String vendorNumber,
+			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
+			throws Doc41BusinessException {
+		Map<String, String> additionalAttributes = new HashMap<String, String>();
+		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
+		
+		// no RFC check needed
+
+		
+		return new CheckForUpdateResult(SAP_OBJECT,null,additionalAttributes);
 	}
 
 	@Override
