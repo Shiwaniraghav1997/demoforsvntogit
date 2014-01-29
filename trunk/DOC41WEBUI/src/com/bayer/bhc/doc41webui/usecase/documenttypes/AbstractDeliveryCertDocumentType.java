@@ -24,11 +24,8 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 	public static final String VIEW_ATTRIB_DELIVERY_NUMBER = "delivery";
 	public static final String VIEW_ATTRIB_MATERIAL_TEXT = "materialText";
 	
+	protected static final String SAP_OBJECT_BATCH_OBJ = "BUS1001002";
 	
-	
-	//TODO SAP OBJECT???
-
-
 	@Override
 	public String getSapTypeId() {
 		return "DOC41.39";

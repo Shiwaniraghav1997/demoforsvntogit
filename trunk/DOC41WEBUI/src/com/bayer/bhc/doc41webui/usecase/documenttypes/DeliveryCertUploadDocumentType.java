@@ -66,9 +66,7 @@ public class DeliveryCertUploadDocumentType extends
 			errors.reject("MoreThanOneBatchObject");
 		}
 		
-		
-		//TODO SAP OBJECT
-		return new CheckForUpdateResult(null,null,null);
+		return new CheckForUpdateResult(SAP_OBJECT_BATCH_OBJ,null,null);
 	}
 
 }
