@@ -142,8 +142,7 @@ public class DocumentUC {
 		try {
 			if(docMetadataContainer==null){
 				Set<String> languageCodes = translationsRepository.getLanguageCodes().keySet();
-				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes,getSupportedSapDocTypes(),
-						getExcludedAttributesByD41Id());
+				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes,getSupportedSapDocTypes());
 			}
 			String sapDocType = getDocType(type).getSapTypeId();
 			DocMetadata docMetadata = docMetadataContainer.get(sapDocType);
@@ -154,17 +153,6 @@ public class DocumentUC {
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("getMetadata",e);
 		}
-	}
-
-	private Map<String, Set<String>> getExcludedAttributesByD41Id() {
-		Map<String, Set<String>> excludedByD41Id = new HashMap<String, Set<String>>();
-		for (DocumentType docType : documentTypes.values()) {
-			Set<String> excludedAttributes = docType.getExcludedAttributes();
-			Set<String> allExcludedAttributes = new HashSet<String>(excludedAttributes);
-			allExcludedAttributes.add(Doc41Constants.ATTRIB_NAME_WEBUI_USER);
-			excludedByD41Id.put(docType.getSapTypeId(), allExcludedAttributes);
-		}
-		return excludedByD41Id;
 	}
 
 	private Set<String> getSupportedSapDocTypes() {
@@ -192,8 +180,22 @@ public class DocumentUC {
 	
 	public List<Attribute> getAttributeDefinitions(String doctype,boolean filterFileName) throws Doc41BusinessException{
 		DocMetadata metadata = getMetadata(doctype);
-		List<Attribute> attributes = metadata.getAttributes(filterFileName);
-		return attributes;
+		List<Attribute> kgsAttributes = metadata.getAttributes();
+		DocumentType documentType = documentTypes.get(doctype);
+		Set<String> excludedAttributes = documentType.getExcludedAttributes();
+		List<Attribute> filteredAttributes = new ArrayList<Attribute>();
+		for (Attribute attribute : kgsAttributes) {
+			String name = attribute.getName();
+			if(excludedAttributes==null || !excludedAttributes.contains(name)){
+				boolean fileNameFilterCheck = !filterFileName || !StringTool.equals(name, Doc41Constants.ATTRIB_NAME_FILENAME);
+				boolean globalExcludeCheck = !StringTool.equals(name, Doc41Constants.ATTRIB_NAME_WEBUI_USER);
+				if(fileNameFilterCheck && globalExcludeCheck){
+					filteredAttributes.add(attribute);
+				}
+			}
+		}
+		//Doc41Constants.ATTRIB_NAME_FILENAME
+		return filteredAttributes;
 	}
 	
 	public List<DeliveryOrShippingUnit> getOpenDeliveries(String type, String carrier) throws Doc41BusinessException {
@@ -415,7 +417,7 @@ public class DocumentUC {
 
 
 	private Map<Integer, String> getSeqToKeyFromDefinitions(String type) throws Doc41BusinessException {
-		List<Attribute> attributeDefinitions = getMetadata(type).getAttributesWithExcluded();
+		List<Attribute> attributeDefinitions = getMetadata(type).getAttributes();
 		Map<Integer, String> attributeSeqToKey = new HashMap<Integer, String>();
 		for (Attribute attribute : attributeDefinitions) {
 			String key = attribute.getName();
@@ -663,7 +665,7 @@ public class DocumentUC {
 	}
 	
 	public void checkAttribsWithCustomizing(Map<String, String> attributeValues,String type) throws Doc41BusinessException {
-		List<Attribute> attributeDefinitions = getMetadata(type).getAttributesWithExcluded();
+		List<Attribute> attributeDefinitions = getMetadata(type).getAttributes();
 		
 		Set<String> definedAttribKeys = new HashSet<String>();
 		for (Attribute attribute : attributeDefinitions) {

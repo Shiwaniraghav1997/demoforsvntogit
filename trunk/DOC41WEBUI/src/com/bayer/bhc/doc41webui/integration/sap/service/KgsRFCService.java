@@ -37,8 +37,8 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_GET_DOC_URL = "GetDocUrl";
 	private static final String RFC_NAME_GET_DOC_INFO = "GetDocInfo";
 	
-	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes,Set<String> supportedSapDocTypes,
-			Map<String,Set<String>> excludedAttributesByD41Id) throws Doc41ServiceException {
+	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes,Set<String> supportedSapDocTypes)
+			throws Doc41ServiceException {
 		Map<String, DocMetadata> metadataMap = new HashMap<String, DocMetadata>();
 		//get doctypes
 		List<DocTypeDef> docTypeDefs = getDocTypeDefs();
@@ -53,8 +53,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 					metadata.setContentRepository(getContentRepo(d41id));
 					//attributes for all languages
 					List<Attribute> attributes = getAttributes(d41id,languageCodes);
-					Set<String> excludedAttributes = excludedAttributesByD41Id.get(d41id);
-					metadata.initAttributes(attributes,excludedAttributes);
+					metadata.setAttributes(attributes);
 					//predefined attrib values
 					Map<String,List<String>> attrValues = getAttrValues(d41id);
 					for (Attribute attribute : attributes) {
