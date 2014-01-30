@@ -3,13 +3,13 @@ package com.bayer.bhc.doc41webui.domain;
 import java.util.List;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 public class DocMetadata {
 	
 	private DocTypeDef docDef;
 	private List<Attribute> attributes;
 	private ContentRepositoryInfo contentRepository;
-	private boolean isFileNameAttribAvailable;
 	
 	public DocTypeDef getDocDef() {
 		return docDef;
@@ -33,7 +33,13 @@ public class DocMetadata {
 	}
 	
 	public boolean isFileNameAttribAvailable() {
-		return isFileNameAttribAvailable;
+		for (Attribute attribute : attributes) {
+			String name = attribute.getName();
+			if(StringTool.equals(name, getFileNameAttibKey())){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public DocMetadata(DocTypeDef docDef){
@@ -44,8 +50,7 @@ public class DocMetadata {
 	public String toString() {
 		return "DocMetadata [docDef=" + docDef + ", attributes="
 				+ attributes + ", contentRepository="
-				+ contentRepository + ", isFileNameAttribAvailable="
-				+ isFileNameAttribAvailable + "]";
+				+ contentRepository + "]";
 	}
 
 	public String getFileNameAttibKey() {
