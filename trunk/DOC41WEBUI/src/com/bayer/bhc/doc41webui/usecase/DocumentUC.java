@@ -56,6 +56,8 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.ArtworkForLayoutSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.LayoutForLayoutSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.ArtworkForPMSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.LayoutForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PZTecDrawingForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PackMatSpecForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.TecPackDelReqForPMSupplierDocumentType;
@@ -120,6 +122,8 @@ public class DocumentUC {
 		addDocumentType(new ArtworkForLayoutSupplierDocumentType());
 		addDocumentType(new LayoutForLayoutSupplierDocumentType());
 		
+		addDocumentType(new ArtworkForPMSupplierDocumentType());
+		addDocumentType(new LayoutForPMSupplierDocumentType());
 		addDocumentType(new PackMatSpecForPMSupplierDocumentType());
 		addDocumentType(new PZTecDrawingForPMSupplierDocumentType());
 		addDocumentType(new TecPackDelReqForPMSupplierDocumentType());

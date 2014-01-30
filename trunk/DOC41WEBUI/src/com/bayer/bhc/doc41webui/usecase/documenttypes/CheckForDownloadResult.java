@@ -21,4 +21,12 @@ public class CheckForDownloadResult {
 	public List<String> getAdditionalObjectIds() {
 		return additionalObjectIds;
 	}
+	
+	public void setAdditionalAttributes(Map<String, String> additionalAttributes) {
+		this.additionalAttributes = additionalAttributes;
+	}
+	
+	public void setAdditionalObjectIds(List<String> additionalObjectIds) {
+		this.additionalObjectIds = additionalObjectIds;
+	}
 }
