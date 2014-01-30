@@ -13,11 +13,9 @@ import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
 
-public abstract class LayoutSupplierDocumentType implements DownloadDocumentType,
-UploadDocumentType{
+public abstract class LayoutSupplierDocumentType implements DocumentType{
 	
 	protected static final String SAP_OBJECT = "MARA";
 	
@@ -31,7 +29,7 @@ UploadDocumentType{
 		return true;
 	}
 	
-	@Override
+//	@Override
 	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)
@@ -45,7 +43,7 @@ UploadDocumentType{
 		return new CheckForUpdateResult(SAP_OBJECT,null,additionalAttributes);
 	}
 	
-	@Override
+//	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber, String objectId,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {

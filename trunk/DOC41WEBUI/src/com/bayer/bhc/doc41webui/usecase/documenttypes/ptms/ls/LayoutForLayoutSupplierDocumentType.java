@@ -1,7 +1,11 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls;
 
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 
-public class LayoutForLayoutSupplierDocumentType extends LayoutSupplierDocumentType {
+
+public class LayoutForLayoutSupplierDocumentType extends LayoutSupplierDocumentType
+	implements UploadDocumentType, DownloadDocumentType {
 	
 	@Override
 	public String getTypeConst() {
