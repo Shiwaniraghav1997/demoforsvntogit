@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.domain;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,13 @@ public class Attribute implements Serializable {
 			return translations.get(language);
 		}
 		return "["+name+"]";
+	}
+	
+	public Map<String, String> getTranslations() {
+		if(translations==null){
+			return null;
+		}
+		return Collections.unmodifiableMap(translations);
 	}
 	
 	public List<String> getValues() {

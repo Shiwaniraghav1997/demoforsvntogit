@@ -50,6 +50,7 @@
 			  	<doc41:navEntry href="monitoring/monitoringOverview" title="Interface Monitoring" id="interfaceMonitoring" permission="NAV_MONITORING"/>
 			  	<doc41:navEntry href="maintenance/profilePermissions" title="Profile Permissions" id="profilePermissions" permission="NAV_PROFILEPERMISSIONS"/>
 			  	<doc41:navEntry href="maintenance/rfcMetadata" title="RFC Metadata" id="rfcMetadata" permission="NAV_RFCMETADATA"/>
+			  	<doc41:navEntry href="maintenance/kgsCustomizing" title="KGS Customizing" id="kgsCustomizing" permission="NAV_KGSCUSTOMIZING"/>
 			  	<doc41:navEntry href="maintenance/untranslatedLabels" title="Untranslated Labels" id="untranslatedLabels" permission="NAV_UNTRANSLATEDLABELS"/>
 			  </doc41:topNavEntry>
 			  

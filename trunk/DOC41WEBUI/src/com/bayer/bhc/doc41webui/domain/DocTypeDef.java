@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.domain;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,12 @@ public class DocTypeDef {
 			return null;
 		}
 		return translations.get(language);
+	}
+	public Map<String, String> getTranslations() {
+		if(translations==null){
+			return null;
+		}
+		return Collections.unmodifiableMap(translations);
 	}
 	public void setTranslations(Map<String, String> translations) {
 		this.translations = translations;

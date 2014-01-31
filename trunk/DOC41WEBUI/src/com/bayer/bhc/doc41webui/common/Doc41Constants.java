@@ -10,6 +10,7 @@ public interface Doc41Constants {
     public static final String PERMISSION_TRANSLATION				= "TRANSLATION";
     public static final String PERMISSION_PROFILEPERMISSIONS		= "PROFILEPERMISSIONS";
     public static final String PERMISSION_RFCMETADATA				= "RFCMETADATA";
+    public static final String PERMISSION_KGSCUSTOMIZING			= "KGSCUSTOMIZING";
     public static final String PERMISSION_UNTRANSLATEDLABELS		= "UNTRANSLATEDLABELS";
     public static final String PERMISSION_USER_CREATE				= "USER_CREATE";
     public static final String PERMISSION_USER_EDIT					= "USER_EDIT";

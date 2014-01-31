@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,6 +33,7 @@ import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.logging.Doc41LogEntry;
 import com.bayer.bhc.doc41webui.common.util.UrlParamCrypt;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
+import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.ContentRepositoryInfo;
 import com.bayer.bhc.doc41webui.domain.DeliveryOrShippingUnit;
@@ -138,21 +140,56 @@ public class DocumentUC {
 		documentTypes.put(typeConst, documentType);
 	}
 
-	public synchronized DocMetadata getMetadata(String type) throws Doc41BusinessException{
-		try {
+	public DocMetadata getMetadata(String type) throws Doc41BusinessException{
+		String sapDocType = getDocType(type).getSapTypeId();
+		DocMetadata docMetadata = getDocMetadataBySapDocType(sapDocType);
+		if(docMetadata==null){
+			throw new Doc41BusinessException("document type "+type+"/"+sapDocType+" not found in SAP");
+		}
+		return docMetadata;
+	}
+
+	private synchronized Map<String, DocMetadata> getDocMetadataContainer() throws Doc41BusinessException {
+		try{
 			if(docMetadataContainer==null){
 				Set<String> languageCodes = translationsRepository.getLanguageCodes().keySet();
 				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes,getSupportedSapDocTypes());
 			}
-			String sapDocType = getDocType(type).getSapTypeId();
-			DocMetadata docMetadata = docMetadataContainer.get(sapDocType);
-			if(docMetadata==null){
-				throw new Doc41BusinessException("document type "+type+"/"+sapDocType+" not found in SAP");
-			}
-			return docMetadata;
+			return docMetadataContainer;
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("getMetadata",e);
 		}
+	}
+
+	public DocMetadata getDocMetadataBySapDocType(String sapDocType) throws Doc41BusinessException {
+		Map<String, DocMetadata> mdContainer = getDocMetadataContainer();
+		DocMetadata docMetadata = mdContainer.get(sapDocType);
+		return docMetadata;
+	}
+	
+	private Set<String> getSapDocTypesFromMetadata() throws Doc41BusinessException {
+		Map<String, DocMetadata> mdContainer = getDocMetadataContainer();
+		return mdContainer.keySet();
+	}
+	
+	public List<SelectionItem> getDocMetadataSelectionItems() throws Doc41BusinessException {
+		List<SelectionItem> items = new ArrayList<SelectionItem>();
+		
+		for (String sapDocType : getSapDocTypesFromMetadata()) {
+			DocMetadata docMetadata = getDocMetadataBySapDocType(sapDocType);
+			DocTypeDef docDef = docMetadata.getDocDef();
+			String description = docDef.getDescription();
+			
+			SelectionItem item = new SelectionItem(sapDocType,""+sapDocType+": "+description);
+			items.add(item);
+		}
+		Collections.sort(items, new Comparator<SelectionItem>() {
+			@Override
+			public int compare(SelectionItem o1, SelectionItem o2) {
+				return o1.getLabel().compareTo(o2.getLabel());
+			}
+		});
+		return items ;
 	}
 
 	private Set<String> getSupportedSapDocTypes() {
@@ -688,6 +725,5 @@ public class DocumentUC {
 		}
 		
 	}
-
 
 }
