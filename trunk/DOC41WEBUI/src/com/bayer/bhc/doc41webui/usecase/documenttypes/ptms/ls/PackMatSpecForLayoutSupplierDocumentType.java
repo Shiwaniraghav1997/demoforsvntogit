@@ -7,17 +7,17 @@ implements DownloadDocumentType{
 
 	@Override
 	public String getTypeConst() {
-		return "TPACKDELREQ_LS";
+		return "PMS_LS";
 	}
 
 	@Override
 	public String getSapTypeId() {
-		return "DOC41.51";
+		return "DOC41.02";
 	}
 
 	@Override
 	public String getPermissionDownload() {
-		return "DOC_TPACKDELREQ_DOWN_LS";
+		return "DOC_PMS_DOWN_LS";
 	}
 	
 }
