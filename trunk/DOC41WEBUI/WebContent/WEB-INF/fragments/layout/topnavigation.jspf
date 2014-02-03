@@ -14,8 +14,8 @@
 			  	<doc41:navEntry href="documents/sdupload?type=CMR" title="CMR Incoming" id="CMRUP" cssclass="" permission="DOC_CMR_UP"/>
 			  	<doc41:navEntry href="documents/supcoaupinput?type=SUPCOA" title="Supplier CoA" id="SUPCOAUP" cssclass="" permission="DOC_SUPCOA_UP"/>
 			  	<doc41:navEntry href="documents/delcertupinput?type=DELCERT" title="Delivery Certificate" id="DELCERTUP" cssclass="" permission="DOC_DELCERT_UP"/>
-			  	<doc41:navEntry href="documents/ptupload?type=ARTWORK_LS" title="Artwork Low Res" id="ARTWORKUP" cssclass="" permission="DOC_ARTWORK_UP_LS"/>
-			  	<doc41:navEntry href="documents/ptupload?type=LAYOUT_LS" title="Layout High Res" id="LAYOUTUP" cssclass="" permission="DOC_LAYOUT_UP_LS"/>
+			  	<doc41:navEntry href="documents/ptupload?type=ARTWORK_LS" title="Artwork Low Res" id="ARTWORK_LSUP" cssclass="" permission="DOC_ARTWORK_UP_LS"/>
+			  	<doc41:navEntry href="documents/ptupload?type=LAYOUT_LS" title="Layout High Res" id="LAYOUT_LSUP" cssclass="" permission="DOC_LAYOUT_UP_LS"/>
 			  </doc41:topNavEntry>
 			  
 			  <doc41:topNavEntry href="#" title="navDownload" id="download" permission="TOPNAV_DOWNLOAD">
@@ -34,7 +34,7 @@
 			  	<doc41:navEntry href="documents/searchpmsupplier?type=ARTWORK_PM" title="Artwork Low Res for PM Supplier" id="ARTWORK_PMDOWN" cssclass="" permission="DOC_ARTWORK_DOWN_PM"/>
 			  	<doc41:navEntry href="documents/searchpmsupplier?type=LAYOUT_PM" title="Layout High Res for PM Supplier" id="LAYOUT_PMDOWN" cssclass="" permission="DOC_LAYOUT_DOWN_PM"/>
 			  	<doc41:navEntry href="documents/searchpmsupplier?type=PMS_PM" title="Packaging Material Specification for PM Supplier" id="PMS_PMDOWN" cssclass="first-child" permission="DOC_PMS_DOWN_PM"/>
-			  	<doc41:navEntry href="documents/searchpmsupplier?type=PZ_PM" title="Technical Drawing PZ for PM Supplier" id="PZDOWN_PM" cssclass="" permission="DOC_PZ_DOWN_PM"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=PZ_PM" title="Technical Drawing PZ for PM Supplier" id="PZ_PMDOWN" cssclass="" permission="DOC_PZ_DOWN_PM"/>
 			  	<doc41:navEntry href="documents/searchpmsupplier?type=TPACKDELREQ_PM" title="Tech. Pack. and Deliv. Requirements for PM Supplier" id="TPACKDELREQ_PMDOWN" cssclass="" permission="DOC_TPACKDELREQ_DOWN_PM"/>
 			  </doc41:topNavEntry>
 			  
