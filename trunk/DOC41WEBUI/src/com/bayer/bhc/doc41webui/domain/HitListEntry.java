@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +60,7 @@ public class HitListEntry implements Serializable {
 		this.documentClass = documentClass;
 	} 
 	public void setCustomizedValues(String[] customizedValues) {
-		this.customizedValues = customizedValues;
+		this.customizedValues = Arrays.copyOf(customizedValues, customizedValues.length);
 	}
 	public Map<String, String> getCustomizedValuesByKey() {
 		return customizedValuesByKey;

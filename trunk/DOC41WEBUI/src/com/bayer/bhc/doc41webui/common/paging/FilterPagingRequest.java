@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 package com.bayer.bhc.doc41webui.common.paging;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,8 +71,8 @@ public class FilterPagingRequest extends PagingRequest {
 		public FilterParameters(String[] parameterNames,
 				Object[] parameterValues) {
 			super();
-			this.parameterNames = parameterNames;
-			this.parameterValues = parameterValues;
+			this.parameterNames = Arrays.copyOf(parameterNames, parameterNames.length) ;
+			this.parameterValues = Arrays.copyOf(parameterValues, parameterValues.length);
 		}
     	public String[] getParameterNames() {
 			return parameterNames;
