@@ -56,7 +56,7 @@ public class DisplayTextRendererTag extends TagSupport {
 			printer.print(tmpOut);
 		} catch (IOException e) {
 			throw new JspException("unable to render the displaytext "
-					+ e.getMessage());
+					+ e.getMessage(),e);
 		}
 		return super.doEndTag();
 	}
