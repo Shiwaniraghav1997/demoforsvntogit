@@ -13,6 +13,8 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.SAPPrice;
 
 /**
@@ -63,7 +65,8 @@ public class AmountRendererTag extends NumberRendererTag {
                 	displayCurrency(price.getCurrency(), printer);
                 	try {
                 		displayNumber(price.getRate().divide(price.getConditionPricingUnit(), BigDecimal.ROUND_HALF_UP), printer);
-					} catch (Exception e) {
+					} catch (IOException e) {
+					    Doc41Log.get().error(getClass(), UserInSession.getCwid(), e);
 						displayNumber(price.getRate(), printer);
 					}
                 	
