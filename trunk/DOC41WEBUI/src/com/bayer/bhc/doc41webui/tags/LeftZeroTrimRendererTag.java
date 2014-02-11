@@ -39,7 +39,7 @@ public class LeftZeroTrimRendererTag extends TagSupport {
 			} catch (IOException e) {
 				throw new JspException(
 						"unable to render the trimmed text value "
-								+ e.getMessage());
+								+ e.getMessage(),e);
 			}
 		}
 		return super.doEndTag();
