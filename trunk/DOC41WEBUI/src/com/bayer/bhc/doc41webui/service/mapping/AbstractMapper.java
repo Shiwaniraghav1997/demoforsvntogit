@@ -197,7 +197,7 @@ public abstract class AbstractMapper {
         }
         try {
             return Integer.parseInt(p);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             return 0;
         }
     }
