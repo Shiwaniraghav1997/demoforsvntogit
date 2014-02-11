@@ -206,8 +206,8 @@ public class SAPSingleton extends Singleton {
 	    String v = getMapParm( pMap, pPrefix, pParm, (String)null, pIsObligatory );
 	    try {
 	        return ( v == null ) ? pDefault : Integer.parseInt( v );
-	    } catch ( Exception mEx ) {
-		throw new InitException( "Configuration error reading property '" + pPrefix + pParm + "', integer property is invalid: '" + v +"'" );
+	    } catch ( NumberFormatException mEx ) {
+	        throw new InitException( "Configuration error reading property '" + pPrefix + pParm + "', integer property is invalid: '" + v +"'" );
 	    }
 	}
 
