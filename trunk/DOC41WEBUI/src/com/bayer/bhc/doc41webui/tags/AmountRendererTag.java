@@ -76,7 +76,7 @@ public class AmountRendererTag extends NumberRendererTag {
 	        	displayCurrency(currency, printer);
 	        }
         } catch (IOException e) {
-            throw new JspException("unable to render amount "+e.getMessage());
+            throw new JspException("unable to render amount "+e.getMessage(),e);
         }
         return TagSupport.EVAL_PAGE;
     }
