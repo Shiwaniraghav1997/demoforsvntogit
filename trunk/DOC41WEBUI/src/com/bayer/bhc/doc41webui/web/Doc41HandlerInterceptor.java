@@ -211,6 +211,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 					}
 				} catch (Doc41BusinessException e) {
 					Doc41Log.get().error(this.getClass(), requestCwid, "cwid couldn't be authenticated");
+					Doc41Log.get().error(this.getClass(), requestCwid, e);
 				}
 			}
 		}
@@ -228,6 +229,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 				}
 			} catch (Doc41BusinessException e) {
 				Doc41Log.get().error(this.getClass(), cwid, "no user found");
+				Doc41Log.get().error(this.getClass(), cwid, e);
 				user = null;
 			}
 		}
@@ -280,6 +282,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			Doc41Log.get().error(
 					this.getClass(),
 					pUser.getCwid(),"Problem reading SessionData:"+e1.getMessage());
+			Doc41Log.get().error(this.getClass(), pUser.getCwid(), e1);
 		}
 		if (dbSessionDC == null) {
 			// session not in DB
@@ -319,6 +322,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 									this.getClass(),
 									pUser.getCwid(),
 									"Reached end of session data.");
+							Doc41Log.get().error(this.getClass(), pUser.getCwid(), e);
 						}
 						if (attribName == null){
 							break;
@@ -337,7 +341,8 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 					Doc41Log.get().error(
 							this.getClass(),
 							pUser.getCwid(),
-							"Session object could not be completely restored: "+e.getMessage());					
+							"Session object could not be completely restored: "+e.getMessage());	
+					Doc41Log.get().error(this.getClass(), pUser.getCwid(), e);
 				}
 				finally {
 					if (oIn !=null){
@@ -396,12 +401,14 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			} catch (Doc41TechnicalException e1) {
 				Doc41Log.get().error(this.getClass(), pUser.getCwid(),
 						"Problem persisting SessionData:" + e1.getMessage());
+				Doc41Log.get().error(this.getClass(), pUser.getCwid(), e1);
 			}
 		} catch (Exception e){
 			Doc41Log.get().error(
 					this.getClass(),
 					pUser.getCwid(),
-					"Session object could not be persisted: "+e.getMessage());								
+					"Session object could not be persisted: "+e.getMessage());		
+			Doc41Log.get().error(this.getClass(), pUser.getCwid(), e);
 		} finally {
 			if (outStream != null) {
 				outStream.close();

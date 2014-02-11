@@ -28,7 +28,7 @@ public class PagerTag extends TagSupport {
 			printer.println("	</select>");
 			printer.println("</div>");
 		} catch (IOException e) {
-			throw new JspException("unable to render PagerTag "+e.getMessage());
+			throw new JspException("unable to render PagerTag "+e.getMessage(),e);
 		}
 		
 		return EVAL_PAGE;

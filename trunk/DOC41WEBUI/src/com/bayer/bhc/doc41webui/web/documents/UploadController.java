@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UploadForm;
@@ -148,6 +149,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 			String typeName=tags.getTag(type);
 			return typeName;
 		} catch (BATranslationsException e) {
+		    Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), e);
 			return "["+type+"]";
 		}
 	}

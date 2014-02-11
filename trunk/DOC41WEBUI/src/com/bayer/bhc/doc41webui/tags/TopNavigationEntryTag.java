@@ -79,7 +79,7 @@ public class TopNavigationEntryTag extends TagSupport {
 	    		   return SKIP_BODY;
 	    	   }
 	        } catch (Exception e) {
-	            throw new JspException("unable to render navigation entry "+e.getMessage());
+	            throw new JspException("unable to render navigation entry "+e.getMessage(),e);
 	        }
 	}
 	
@@ -90,7 +90,7 @@ public class TopNavigationEntryTag extends TagSupport {
     		   displayEndTag();
     	   }
         } catch (Exception e) {
-            throw new JspException("unable to render navigation entry "+e.getMessage());
+            throw new JspException("unable to render navigation entry "+e.getMessage(),e);
         }
         return EVAL_PAGE;
 	}

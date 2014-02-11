@@ -18,18 +18,14 @@ public class SysParamDAO extends AbstractDAOImpl {
 	private static final String GET_OID					= "getOID";
 	
 	public MDSysParamDC getSysParamDC(String sysParamName) throws Doc41TechnicalException {
-		try {
-			String[] parameterNames			= { "PARAM_NAME" };
-	        Object[] parameterValues		= { sysParamName };
-	        String templateName				= GET_SYS_PARAMETER;
-	        Class<MDSysParamDC> dcClass		= MDSysParamDC.class;        
-	        
-	        MDSysParamDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
-			
-			return dc;
-		} catch (Exception e) {
-			throw new Doc41TechnicalException(this.getClass(), "getSysParamDC", e);
-		}
+		String[] parameterNames			= { "PARAM_NAME" };
+        Object[] parameterValues		= { sysParamName };
+        String templateName				= GET_SYS_PARAMETER;
+        Class<MDSysParamDC> dcClass		= MDSysParamDC.class;        
+        
+        MDSysParamDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
+		
+		return dc;
 	}
 	
 	public MDSysParamDC store(MDSysParamDC sysParamDC) throws Doc41TechnicalException {
@@ -37,17 +33,13 @@ public class SysParamDAO extends AbstractDAOImpl {
 	}
 	
 	public Long getOID() throws Doc41TechnicalException {
-		try {
-			String[] parameterNames			= {  };
-	        Object[] parameterValues		= {  };
-	        String templateName				= GET_OID;
-	        Class<MDSysParamDC> dcClass		= MDSysParamDC.class;        
-	        
-	        MDSysParamDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
-			Long oid		= dc.getObjectID();
-			return oid;
-		} catch (Exception e) {
-			throw new Doc41TechnicalException(this.getClass(), "getOID", e);
-		}
+		String[] parameterNames			= {  };
+        Object[] parameterValues		= {  };
+        String templateName				= GET_OID;
+        Class<MDSysParamDC> dcClass		= MDSysParamDC.class;        
+        
+        MDSysParamDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
+		Long oid		= dc.getObjectID();
+		return oid;
 	}
 }

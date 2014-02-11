@@ -111,7 +111,7 @@ public class OptionsTag extends TagSupport {
                     } 
                 }
             } catch (IOException e) {
-                throw new JspException("unable to render options "+e.getMessage());
+                throw new JspException("unable to render options "+e.getMessage(),e);
             }
         }
         return TagSupport.EVAL_PAGE;

@@ -35,7 +35,7 @@ public class StageInfoTag extends TagSupport {
 		try {
 			printer.print(stageInfo);
 		} catch (IOException e) {
-			throw new JspException("unable to render StageInfoTag "+e.getMessage());
+			throw new JspException("unable to render StageInfoTag "+e.getMessage(),e);
 		}
 		
 		return EVAL_PAGE;

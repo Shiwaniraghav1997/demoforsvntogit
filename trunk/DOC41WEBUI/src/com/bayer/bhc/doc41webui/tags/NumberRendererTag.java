@@ -66,7 +66,7 @@ public class NumberRendererTag extends TagSupport {
                     printer.print(number.toString());
                 }
             } catch (IOException e) {
-                throw new JspException("unable to render numbers "+e.getMessage());
+                throw new JspException("unable to render numbers "+e.getMessage(),e);
             }
         }
         return TagSupport.EVAL_PAGE;

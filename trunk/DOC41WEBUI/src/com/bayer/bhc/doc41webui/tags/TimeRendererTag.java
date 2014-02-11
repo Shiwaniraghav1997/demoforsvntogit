@@ -42,7 +42,7 @@ public class TimeRendererTag extends TagSupport {
                 printer.print(date.toString());
             }        
         } catch (IOException e) {
-            throw new JspException("unable to render the time "+e.getMessage());
+            throw new JspException("unable to render the time "+e.getMessage(),e);
         }
 
         return super.doEndTag();
