@@ -88,7 +88,7 @@ public class Doc41ControllerAdvice {
 		}
 
 		if (!(ex instanceof Doc41ExceptionBase)) {
-			ex.printStackTrace();
+			Doc41Log.get().error(getClass(),UserInSession.getCwid(),ex);
 			ex = new Doc41TechnicalException(this.getClass(), "fatal error: "+ex.getStackTrace()[0], ex);
 		}
 

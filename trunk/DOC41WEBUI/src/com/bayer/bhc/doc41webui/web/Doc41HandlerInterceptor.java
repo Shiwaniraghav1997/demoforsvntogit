@@ -333,7 +333,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 //										+ attrib);
 						pSession.setAttribute(attribName, attrib);
 					}
-				} catch (Throwable e){
+				} catch (Exception e){
 					Doc41Log.get().error(
 							this.getClass(),
 							pUser.getCwid(),
@@ -397,7 +397,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 				Doc41Log.get().error(this.getClass(), pUser.getCwid(),
 						"Problem persisting SessionData:" + e1.getMessage());
 			}
-		} catch (Throwable e){
+		} catch (Exception e){
 			Doc41Log.get().error(
 					this.getClass(),
 					pUser.getCwid(),

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.TimeZone;
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.ecim.foundation.basic.BasicDataCarrier;
 import com.bayer.ecim.foundation.basic.LocaleTool;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -133,7 +135,7 @@ public class User extends DomainObject {
 				}
 			}
 		} catch (QueryException e) {
-			e.printStackTrace();
+			Doc41Log.get().error(getClass(),UserInSession.getCwid(),e);
 		}
 	
 		return false;

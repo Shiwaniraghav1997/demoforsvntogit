@@ -78,8 +78,8 @@ public class SAPSingleton extends Singleton {
          } catch ( ExceptionInInitializerError mEr ) { // this special error may be catched and encapsulated / catching non critical, configuration problem of the local environment
         	 String resource = Environment.class.getClassLoader().getResource("com/sap/conn/jco/ext/Environment.class").getFile();
         	 initFailed( new InitException( "Failed to initialize SAPSingleton, local configuration problem!!! "+mEr.getMessage()+" "+oldJavaLibPath+"###"+resource, mEr ) );
-         } catch ( Error mErr ) {
-			initFailed( mErr );
+//         } catch ( Error mErr ) {
+//			initFailed( mErr );
          }
      }
 
@@ -102,7 +102,7 @@ public class SAPSingleton extends Singleton {
     					 Environment.unregisterDestinationDataProvider((DestinationDataProvider) provider);
     				 } catch (Exception e){
 	    				 //dirty hack did not work, so throw exception
-	    				 throw new InitException("DestinationDataProvider registered but is unknown to SAPSingleton, try restarting the VM");
+	    				 throw new InitException("DestinationDataProvider registered but is unknown to SAPSingleton, try restarting the VM",e);
     				 }
     			 } 
     			 dataProvider = new InMemoryDestinationDataProvider();

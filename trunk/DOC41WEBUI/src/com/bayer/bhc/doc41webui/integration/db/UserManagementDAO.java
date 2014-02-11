@@ -214,7 +214,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	
 	@SuppressWarnings("unchecked")
 	public List<UMProfileNDC> getProfilesByUser(Long pUserId) throws Doc41TechnicalException {
-		List<UMProfileNDC> profiles = new ArrayList<UMProfileNDC>();
+		List<UMProfileNDC> profiles;
         try {
             profiles = OTUserManagementN.get().getProfilesByUser(pUserId, null, null, LocaleInSession.get());
         } catch (QueryException e) {

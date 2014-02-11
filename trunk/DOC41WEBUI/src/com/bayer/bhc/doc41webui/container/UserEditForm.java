@@ -79,7 +79,7 @@ public class UserEditForm implements Serializable{
 				}
 			}
 		}
-		if(roles==null && roles.isEmpty()){
+		if(roles==null || roles.isEmpty()){
 			errors.reject("noRoles", "at least one role must be selected.");
 		}
 		

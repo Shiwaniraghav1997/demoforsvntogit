@@ -42,8 +42,8 @@ public class OTSingletonDoc41 extends OTSingletonDB {
             initSucceeded( OTUserManagementN.class );
         } catch (Exception mEx) {
             initFailed( new InitException( "Failed to initialize " + cClassName + "!", mEx) );
-		} catch (Error mErr) {
-			initFailed( mErr );
+//		} catch (Error mErr) {
+//			initFailed( mErr );
         }
     }
 

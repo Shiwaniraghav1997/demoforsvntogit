@@ -5,7 +5,6 @@
  */
 package com.bayer.bhc.doc41webui.integration.db;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -115,7 +114,7 @@ public class TranslationsDAO extends AbstractDAOImpl {
     @SuppressWarnings("unchecked")
 	public List<TranslationsDC> getComponentList()  throws Doc41TechnicalException{
         Doc41Log.get().debug(TranslationsDAO.class, null, "getComponentList():ENTRY ");
-        List<TranslationsDC> componentList = new ArrayList<TranslationsDC>();
+        List<TranslationsDC> componentList;
         try {
             componentList = SBTranslationsSingleton.get().getSBTranslations().getTRComponentList(SYSTEM_ID, null);
         } catch (InitException e) {
@@ -134,7 +133,7 @@ public class TranslationsDAO extends AbstractDAOImpl {
     @SuppressWarnings("unchecked")
 	public List<TranslationsDC> getPageList(String pComponent) throws Doc41TechnicalException {
         Doc41Log.get().debug(TranslationsDAO.class, null, "getPageList():ENTRY ");
-        List<TranslationsDC> jspList = new ArrayList<TranslationsDC>();
+        List<TranslationsDC> jspList;
         try {
             jspList = SBTranslationsSingleton.get().getSBTranslations().getTRJSPNameList(SYSTEM_ID, pComponent, null);
         } catch (InitException e) {
