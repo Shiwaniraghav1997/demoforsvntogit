@@ -105,7 +105,7 @@ public class LabelTag extends TagSupport {
                 }
             } catch (IOException e) {
                 throw new JspException("Unable to Translate given Label " + "'" + label + "' "
-                        + e.getMessage());
+                        + e.getMessage(),e);
             }
         }
         return super.doEndTag();
