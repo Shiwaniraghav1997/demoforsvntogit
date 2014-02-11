@@ -64,7 +64,7 @@ public class NavigationEntryTag extends TagSupport {
     		   displayEntry();
     	   }
         } catch (Exception e) {
-            throw new JspException("unable to render navigation entry "+e.getMessage());
+            throw new JspException("unable to render navigation entry "+e.getMessage(),e);
         }
         return super.doEndTag();
 	}
