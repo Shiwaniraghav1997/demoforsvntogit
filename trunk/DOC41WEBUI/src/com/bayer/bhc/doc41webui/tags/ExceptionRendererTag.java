@@ -74,7 +74,7 @@ public class ExceptionRendererTag extends TagSupport {
         	}
         	
         } catch (IOException e) {
-            throw new JspException("unable to render the time "+e.getMessage());
+            throw new JspException("unable to render the time "+e.getMessage(),e);
         }
 		return super.doEndTag();
 	}
