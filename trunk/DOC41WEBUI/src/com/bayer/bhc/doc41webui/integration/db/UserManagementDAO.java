@@ -56,17 +56,6 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	public String getTemplateComponentName() {		
 		return TEMPLATE_COMPONENT_NAME;
 	}
-	
-//	/**
-//     * Observers do not have permissions to store and delete functions.
-//     * 
-//     * @throws Doc41AccessDeniedException
-//     */
-//	private void checkUser() throws Doc41TechnicalException {
-//        if (UserInSession.isReadOnly()) {
-//            throw new Doc41AccessDeniedException(this.getClass());
-//        }
-//    }
     
 	public UMProfileNDC getProfileByName(String pName, Locale pLocale) throws Doc41TechnicalException {
 		try {

@@ -47,18 +47,6 @@ public class LabelTag extends TagSupport {
         return result;
     }
     
-//    private String[] split(String str) {
-//        
-//        ArrayList tokens = new ArrayList();
-//        StringTokenizer tok = new StringTokenizer(str, ".");
-//        
-//        while (tok.hasMoreTokens()) {
-//            tokens.add(tok.nextToken());
-//        }       
-//        
-//        return (String[])tokens.toArray(new String[]{});
-//    }
-    
     /* (non-Javadoc)
      * @see javax.servlet.jsp.tagext.TagSupport#doEndTag()
      */
@@ -77,7 +65,7 @@ public class LabelTag extends TagSupport {
                     }
 
                     String transText = "";
-                    String[] tokens =  label.split("\\."); //split(label);
+                    String[] tokens =  label.split("\\.");
 
                     for (int i = 0; i < tokens.length; i++) {
                         transText = getLabelTag(merge(i, tokens), translations, true,false);

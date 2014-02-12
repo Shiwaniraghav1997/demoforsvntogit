@@ -28,12 +28,6 @@ public class LogoutController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/logout",method = RequestMethod.GET)
 	public String get(HttpServletRequest request, HttpServletResponse response/*HttpSession session*/) throws IOException {
-//		session = null;
-//		UserInSession.put(null);
-//		LocaleInSession.put(null);
-//		return "redirect:/login/login";
-		
-		
 		User user = (User) request.getSession().getAttribute(Doc41SessionKeys.DOC41_USER);
     	
     	request.getSession().invalidate();
@@ -65,7 +59,6 @@ public class LogoutController extends AbstractDoc41Controller {
     		}
 
     		if(url!=null){
-//    			response.sendRedirect(url);
     			return "redirect:"+url;
     		}
     	}

@@ -27,7 +27,6 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	private static final String IN_LOW = "LOW";
 	private static final String IT_VALUE_RANGE = "IT_VALUE_RANGE";
 	private static final String OT_HITS = "OT_HITS";
-//	private static final String OT_HITLIST = "OT_HITLIST";
 	private static final String OUT_DOC_ID = "DOCID";
 	private static final String OUT_OBJ_ID = "OBJID";
 	private static final String OUT_STOR_DATE = "ADATE";
@@ -107,16 +106,11 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	private void setParamObjectIDs(List<String> objectIds, String sapObj, int paramNumber,
 			JCoParameterList sapInput, JCoParameterList tableParameterList) {
 		sapInput.setValue(IN_OBJ_TYPE+paramNumber, sapObj);
-//		sapInput.setValue(IN_ATT_NAME+paramNumber, arg1);
 		
 		JCoTable table = tableParameterList.getTable(IT_OBJID_RANGE+paramNumber);
 		for (String objectId : objectIds) {
 			table.appendRow();
 			table.setValue(IN_SIGN, "I");
-			//TODO use for concatenated String
-//			table.setValue(IN_OPTION, "CP");
-			//TODO use if rfc should be used
-			//TODO use for attributes
 			table.setValue(IN_OPTION, "EQ");
 			table.setValue(IN_LOW,objectId);
 		}
@@ -129,8 +123,6 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 		ArrayList<HitListEntry> mResult = new ArrayList<HitListEntry>();
         if (pFunction != null) {
             processReturnTable(pFunction,"OT_RETURN");
-//            processReturnTable(pFunction,"RETURN");
-//            checkReturnCode(pFunction, OUT_RETURNCODE, null);
             JCoTable table = pFunction.getTableParameterList().getTable(OT_HITS);
             if(table!=null){
             	for(int i=0;i<table.getNumRows();i++){

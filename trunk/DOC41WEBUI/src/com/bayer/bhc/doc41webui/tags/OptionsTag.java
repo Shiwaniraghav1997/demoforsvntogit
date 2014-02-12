@@ -68,22 +68,6 @@ public class OptionsTag extends TagSupport {
 		printer.print(out.toString());
 		return selectionFinished;
 	}
-	
-//	private boolean displayValue(boolean selectionFinished, JspWriter printer, boolean isDefaultValue, Object code, String value) throws IOException {
-//		String displayValue = "";
-//		
-//		if (!selectionFinished) {
-//			if (!isIgnoreDefault() && isDefaultValue) {
-//				displayValue = value;
-//			} else if (isEqual(code,itemCode)) {
-//				displayValue = value;
-//				selectionFinished = true;
-//			}
-//		}
-//
-//		printer.print(StringTool.escapeHTML(displayValue));
-//		return selectionFinished;
-//	}
     
     protected boolean isEqual(Object code, Object code2) {
 		if(code==null && code2==null){

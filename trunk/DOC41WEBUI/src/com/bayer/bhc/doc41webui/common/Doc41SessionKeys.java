@@ -15,10 +15,6 @@ public interface Doc41SessionKeys {
 	
     String DOC41_USER                	= "doc41User";
     
-//    String DOC41_ORIGIN_URI				= "doc41OriginURI";
-    
-//    String DOC41_SESSION_LANGUAGE    = "doc41SessionLanguage";
-    
     String DOC41_LAST_RENDERED_CTRL  	= "doc41LastRenderingController";
     
     String DOC41_LAST_RENDERED_VIEW  	= "doc41LastRenderingView";

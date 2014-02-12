@@ -22,12 +22,6 @@ public class SystemParameterRepository {
 	@Autowired
 	private SysParamDAO sysParamDAO;
 	
-	/* Parameter Types */
-//	private static final String PARAM_TYPE_STRING	= "STRING";
-//	private static final String PARAM_TYPE_NUMBER	= "NUMBER";
-//	private static final String PARAM_TYPE_DECIMAL	= "DECIMAL";
-//	private static final String PARAM_TYPE_BOOLEAN	= "BOOLEAN";
-	
 	/* Parameter Names */
 	private static final String PARAM_NAME_DB_PERSISTENCE	= "DB_SESSION_PERSISTENCE";
 	

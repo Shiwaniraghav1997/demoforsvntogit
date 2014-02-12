@@ -6,8 +6,6 @@ package com.bayer.bhc.doc41webui.common.exception;
 
 import com.bayer.ecim.foundation.basic.NestingException;
 
-//import com.bayer.ecim.foundation.basic.NestingException;
-
 /**
  * Doc41ExceptionBase. Basic Doc41 exception.
  * 
@@ -27,7 +25,7 @@ public class Doc41ExceptionBase extends NestingException {
      * Constructor with message.
      */
     public Doc41ExceptionBase(final String message) {
-        super(message,null);  //,null);
+        super(message,null);
     }
 
 }

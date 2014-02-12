@@ -47,7 +47,6 @@ import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 public class TranslationsListController extends AbstractDoc41Controller {
  
     //Constant variables
-//    private static final String TRANSLATIONS_LIST= "translationList";
     private static final String LANGUAGE_CODES = "languageCodes";
     private static final String COUNTRY_CODES = "countryCodes";
     private static final String JSP_LIST = "pageList";
@@ -136,7 +135,6 @@ public class TranslationsListController extends AbstractDoc41Controller {
 		
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("total_rows", result.getTotalSize());
-//        map.put("headers", HEADERS);
         map.put("rows",rows);
 
         return map;

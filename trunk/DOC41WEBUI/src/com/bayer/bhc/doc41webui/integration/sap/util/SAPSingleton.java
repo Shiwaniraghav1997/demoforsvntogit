@@ -50,10 +50,6 @@ public class SAPSingleton extends Singleton {
 	static final String COMPONENT_CONFIG_RFC 		= "rfc";
 	static final String COMPONENT_CONFIG 			= ".config";
 
-//	private static final CharSequence SO_PATH = "/app/tomcat/webapps/doc41/WEB-INF/lib";
-	
-//	static Boolean cIsReInitializing 				= Boolean.FALSE;
-	
 	Map<String,Object> cConfig 						= null;	
 	Map<String,Map<String,String>> cSAPLogons 		= null;
 	Map<String,Map<String,String>> cRFCs 			= null;
@@ -68,9 +64,6 @@ public class SAPSingleton extends Singleton {
 			dbg0 = Dbg.get().getChannelByName("SAPB_DBG0", "SAPB_DBG0", "sap.sl.dbg0", true);
 			dbg1 = Dbg.get().getChannelByName("SAPB_DBG1", "SAPB_DBG1", "sap.sl.dbg1", false);
 			dbg2 = Dbg.get().getChannelByName("SAPB_DBG2", "SAPB_DBG2", "sap.sl.dbg2", false);
-//			if(!oldJavaLibPath.contains(SO_PATH)){
-//				System.setProperty("java.library.path", ""+oldJavaLibPath+":"+SO_PATH);
-//			}
 			init();
 			initSucceeded( SAPSingleton.class );
          } catch ( Exception mEx ) {
@@ -78,8 +71,6 @@ public class SAPSingleton extends Singleton {
          } catch ( ExceptionInInitializerError mEr ) { // this special error may be catched and encapsulated / catching non critical, configuration problem of the local environment
         	 String resource = Environment.class.getClassLoader().getResource("com/sap/conn/jco/ext/Environment.class").getFile();
         	 initFailed( new InitException( "Failed to initialize SAPSingleton, local configuration problem!!! "+mEr.getMessage()+" "+oldJavaLibPath+"###"+resource, mEr ) );
-//         } catch ( Error mErr ) {
-//			initFailed( mErr );
          }
      }
 
@@ -323,9 +314,6 @@ public class SAPSingleton extends Singleton {
 		
 
 		try {
-//			if (cIsReInitializing.booleanValue()) {
-//				synchronized (cIsReInitializing) {}
-//			}
 			try {
 				mSAPDestination = getDestinationFromSapManager(bPoolName);
 			} catch (JCoException ex) {
@@ -352,10 +340,7 @@ public class SAPSingleton extends Singleton {
 			throw ex;
 		} catch (Exception ex) {
 			throw new SAPException( "Failed to process SAPRFC!", ex );
-		} finally {
-//			if ( mIsLocalClient )
-//			    JCO.releaseClient(mSAPDestination);
-		}
+		} 
 	 	return mResult;
 	}
 	 
@@ -392,7 +377,6 @@ public class SAPSingleton extends Singleton {
 		}
 		String bPoolName = mRFCConfig.get("pool");
 		String bSAPRFCName = mRFCConfig.get("sapcall");
-//		String bRFCCallerClass = mRFCConfig.get("class");
 
 		JCoDestination mSAPDestination = getDestinationFromSapManager(bPoolName);
 		JCoThroughput bPerfDate = new DefaultThroughput();

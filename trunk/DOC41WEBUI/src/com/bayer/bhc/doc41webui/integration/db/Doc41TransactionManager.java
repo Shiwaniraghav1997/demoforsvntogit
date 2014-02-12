@@ -60,10 +60,7 @@ public class Doc41TransactionManager {
             String cacheKey = txid+"";
             Map<Object,Object> cache = transctionalCache.get(cacheKey);
             if (cache != null) {                
-				@SuppressWarnings("unchecked")
-				T dc = (T)cache.get(objectId);
-                //if (dc != null) System.out.println("found in cache: "+dc.getObjectID()+dc.getClass().getName());
-                return dc;
+				return (T)cache.get(objectId);
             }
         }
         return null;

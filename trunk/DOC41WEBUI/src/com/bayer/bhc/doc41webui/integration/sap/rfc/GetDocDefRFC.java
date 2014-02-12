@@ -36,23 +36,6 @@ public class GetDocDefRFC extends AbstractDoc41RFC<DocTypeDef> {
 			throws SAPException {
 		Doc41Log.get().debug(GetDocDefRFC.class, null, "prepareCall():ENTRY");
     	
-//        if (pFunction != null) {
-//            if (pInputParms != null) {
-//            	String corep = (String) pInputParms.get(0);
-//                String docId = (String) pInputParms.get(1);
-//                
-//                JCoParameterList sapInput = pFunction.getImportParameterList();
-//				
-//				sapInput.setValue(IN_COREP,corep);
-//				sapInput.setValue(IN_DOCID,docId);
-//            } else {
-//                throw new SAPException(
-//                        "GetDocStatusRFC pInputParms list is null", null);
-//            }
-//        } else {
-//            throw new SAPException(
-//                    "GetDocStatusRFC pFunction list is null", null);
-//        }
         Doc41Log.get().debug(GetDocDefRFC.class, null, "prepareCall():EXIT");
 
 	}

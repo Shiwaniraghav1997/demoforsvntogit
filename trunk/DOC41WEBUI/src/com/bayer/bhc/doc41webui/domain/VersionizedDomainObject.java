@@ -28,11 +28,6 @@ public abstract class VersionizedDomainObject extends DomainObject {
         }
     }
     
-//    public void setId(String id) {
-//        setDcId(getDcId(id));
-//        setVersionNumber(getVersionId(id));
-//    }
-    
     public Long getVersionNumber() {
         return versionNumber;
     }

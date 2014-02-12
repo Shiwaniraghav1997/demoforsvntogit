@@ -51,16 +51,10 @@ public class DeliveryCertUploadDocumentType extends
 			return null;
 		}
 		
-		//TODO use for attributes
 		String plant = attributeValues.get(ATTRIB_PLANT);
 		String material = attributeValues.get(ATTRIB_MATERIAL);
 		String batch = attributeValues.get(ATTRIB_BATCH);
 		
-//		//TODO use if rfc should be used
-//		//TODO use for concatenated String
-//		String plant = viewAttributes.get(VIEW_ATTRIB_PLANT);
-//		String material = viewAttributes.get(VIEW_ATTRIB_MATERIAL);
-//		String batch = viewAttributes.get(VIEW_ATTRIB_BATCH);
 		List<QMBatchObject> bos = documentUC.getBatchObjectsForSupplier(vendorNumber, plant, material, batch, null);
 		if(bos.size()==0){
 			errors.reject("BatchObjectNotFoundOrNotForSupplier");

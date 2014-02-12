@@ -84,11 +84,6 @@ public abstract class AbstractMapper {
         pDomainObject.setCreated(pDataCarrier.getCreated());
         pDomainObject.setCreatedBy(pDataCarrier.getCreatedBy());
         
-//        if (pDomainObject instanceof VersionizedDomainObject) {
-//            VersionizedDomainObject vdo = (VersionizedDomainObject)pDomainObject;
-//            vdo.setVersionNumber((Long)pDataCarrier.get(FIELD_VERSION_NUMBER));
-//        }
-        
         return pDomainObject;
     }
     
@@ -110,50 +105,6 @@ public abstract class AbstractMapper {
         pDomainObject.setDcId(pDataCarrier.getObjectID());
         return pDomainObject;
     }
-    
-//	/* Doc41DataCarrier */
-//	protected <T extends UserChangeableDataCarrier> T mapToDataCarrier(final DomainObject pDomainObject, T pDataCarrier) {
-//		if(null == pDomainObject || null == pDataCarrier) {
-//			return pDataCarrier;
-//		}
-//		
-//		
-//		mapToDataCarrier(pDomainObject, (ChangeableDataCarrier) pDataCarrier);
-//		
-//		return pDataCarrier;
-//	}
-	
-//	protected <T extends Doc41DataCarrier> T mapToDataCarrier(final VersionizedDomainObject pDomainObject, T pDataCarrier) throws Doc41RepositoryException {
-//		if(null == pDomainObject || null == pDataCarrier) {
-//			return pDataCarrier;
-//		}
-//		
-//		checkVersionsAndIncrease(pDataCarrier, pDomainObject.getVersionNumber());
-//		mapToDataCarrier((DomainObject)pDomainObject, pDataCarrier);
-//		
-//		return pDataCarrier;
-//	}
-	
-//	protected <T extends DomainObject> T mapToDomainObject(final UserChangeableDataCarrier pDataCarrier, T pDomainObject) {
-//		if(null == pDomainObject || null == pDataCarrier) {
-//			return pDomainObject;
-//		}
-//		mapToDomainObject((ChangeableDataCarrier) pDataCarrier,  pDomainObject);
-//		
-//		return pDomainObject;
-//	}
-	
-//	protected <T extends VersionizedDomainObject> T mapToDomainObject(final Doc41DataCarrier pDataCarrier, T pDomainObject) throws Doc41RepositoryException {
-//		if(null == pDomainObject || null == pDataCarrier) {
-//			return pDomainObject;
-//		}
-//		
-//		checkVersionsAndIncrease(pDataCarrier, pDomainObject.getVersionNumber());
-//		mapToDomainObject(pDataCarrier, (DomainObject) pDomainObject);
-//		
-//		return pDomainObject;
-//	}      
-	/* Doc41DataCarrier */
     
     /**
      * Synchronizes two data carriers timestamps.

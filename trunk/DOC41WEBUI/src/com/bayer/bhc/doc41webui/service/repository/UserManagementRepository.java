@@ -98,11 +98,7 @@ public class UserManagementRepository extends AbstractRepository {
 	        User domainUser = null;
 	        domainUser = copyDcToDomainUser(userDC);
 			if (domainUser.getLocale() == null) {
-//				if ("de".equals(pLoc.getLanguage())) {
-//					domainUser.setLanguage(Locale.GERMAN.getLanguage());
-//				} else {
-					domainUser.setLocale(Locale.US);
-//				}
+			    domainUser.setLocale(Locale.US);
 			}
 	        Doc41Log.get().debug(this.getClass(), "System", "Exiting UserManagementRepositoryImpl.getUserByCwid(): " + domainUser);
 			return domainUser;
@@ -159,8 +155,6 @@ public class UserManagementRepository extends AbstractRepository {
 	public void createUser(User pUser) throws Doc41RepositoryException, Doc41BusinessException {
         checkUser(Doc41ErrorMessageKeys.USR_MGT_INSERT_USER_FAILED);
         
-        //if (pUser.isExternalUser()) return;
-        		
         Doc41Log.get().debug(this.getClass(), "System", "Entering UserManagementRepositoryImpl.createUser(): " + pUser);
         // LDAP part
         

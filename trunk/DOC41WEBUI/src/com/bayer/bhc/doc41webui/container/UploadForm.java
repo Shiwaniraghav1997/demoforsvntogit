@@ -6,7 +6,6 @@ public class UploadForm extends CustomizedDocumentForm{
 	
 	private String fileId;
 	private String fileName;
-//	private String typeLabel;
 	private transient MultipartFile file;
 	private String notificationEMail;
 	

@@ -17,8 +17,6 @@ import com.bayer.ecim.foundation.basic.StringTool;
 
 public abstract class SDDocumentType implements DocumentType {
 	
-//	private static final String SHIPPING_UNIT_NUMBER = "SHIPPINGUNIT";
-	
 	protected static final String SAP_OBJECT_DELIVERY = "LIKP";
 	protected static final String SAP_OBJECT_SHIPPING_UNIT = "YTMSA";
 
@@ -35,12 +33,6 @@ public abstract class SDDocumentType implements DocumentType {
 	//implements method from UploadDocumentType
 	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException {
-//		if(true)return SAP_OBJECT_DELIVERY;
-		
-//		String shippingUnitNumber = attributeValues.get(SHIPPING_UNIT_NUMBER);
-//		if(StringTool.isTrimmedEmptyOrNull(shippingUnitNumber)){
-//			errors.rejectValue("attributeValues['"+SHIPPING_UNIT_NUMBER+"']","ShippingUnitNumberMissing");
-//		}
 		
 		if(errors.hasErrors()){
 			return null;
@@ -68,8 +60,6 @@ public abstract class SDDocumentType implements DocumentType {
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber, String objectId,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
-//		if(true)return;
-		
 		if(StringTool.isTrimmedEmptyOrNull(objectId)){
 			errors.rejectValue("objectId","MandatoryField");
 		} else {

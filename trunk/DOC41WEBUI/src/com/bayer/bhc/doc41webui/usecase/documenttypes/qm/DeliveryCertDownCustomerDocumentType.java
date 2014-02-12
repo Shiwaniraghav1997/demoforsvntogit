@@ -57,7 +57,6 @@ public class DeliveryCertDownCustomerDocumentType extends
 			viewAttributes.put(VIEW_ATTRIB_DELIVERY_NUMBER, delivery);
 		}
 		
-//		//TODO use for attributes
 		String material = attributeValues.get(ATTRIB_MATERIAL);
 		String batch = attributeValues.get(ATTRIB_BATCH);
 		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch)){
@@ -73,23 +72,6 @@ public class DeliveryCertDownCustomerDocumentType extends
 			batch = batch.toUpperCase();
 			attributeValues.put(ATTRIB_BATCH, batch);
 		}
-		
-//		//TODO use if rfc should be used
-//		//TODO use for concatenated String
-//		String material = viewAttributes.get(VIEW_ATTRIB_MATERIAL);
-//		String batch = viewAttributes.get(VIEW_ATTRIB_BATCH);
-//		if(StringTool.isTrimmedEmptyOrNull(material) && StringTool.isTrimmedEmptyOrNull(batch)){
-//			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_MATERIAL+"']","MaterialAndBatchMissing");
-//			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_BATCH+"']","MaterialAndBatchMissing");
-//		}
-//		if(!StringTool.isTrimmedEmptyOrNull(material)){
-//			material = StringTool.minLString(material, Doc41Constants.FIELD_SIZE_MATNR, '0');
-//			viewAttributes.put(VIEW_ATTRIB_MATERIAL, material);
-//		}
-//		if(!StringTool.isTrimmedEmptyOrNull(batch)){
-//			batch = StringTool.minLString(batch, Doc41Constants.FIELD_SIZE_BATCH, '0');
-//			viewAttributes.put(VIEW_ATTRIB_BATCH, batch);
-//		}
 		
 		List<String> additionalObjectIds = new ArrayList<String>();
 		if(!errors.hasErrors()){

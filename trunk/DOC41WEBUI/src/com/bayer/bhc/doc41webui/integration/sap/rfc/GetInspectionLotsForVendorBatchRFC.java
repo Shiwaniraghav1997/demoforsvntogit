@@ -15,7 +15,6 @@ public class GetInspectionLotsForVendorBatchRFC extends AbstractDoc41RFC<Inspect
 	private static final String IN_VENDOR = "IV_VENDOR";
 	private static final String IN_VENDOR_BATCH = "IV_VENDOR_BATCH";
 	private static final String IN_PLANT = "IV_PLANT";
-//	private static final String OUT_RETURNCODE = "EV_RETURN";
 	
 	private static final String CT_INSPECTIONLOTS = "CT_INSPLOTS4VBATCH";
 	
@@ -61,8 +60,6 @@ public class GetInspectionLotsForVendorBatchRFC extends AbstractDoc41RFC<Inspect
 		Doc41Log.get().debug(GetInspectionLotsForVendorBatchRFC.class, null, "processResult():ENTRY");
 		ArrayList<InspectionLot> mResult = new ArrayList<InspectionLot>();
         if (pFunction != null) {
-//            processReturnTable(pFunction);
-//            checkReturnCode(pFunction, OUT_RETURNCODE, null);
             JCoTable inspectionlotsTable = pFunction.getChangingParameterList().getTable(CT_INSPECTIONLOTS);
             if(inspectionlotsTable!=null){
             	for(int i=0;i<inspectionlotsTable.getNumRows();i++){

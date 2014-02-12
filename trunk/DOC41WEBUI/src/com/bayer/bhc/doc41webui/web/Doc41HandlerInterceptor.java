@@ -175,7 +175,6 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 	protected final User determineUser(HttpServletRequest request) {
 
 		String cwid = null;
-		// Principal requestPrinciple = determineUserPrincipal(request);
 		User user = (User) request.getSession().getAttribute(DOC41_USER);
 		String webSealCwid = getWebSealUser(request);
 		
@@ -305,8 +304,6 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 				try {
 					ByteArrayInputStream bIn = new ByteArrayInputStream(Convert.base64Decode(sessionData));
 					GZIPInputStream zIn =new GZIPInputStream(bIn);
-//	                ZipInputStream zIn = new ZipInputStream(bIn);
-//	                zIn.getNextEntry();
 					oIn = new ObjectInputStream(new BufferedInputStream(zIn));
 					Doc41Log.get().debug(
 							this.getClass(),
@@ -378,11 +375,8 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			long startTime = System.currentTimeMillis();
 			ByteArrayOutputStream boutStream = new ByteArrayOutputStream();
 			GZIPOutputStream zoutStream = new GZIPOutputStream(boutStream);
-//            ZipOutputStream zoutStream = new ZipOutputStream(boutStream);
-//            zoutStream.putNextEntry(new ZipEntry("session"));
 			outStream = new ObjectOutputStream(new BufferedOutputStream(zoutStream));
 			checkSessionAndStream(pSession, outStream);
-//            zoutStream.closeEntry();
             outStream.close();
 			if (pSessionDataDC == null) {
 				return;

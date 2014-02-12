@@ -19,13 +19,6 @@ public abstract class DomainObject implements java.io.Serializable {
 	private static final long serialVersionUID = -5518471855937512232L;
 
 	private Long dcId = null;
-//    private String viewId;
-//    public String getViewId() {
-//    	return dcId.toString();
-//    }
-//    public void setViewId(String viewId) {
-//    	dcId = Long.valueOf(viewId);
-//    }
 	
 	private String changedBy;
     

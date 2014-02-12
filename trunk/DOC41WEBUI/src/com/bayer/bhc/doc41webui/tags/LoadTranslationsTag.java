@@ -54,18 +54,9 @@ public class LoadTranslationsTag extends TagSupport {
                         + " of  Locale  " + pLocale);
         try {
             Tags tags = new Doc41Tags(MANDANT, component, jspName, pLocale);
-//            if (tags == null) {
-//                throw new JspException("Unable to get Translation for Compnent " + component
-//                        + "and Page " + jspName + " for Locale  " + pLocale);
-//            } else {
-                pageContext.getRequest().setAttribute(TAGS, tags);
-  //          }
-
+            pageContext.getRequest().setAttribute(TAGS, tags);
         } catch (BATranslationsException e) {
         	Doc41Log.get().error(getClass(),UserInSession.getCwid(),e);
-//            throw new JspException("Unable to get Translation for Compnent " + component
-//                    + "and Page " + jspName + " for Locale  " + pLocale + e.getMessage());
-
         }
         return super.doEndTag();
     }

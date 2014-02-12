@@ -55,11 +55,6 @@ public class User extends DomainObject {
 
 	public static final String STATUS_INACTIVE = "inactive";
 
-	// legacy list:
-	// public static final String[] ALL_ROLES = new String[] { ROLE_TECH_ADMIN,
-	// ROLE_OPER_ADMIN,
-	// ROLE_OPER_STAFF, ROLE_CARRIER, ROLE_EXPEDITION, ROLE_OBSERVER };
-
 	public static final String[] ALL_ROLES = new String[] {
 			ROLE_CARRIER, ROLE_CUSTOMS_BROKER, ROLE_MATERIAL_SUPPLIER, ROLE_PRODUCT_SUPPLIER,
 			ROLE_DEL_CERT_VIEWER_COUNTRY, ROLE_DEL_CERT_VIEWER_CUSTOMER, ROLE_LAYOUT_SUPPLIER,
@@ -144,31 +139,11 @@ public class User extends DomainObject {
 	public boolean hasRole(String role) {
 		return roles.contains(role);
 	}
-
 	
-//	private Boolean automaticClose = false;
-//	private int closeAfter;
-
 	// convenience method:
 	public boolean isExternalUser() {
 		return getType().equals(User.TYPE_EXTERNAL);
 	}
-	
-//	public Boolean getAutomaticClose() {
-//		return automaticClose;
-//	}
-//
-//	public void setAutomaticClose(Boolean automaticClose) {
-//		this.automaticClose = automaticClose;
-//	}
-//
-//	public int getCloseAfter() {
-//		return closeAfter;
-//	}
-//
-//	public void setCloseAfter(int closeAfter) {
-//		this.closeAfter = closeAfter;
-//	}
 
 	public Boolean getReadOnly() {
 		return readOnly;
@@ -317,34 +292,6 @@ public class User extends DomainObject {
 	public void setLocale(Locale locale) {
 		this.locale = locale;
 	}
-	
-//	public boolean isBusinessAdmin() {
-//		return roles.contains(ROLE_BUSINESS_ADMIN);
-//	}
-//
-//	public boolean isTechnicalAdmin() {
-//		return roles.contains(ROLE_TECH_ADMIN);
-//	}
-//
-//	public boolean isCarrier() {
-//		return roles.contains(ROLE_CARRIER);
-//	}
-//	
-//	public boolean isCustomsBroker() {
-//		return roles.contains(ROLE_CUSTOMS_BROKER);
-//	}
-//	
-//	public boolean isLayoutSupplier() {
-//		return roles.contains(ROLE_LAYOUT_SUPPLIER);
-//	}
-//	
-//	public boolean isPmSupplier() {
-//		return roles.contains(ROLE_PM_SUPPLIER);
-//	}
-//	
-//	public boolean isObserver() {
-//		return roles.contains(ROLE_OBSERVER);
-//	}
 	
 	public List<String> getPermissions() {
 		return permissions;

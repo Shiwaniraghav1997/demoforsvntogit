@@ -213,8 +213,6 @@ public final class DateRenderer {
         System.out.println(getSAPISO8601GMTDateFormatterInstance().parse("2012-07-03T10:00:27+00:00"));
         System.out.println(getSAPISO8601GMTDateFormatterInstance().format(getSAPTimeStampFormatterInstance().parse("20120703100027")));
         System.out.println(getSAPTimeStampFormatterInstance().format(getSAPISO8601GMTDateFormatterInstance().parse("2012-07-03T10:00:27+00:00")));
-//        System.out.println(getSAPInputDateFormatterInstance().parse("2012-07-03T10:00:27Z"));
-//        System.out.println(getSAPInputDateFormatterInstance().parse("2012-07-03T10:00:27+02:00"));
         
         System.out.println(GERMAN_DATE.parse("01.01.0100").getTime());
         

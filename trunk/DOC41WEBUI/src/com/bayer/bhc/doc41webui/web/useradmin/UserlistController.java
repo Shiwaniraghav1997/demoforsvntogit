@@ -64,7 +64,6 @@ public class UserlistController extends AbstractDoc41Controller {
 		userListFilter.setFirstname(params.getFilter(2));
 		userListFilter.setCwid(params.getFilter(3));
 		userListFilter.setEmail(params.getFilter(4));
-//		userListFilter.setPhone(params.getFilter(5));
 		userListFilter.setType(params.getFilter(6));
 		userListFilter.setRole(params.getFilter(7));
 		
@@ -97,7 +96,6 @@ public class UserlistController extends AbstractDoc41Controller {
 		
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("total_rows", result.getTotalSize());
-//        map.put("headers", HEADERS);
         map.put("rows",rows);
 
         return map;

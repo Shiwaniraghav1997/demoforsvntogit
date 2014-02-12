@@ -49,10 +49,6 @@ public class DelCertUploadController extends UploadController {
 		if(StringTool.isTrimmedEmptyOrNull(plant)){
 			result.rejectValue("plant","PlantMissing");
 		} 
-//		else {
-//			plant = StringTool.minLString(plant, Doc41Constants.FIELD_SIZE_PLANT, '0');
-//			batchObjectForm.setPlant(plant);
-//		}
 		
 		String material = batchObjectForm.getMaterial();
 		String batch = batchObjectForm.getBatch();
@@ -117,9 +113,6 @@ public class DelCertUploadController extends UploadController {
 		avalues.put(AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL,batchObject.getMaterialNumber());
 		
 		Map<String, String> viewAttributes = uploadForm.getViewAttributes();
-//		viewAttributes.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_PLANT,batchObject.getPlant());
-//		viewAttributes.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_BATCH,batchObject.getBatch());
-//		viewAttributes.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL,batchObject.getMaterialNumber());
 		viewAttributes.put(AbstractDeliveryCertDocumentType.VIEW_ATTRIB_MATERIAL_TEXT,batchObject.getMaterialText());
 		
 		ModelMap map = new ModelMap();

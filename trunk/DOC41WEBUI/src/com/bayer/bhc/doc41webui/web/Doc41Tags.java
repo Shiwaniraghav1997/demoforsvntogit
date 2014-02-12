@@ -24,21 +24,6 @@ public class Doc41Tags extends Tags {
 		super(pMandant, pComponent, pPageName, pLocale);
 		language = pLocale.getLanguage();
 	}
-
-//	public Doc41Tags(String pMandant, String pComponent, String pPageName,
-//			String pLanguage, String pCountry, boolean pAddWatcher,
-//			boolean pLoadFromDB, boolean pWarnMissing)
-//			throws BATranslationsException {
-//		super(pMandant, pComponent, pPageName, pLanguage, pCountry, pAddWatcher,
-//				pLoadFromDB, pWarnMissing);
-//		language = pLanguage;
-//	}
-
-//	public Doc41Tags(String pMandant, String pComponent, String pPageName,
-//			String pLanguage, String pCountry) throws BATranslationsException {
-//		super(pMandant, pComponent, pPageName, pLanguage, pCountry);
-//		language = pLanguage;
-//	}
 	
 	public static Map<String, Set<String>> getUntranslatedLabels() {
 		return untranslatedLabels;

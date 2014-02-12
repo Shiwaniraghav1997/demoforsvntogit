@@ -56,7 +56,6 @@ public class CheckDeliveryForPartnerRFC extends AbstractDoc41RFC<SDReferenceChec
 		Doc41Log.get().debug(CheckDeliveryForPartnerRFC.class, null, "processResult():ENTRY");
 		ArrayList<SDReferenceCheckResult> mResult = new ArrayList<SDReferenceCheckResult>();
         if (pFunction != null) {
-//            processReturnTable(pFunction);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
             

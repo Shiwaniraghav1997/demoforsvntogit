@@ -17,7 +17,6 @@ title="Upload Document">
 							<th><doc41:translate label="Supplier" /></th>
 							<td><c:out value="${uploadForm.vendorNumber }"/><form:hidden path="vendorNumber"/></td>
 						</tr>
-						<%-- TODO use for attributes --%>
 						<tr>
 							<th><doc41:translate label="Plant" /></th>
 							<td><c:out value="${uploadForm.attributeValues[keyPlant]}"/><input id="${keyPlant}" type="hidden" name="attributeValues['${keyPlant}']" value="${uploadForm.attributeValues[keyPlant]}"/></td>
@@ -30,20 +29,6 @@ title="Upload Document">
 							<th><doc41:translate label="MaterialNumber" /></th>
 							<td><c:out value="${uploadForm.attributeValues[keyMaterial]}"/><input id="${keyMaterial}" type="hidden" name="attributeValues['${keyMaterial}']" value="${uploadForm.attributeValues[keyMaterial]}"/></td>
 						</tr>
-						<%-- TODO use if rfc should be used 
-						TODO use for concatenated String--%>
-						<%-- <tr>
-							<th><doc41:translate label="Plant" /></th>
-							<td><c:out value="${uploadForm.viewAttributes[keyPlant]}"/><input id="${keyPlant}" type="hidden" name="viewAttributes['${keyPlant}']" value="${uploadForm.viewAttributes[keyPlant]}"/></td>
-						</tr>
-						<tr class="portlet-table-alternate">
-							<th><doc41:translate label="Batch" /></th>
-							<td><c:out value="${uploadForm.viewAttributes[keyBatch]}"/><input id="${keyBatch}" type="hidden" name="viewAttributes['${keyBatch}']" value="${uploadForm.viewAttributes[keyBatch]}"/></td>
-						</tr>
-						<tr>
-							<th><doc41:translate label="MaterialNumber" /></th>
-							<td><c:out value="${uploadForm.viewAttributes[keyMaterial]}"/><input id="${keyMaterial}" type="hidden" name="viewAttributes['${keyMaterial}']" value="${uploadForm.viewAttributes[keyMaterial]}"/></td>
-						</tr> --%>
 						<tr class="portlet-table-alternate">
 							<th><doc41:translate label="MaterialText" /></th>
 							<td><c:out value="${uploadForm.viewAttributes[keyMaterialText] }"/><input id="${keyMaterialText}" type="hidden" name="viewAttributes['${keyMaterialText}']" value="${uploadForm.viewAttributes[keyMaterialText]}"/></td>

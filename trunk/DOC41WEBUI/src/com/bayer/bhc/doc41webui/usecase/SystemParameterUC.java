@@ -33,7 +33,7 @@ public class SystemParameterUC {
         Long oid;
         try {
             oid = systemParameterRepository.getOID();
-            return ""+oid; // "BOE-" + oid;
+            return ""+oid;
         } catch (Doc41RepositoryException e) {
             throw new Doc41BusinessException("getDOC41CorrelationId", e);
         }

@@ -51,7 +51,6 @@ public class GetDocStatusRFC extends AbstractDoc41RFC<DocumentStatus>{
 		Doc41Log.get().debug(GetDocStatusRFC.class, null, "processResult():ENTRY");
 		ArrayList<DocumentStatus> mResult = new ArrayList<DocumentStatus>();
         if (pFunction != null) {
-//            processReturnTable(pFunction);
             checkReturnCode(pFunction, OUT_RETURNCODE, null);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             DocumentStatus docStat = new DocumentStatus();

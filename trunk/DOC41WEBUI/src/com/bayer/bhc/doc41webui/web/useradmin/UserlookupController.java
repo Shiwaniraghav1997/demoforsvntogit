@@ -27,16 +27,6 @@ public class UserlookupController extends AbstractDoc41Controller {
 		return usr.hasPermission(Doc41Constants.PERMISSION_USER_LOOKUP);
     }
 	
-//	@ModelAttribute("languageCountryList")
-//	public List<SelectionItem> addLanguageCountryList(){
-//		return getDisplaytextUC().getLanguageCountryCodes();
-//	}
-//	
-//	@ModelAttribute("timeZoneList")
-//	public List<SelectionItem> addTimezones(){
-//		return getDisplaytextUC().getTimezones();
-//	}
-	
 	@RequestMapping(value="/useradmin/userlookup",method = RequestMethod.GET)
     public UserLookupForm get() {
 		return new UserLookupForm();

@@ -53,7 +53,6 @@ public class GetAttributesRFC extends AbstractDoc41RFC<Attribute> {
 		ArrayList<Attribute> mResult = new ArrayList<Attribute>();
 		if (pFunction != null) {
 			processReturnTable(pFunction,OUT_RETURN);
-//			JCoParameterList exportParameterList = pFunction.getExportParameterList();
 			JCoTable table = pFunction.getTableParameterList().getTable(OUT_TABLE);
 			if(table!=null){
 				for(int i=0;i<table.getNumRows();i++){

@@ -54,7 +54,6 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 		Doc41Log.get().debug(CheckPOAndMaterialForVendorRFC.class, null, "processResult():ENTRY");
 		ArrayList<String> mResult = new ArrayList<String>();
         if (pFunction != null) {
-//            processReturnTable(pFunction);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
             mResult.add(mapReturnCodeToTag(returnCode));

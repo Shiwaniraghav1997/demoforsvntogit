@@ -51,7 +51,6 @@ public class CreateHttpPutRFC extends AbstractDoc41RFC<URI>{
 			Doc41Log.get().debug(CreateHttpPutRFC.class, null, "processResult():ENTRY");
 			ArrayList<URI> mResult = new ArrayList<URI>();
 			if (pFunction != null) {
-//			    processReturnTable(pFunction);
 			    checkReturnCode(pFunction, OUT_RETURNCODE,OUT_RETURN_MESSAGE);
 			    JCoParameterList exportParameterList = pFunction.getExportParameterList();
 			    mResult.add(new URI(exportParameterList.getString(OUT_URL)));

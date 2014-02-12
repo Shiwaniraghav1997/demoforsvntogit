@@ -96,31 +96,6 @@ public class RFCFunctionDumper {
 		JCoFieldIterator fieldIterator = structure.getFieldIterator();
 		outputFieldIterator(outputBuffer, "structure: " + name, fieldIterator,
 				indentCount);
-/*
-		String tabPrefix = "";
-		for (int i = 0; i < indentCount; i++) {
-			tabPrefix = " " + tabPrefix;
-		}
-		outputBuffer.append(tabPrefix);
-		outputBuffer.append("--- Values: \n");
-		fieldIterator.reset();
-		boolean komma = false;
-		while (fieldIterator.hasNextField()) {
-			JCoField nextField = fieldIterator.nextField();
-			if (komma) {
-				outputBuffer.append(",\t");
-			} else {
-				komma = true;
-				outputBuffer.append(tabPrefix);
-			}
-			outputBuffer.append(nextField.getValue());
-		}
-		outputBuffer.append("\n");
-
-		outputBuffer.append(tabPrefix);
-		outputBuffer.append("-----------------\n");
-		fieldIterator.reset();
-*/
 	}
 
 	private static void outputTable(StringBuilder outputBuffer, String name,

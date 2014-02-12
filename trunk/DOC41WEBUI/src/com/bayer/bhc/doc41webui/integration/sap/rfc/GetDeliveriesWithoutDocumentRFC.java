@@ -16,7 +16,6 @@ public class GetDeliveriesWithoutDocumentRFC extends AbstractDoc41RFC<DeliveryOr
 	private static final String IN_DOCUMENT_TYPE = "IV_DOCTYPE_ID";
 	private static final String IN_DATE_FROM = "IV_DATEFORM";
 	private static final String IN_DATE_TO = "IV_DATETO";
-//	private static final String OUT_RETURNCODE = "EV_RETURN";
 	
 	private static final String CT_DELIVERY = "CT_DOCUMENTS";
 	
@@ -66,8 +65,6 @@ public class GetDeliveriesWithoutDocumentRFC extends AbstractDoc41RFC<DeliveryOr
 		Doc41Log.get().debug(GetDeliveriesWithoutDocumentRFC.class, null, "processResult():ENTRY");
 		ArrayList<DeliveryOrShippingUnit> mResult = new ArrayList<DeliveryOrShippingUnit>();
         if (pFunction != null) {
-//            processReturnTable(pFunction);
-//            checkReturnCode(pFunction, OUT_RETURNCODE, null);
             JCoTable deliveriesTable = pFunction.getChangingParameterList().getTable(CT_DELIVERY);
             if(deliveriesTable!=null){
             	for(int i=0;i<deliveriesTable.getNumRows();i++){

@@ -17,9 +17,6 @@ public class GetDocUrlRFC extends AbstractDoc41RFC<URI>{
 	private static final String IN_COMP_ID = "IV_COMP_ID";
 	
 	private static final String OUT_URL = "EV_URL";
-//	private static final String OUT_DOC_ID_OUT = "EV_DOC_ID_OUT";
-	
-	
 
 	@Override
 	public void prepareCall(JCoFunction pFunction, List<?> pInputParms)

@@ -58,7 +58,6 @@ public class SessionDataDAO extends AbstractDAOImpl{
         	pDC.setComponent(TEMPLATE_COMPONENT_NAME);
         	pDC.setChanged(new Date());
         	pDC.setTimetolive(SESSION_LIFE_TIME);
-//        	pDC.setEndoflife(new Date(System.currentTimeMillis()+SESSION_LIFE_TIME));
             return (SessionDataDC) getOTS().storeDC(pDC);
         } catch (StoreException e) {
             throw new Doc41TechnicalException(this.getClass(), "Error during database access.", e);

@@ -33,8 +33,6 @@ import com.bayer.ecim.foundation.basic.StringTool;
 public class UserManagementUC {
 	@Autowired
     private UserManagementRepository userMgmtRepo;
-//	@Autowired
-//	private AuthorizationRFCService authorizationRFCService;
     
 	/**
 	 * creates a new user in the usermanagement DB
@@ -46,13 +44,11 @@ public class UserManagementUC {
 	 * @throws Doc41BusinessException 
 	 */
     public void createUser(User pUser) throws Doc41BusinessException {
-//        pUser.setActive(Boolean.FALSE);
         try {
             getUserManagementRepository().createUser(pUser);
             // logging
             Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(), "createUser() - user cwid '"+pUser.getCwid()+"'.");
             // audit
-            // getDoc41AuditService().doAudit(this.getClass(), Doc41AuditEntry.ACTION_CREATE_USER, "user cwid '"+pUser.getCwid()+"'.", null, null, null, null, null, null, null, null, null);
             logWebMetrix(pUser, "USER_CREATE");
         } catch (Doc41ExceptionBase e) {
             throw new Doc41BusinessException(Doc41ErrorMessageKeys.USR_CREATE_FAILED, e);
@@ -74,7 +70,6 @@ public class UserManagementUC {
             // logging
             Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(), "editUser() - user cwid '"+pUser.getCwid()+"'.");
             // audit
-            // getDoc41AuditService().doAudit(this.getClass(), Doc41AuditEntry.ACTION_EDIT_USER, "user cwid '"+pUser.getCwid()+"'.", null, null, null, null, null, null, null, null, null);
             logWebMetrix(pUser, "USER_EDIT");
         } catch (Doc41ExceptionBase e) {
             throw new Doc41BusinessException(Doc41ErrorMessageKeys.USR_EDIT_FAILED, e);
@@ -178,7 +173,6 @@ public class UserManagementUC {
 	                // logging
 	                Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(), "toggleUserActivation() - user cwid '"+pCwid+"'.");
 	                // audit
-	                // getDoc41AuditService().doAudit(this.getClass(), Doc41AuditEntry.ACTION_EDIT_USER, "user cwid '"+pCwid+"' is active?: '"+user.getActive()+"'", null, null, null, null, null, null, null, null, null);
 	                logWebMetrix(user, wmAction);
                 }
             } catch (Doc41ExceptionBase e) {

@@ -83,7 +83,6 @@ public class MonitoringHistoryController extends AbstractDoc41Controller {
 		
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("total_rows", result.getTotalSize());
-//        map.put("headers", HEADERS);
         map.put("rows",rows);
 
         return map;

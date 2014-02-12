@@ -18,11 +18,8 @@ public class GetBatchObjectsForSupplierRFC extends AbstractDoc41RFC<QMBatchObjec
 	private static final String IN_BATCH = "IV_BATCH";
 	private static final String IN_ORDER = "IV_DOCNUMBER";
 	
-	//		private static final String OUT_RETURNCODE = "EV_RETURN";
-
 	private static final String CT_BATCHES = "CT_OBJECTS";
 	
-//	private static final String OUT_OBJECT_ID = "OBJID";
 	private static final String OUT_MAT_NUMBER = "MATNR";
 	private static final String OUT_MAT_TEXT = "MAKTX";
 	private static final String OUT_PLANT = "PLANT";
@@ -65,13 +62,10 @@ public class GetBatchObjectsForSupplierRFC extends AbstractDoc41RFC<QMBatchObjec
 		Doc41Log.get().debug(GetBatchObjectsForSupplierRFC.class, null, "processResult():ENTRY");
 		ArrayList<QMBatchObject> mResult = new ArrayList<QMBatchObject>();
         if (pFunction != null) {
-//            processReturnTable(pFunction);
-//            checkReturnCode(pFunction, OUT_RETURNCODE, null);
             JCoTable batchesTable = pFunction.getChangingParameterList().getTable(CT_BATCHES);
             if(batchesTable!=null){
             	for(int i=0;i<batchesTable.getNumRows();i++){
             		QMBatchObject batchObject = new QMBatchObject();
-//            		batchObject.setObjectId(batchesTable.getString(OUT_OBJECT_ID));
             		batchObject.setMaterialNumber(batchesTable.getString(OUT_MAT_NUMBER));
             		batchObject.setMaterialText(batchesTable.getString(OUT_MAT_TEXT));
             		batchObject.setPlant(batchesTable.getString(OUT_PLANT));

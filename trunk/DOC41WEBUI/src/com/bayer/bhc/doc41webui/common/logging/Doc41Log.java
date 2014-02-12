@@ -53,12 +53,6 @@ public class Doc41Log {
     /** a flag indicating whether Webmetrix logging is active */
     private static final boolean LOGGING_ACTIVE = Dbg.get().isLogicalChannelActive(LOGGING);
    
-    /** The portlet name */
-//    private static final String PORTLET_NAME   = "pname";
-   
-    /** The component name */
-//    private static final String COMPONENT   = "component";
-    
     /**
      * Logs debug message.
      * @param clazz   The Log Class
@@ -66,7 +60,6 @@ public class Doc41Log {
      * @param msg     The Debug message
      */
     public void debug(Class<?> clazz, String user, Object msg) {
-        //System.out.println("Debug ("+user+") - "+msg);
     	if (!INFO_ACTIVE) {
     		INFO_ACTIVE = Dbg.get().isLogicalChannelActive(INFO);
     	}
@@ -94,7 +87,6 @@ public class Doc41Log {
      * @param msg     The error message
      */
     public void error(Class<?> clazz, String user, Object msg) {
-    	// System.out.println("Error ("+user+") - "+msg);
     	//to log stacktrace
     	if(msg instanceof Throwable && !(msg instanceof NestingException)){
     		Throwable ex = (Throwable) msg;

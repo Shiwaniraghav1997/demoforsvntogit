@@ -25,7 +25,6 @@ public class MonitoringMapper extends AbstractMapper{
 			super.mapToDataCarrier(monitoring, historyDC);
 			historyDC.setActionType(monitoring.getAction());
 			historyDC.setInterfaceName(monitoring.getName());
-			//historyDC.setStatus(monitoring.getStatus());
 			historyDC.setActionRemarks(monitoring.getRemarks());
 		}
 		return historyDC;
@@ -74,7 +73,6 @@ public class MonitoringMapper extends AbstractMapper{
 			monitoring.setStatus(true);
 		}
 		monitoring.setRemarks(historyDC.getActionRemarks());
-//		monitoring.setLastRequest(historyDC.getLatestRequest());
 		monitoring.setResponseTime(historyDC.getResponseTime());
 		return monitoring;
 	}

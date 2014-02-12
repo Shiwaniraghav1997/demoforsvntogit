@@ -61,16 +61,14 @@ public class UsercreateController extends AbstractDoc41Controller {
         }
     	try {
         	User user = userEditForm.copyToDomainUser();
-//        	user.setType(User.TYPE_EXTERNAL);
-        	
-    			try {
-                  getUserManagementUC().createUser(user);
-                  return "redirect:/useradmin/userlist";
-                  
-    			} catch (Doc41InvalidPasswordException e) {
-    				result.rejectValue("password", "error.password.invalid", "Please enter a valid password.");
-    				return "/useradmin/usercreate";
-    			}
+        	try {
+        	    getUserManagementUC().createUser(user);
+        	    return "redirect:/useradmin/userlist";
+
+        	} catch (Doc41InvalidPasswordException e) {
+        	    result.rejectValue("password", "error.password.invalid", "Please enter a valid password.");
+        	    return "/useradmin/usercreate";
+        	}
 
         } catch (Doc41InvalidPasswordException e) {
             result.rejectValue("password", "error.password.invalid", "Please enter a valid password.");

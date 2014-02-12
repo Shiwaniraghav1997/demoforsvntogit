@@ -46,10 +46,6 @@ public class FilterPagingRequest extends PagingRequest {
         return filterings.get(pFilterKey) != null;
     }
 
-//    public Map<String, Object> getFilterings() {
-//        return filterings;
-//    }
-    
     public FilterParameters getFilterParameters(){
     	if(filterings==null){
     		return new FilterParameters(new String[]{}, new Object[]{});

@@ -47,7 +47,6 @@ public class GetAttrValuesRFC extends AbstractDoc41RFC<KeyValue> {
 		ArrayList<KeyValue> mResult = new ArrayList<KeyValue>();
 		if (pFunction != null) {
 			processReturnTable(pFunction);
-//			JCoParameterList exportParameterList = pFunction.getExportParameterList();
 			JCoTable table = pFunction.getTableParameterList().getTable(OUT_TABLE);
 			if(table!=null){
 				for(int i=0;i<table.getNumRows();i++){

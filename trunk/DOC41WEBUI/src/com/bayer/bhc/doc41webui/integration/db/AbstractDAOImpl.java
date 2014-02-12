@@ -431,7 +431,6 @@ public abstract class AbstractDAOImpl {
         boolean refreshHitCount = true;
         boolean getToEnd = (toIndex == -1);
 
-        //System.out.println("queryWithPagingAutoMode: "+lastCount+","+fromIndex +","+ toIndex);
         String mQueryTemplate = (String) getQueryTemplates().get(pTemplateName);
         PagingResult<T> pagingResult = new PagingResult<T>(new ArrayList<T>(), lastCount);
 
@@ -450,7 +449,6 @@ public abstract class AbstractDAOImpl {
                 String loadQuery = getDBOX()
                         .expandTemplate(mQueryTemplate, paramValues, paramNames);
 
-                //System.out.println("queryWithPagingAutoMode - query:"+loadQuery);
                 boolean hasMore = (toIndex == 0) ? (pagingResult.getTotalSize() > 0) : getDBOX()
                         .query(pTxId, loadQuery, dataCarrierClass, fromIndex, toIndex,
                                 (ArrayList<T>) pagingResult.getResult());
@@ -561,8 +559,6 @@ public abstract class AbstractDAOImpl {
             }
         }
         
-        //System.out.println("idsAsString"+objectList.size());
-        //System.out.println("idsAsString"+idBuffer.toString());
         return idBuffer.toString();
     }
     

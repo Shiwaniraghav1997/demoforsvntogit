@@ -10,8 +10,6 @@ import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
 public class GetCrepInfoRFC extends AbstractDoc41RFC<ContentRepositoryInfo>{
-//	private static final String IN_OBJECT_TYPE = "IV_OBJECT_TYPE";
-//	private static final String IN_DOCTYPE = "IV_DOCTYPE";
 	private static final String IN_DOC41ID = "IV_DOC41ID";
 	
 	private static final String OUT_CONT_REP = "EV_CONT_REP";
@@ -49,7 +47,6 @@ public class GetCrepInfoRFC extends AbstractDoc41RFC<ContentRepositoryInfo>{
 		Doc41Log.get().debug(GetCrepInfoRFC.class, null, "processResult():ENTRY");
 		ArrayList<ContentRepositoryInfo> mResult = new ArrayList<ContentRepositoryInfo>();
         if (pFunction != null) {
-//            processReturnTable(pFunction);
         	checkReturnCode(pFunction,OUT_RETURNCODE,null);
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             ContentRepositoryInfo crep = new ContentRepositoryInfo();

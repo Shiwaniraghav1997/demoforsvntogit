@@ -32,8 +32,6 @@ public class TimeRendererTag extends TagSupport {
      * @see javax.servlet.jsp.tagext.BodyTagSupport#doEndTag()
      */
     public int doEndTag() throws JspException {
-        //    Locale pLocale = pageContext.getRequest().getLocale();
-        
         JspWriter printer = pageContext.getOut();
         try {
             if (date instanceof Date || (date == null)) {

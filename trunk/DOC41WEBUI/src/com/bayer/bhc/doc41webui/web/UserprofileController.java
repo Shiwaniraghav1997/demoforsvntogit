@@ -44,18 +44,6 @@ public class UserprofileController extends AbstractDoc41Controller {
 		return UserInSession.get();
     }
     
-    
-//    /**
-//     * maybe not needed
-//     * @param binder
-//     * @throws Exception
-//     */
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder) throws Exception {
-//    	List<Group> groupList =getUserManagementUC().findGroupsForUser(UserInSession.get());
-//    	binder.registerCustomEditor(Group.class, new GroupEditor(groupList));
-//    }
-    
     @RequestMapping(value="/userprofile/saveprofile*",method = RequestMethod.POST)
     public String save(@ModelAttribute User user, BindingResult result) throws Doc41BusinessException{
     	if (result.hasErrors()) {

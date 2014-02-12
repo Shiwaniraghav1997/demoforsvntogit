@@ -37,7 +37,6 @@ public class DisplaytextRepository {
 	// private static final long TEXTTYPE_CURRENCY = 11;
 
 	private static final long TEXTTYPE_COUNTRY = 4;
-//	private static final long TEXTTYPE_LANGUAGE = 5;
 	private static final long TEXTTYPE_TIMEZONE = 7;
 
 	private static final long TEXTTYPE_FEDERAL_STATE = 20;

@@ -57,7 +57,6 @@ public class GetTextsRFC extends AbstractDoc41RFC<KeyValue> {
 		Doc41Log.get().debug(GetTextsRFC.class, null, "processResult():ENTRY");
 		ArrayList<KeyValue> mResult = new ArrayList<KeyValue>();
 		if (pFunction != null) {
-//			processReturnTable(pFunction);
 			checkReturnCode(pFunction, OUT_RETURNCODE, null);
 			JCoTable table = pFunction.getTableParameterList().getTable(OUT_TABLE);
 			if(table!=null){

@@ -262,7 +262,6 @@ public class DocumentUC {
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
 			String crep = crepInfo.getContentRepository();
 			DocTypeDef docDef = metadata.getDocDef();
-			//		String d41id = metadata.getDocDef().getD41id();
 
 			//create guid
 			String guid = UUID.randomUUID().toString();
@@ -424,7 +423,6 @@ public class DocumentUC {
 			
 			Map<Integer, String> seqToKey = getSeqToKeyFromDefinitions(type);
 			DocMetadata metadata = getMetadata(type);
-//			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
 			DocTypeDef docDef = metadata.getDocDef();
 			String d41id = docDef.getD41id();
 			List<String> sapObjList = docDef.getSapObjList();
@@ -597,28 +595,6 @@ public class DocumentUC {
 	
 	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor,
 			String vendorBatch, String plant) throws Doc41BusinessException {
-//		//TODO remove mock qm mock
-//		if(true){
-//			List<InspectionLot> list = new ArrayList<InspectionLot>();
-//			try {
-//				int count = Integer.parseInt(vendorBatch);
-//				for(int i=0;i<count;i++){
-//					InspectionLot lot = new InspectionLot();
-//					lot.setNumber("Dummy"+i);
-//					lot.setMaterialNumber("matno"+i);
-//					lot.setMaterialText("mattext"+i);
-//					lot.setPlant("plant"+i);
-//					lot.setBatch("batch"+i);
-//					lot.setVendor(vendor);
-//					lot.setVendorBatch(vendorBatch);
-//					list.add(lot);
-//				}
-//			} catch (NumberFormatException e) {
-//				e.printStackTrace();
-//			}
-//			return list ;
-//		}
-//		//mock
 		try{
 			return authorizationRFCService.getInspectionLotsForVendorBatch(vendor,vendorBatch,plant);
 		} catch (Doc41ServiceException e) {
@@ -629,26 +605,6 @@ public class DocumentUC {
 	public List<QMBatchObject> getBatchObjectsForSupplier(String supplier, String plant, String material,
 			String batch, String order) throws Doc41BusinessException {
 		try{
-//			//TODO remove mock qm mock
-//			if(true){
-//				List<QMBatchObject> list = new ArrayList<QMBatchObject>();
-//				try {
-//					int count = Integer.parseInt(batch);
-//					for(int i=0;i<count;i++){
-//						QMBatchObject bo = new QMBatchObject();
-//						bo.setObjectId("Dummy"+i);
-//						bo.setMaterialNumber("matno"+i);
-//						bo.setMaterialText("mattext"+i);
-//						bo.setPlant("plant"+i);
-//						bo.setBatch("batch"+i);
-//						list.add(bo);
-//					}
-//				} catch (NumberFormatException e) {
-//					e.printStackTrace();
-//				}
-//				return list ;
-//			}
-//			//mock
 			return authorizationRFCService.getBatchObjectsForSupplier(supplier, plant, material, batch, order);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("getBatchObjectsForSupplier",e);

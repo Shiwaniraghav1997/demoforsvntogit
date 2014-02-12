@@ -38,11 +38,6 @@ public class DisplayTextRendererTag extends TagSupport {
 
 		//preferably use the LocaleInSession to display, but seems that Locale of the request is not determined by LocaleInSession
 		//so override by setting ENGLISH
-//		Locale locale = LocaleInSession.get();
-//        if (locale== null) {
-//        	locale=pageContext.getRequest().getLocale();
-//        }
-        
 		DisplayTextDC tmpDC = DisplayTextTransformer.get().getByType(type,
 				code, Locale.ENGLISH);
 		String tmpOut;

@@ -15,7 +15,6 @@ public class GetDocInfoRFC extends AbstractDoc41RFC<DocInfoComponent>{
 	private static final String IN_DOC_ID = "IV_DOC_ID";
 	
 	private static final String OUT_RETURNCODE = "EV_RETURNCODE";
-//	private static final String OUT_DOC_ID_OUT = "EV_DOC_ID_OUT";
 	
 	private static final String OT_COMPONENTS = "TR_COMPONENTS";
 	
