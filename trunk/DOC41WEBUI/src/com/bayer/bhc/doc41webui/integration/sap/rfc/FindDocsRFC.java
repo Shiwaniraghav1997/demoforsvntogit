@@ -72,7 +72,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 					if(!StringTool.isTrimmedEmptyOrNull(value)){
 						setParamValue(key,value,seqno,sapInput,tableParameterList);
 					} else {
-						setEmptyParam(key,seqno,sapInput,tableParameterList);
+						setEmptyParam(key,seqno,sapInput);
 					}
 				}
 				Doc41Log.get().debug(FindDocsRFC.class, null, "prepareCall():attributs are set");
@@ -99,7 +99,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	}
 	
 	private void setEmptyParam(String key, int paramNumber,
-			JCoParameterList sapInput, JCoParameterList tableParameterList) {
+			JCoParameterList sapInput) {
 		sapInput.setValue(IN_ATT_NAME+paramNumber, key);
 	}
 

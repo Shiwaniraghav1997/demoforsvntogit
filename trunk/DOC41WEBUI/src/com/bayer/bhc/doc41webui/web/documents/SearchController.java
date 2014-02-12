@@ -105,7 +105,7 @@ public class SearchController extends AbstractDoc41Controller {
 						if(!result.hasErrors()){
 							List<HitListEntry> documents = documentUC.searchDocuments(type, 
 									objectIds, allAttributeValues, MAX_RESULTS+1, false);
-							if(documents.size()==0){
+							if(documents.isEmpty()){
 								result.reject("NoDocumentsFound");
 							} else	if(documents.size()>MAX_RESULTS){
 								result.reject("ToManyResults");

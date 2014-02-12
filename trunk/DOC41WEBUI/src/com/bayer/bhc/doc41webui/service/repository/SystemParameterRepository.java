@@ -50,8 +50,7 @@ public class SystemParameterRepository {
 	 */
 	public Long getOID() throws Doc41RepositoryException {
 		try {
-			Long oid 			= sysParamDAO.getOID();
-			return oid;
+			return sysParamDAO.getOID();
 		} catch (Doc41TechnicalException e) {
 			throw new Doc41RepositoryException("Error during getOID.", e);
 		}

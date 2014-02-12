@@ -31,7 +31,7 @@ public final class UserInSession {
     public static User get() {
     	RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
     	if(requestAttributes==null){
-    		return ((User) sessionUserFallback.get());
+    		return (User) sessionUserFallback.get();
     	}
     	return (User) requestAttributes.getAttribute(RCH_KEY_USER, RequestAttributes.SCOPE_REQUEST);
     }

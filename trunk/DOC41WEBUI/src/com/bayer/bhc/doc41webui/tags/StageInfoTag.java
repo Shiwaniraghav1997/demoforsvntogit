@@ -42,7 +42,6 @@ public class StageInfoTag extends TagSupport {
 	
 	private String getTranslation(String text) {
 		Tags translations = (Tags) pageContext.getRequest().getAttribute(TAGS);
-		String transText =  translations.getTag(text);
-		return transText;
+		return translations.getTag(text);
 	}
 }

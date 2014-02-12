@@ -270,7 +270,7 @@ public class DisplaytextRepository {
 				.getDisplaytextList(TEXTTYPE_PRICING_ERROR_STATE);
 		// if multilingual support is not set up correctly by now - fall back to
 		// default locale EN
-		if (displaytextDCs.size() == 0) {
+		if (displaytextDCs.isEmpty()) {
 			displaytextDCs = getDisplaytextDAO().getDisplaytextListBackend(
 					TEXTTYPE_PRICING_ERROR_STATE, Locale.ENGLISH);
 		}
@@ -294,7 +294,7 @@ public class DisplaytextRepository {
 				.getDisplaytextList(TEXTTYPE_PRICING_ERROR_ORDER_BY);
 		// if multilingual support is not set up correctly by now - fall back to
 		// default locale EN
-		if (displaytextDCs.size() == 0) {
+		if (displaytextDCs.isEmpty()) {
 			displaytextDCs = getDisplaytextDAO().getDisplaytextListBackend(
 					TEXTTYPE_PRICING_ERROR_ORDER_BY, Locale.ENGLISH);
 		}
@@ -318,7 +318,7 @@ public class DisplaytextRepository {
 				.getDisplaytextList(TEXTTYPE_TRANSACTION_TYPE);
 		// if multilingual support is not set up correctly by now - fall back to
 		// default locale EN
-		if (displaytextDCs.size() == 0) {
+		if (displaytextDCs.isEmpty()) {
 			displaytextDCs = getDisplaytextDAO().getDisplaytextListBackend(
 					TEXTTYPE_TRANSACTION_TYPE, Locale.ENGLISH);
 		}
@@ -342,7 +342,7 @@ public class DisplaytextRepository {
 				.getDisplaytextList(TEXTTYPE_ADJUSTMENT_REASON);
 		// if multilingual support is not set up correctly by now - fall back to
 		// default locale EN
-		if (displaytextDCs.size() == 0) {
+		if (displaytextDCs.isEmpty()) {
 			displaytextDCs = getDisplaytextDAO().getDisplaytextListBackend(
 					TEXTTYPE_ADJUSTMENT_REASON, Locale.ENGLISH);
 		}

@@ -126,8 +126,7 @@ public abstract class AbstractDoc41RFC<E> implements RFCCaller<E> {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(dateFormat+ " "+timeFormat);
 			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-			Date date = sdf.parse(ardate+" "+artime);
-			return date;
+			return sdf.parse(ardate+" "+artime);
 		} catch (ParseException e) {
 			throw new SAPException("parse error: "+ardate+" "+artime, e);
 		}

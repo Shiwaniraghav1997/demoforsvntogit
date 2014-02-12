@@ -61,7 +61,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 		try {
 	        UMProfileNDC profile = null;
 	        ResultObject profiles = OTUserManagementN.get().getProfiles(null, null, pName, -1, -1, null, null, null, null, pLocale);
-	        if (profiles != null && profiles.getResult() != null && profiles.getResult().size() > 0) {
+	        if (profiles != null && profiles.getResult() != null && !profiles.getResult().isEmpty()) {
 	            // get profile by name should return a unique result
 	            profile = (UMProfileNDC) profiles.getResult().get(0);
 	        }
@@ -214,8 +214,9 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	
 	
 	protected void checkObligatoryParameter( Object pParamValue, String pParamName, String pCallingMethod ) throws Doc41TechnicalException {
-        if ( pParamValue == null )
+        if ( pParamValue == null ){
             throw new Doc41TechnicalException(this.getClass(), getClass().getSimpleName() + "." + pCallingMethod + ": Obligatory parameter '" + pParamName + "' not available, value is null!", null );
+        }
     }
 
 	//---- customers
@@ -237,8 +238,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 
 	public UserCustomerDC createUserCustomer(Locale locale) throws Doc41TechnicalException {
 		checkUser();
-		UserCustomerDC newCustomer = new UserCustomerDC();
-		return newCustomer;
+		return new UserCustomerDC();
 	}
 
 	public void saveUserCustomer(UserCustomerDC newCustomer) throws Doc41TechnicalException {
@@ -308,8 +308,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 
 	public UserVendorDC createUserVendor(Locale locale) throws Doc41TechnicalException {
 		checkUser();
-		UserVendorDC newVendor = new UserVendorDC();
-		return newVendor;
+		return new UserVendorDC();
 	}
 
 	public void saveUserVendor(UserVendorDC newVendor) throws Doc41TechnicalException {
@@ -379,8 +378,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 
 	public UserCountryDC createUserCountry(Locale locale) throws Doc41TechnicalException {
 		checkUser();
-		UserCountryDC newCountry = new UserCountryDC();
-		return newCountry;
+		return new UserCountryDC();
 	}
 
 	public void saveUserCountry(UserCountryDC newCountry) throws Doc41TechnicalException {
@@ -435,8 +433,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 
 	public UserPlantDC createUserPlant(Locale locale) throws Doc41TechnicalException {
 		checkUser();
-		UserPlantDC newPlant = new UserPlantDC();
-		return newPlant;
+		return new UserPlantDC();
 	}
 
 	public void saveUserPlant(UserPlantDC newPlant) throws Doc41TechnicalException {

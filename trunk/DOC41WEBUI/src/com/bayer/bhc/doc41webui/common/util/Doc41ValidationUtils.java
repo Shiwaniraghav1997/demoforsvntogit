@@ -6,6 +6,10 @@ import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 public class Doc41ValidationUtils {
+    
+    private Doc41ValidationUtils(){
+        //do not instantiate
+    }
 
 	public static void checkMaterialNumber(String value,String fieldName,Errors errors,boolean isMandatory){
 		if(StringTool.isTrimmedEmptyOrNull(value)){

@@ -143,7 +143,7 @@ public final class DateRenderer {
         if (null == dateString || dateString.trim().length() == 0) {
             return null;
         }
-        Date parsedDate = getFormatter(pLocale).parse(dateString.trim());;
+        Date parsedDate = getFormatter(pLocale).parse(dateString.trim());
         
         if (parsedDate.getTime() < DATE_SHORT_THRESHOLD) {
             parsedDate = new Date(parsedDate.getTime() + DATE_SHORT_LONG_OFFSET);
@@ -181,8 +181,7 @@ public final class DateRenderer {
     public static synchronized String formatDateAndTime(final Date pDate, final Date pTime) {
         String date = GERMAN_DATE.format(pDate);
         String time = TimeRenderer.formattedTime(pTime);
-        String result = date + SEPARATOR + time;
-        return result;
+        return date + SEPARATOR + time;
     }
 
     /**

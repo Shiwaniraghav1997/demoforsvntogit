@@ -14,7 +14,7 @@ public class SearchForm extends CustomizedDocumentForm {
 	
 	
 	public void validate(Errors errors) {
-		
+	  //no check necessary
 	}
 	
 	public List<HitListEntry> getDocuments() {

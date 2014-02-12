@@ -8,30 +8,26 @@ package com.bayer.bhc.doc41webui.tasks.model;
 
 import com.bayer.ecim.foundation.basic.InitException;
 
+public class BeanLocatorUtility extends
+        com.bayer.ecim.foundation.business.sbcommon.blu.BeanLocatorUtility {
 
-public class BeanLocatorUtility extends com.bayer.ecim.foundation.business.sbcommon.blu.BeanLocatorUtility  {
+    /** The unique ID of this Singleton. */
 
-/** The unique ID of this Singleton. */
-	
-	public BeanLocatorUtility( String pID )
-		throws InitException
-	{
-		super(pID);
-		initSucceeded(BeanLocatorUtility.class);
-	}
-	
-	public static com.bayer.ecim.foundation.business.sbcommon.blu.BeanLocatorUtility get()
-    	throws InitException
-	{
-	  	com.bayer.ecim.foundation.business.sbcommon.blu.BeanLocatorUtility mSing = com.bayer.ecim.foundation.business.sbcommon.blu.BeanLocatorUtility.get();
-	  	return  ( mSing instanceof BeanLocatorUtility ) ? mSing : new BeanLocatorUtility( ID );
-	}
-	
-	public static BeanLocatorUtility getDoc41Auto()
-    	throws InitException
-	{       
-	  	return (BeanLocatorUtility)get();
-	}
+    public BeanLocatorUtility(String pID) throws InitException {
+        super(pID);
+        initSucceeded(BeanLocatorUtility.class);
+    }
 
+    public static com.bayer.ecim.foundation.business.sbcommon.blu.BeanLocatorUtility get()
+            throws InitException {
+        com.bayer.ecim.foundation.business.sbcommon.blu.BeanLocatorUtility mSing = com.bayer.ecim.foundation.business.sbcommon.blu.BeanLocatorUtility
+                .get();
+        return (mSing instanceof BeanLocatorUtility) ? mSing
+                : new BeanLocatorUtility(ID);
+    }
+
+    public static BeanLocatorUtility getDoc41Auto() throws InitException {
+        return (BeanLocatorUtility) get();
+    }
 
 }

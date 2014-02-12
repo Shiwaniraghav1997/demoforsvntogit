@@ -56,9 +56,9 @@ public class DeliveryCertUploadDocumentType extends
 		String batch = attributeValues.get(ATTRIB_BATCH);
 		
 		List<QMBatchObject> bos = documentUC.getBatchObjectsForSupplier(vendorNumber, plant, material, batch, null);
-		if(bos.size()==0){
+		if(bos.isEmpty()){
 			errors.reject("BatchObjectNotFoundOrNotForSupplier");
-		} else if(bos.size()==0){
+		} else if(bos.isEmpty()){
 			errors.reject("MoreThanOneBatchObject");
 		}
 		

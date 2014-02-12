@@ -51,7 +51,7 @@ public class UserlistController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/useradmin/userlist",method=RequestMethod.GET)
     protected void get() throws Exception {
-        
+	  //no data necessary
     }
 	
 	@RequestMapping(value="/useradmin/jsontable", method=RequestMethod.GET,produces="application/json") 

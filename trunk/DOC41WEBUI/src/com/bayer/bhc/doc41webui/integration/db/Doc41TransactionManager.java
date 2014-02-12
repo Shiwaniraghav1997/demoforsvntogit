@@ -4,6 +4,7 @@
  */
 package com.bayer.bhc.doc41webui.integration.db;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +89,7 @@ public class Doc41TransactionManager {
         if (cache != null) {
             cache.clear();
             transctionalCache.remove(cacheKey);
-            return ((Long)cache.get("t0"));
+            return (Long)cache.get("t0");
         }
         return null;
     }
@@ -106,7 +107,7 @@ public class Doc41TransactionManager {
         try {
             int txid = getDBOX().beginTransaction();
             if (withCache) {
-            	Map<Object,Object> trxCache = new Hashtable<Object, Object>();
+            	Map<Object,Object> trxCache = new HashMap<Object, Object>();
                 trxCache.put("t0", new Long(System.currentTimeMillis()));
                 transctionalCache.put(txid+"", trxCache);
             }

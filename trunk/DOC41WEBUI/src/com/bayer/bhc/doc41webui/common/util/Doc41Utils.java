@@ -32,7 +32,7 @@ public final class Doc41Utils {
         if (field != null && field.length() > 0 && field.length() < fieldLength) {
             
             int prefixLength = fieldLength-field.length();
-            StringBuffer prefix = new StringBuffer(prefixLength);
+            StringBuilder prefix = new StringBuilder(prefixLength);
             while (prefix.length() < prefixLength) {
                 prefix.append('0');
             }
@@ -46,7 +46,9 @@ public final class Doc41Utils {
     }
     
     public static Date withoutMillisOfDay(final Date pDate) {
-        if (pDate == null) return null;
+        if (pDate == null){
+            return null;
+        }
         return new Date(pDate.getTime() - (pDate.getTime() % MILLIS_ONE_DAY));
     }
     

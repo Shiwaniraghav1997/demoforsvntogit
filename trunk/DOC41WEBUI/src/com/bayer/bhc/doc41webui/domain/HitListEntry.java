@@ -76,10 +76,10 @@ public class HitListEntry implements Serializable {
 	public void initCustValuesMap(Map<Integer, String> seqToKey){
 		customizedValuesByKey = new HashMap<String, String>();
 		for(int i=0;i<Doc41Constants.CUSTOMIZATION_VALUES_COUNT;i++){
-			String key = seqToKey.get(i+1);
-			if(!StringTool.isTrimmedEmptyOrNull(key)){
+			String oneKey = seqToKey.get(i+1);
+			if(!StringTool.isTrimmedEmptyOrNull(oneKey)){
 				String value = customizedValues[i];
-				customizedValuesByKey.put(key, value);
+				customizedValuesByKey.put(oneKey, value);
 			}
 		}
 	}

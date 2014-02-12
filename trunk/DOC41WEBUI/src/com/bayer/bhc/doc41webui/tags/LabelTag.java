@@ -59,7 +59,7 @@ public class LabelTag extends TagSupport {
             try {
 
                 if (translations != null) {
-                    StringBuffer out = new StringBuffer();
+                    StringBuilder out = new StringBuilder();
                     if (color != null) {
                         out.append("<div style=\"color:" + color + "\">");
                     }
@@ -69,8 +69,9 @@ public class LabelTag extends TagSupport {
 
                     for (int i = 0; i < tokens.length; i++) {
                         transText = getLabelTag(merge(i, tokens), translations, true,false);
-                        if (!isDummyTranslation(transText))
+                        if (!isDummyTranslation(transText)){
                             break;
+                        }
                     }
                     if (isDummyTranslation(transText)) {
                         transText = getLabelTag(label, translations, false,true);

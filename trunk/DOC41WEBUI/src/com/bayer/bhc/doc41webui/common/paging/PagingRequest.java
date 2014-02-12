@@ -44,11 +44,11 @@ public class PagingRequest extends QueryRequest implements PagingData {
 		setEndIndex(getStartIndex() + pageSize - 1);
     }
 
-	public int getStartIndex() {
+	public final int getStartIndex() {
 		return startIndex;
 	}
 
-	public void setStartIndex(int startIndex) {
+	public final void setStartIndex(int startIndex) {
 		this.startIndex = startIndex;
 	}
 
@@ -56,7 +56,7 @@ public class PagingRequest extends QueryRequest implements PagingData {
 		return endIndex;
 	}
 
-	public void setEndIndex(int endIndex) {
+	public final void setEndIndex(int endIndex) {
 		this.endIndex = endIndex;
 	}
 

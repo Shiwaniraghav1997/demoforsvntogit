@@ -41,7 +41,6 @@ public class ContactPersonViewController extends AbstractDoc41Controller {
 	public @ModelAttribute(INTERFACE_DETAILS) Monitor get(@RequestParam String serviceName,Map<String, Object> model) throws Doc41BusinessException{
 		model.put(EBC_USER, monitoringUC.findEBCContactPersonByInterface(serviceName));
 		model.put(BACKEND_USER,monitoringUC.findBackendContactPersonByInterface(serviceName));
-		Monitor monitor = monitoringUC.findInterfaceDetailsByName(serviceName);
-		return monitor;
+		return monitoringUC.findInterfaceDetailsByName(serviceName);
 	}
 }

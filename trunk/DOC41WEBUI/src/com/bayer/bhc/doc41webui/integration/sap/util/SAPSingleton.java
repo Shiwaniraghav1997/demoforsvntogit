@@ -56,7 +56,7 @@ public class SAPSingleton extends Singleton {
 
 	private static InMemoryDestinationDataProvider dataProvider;
  
-     public SAPSingleton(String pID)
+	private SAPSingleton(String pID)
          throws InitException     {
          super(pID, true);
          String oldJavaLibPath = System.getProperty("java.library.path");
@@ -76,7 +76,7 @@ public class SAPSingleton extends Singleton {
 
      // replace dirty hack with better handling
      @SuppressWarnings("unchecked")
-     protected synchronized void init() throws InitException    {
+     protected final synchronized void init() throws InitException    {
     	 try {
     		 if(dataProvider!=null){
         			 dataProvider.clean();
@@ -154,7 +154,7 @@ public class SAPSingleton extends Singleton {
 	}
 
 
-	public void addLogonConfig( Map<String,Object> pConfig, String pConfigPrefix, String pLogonName ) {
+	private void addLogonConfig( Map<String,Object> pConfig, String pConfigPrefix, String pLogonName ) {
 		Map<String,String> bLogonConf = new HashMap<String,String>();
 		bLogonConf.put("client",	getMapParm( pConfig, pConfigPrefix, "client",	null, true ) );
 		bLogonConf.put("user",		getMapParm( pConfig, pConfigPrefix, "user",		null, true ) );
@@ -179,21 +179,25 @@ public class SAPSingleton extends Singleton {
 	}
 
 
-	public String getMapParm( Map<String,?> pMap, String pPrefix, String pParm, String pDefault, boolean pIsObligatory ) {
-		if ( pMap == null )
-			throw new InitException( "Internal error reading property '" + pPrefix + pParm + "' from Map, Map is null!!!" );
-		if ( pPrefix == null )
-			throw new InitException( "Internal error reading property '" + pParm + "', prefix is null!!!" );
-		if ( pParm == null )
-			throw new InitException( "Internal error reading property with prefix '" + pPrefix + "', property name is null!!!" );
+	private String getMapParm( Map<String,?> pMap, String pPrefix, String pParm, String pDefault, boolean pIsObligatory ) {
+		if ( pMap == null ){
+		    throw new InitException( "Internal error reading property '" + pPrefix + pParm + "' from Map, Map is null!!!" );
+		}
+		if ( pPrefix == null ){
+		    throw new InitException( "Internal error reading property '" + pParm + "', prefix is null!!!" );
+		}
+		if ( pParm == null ){
+		    throw new InitException( "Internal error reading property with prefix '" + pPrefix + "', property name is null!!!" );
+		}
 		String mRes = StringTool.nullToEmpty( pMap.get( pPrefix + pParm ) );
-		if ( pIsObligatory && ( mRes == null ) )
-			throw new InitException( "Configuration error reading property '" + pPrefix + pParm + "', OBLIGATORY property is undefined!!!" );
+		if ( pIsObligatory && ( mRes == null ) ){
+		    throw new InitException( "Configuration error reading property '" + pPrefix + pParm + "', OBLIGATORY property is undefined!!!" );
+		}
 		return ( mRes == null ) ? pDefault : mRes;
 	}
 
 
-	public int getMapParm( Map<String,?> pMap, String pPrefix, String pParm, int pDefault, boolean pIsObligatory ) {
+	private int getMapParm( Map<String,?> pMap, String pPrefix, String pParm, int pDefault, boolean pIsObligatory ) {
 	    String v = getMapParm( pMap, pPrefix, pParm, (String)null, pIsObligatory );
 	    try {
 	        return ( v == null ) ? pDefault : Integer.parseInt( v );
@@ -203,12 +207,13 @@ public class SAPSingleton extends Singleton {
 	}
 
 
-	public void addPoolConfig(Map<String,Object> pConfig, String pConfigPrefix, String pPoolName) throws InitException, JCoException {
+	private void addPoolConfig(Map<String,Object> pConfig, String pConfigPrefix, String pPoolName) throws InitException, JCoException {
 		int mMaxConn = getMapParm(pConfig, pConfigPrefix, "maxconn", 0, true );
 		String bLogon = getMapParm( pConfig, pConfigPrefix, "logon", null, true );
 		Map<String,String> bLoginConf = cSAPLogons.get( bLogon );
-		if (bLoginConf == null)
-			throw new InitException("Logon configuration not found: " + bLogon );
+		if (bLoginConf == null){
+		    throw new InitException("Logon configuration not found: " + bLogon );
+		}
 
 		addDestinationToSapManager(
 			pPoolName,
@@ -231,8 +236,7 @@ public class SAPSingleton extends Singleton {
 		String pLanguage,
 		String pHost,
 		String pSysnr,
-		int pMaxConn ) throws JCoException
-	{
+		int pMaxConn ) throws JCoException {
 		pPwd = StringTool.decodePassword( pPwd );
 		Dbg.get().println( dbg0, this, null, "configure a new destination '" + pPoolName + "/" + pMaxConn +
 		        "'(" + pClient + "," + pUser + "," + StringTool.repeat( "*" , StringTool.nullToEmpty(pPwd).length() ) + "," +
@@ -259,7 +263,7 @@ public class SAPSingleton extends Singleton {
 	
 
 
-	protected void createSAPPools() throws InitException {
+	private void createSAPPools() throws InitException {
 		String bPoolNames = StringTool.emptyToNull( StringTool.toString( cConfig.get(COMPONENT_CONFIG_POOL+".names") ) ); 
 		StringTokenizer bStrTok = null;
 		
@@ -274,12 +278,10 @@ public class SAPSingleton extends Singleton {
 	}
  
  
-	public static synchronized SAPSingleton get()
-		throws InitException
-	{
-		SAPSingleton mSing = (SAPSingleton)getSingleton(ID);
-		return (mSing != null) ? mSing : new SAPSingleton(ID);
-	}
+    public static synchronized SAPSingleton get() throws InitException {
+        SAPSingleton mSing = (SAPSingleton) getSingleton(ID);
+        return (mSing != null) ? mSing : new SAPSingleton(ID);
+    }
 
 	/*
 	 * Bei Aufruf aus Chain sind die Parameter auf speziellem Weg erzeugt und eine
@@ -335,7 +337,7 @@ public class SAPSingleton extends Singleton {
 				throw new SAPException("RFC Caller for function \""+pRFCName+"\" could not be instantiated", ex);	
 			}
 			
-			mResult = performRFC( pRFCName, pParms, bSAPRFCName, bRFCCaller, mSAPDestination );
+			mResult = performRFC( pParms, bSAPRFCName, bRFCCaller, mSAPDestination );
 		} catch (SAPException ex) {
 			throw ex;
 		} catch (Exception ex) {
@@ -345,15 +347,16 @@ public class SAPSingleton extends Singleton {
 	}
 	 
  
-	private <E> List<E> performRFC(String pRFCName, List<?> pParms, String pSAPRFCName, RFCCaller<E> pRFCCaller, JCoDestination pSAPDestination ) throws SAPException, JCoException {
+	private <E> List<E> performRFC(List<?> pParms, String pSAPRFCName, RFCCaller<E> pRFCCaller, JCoDestination pSAPDestination ) throws SAPException, JCoException {
 		
 		JCoThroughput bPerfDate = new DefaultThroughput();
 		pSAPDestination.setThroughput( bPerfDate );
 		JCoRepository pSAPRep = pSAPDestination.getRepository();
 		Dbg.get().println( dbg0, this, null, "Getting function template '" + pSAPRFCName.toUpperCase() + "' from repository '" + pSAPRep.getName() + "'(" + pSAPRep.toString() +")" );
 		JCoFunctionTemplate bTemplate = pSAPRep.getFunctionTemplate(pSAPRFCName.toUpperCase());
-		if (bTemplate == null)
-			throw new SAPException( "SAP RFC is unknown or cannot be called: " + pSAPRFCName, null );
+		if (bTemplate == null){
+		    throw new SAPException( "SAP RFC is unknown or cannot be called: " + pSAPRFCName, null );
+		}
 		JCoFunction bFunction = bTemplate.getFunction();
 		pRFCCaller.prepareCall( bFunction, pParms );
 		try {
@@ -384,8 +387,7 @@ public class SAPSingleton extends Singleton {
 		JCoRepository pSAPRep = mSAPDestination.getRepository();
 		JCoFunctionTemplate bTemplate = pSAPRep.getFunctionTemplate(bSAPRFCName
 				.toUpperCase());
-		JCoFunction bFunction = bTemplate.getFunction();
-		return bFunction;
+		return bTemplate.getFunction();
 	}
 	
 	public Set<String> getRFCNames() {

@@ -25,14 +25,14 @@ import com.bayer.bhc.doc41webui.domain.SAPPrice;
 public class AmountRendererTag extends NumberRendererTag {
 	private static final long serialVersionUID = 1L;
 	
-	private static final Map<String, String> currencyMap = new HashMap<String, String>();
+	private static final Map<String, String> CURRENCY_MAP = new HashMap<String, String>();
 	static {
-		currencyMap.put("USDN","$");
-		currencyMap.put("USD", "$");
-		currencyMap.put("EUR", "€");
-		currencyMap.put("JPY", "¥");
-		currencyMap.put("CNY", "¥");
-		currencyMap.put("RMB", "¥");
+		CURRENCY_MAP.put("USDN","$");
+		CURRENCY_MAP.put("USD", "$");
+		CURRENCY_MAP.put("EUR", "€");
+		CURRENCY_MAP.put("JPY", "¥");
+		CURRENCY_MAP.put("CNY", "¥");
+		CURRENCY_MAP.put("RMB", "¥");
 	}
 	
 	protected Object currency;
@@ -40,10 +40,14 @@ public class AmountRendererTag extends NumberRendererTag {
 	protected void displayCurrency(Object currency, JspWriter printer) throws IOException {
 		String currencySign = null;
 		if (currency != null) {
-			currencySign = currencyMap.get(currency.toString());
+			currencySign = CURRENCY_MAP.get(currency.toString());
 		}
-		if (currencySign == null) currencySign = "$";
-		if ("USDN".equals(currency)) setFraction(5);
+		if (currencySign == null){
+		    currencySign = "$";
+		}
+		if ("USDN".equals(currency)){
+		    setFraction(5);
+		}
 		
 		printer.print(currencySign);
     }

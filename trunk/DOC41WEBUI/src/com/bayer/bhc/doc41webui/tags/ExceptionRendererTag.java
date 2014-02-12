@@ -31,7 +31,7 @@ public class ExceptionRendererTag extends TagSupport {
 	public int doEndTag() throws JspException {
 		JspWriter printer = pageContext.getOut();
 		User user = UserInSession.get();
-    	boolean internalUser =( user!=null && !user.isExternalUser());
+    	boolean internalUser = user!=null && !user.isExternalUser();
 		try {
         	if(internalUser){
 	        	Tags translations = (Tags) pageContext.getRequest().getAttribute(TAGS);

@@ -22,6 +22,10 @@ import com.sap.conn.jco.JCoTable;
  */
 public class RFCFunctionDumper {
 
+    private RFCFunctionDumper() {
+        //do not instantiate
+    }
+    
 	public static String dumpFunction(JCoFunction pFunction)
 			throws SAPException {
 		StringBuilder tmpBuffer = new StringBuilder();

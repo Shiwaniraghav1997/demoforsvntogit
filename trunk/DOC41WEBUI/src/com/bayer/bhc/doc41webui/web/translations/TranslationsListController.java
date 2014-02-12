@@ -87,7 +87,7 @@ public class TranslationsListController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/translations/translationOverview",method=RequestMethod.GET)
     public void get()  {
-        
+	  //no data necessary
     }
 	
 	@RequestMapping(value="/translations/jsontable", method=RequestMethod.GET,produces="application/json") 

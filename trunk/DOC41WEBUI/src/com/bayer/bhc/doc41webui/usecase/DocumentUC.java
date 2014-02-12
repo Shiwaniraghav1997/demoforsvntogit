@@ -163,8 +163,7 @@ public class DocumentUC {
 
 	public DocMetadata getDocMetadataBySapDocType(String sapDocType) throws Doc41BusinessException {
 		Map<String, DocMetadata> mdContainer = getDocMetadataContainer();
-		DocMetadata docMetadata = mdContainer.get(sapDocType);
-		return docMetadata;
+		return mdContainer.get(sapDocType);
 	}
 	
 	private Set<String> getSapDocTypesFromMetadata() throws Doc41BusinessException {
@@ -312,9 +311,9 @@ public class DocumentUC {
 			Map<String, String> kgsAttributeValues;
 			if(docDef.isDvs()){
 				kgsAttributeValues = new HashMap<String, String>(attributeValues);
-				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME__I_DVSOBJTYPE, sapObject);
-				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME__I_DVSDOCTYPE, docDef.getTechnicalId());
-				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME__I_NAMETYPE, "2");
+				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME_I_DVSOBJTYPE, sapObject);
+				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME_I_DVSDOCTYPE, docDef.getTechnicalId());
+				kgsAttributeValues.put(Doc41Constants.ATTRIB_NAME_I_NAMETYPE, "2");
 				docClass=getDocClass(fileName,"*");
 			} else {
 				kgsAttributeValues=Collections.unmodifiableMap(attributeValues);

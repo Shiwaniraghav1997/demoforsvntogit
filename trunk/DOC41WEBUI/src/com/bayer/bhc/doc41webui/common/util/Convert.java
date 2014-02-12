@@ -41,7 +41,8 @@ import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
  */
 public final class Convert {
 
-
+  // have initial buffersize increased by that value
+  private static final int UNICODE_EXTRA_BUFFER = 50;
 
 
   private Convert() {
@@ -59,12 +60,12 @@ public final class Convert {
    */
   public static String hexdump(byte[] aByteArray) {
 
-    StringBuffer tmpBuffer = new StringBuffer(aByteArray.length * 2);
+    StringBuilder tmpBuffer = new StringBuilder(aByteArray.length * 2);
     for (int i = 0; i < aByteArray.length; i++) {
-      tmpBuffer.append(convertDigit((aByteArray[i] >> 4)));
-      tmpBuffer.append(convertDigit((aByteArray[i] & 0x0f)));
+      tmpBuffer.append(convertDigit(aByteArray[i] >> 4));
+      tmpBuffer.append(convertDigit(aByteArray[i] & 0x0f));
     }
-    return (tmpBuffer.toString());
+    return tmpBuffer.toString();
 
   }
 
@@ -110,7 +111,7 @@ public final class Convert {
       }
       tmpOs.write(tmpByte);
     }
-    return (tmpOs.toByteArray());
+    return tmpOs.toByteArray();
 
   }
 
@@ -125,9 +126,9 @@ public final class Convert {
 
     aValue &= 0x0f;
     if (aValue >= 10) {
-      return ((char) (aValue - 10 + 'a'));
+      return (char) (aValue - 10 + 'a');
     }
-    return ((char) (aValue + '0'));
+    return (char) (aValue + '0');
 
   }
 
@@ -365,7 +366,7 @@ public final class Convert {
       return anInputString;
     }
     int width = aSearchforString.length();
-    StringBuffer tmpin = new StringBuffer();
+    StringBuilder tmpin = new StringBuilder();
     int tmpPos = 0;
     int tmpLastpos = 0;
     do {
@@ -492,9 +493,8 @@ public final class Convert {
    * @return the escaped String
    */
   public static String escapeUnicode(char[] anArray) {
-    // have initial buffersize increased by that value
-    final int EXTRA_BUFFER = 50;
-    StringBuffer tmpOut = new StringBuffer(anArray.length + EXTRA_BUFFER);
+    final int arrayLength = anArray.length + UNICODE_EXTRA_BUFFER;
+    StringBuilder tmpOut = new StringBuilder(arrayLength);
     for (int i = 0; i < anArray.length; i++) {
       char tmpChar = anArray[i];
       if (tmpChar > 255) {

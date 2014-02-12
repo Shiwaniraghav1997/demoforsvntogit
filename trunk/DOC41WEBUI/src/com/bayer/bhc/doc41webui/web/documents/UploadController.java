@@ -145,8 +145,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 				locale = Locale.ENGLISH;
 			}
 			Tags tags = new Doc41Tags(TranslationsDAO.SYSTEM_ID, "documents", "*", locale);
-			String typeName=tags.getTag(type);
-			return typeName;
+			return tags.getTag(type);
 		} catch (BATranslationsException e) {
 		    Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), e);
 			return "["+type+"]";

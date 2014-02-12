@@ -101,7 +101,7 @@ public class UserEditForm implements Serializable{
 	}
 
 	private static boolean isEmpty(List<?> list) {
-		return (list==null || list.isEmpty());
+		return list==null || list.isEmpty();
 	}
 
 	private static boolean containsRoleFromList(List<String> userRoles,
@@ -179,7 +179,7 @@ public class UserEditForm implements Serializable{
 		return cwid;
 	}
 
-	public void setCwid(String cwid) {
+	public final void setCwid(String cwid) {
 		this.cwid = cwid;
 	}
 
@@ -187,7 +187,7 @@ public class UserEditForm implements Serializable{
 		return surname;
 	}
 
-	public void setSurname(String surname) {
+	public final void setSurname(String surname) {
 		this.surname = surname;
 	}
 
@@ -195,7 +195,7 @@ public class UserEditForm implements Serializable{
 		return firstname;
 	}
 
-	public void setFirstname(String firstname) {
+	public final void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
 
@@ -203,7 +203,7 @@ public class UserEditForm implements Serializable{
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public final void setPassword(String password) {
 		this.password = password;
 	}
 
@@ -211,7 +211,7 @@ public class UserEditForm implements Serializable{
 		return passwordRepeated;
 	}
 
-	public void setPasswordRepeated(String passwordRepeated) {
+	public final void setPasswordRepeated(String passwordRepeated) {
 		this.passwordRepeated = passwordRepeated;
 	}
 
@@ -219,7 +219,7 @@ public class UserEditForm implements Serializable{
 		return company;
 	}
 
-	public void setCompany(String company) {
+	public final void setCompany(String company) {
 		this.company = company;
 	}
 
@@ -227,7 +227,7 @@ public class UserEditForm implements Serializable{
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public final void setEmail(String email) {
 		this.email = email;
 	}
 
@@ -235,7 +235,7 @@ public class UserEditForm implements Serializable{
 		return phone;
 	}
 
-	public void setPhone(String phone) {
+	public final void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -243,7 +243,7 @@ public class UserEditForm implements Serializable{
 		return timeZone;
 	}
 
-	public void setTimeZone(Long timeZone) {
+	public final void setTimeZone(Long timeZone) {
 		this.timeZone = timeZone;
 	}
 
@@ -251,7 +251,7 @@ public class UserEditForm implements Serializable{
 		return languageCountry;
 	}
 	
-	public void setLanguageCountry(String languageCountry) {
+	public final void setLanguageCountry(String languageCountry) {
 		this.languageCountry = languageCountry;
 	}
 	
@@ -259,7 +259,7 @@ public class UserEditForm implements Serializable{
 		return active;
 	}
 
-	public void setActive(Boolean active) {
+	public final void setActive(Boolean active) {
 		this.active = active;
 	}
 
@@ -267,7 +267,7 @@ public class UserEditForm implements Serializable{
 		return type;
 	}
 
-	public void setType(String type) {
+	public final void setType(String type) {
 		this.type = type;
 	}
 	
@@ -275,7 +275,7 @@ public class UserEditForm implements Serializable{
 		return roles;
 	}
 	
-	public void setRoles(List<String> roles) {
+	public final void setRoles(List<String> roles) {
 		if(roles==null){
 			roles = new ArrayList<String>();
 		}
@@ -285,14 +285,14 @@ public class UserEditForm implements Serializable{
 	public Long getObjectID() {
 		return objectID;
 	}
-	public void setObjectID(Long objectID) {
+	public final void setObjectID(Long objectID) {
 		this.objectID = objectID;
 	}
 	
 	public List<SapCustomer> getCustomers() {
 		return customers;
 	}
-	public void setCustomers(List<SapCustomer> customers) {
+	public final void setCustomers(List<SapCustomer> customers) {
 		if(customers==null){
 			customers = new ArrayList<SapCustomer>();
 		}
@@ -302,7 +302,7 @@ public class UserEditForm implements Serializable{
 	public List<SapVendor> getVendors() {
 		return vendors;
 	}
-	public void setVendors(List<SapVendor> vendors) {
+	public final void setVendors(List<SapVendor> vendors) {
 		if(vendors==null){
 			vendors = new ArrayList<SapVendor>();
 		}
@@ -361,7 +361,7 @@ public class UserEditForm implements Serializable{
 	public List<String> getCountries() {
 		return countries;
 	}
-	public void setCountries(List<String> countries) {
+	public final void setCountries(List<String> countries) {
 		this.countries = countries;
 	}
 	
@@ -380,7 +380,7 @@ public class UserEditForm implements Serializable{
 	public List<String> getPlants() {
 		return plants;
 	}
-	public void setPlants(List<String> plants) {
+	public final void setPlants(List<String> plants) {
 		this.plants = plants;
 	}
 	

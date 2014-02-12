@@ -116,8 +116,7 @@ public class ErrorTag extends AbstractHtmlElementBodyTag implements BodyTag {
     protected boolean shouldRender() throws JspException {
         try {
             return getBindStatus().isError();
-        }
-        catch (IllegalStateException ex) {
+        } catch (IllegalStateException ex) {
             // Neither BindingResult nor target object available.
             return false;
         }
@@ -128,12 +127,12 @@ public class ErrorTag extends AbstractHtmlElementBodyTag implements BodyTag {
     	 Tags translations = (Tags) pageContext.getRequest().getAttribute(TAGS);
         tagWriter.startTag(getElement());
         writeDefaultAttributes(tagWriter);
-        String delimiter = ObjectUtils.getDisplayString(evaluate("delimiter", getDelimiter()));
+        String delimiterDisplayString = ObjectUtils.getDisplayString(evaluate("delimiter", getDelimiter()));
         String[] errorCodes = getBindStatus().getErrorCodes();
         for (int i = 0; i < errorCodes.length; i++) {
             String errorMessage = errorCodes[i];
             if (i > 0) {
-                tagWriter.appendValue(delimiter);
+                tagWriter.appendValue(delimiterDisplayString);
             }
             //special handling for error codes=>MBGHY
             tagWriter.appendValue(translations.getTagNoEsc(getDisplayString(errorMessage)));

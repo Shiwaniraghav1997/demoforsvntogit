@@ -121,11 +121,8 @@ public abstract class AbstractDAOImpl {
 	}
 
 	private <T extends ChangeableDataCarrier> void setCreatedByChangedBy(T dc) {
-		if(dc.getObjectID()==null){
-			if(StringTool.isTrimmedEmptyOrNull(dc.getCreatedBy())){
-				dc.setCreatedBy(UserInSession.getCwid());
-				
-			}
+		if(dc.getObjectID()==null && StringTool.isTrimmedEmptyOrNull(dc.getCreatedBy())){
+		    dc.setCreatedBy(UserInSession.getCwid());
 		}
 		if(StringTool.isTrimmedEmptyOrNull(dc.getChangedBy())){
 			dc.setChangedBy(UserInSession.getCwid());
@@ -234,7 +231,7 @@ public abstract class AbstractDAOImpl {
     public <T extends StorableDataCarrier> T findDC(String[] pParameterNames, Object[] pParameterValues, String pTemplateName,
             Class<T> pClazz) throws Doc41TechnicalException {
     	List<T> dcs	= find(pParameterNames, pParameterValues, pTemplateName, pClazz);
-    	if (dcs == null || dcs.size() == 0) {
+    	if (dcs == null || dcs.isEmpty()) {
     		return null;
     	} else if (dcs.size() == 1) {
     		return dcs.get(0);
@@ -272,6 +269,7 @@ public abstract class AbstractDAOImpl {
     /*
      * 
      */
+    @SuppressWarnings("unchecked")
     protected <T extends DataCarrier> List<T> find(int pTransactionId, String[] pParameterNames, Object[] paramValues,
             String pTemplateName, Class<T> pClazz) throws Doc41TechnicalException {
 
@@ -281,9 +279,7 @@ public abstract class AbstractDAOImpl {
         		pParameterNames);
 
         try {
-            @SuppressWarnings("unchecked")
-			ArrayList<T> dcs = getDBOX().query(pTransactionId, query, pClazz);
-			return dcs;
+            return (ArrayList<T>) getDBOX().query(pTransactionId, query, pClazz);
         } catch (ReflectFailedException e) {
             throw new Doc41TechnicalException(this.getClass(), "find failed.", e);
         } catch (DatabaseException e) {
@@ -417,7 +413,7 @@ public abstract class AbstractDAOImpl {
         		expandNames(new String[] { "COUNT" }, paramNames),
                 expandValues(new Object[] { "*" }, paramValues), 
                 expandNames(new String[] { "COUNT", "TO_IDX" }, paramNames), 
-                expandValues(new Object[] { null,  (toIndex < 0) ? new Integer(5000) : new Integer(toIndex + 1) }, paramValues),
+                expandValues(new Object[] { null,  (toIndex < 0) ? Integer.valueOf(5000) : Integer.valueOf(toIndex + 1) }, paramValues),
                 templateName, dataCarrierClass, lastCount, fromIndex, toIndex);
     }
      
@@ -540,11 +536,11 @@ public abstract class AbstractDAOImpl {
     }
     
     protected final String idsAsString(List<Object> objectList) {
-        if (objectList == null || objectList.size() == 0) {
+        if (objectList == null || objectList.isEmpty()) {
             return "0";  // 0 is an unused objectId
         }
         
-        StringBuffer idBuffer = new StringBuffer();
+        StringBuilder idBuffer = new StringBuilder();
         for (Iterator<Object> iter = objectList.iterator(); iter.hasNext();) {
             Object obj = (Object)iter.next(); 
             if (obj instanceof DomainObject) {
@@ -564,7 +560,9 @@ public abstract class AbstractDAOImpl {
     
     protected String getSuffix(Locale locale) {
         String suffix = "";
-        if (LocaleInSession.get() != null) locale = LocaleInSession.get();
+        if (LocaleInSession.get() != null){
+            locale = LocaleInSession.get();
+        }
         
         if (locale != null && 
                 Locale.CHINESE.getLanguage().equalsIgnoreCase(locale.getLanguage())) {

@@ -94,7 +94,9 @@ public class UserManagementRepository extends AbstractRepository {
     	try {
 	        Doc41Log.get().debug(this.getClass(), "System", "Entering UserManagementRepositoryImpl.getUserByCwid(): " + pCwid);
 	        UMUserNDC userDC = userManagementDAO.getUserByCWID(pCwid);
-	        if (userDC == null ) return null;
+	        if (userDC == null ){
+	            return null;
+	        }
 	        User domainUser = null;
 	        domainUser = copyDcToDomainUser(userDC);
 			if (domainUser.getLocale() == null) {
@@ -219,18 +221,16 @@ public class UserManagementRepository extends AbstractRepository {
         }
 
         // Password notification part for external user - inform user:
-        if (pUser.isExternalUser()) {
-            if (StringUtils.isNotBlank(pUser.getPassword())) {
-                String body = "The new Password for "+pUser.getCwid()+" is '"+pUser.getPassword()+"'";
-                try {
-                    SendMail.get().send("DOC41@bayer.com", pUser.getEmail(), "New Password", body);
-                } catch (InitException e) {
-                    Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), "no mail send: "+body);
-                    Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), e);
-                } catch (MessagingException e) {
-                    Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), "no mail send: "+body);
-                    Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), e);
-                }
+        if (pUser.isExternalUser() && StringUtils.isNotBlank(pUser.getPassword())) {
+            String body = "The new Password for "+pUser.getCwid()+" is '"+pUser.getPassword()+"'";
+            try {
+                SendMail.get().send("DOC41@bayer.com", pUser.getEmail(), "New Password", body);
+            } catch (InitException e) {
+                Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), "no mail send: "+body);
+                Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), e);
+            } catch (MessagingException e) {
+                Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), "no mail send: "+body);
+                Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), e);
             }
         }
 	}
@@ -387,7 +387,7 @@ public class UserManagementRepository extends AbstractRepository {
 				}
 	            
 	            for (String customerToDelete : customersToDelete) {
-					removeCustomerFromUserInDB(userDC, customerToDelete, pUser.getLocale());
+					removeCustomerFromUserInDB(userDC, customerToDelete);
 				}
 
 	            //Vendors
@@ -405,7 +405,7 @@ public class UserManagementRepository extends AbstractRepository {
 				}
 	            
 	            for (String vendorToDelete : vendorsToDelete) {
-					removeVendorFromUserInDB(userDC, vendorToDelete, pUser.getLocale());
+					removeVendorFromUserInDB(userDC, vendorToDelete);
 				}
 	        } else {
 	        	// refresh customers
@@ -435,7 +435,7 @@ public class UserManagementRepository extends AbstractRepository {
 	            }
 	            
 	            for (String countryToDelete : countriesToDelete) {
-					removeCountryFromUserInDB(userDC, countryToDelete, pUser.getLocale());
+					removeCountryFromUserInDB(userDC, countryToDelete);
 				}
 	        } else {
 	        	// refresh countries
@@ -461,7 +461,7 @@ public class UserManagementRepository extends AbstractRepository {
 	            }
 	            
 	            for (String plantToDelete : plantsToDelete) {
-					removePlantFromUserInDB(userDC, plantToDelete, pUser.getLocale());
+					removePlantFromUserInDB(userDC, plantToDelete);
 				}
 	        } else {
 	        	// refresh plants
@@ -567,8 +567,7 @@ public class UserManagementRepository extends AbstractRepository {
     
 	private List<SapCustomerDC> getCustomersFromDB(Long objectID) throws Doc41RepositoryException {
 		try {
-			List<SapCustomerDC> customers = userManagementDAO.getCustomersByUser(objectID);
-			return customers;
+			return userManagementDAO.getCustomersByUser(objectID);
 		} catch (Doc41TechnicalException e) {
 			throw new Doc41RepositoryException("Error during getCustomersFromDB.", e);
 		}
@@ -594,7 +593,7 @@ public class UserManagementRepository extends AbstractRepository {
 	}
 	
 	private void removeCustomerFromUserInDB(UMUserNDC userDC,
-			String customerToDelete, Locale locale) throws Doc41RepositoryException {
+			String customerToDelete) throws Doc41RepositoryException {
 		try{
 			UserCustomerDC customer = userManagementDAO.getUserCustomer(userDC.getObjectID(),customerToDelete);
 			userManagementDAO.deleteUserCustomer(customer);
@@ -607,8 +606,7 @@ public class UserManagementRepository extends AbstractRepository {
 
 	private List<SapVendorDC> getVendorsFromDB(Long objectID) throws Doc41RepositoryException {
 		try {
-			List<SapVendorDC> vendors = userManagementDAO.getVendorsByUser(objectID);
-			return vendors;
+			return userManagementDAO.getVendorsByUser(objectID);
 		} catch (Doc41TechnicalException e) {
 			throw new Doc41RepositoryException("Error during getVendorsFromDB.", e);
 		}
@@ -634,7 +632,7 @@ public class UserManagementRepository extends AbstractRepository {
 	}
 	
 	private void removeVendorFromUserInDB(UMUserNDC userDC,
-			String vendorToDelete, Locale locale) throws Doc41RepositoryException {
+			String vendorToDelete) throws Doc41RepositoryException {
 		try{
 			UserVendorDC vendor = userManagementDAO.getUserVendor(userDC.getObjectID(),vendorToDelete);
 			userManagementDAO.deleteUserVendor(vendor);
@@ -647,8 +645,7 @@ public class UserManagementRepository extends AbstractRepository {
 	
 	private List<UserCountryDC> getCountriesFromDB(Long objectID) throws Doc41RepositoryException {
 		try {
-			List<UserCountryDC> countries = userManagementDAO.getCountriesByUser(objectID);
-			return countries;
+			return userManagementDAO.getCountriesByUser(objectID);
 		} catch (Doc41TechnicalException e) {
 			throw new Doc41RepositoryException("Error during getCountriesFromDB.", e);
 		}
@@ -670,7 +667,7 @@ public class UserManagementRepository extends AbstractRepository {
 	}
 	
 	private void removeCountryFromUserInDB(UMUserNDC userDC,
-			String countryToDelete, Locale locale) throws Doc41RepositoryException {
+			String countryToDelete) throws Doc41RepositoryException {
 		try{
 			UserCountryDC country = userManagementDAO.getUserCountry(userDC.getObjectID(),countryToDelete);
 			userManagementDAO.deleteUserCountry(country);
@@ -683,8 +680,7 @@ public class UserManagementRepository extends AbstractRepository {
 	
 	private List<UserPlantDC> getPlantsFromDB(Long objectID) throws Doc41RepositoryException {
 		try {
-			List<UserPlantDC> plants = userManagementDAO.getPlantsByUser(objectID);
-			return plants;
+			return userManagementDAO.getPlantsByUser(objectID);
 		} catch (Doc41TechnicalException e) {
 			throw new Doc41RepositoryException("Error during getPlantsFromDB.", e);
 		}
@@ -706,7 +702,7 @@ public class UserManagementRepository extends AbstractRepository {
 	}
 	
 	private void removePlantFromUserInDB(UMUserNDC userDC,
-			String plantToDelete, Locale locale) throws Doc41RepositoryException {
+			String plantToDelete) throws Doc41RepositoryException {
 		try{
 			UserPlantDC plant = userManagementDAO.getUserPlant(userDC.getObjectID(),plantToDelete);
 			userManagementDAO.deleteUserPlant(plant);
@@ -719,7 +715,9 @@ public class UserManagementRepository extends AbstractRepository {
 			
 	protected User copyDcToDomainUser(UMUserNDC pUserDC) throws Doc41RepositoryException {
 		try{
-			if (pUserDC == null) return null;
+			if (pUserDC == null){
+			    return null;
+			}
 
 			User domainUser = userMapper.mapToDomainObject(pUserDC, new User());
 	 
@@ -802,7 +800,9 @@ public class UserManagementRepository extends AbstractRepository {
 		try {
 			Doc41Log.get().debug(this.getClass(), "System", "Entering UserManagementRepositoryImpl.loadSAPCustomer(): " + customerNumber);
 			SapCustomerDC customerDC = userManagementDAO.getSapCustomerByNumber(customerNumber);
-			if(customerDC==null){return null;}
+			if(customerDC==null){
+			    return null;
+			}
 			SapCustomer domainCustomer = null;
 			List<SapCustomer> domainCustomerList = copyDcToDomainCustomers(Collections.singletonList(customerDC));
 			domainCustomer=domainCustomerList.get(0);
@@ -818,7 +818,9 @@ public class UserManagementRepository extends AbstractRepository {
 		try {
 			Doc41Log.get().debug(this.getClass(), "System", "Entering UserManagementRepositoryImpl.loadSAPVendor(): " + vendorNumber);
 			SapVendorDC vendorDC = userManagementDAO.getSapVendorByNumber(vendorNumber);
-			if(vendorDC==null){return null;}
+			if(vendorDC==null){
+			    return null;
+			}
 			SapVendor domainVendor = null;
 			List<SapVendor> domainVendorList = copyDcToDomainVendors(Collections.singletonList(vendorDC));
 			domainVendor=domainVendorList.get(0);

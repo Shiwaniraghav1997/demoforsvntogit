@@ -89,7 +89,7 @@ public class UserListFilter implements Serializable {
      *  @Override
      */
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+	    StringBuilder sb = new StringBuilder();
 		sb.append(" ==> UserListFilter .....\n");
 		sb.append("\n\t status:\t\t");
 		sb.append(status);

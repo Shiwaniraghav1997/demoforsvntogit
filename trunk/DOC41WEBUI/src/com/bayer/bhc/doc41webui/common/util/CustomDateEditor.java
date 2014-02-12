@@ -35,12 +35,10 @@ import org.springframework.util.StringUtils;
 		if (!StringUtils.hasText(text)) {
 			// Treat empty String as null value.
 			setValue(null);
-		}
-		else {
+		} else {
 			try {
 				setValue(DateRenderer.parse(text, this.timeZone, this.locale));
-			}
-			catch (ParseException ex) {
+			} catch (ParseException ex) {
 				throw new IllegalArgumentException("Could not parse date: " + ex.getMessage(), ex);
 			}
 		}
@@ -52,7 +50,7 @@ import org.springframework.util.StringUtils;
 	@Override
 	public String getAsText() {
 		Date value = (Date) getValue();
-		return (value != null ? DateRenderer.formattedDate(value, this.timeZone, this.locale) : "");
+		return value != null ? DateRenderer.formattedDate(value, this.timeZone, this.locale) : "";
 	}
 
 }

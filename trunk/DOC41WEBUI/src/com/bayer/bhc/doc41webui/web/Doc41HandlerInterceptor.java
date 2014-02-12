@@ -128,7 +128,9 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			// do the postRender intercepter job:
 			String ctrl = getRealHandler(handler).getClass().getName();
 			StringTokenizer st = new StringTokenizer(ctrl, ".");
-			while (st.hasMoreTokens())  ctrl = st.nextToken();
+			while (st.hasMoreTokens()){
+			    ctrl = st.nextToken();
+			}
 
 			request.getSession().setAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL, ctrl.toLowerCase());
 			if(modelAndView!=null){
@@ -221,10 +223,9 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 				LocaleInSession.put(Locale.US);
 				user = userManagementUC.findUser(cwid.toUpperCase());
 				
-				if (null != user && null != user.getCwid()) {
-					if (!user.hasPermission(Doc41Constants.PERMISSION_READ_ONLY)) {
-						user.setReadOnly(Boolean.FALSE);
-					}
+				if (null != user && null != user.getCwid()
+				        && !user.hasPermission(Doc41Constants.PERMISSION_READ_ONLY)) {
+				    user.setReadOnly(Boolean.FALSE);
 				}
 			} catch (Doc41BusinessException e) {
 				Doc41Log.get().error(this.getClass(), cwid, "no user found");
@@ -287,8 +288,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			// session not in DB
 			dbSessionDC = new SessionDataDC();
 			dbSessionDC.setId(pUser.getCwid());
-		}
-		else {
+		} else {
 			long readTime = System.currentTimeMillis();
 			if (dbSessionDC.getEndoflife().before(new Date())){
 				dbSessionDC.setData(null);
@@ -340,8 +340,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 							pUser.getCwid(),
 							"Session object could not be completely restored: "+e.getMessage());	
 					Doc41Log.get().error(this.getClass(), pUser.getCwid(), e);
-				}
-				finally {
+				} finally {
 					if (oIn !=null){
 						oIn.close();						
 					}

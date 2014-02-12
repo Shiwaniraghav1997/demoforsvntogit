@@ -31,25 +31,19 @@ public class TranslationValidator implements Validator {
      * @see org.springframework.validation.Validator#validate(java.lang.Object, org.springframework.validation.Errors)
      */
     public void validate(Object obj, Errors errors) {
-      
-        TranslationsForm translation = (TranslationsForm)obj;
-        validateJspName(translation, errors);
-        validateLaguage(translation, errors);
-        validateTagValue(translation, errors);
-        validateTagName(translation, errors);
-        validateComponent(translation, errors);
-        validateCountry(translation, errors);
-
+        validateJspName(errors);
+        validateLanguage(errors);
+        validateTagValue(errors);
+        validateTagName(errors);
+        validateComponent(errors);
+        validateCountry(errors);
     }
-    
-    
        
     /**
      * Validates Country code.
-     * @param translation The <code>Translation</code> containg input parameters
      * @param errors  The <code>Errors</code> object to upadte it, if validation fails. 
      */
-    private void validateCountry(TranslationsForm translation, Errors errors) {
+    private void validateCountry(Errors errors) {
         ValidationUtils.rejectIfEmpty(errors, "country", "error.country.required", "Country Code is required.");
         
     }
@@ -57,20 +51,18 @@ public class TranslationValidator implements Validator {
     
     /**
      * Validates Component code.
-     * @param translation The <code>Translation</code> containg input parameters
      * @param errors  The <code>Errors</code> object to upadte it, if validation fails. 
      */
-    public void validateComponent(TranslationsForm translation, Errors errors) {
+    private void validateComponent(Errors errors) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "component", "error.component.required", "Component is required.");
   	}
 
     
     /**
      * Validates Tag Name.
-     * @param translation The <code>Translation</code> containg input parameters
      * @param errors  The <code>Errors</code> object to upadte it, if validation fails. 
      */
-	public void validateTagName(TranslationsForm translation, Errors errors) {
+	private void validateTagName(Errors errors) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagName", "error.tagname.required", "Tag Name is required.");
 	}
 
@@ -80,7 +72,7 @@ public class TranslationValidator implements Validator {
      * @param translation The <code>Translation</code> containg input parameters
      * @param errors  The <code>Errors</code> object to upadte it, if validation fails. 
      */
-	public void validateTagValue(TranslationsForm translation, Errors errors) {
+	private void validateTagValue(Errors errors) {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagValue", "error.tagvalue.required", "Tag Value is required.");
    
     }
@@ -90,7 +82,7 @@ public class TranslationValidator implements Validator {
      * @param translation The <code>Translation</code> containg input parameters
      * @param errors  The <code>Errors</code> object to upadte it, if validation fails. 
      */
-	public void validateJspName(TranslationsForm translation, Errors errors) {
+	private void validateJspName(Errors errors) {
          ValidationUtils.rejectIfEmptyOrWhitespace(errors, "jspName", "error.jspname.required", "Page Name is required.");
          
     }
@@ -98,10 +90,9 @@ public class TranslationValidator implements Validator {
        
     /**
      * Validates Laguage code.
-     * @param translation The <code>Translation</code> containg input parameters
      * @param errors  The <code>Errors</code> object to upadte it, if validation fails. 
      */
-	public void validateLaguage(TranslationsForm translation, Errors errors) {
+	private void validateLanguage(Errors errors) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "language", "error.language.required", "Laguage Code is required.");
 	}
     

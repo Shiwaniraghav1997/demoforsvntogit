@@ -122,27 +122,19 @@ public class HttpClientService {
 	
 	public String downloadDocumentToResponse(URI getUrl, final HttpServletResponse targetResponse,final String docId,final String fileName) throws Doc41ServiceException{
 		final ResponseExtractor<String> responseExtractor = new ResponseExtractor<String>() {
-			
 			@Override
 			public String extractData(ClientHttpResponse response) throws IOException {
 				HttpHeaders headers = response.getHeaders();
-				
 				MediaType contentType = headers.getContentType();
 				targetResponse.setContentType(""+contentType);
 				targetResponse.setHeader("Content-Disposition", "attachment; filename=\""+generateFileName(fileName,docId,contentType)+"\"");
-//		      targetResponse.setHeader("Cache-Control", "no-cache");
-//				targetResponse.setHeader("Pragma", "no-cache");
 				targetResponse.setDateHeader("Expires", 0);
 				targetResponse.setCharacterEncoding("cp1252");
 				targetResponse.setContentLength((int)headers.getContentLength());
-				
 				InputStream inputStream = response.getBody();
-				
 				IOUtils.copy(inputStream,targetResponse.getOutputStream());
-				
 				return response.getStatusText();
 			}
-
 			private String generateFileName(String fileName,String docId, MediaType contentType) {
 				if(!StringTool.isTrimmedEmptyOrNull(fileName)){
 					return fileName;

@@ -10,6 +10,7 @@ public class LoginController extends AbstractDoc41Controller {
 
 	@RequestMapping(value="/login/login",method = RequestMethod.GET)
 	public void get() {
+	    //no data necessary
 	}
 
 

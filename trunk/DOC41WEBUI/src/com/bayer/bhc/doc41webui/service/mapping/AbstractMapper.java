@@ -39,10 +39,9 @@ public abstract class AbstractMapper {
     
     
     private static final void checkVersions(final ChangeableDataCarrier foundDC, final Long versionNumber) throws Doc41RepositoryException  {
-        if (foundDC != null  && versionNumber != null && foundDC.get(AbstractMapper.FIELD_VERSION_NUMBER) != null) {
-            if (!versionNumber.equals(foundDC.get(AbstractMapper.FIELD_VERSION_NUMBER))) {
-                throw new Doc41RepositoryException("OptimisticLockingException", null);
-            } 
+        if (foundDC != null  && versionNumber != null && foundDC.get(AbstractMapper.FIELD_VERSION_NUMBER) != null
+                && !versionNumber.equals(foundDC.get(AbstractMapper.FIELD_VERSION_NUMBER))) {
+            throw new Doc41RepositoryException("OptimisticLockingException", null);
         }
     }
     
@@ -132,7 +131,7 @@ public abstract class AbstractMapper {
         if(pL == null) {
             return null;
         }
-        return new Integer(pL.intValue());
+        return Integer.valueOf(pL.intValue());
     }
     
     protected int long2Int(Long pL) {

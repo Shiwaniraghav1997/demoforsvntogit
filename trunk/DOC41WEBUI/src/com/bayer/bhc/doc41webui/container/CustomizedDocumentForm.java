@@ -94,10 +94,9 @@ public abstract class CustomizedDocumentForm {
 		if(isCustomerNumberUsed){
 			customers = UserInSession.get().getCustomers();
 				
-			if(StringTool.isTrimmedEmptyOrNull(getCustomerNumber())){
-				if(!StringTool.isTrimmedEmptyOrNull(lastCustomerNumberFromSession)){
-					setCustomerNumber(lastCustomerNumberFromSession);
-				}
+			if(StringTool.isTrimmedEmptyOrNull(getCustomerNumber())
+			        && !StringTool.isTrimmedEmptyOrNull(lastCustomerNumberFromSession)){
+			    setCustomerNumber(lastCustomerNumberFromSession);
 			}
 		}
 	}
@@ -119,10 +118,9 @@ public abstract class CustomizedDocumentForm {
 		if(isVendorNumberUsed){
 			vendors = UserInSession.get().getVendors();
 				
-			if(StringTool.isTrimmedEmptyOrNull(getVendorNumber())){
-				if(!StringTool.isTrimmedEmptyOrNull(lastVendorNumberFromSession)){
-					setVendorNumber(lastVendorNumberFromSession);
-				}
+			if(StringTool.isTrimmedEmptyOrNull(getVendorNumber()) 
+			        && !StringTool.isTrimmedEmptyOrNull(lastVendorNumberFromSession)){
+			    setVendorNumber(lastVendorNumberFromSession);
 			}
 		}
 	}
@@ -179,8 +177,7 @@ public abstract class CustomizedDocumentForm {
 	}
 	public List<String> getCustomizedValuesLabels(){
 		Collection<String> labels = attributeLabels.values();
-		List<String> labelList = new ArrayList<String>(labels);
-		return labelList;
+		return new ArrayList<String>(labels);
 	}
 	public int getCustColPercent(){
 		int colCount = getCustAttributeCount();

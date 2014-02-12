@@ -17,11 +17,11 @@ public class InMemoryDestinationDataProvider implements DestinationDataProvider 
 			Properties p = inMemoryStorage.get(destinationName);
 			if (p != null) {
 				// check if all is correct, for example
-				if (p.isEmpty())
+				if (p.isEmpty()){
 					throw new DataProviderException(
 							DataProviderException.Reason.INVALID_CONFIGURATION,
 							"destination configuration is incorrect", null);
-
+				}
 				return p;
 			}
 
@@ -50,8 +50,9 @@ public class InMemoryDestinationDataProvider implements DestinationDataProvider 
 	void changeProperties(String destName, Properties properties) {
 		synchronized (inMemoryStorage) {
 			if (properties == null) {
-				if (inMemoryStorage.remove(destName) != null)
-					eL.deleted(destName);
+				if (inMemoryStorage.remove(destName) != null){
+				    eL.deleted(destName);
+				}
 			} else {
 				inMemoryStorage.put(destName, properties);
 				eL.updated(destName); // create or updated

@@ -49,10 +49,12 @@ public class OptionsTag extends TagSupport {
 
 	private boolean displayOption(boolean selectionFinished, JspWriter printer,
 			boolean inactive, boolean isDefaultValue, Object code, String value) throws IOException {
-		StringBuffer out = new StringBuffer();
+	    StringBuilder out = new StringBuilder();
 		
 		out.append("<option ");
-		if (inactive) out.append("disabled ");
+		if (inactive){
+		    out.append("disabled ");
+		}
 		if (!selectionFinished) {
 			if (!isIgnoreDefault() && isDefaultValue) {
 				out.append("selected ");

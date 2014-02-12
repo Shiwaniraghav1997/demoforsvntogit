@@ -87,26 +87,27 @@ public class LdapDAO {
 	}
 	
 	public boolean isInternalUserAuthenticated(String cwid, String password) throws Doc41TechnicalException {
-		try {
-			if(isDevSystem()){
-				if(cwid.equals("DDEMO")
-						||cwid.equalsIgnoreCase("CARRIER")
-						||cwid.equalsIgnoreCase("CUSTBROK")
-						||cwid.equalsIgnoreCase("MATSUP")
-						||cwid.equalsIgnoreCase("PRODSUP")
-						||cwid.equalsIgnoreCase("DCCOUNTRY")
-						||cwid.equalsIgnoreCase("DCCUSTOMER")
-						||cwid.equalsIgnoreCase("LAYOUTSUP")
-						||cwid.equalsIgnoreCase("PMSUP")
-						){
-					return true;
-				}
-			}
-			return getAilaAccess().isAuthenticated(cwid.trim(), password.trim());
-		} catch (AilaException e) {
-			return false;
-		}
+	    try {
+	        if(isDevSystem() && isDevTestUserCwid(cwid)){
+	            return true;
+	        }
+	        return getAilaAccess().isAuthenticated(cwid.trim(), password.trim());
+	    } catch (AilaException e) {
+	        return false;
+	    }
 	}
+
+    private boolean isDevTestUserCwid(String cwid) {
+        return "DDEMO".equals(cwid)
+                ||"CARRIER".equalsIgnoreCase(cwid)
+                ||"CUSTBROK".equalsIgnoreCase(cwid)
+                ||"MATSUP".equalsIgnoreCase(cwid)
+                ||"PRODSUP".equalsIgnoreCase(cwid)
+                ||"DCCOUNTRY".equalsIgnoreCase(cwid)
+                ||"DCCUSTOMER".equalsIgnoreCase(cwid)
+                ||"LAYOUTSUP".equalsIgnoreCase(cwid)
+                ||"PMSUP".equalsIgnoreCase(cwid);
+    }
 	
     public AILAPerson lookupUser(String cwid) throws Doc41TechnicalException  {
 		try {

@@ -46,15 +46,13 @@ public class NavigationEntryTag extends TagSupport {
 		} else {
 			String tmpPermission = StringUtils.replace(permission, ",", " ");
 			String[] permissions = StringUtils.split(tmpPermission);
-			boolean hasPermission = UserInSession.get().hasPermission(permissions);
-			return hasPermission;
+			return UserInSession.get().hasPermission(permissions);
 		}
 	}
 	
 	private String getTranslation(String title) {
 		Tags translations = (Tags) pageContext.getRequest().getAttribute(TAGS);
-		String transText =  translations.getTag(title);
-		return transText;
+		return translations.getTag(title);
 	}
 	
 	@Override

@@ -28,9 +28,7 @@ public class DisplaytextDAO {
      * @see com.bayer.bhc.doc41webui.integration.db.DisplaytextDAO#getDisplaytextList(long, java.util.Locale)
      */
     public List<DisplayTextDC> getDisplaytextList(long texttype) {
-        @SuppressWarnings("unchecked")
-		ArrayList<DisplayTextDC> allByType = DisplayTextTransformer.get().getAllByType(new Long(texttype), LocaleInSession.get());
-		return allByType;
+        return (ArrayList<DisplayTextDC>) DisplayTextTransformer.get().getAllByType(new Long(texttype), LocaleInSession.get());
     }
     
     /*
@@ -38,9 +36,7 @@ public class DisplaytextDAO {
      * @see com.bayer.bhc.doc41webui.integration.db.DisplaytextDAO#getDisplaytextListBackend(long, java.util.Locale)
      */
     public List<DisplayTextDC> getDisplaytextListBackend(long texttype, Locale locale) {
-        @SuppressWarnings("unchecked")
-		ArrayList<DisplayTextDC> allByType = DisplayTextTransformer.get().getAllByType(new Long(texttype), locale);
-		return allByType;
+        return (ArrayList<DisplayTextDC>) DisplayTextTransformer.get().getAllByType(new Long(texttype), locale);
     }
 
     /*

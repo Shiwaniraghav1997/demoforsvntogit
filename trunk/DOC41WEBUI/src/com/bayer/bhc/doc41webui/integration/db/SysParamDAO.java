@@ -39,7 +39,6 @@ public class SysParamDAO extends AbstractDAOImpl {
         Class<MDSysParamDC> dcClass		= MDSysParamDC.class;        
         
         MDSysParamDC dc = findDC(parameterNames, parameterValues, templateName, dcClass);	                		
-		Long oid		= dc.getObjectID();
-		return oid;
+		return dc.getObjectID();
 	}
 }

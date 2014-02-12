@@ -32,7 +32,7 @@ public final class LocaleInSession {
     public static Locale get() {
     	RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
     	if(requestAttributes==null){
-    		return ((Locale) sessionLocaleFallback.get());
+    		return (Locale) sessionLocaleFallback.get();
     	}
     	return (Locale) requestAttributes.getAttribute(RCH_KEY_LOCALE, RequestAttributes.SCOPE_REQUEST);
     }
