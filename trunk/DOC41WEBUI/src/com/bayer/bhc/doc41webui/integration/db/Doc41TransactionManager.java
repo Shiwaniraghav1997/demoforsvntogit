@@ -56,6 +56,7 @@ public class Doc41TransactionManager {
         }
     }
     
+    @SuppressWarnings("unchecked")
     public final <T extends StorableDataCarrier> T findInCache(int txid, Long objectId) {
         if (objectId != null) {
             String cacheKey = txid+"";
