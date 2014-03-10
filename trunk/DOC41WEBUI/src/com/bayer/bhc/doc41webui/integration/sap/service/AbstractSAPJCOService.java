@@ -14,11 +14,11 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41AccessDeniedException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
-import com.bayer.bhc.doc41webui.integration.sap.util.SAPSingleton;
 import com.bayer.bhc.doc41webui.service.Doc41MonitorService;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.StringTool;
+import com.bayer.ecim.foundation.sap3.SAPException;
+import com.bayer.ecim.foundation.sap3.SAPSingleton;
 
 
 /**

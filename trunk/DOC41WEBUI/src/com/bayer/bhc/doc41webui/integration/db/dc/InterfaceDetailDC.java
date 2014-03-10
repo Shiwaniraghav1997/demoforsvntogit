@@ -125,8 +125,6 @@ public class InterfaceDetailDC
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
-	@SuppressWarnings("unchecked")
-
 	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
 		super.copyFrom(pOther);
 		if (InterfaceDetailDC.class.isAssignableFrom(pOther.getClass())) {

@@ -125,8 +125,6 @@ public class UserCustomerDC
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
-	@SuppressWarnings("unchecked")
-
 	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
 		super.copyFrom(pOther);
 		if (UserCustomerDC.class.isAssignableFrom(pOther.getClass())) {

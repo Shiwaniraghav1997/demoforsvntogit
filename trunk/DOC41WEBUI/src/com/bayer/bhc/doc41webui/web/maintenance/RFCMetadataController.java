@@ -20,10 +20,10 @@ import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.domain.User;
-import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
-import com.bayer.bhc.doc41webui.integration.sap.util.SAPSingleton;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.InitException;
+import com.bayer.ecim.foundation.sap3.SAPException;
+import com.bayer.ecim.foundation.sap3.SAPSingleton;
 import com.sap.conn.jco.JCoException;
 
 @Controller

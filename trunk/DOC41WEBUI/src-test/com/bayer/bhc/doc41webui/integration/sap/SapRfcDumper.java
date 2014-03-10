@@ -3,9 +3,9 @@ package com.bayer.bhc.doc41webui.integration.sap;
 import org.junit.Test;
 
 import com.bayer.bhc.doc41webui.Doc41TestCase;
-import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
-import com.bayer.bhc.doc41webui.integration.sap.util.SAPSingleton;
 import com.bayer.ecim.foundation.basic.InitException;
+import com.bayer.ecim.foundation.sap3.SAPException;
+import com.bayer.ecim.foundation.sap3.SAPSingleton;
 import com.sap.conn.jco.JCoException;
 
 

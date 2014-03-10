@@ -180,8 +180,6 @@ public class ProfilePermissionDC
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
-	@SuppressWarnings("unchecked")
-
 	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
 		super.copyFrom(pOther);
 		if (ProfilePermissionDC.class.isAssignableFrom(pOther.getClass())) {

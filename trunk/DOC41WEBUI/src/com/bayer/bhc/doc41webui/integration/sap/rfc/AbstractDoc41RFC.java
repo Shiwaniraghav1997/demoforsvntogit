@@ -9,9 +9,9 @@ import java.util.TimeZone;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.integration.sap.util.RFCCaller;
-import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
 import com.bayer.ecim.foundation.basic.StringTool;
+import com.bayer.ecim.foundation.sap3.RFCCaller;
+import com.bayer.ecim.foundation.sap3.SAPException;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoListMetaData;
 import com.sap.conn.jco.JCoParameterList;

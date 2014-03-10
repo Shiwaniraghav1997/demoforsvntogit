@@ -6,7 +6,7 @@
 
 package com.bayer.bhc.doc41webui.integration.sap.rfc;
 
-import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
+import com.bayer.ecim.foundation.sap3.SAPException;
 import com.sap.conn.jco.JCoField;
 import com.sap.conn.jco.JCoFieldIterator;
 import com.sap.conn.jco.JCoFunction;

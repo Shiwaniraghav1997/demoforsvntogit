@@ -155,8 +155,6 @@ public class MonitoringContactDC
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
-	@SuppressWarnings("unchecked")
-
 	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
 		super.copyFrom(pOther);
 		if (MonitoringContactDC.class.isAssignableFrom(pOther.getClass())) {

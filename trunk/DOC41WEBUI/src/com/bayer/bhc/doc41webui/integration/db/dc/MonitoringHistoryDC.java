@@ -145,8 +145,6 @@ public class MonitoringHistoryDC
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
-	@SuppressWarnings("unchecked")
-
 	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
 		super.copyFrom(pOther);
 		if (MonitoringHistoryDC.class.isAssignableFrom(pOther.getClass())) {

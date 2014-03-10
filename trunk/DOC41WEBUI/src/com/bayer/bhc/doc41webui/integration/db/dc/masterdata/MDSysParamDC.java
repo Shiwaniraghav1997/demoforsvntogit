@@ -150,8 +150,6 @@ public class MDSysParamDC
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
-	@SuppressWarnings("unchecked")
-
 	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
 		super.copyFrom(pOther);
 		if (MDSysParamDC.class.isAssignableFrom(pOther.getClass())) {

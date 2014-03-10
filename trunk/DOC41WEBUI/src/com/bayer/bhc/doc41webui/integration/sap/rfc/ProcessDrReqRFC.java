@@ -9,8 +9,8 @@ import java.util.Set;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.bhc.doc41webui.integration.sap.util.SAPException;
 import com.bayer.ecim.foundation.basic.StringTool;
+import com.bayer.ecim.foundation.sap3.SAPException;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
