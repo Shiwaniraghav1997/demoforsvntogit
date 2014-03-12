@@ -83,7 +83,7 @@ public class Doc41InterfaceLogEntry extends DebugLogEntry {
      * @return java.lang.String the string representing this user (null if n/a).
      */
     public String getUser() {
-        return (cUser != null) ? cUser + "|" + ((cUser != null) ? cUser : cUser) : null;
+        return (cUser != null) ? cUser + "|" + cUser : null;
     }
 
     /**

@@ -51,8 +51,7 @@ public class UserEditForm implements Serializable{
 			for (SapCustomer customer : customers) {
 				if(customer==null || customer.getNumber()==null){
 					errors.rejectValue("customers", "customerNumberNull", "customer number null");
-				}
-				if(customer!=null && customer.getNumber()!=null && customer.getNumber().length()>Doc41Constants.FIELD_SIZE_CUSTOMER_NUMBER){
+				} else if(customer.getNumber().length()>Doc41Constants.FIELD_SIZE_CUSTOMER_NUMBER){
 					errors.rejectValue("customers", "customerNumberTooLong", "customer number too long");
 				} else {
 					try {
@@ -67,8 +66,7 @@ public class UserEditForm implements Serializable{
 			for (SapVendor vendor : vendors) {
 				if(vendor==null || vendor.getNumber()==null){
 					errors.rejectValue("vendors", "vendorNumberNull", "vendor number null");
-				}
-				if(vendor!=null && vendor.getNumber()!=null && vendor.getNumber().length()>Doc41Constants.FIELD_SIZE_VENDOR_NUMBER){
+				} else if(vendor.getNumber().length()>Doc41Constants.FIELD_SIZE_VENDOR_NUMBER){
 					errors.rejectValue("vendors", "vendorNumberTooLong", "vendor number too long");
 				} else {
 					try {

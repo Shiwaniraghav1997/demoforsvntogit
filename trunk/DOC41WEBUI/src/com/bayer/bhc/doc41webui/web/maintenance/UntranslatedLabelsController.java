@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.web.maintenance;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,14 +35,15 @@ public class UntranslatedLabelsController extends AbstractDoc41Controller {
 		// Untranslated Labels
 		StringBuilder sb = new StringBuilder();
 		Map<String, Set<String>> untranslatedLabels = Doc41Tags.getUntranslatedLabels();
-		for (String language : untranslatedLabels.keySet()) {
-			sb.append("<hr>\n");
+		for (Entry<String, Set<String>> oneLanguageEntry : untranslatedLabels.entrySet()) {
+		    String language = oneLanguageEntry.getKey();
+            sb.append("<hr>\n");
 			sb.append("Language: ");
 			sb.append(language);
 			sb.append("<br>\n");
 			sb.append("<hr>\n");
 			sb.append("<ul>\n");
-			Set<String> untranslatedLabelsSet = untranslatedLabels.get(language);
+			Set<String> untranslatedLabelsSet = oneLanguageEntry.getValue();
 			for (String label : untranslatedLabelsSet) {
 				//<li><a href="../translations/translationAdd?tagName=label&language=language">label</a></li>
 				sb.append("<li><a href='../translations/translationAdd?tagName=");

@@ -31,9 +31,9 @@ public abstract class AbstractMapper {
     private static final void checkVersionsAndIncrease(final ChangeableDataCarrier foundDC, final Long versionNumber) throws Doc41RepositoryException {
         checkVersions(foundDC, versionNumber);
         if(versionNumber != null) {
-            foundDC.set(AbstractMapper.FIELD_VERSION_NUMBER, new Long(versionNumber.longValue() + 1));    
+            foundDC.set(AbstractMapper.FIELD_VERSION_NUMBER, Long.valueOf(versionNumber.longValue() + 1));    
         } else {
-            foundDC.set(AbstractMapper.FIELD_VERSION_NUMBER, new Long(0));
+            foundDC.set(AbstractMapper.FIELD_VERSION_NUMBER, Long.valueOf(0));
         }
     }
     
@@ -123,7 +123,7 @@ public abstract class AbstractMapper {
         if(pI == null) {
             return null;
         }
-        return new Long(pI.longValue());
+        return Long.valueOf(pI.longValue());
     }
 
 
@@ -163,6 +163,6 @@ public abstract class AbstractMapper {
         if(intValue == nullValue) {
             return null;
         }
-        return new Long(intValue);
+        return Long.valueOf(intValue);
     }
 }

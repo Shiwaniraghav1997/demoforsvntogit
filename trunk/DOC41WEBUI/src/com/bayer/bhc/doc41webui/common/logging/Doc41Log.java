@@ -60,9 +60,6 @@ public class Doc41Log {
      * @param msg     The Debug message
      */
     public void debug(Class<?> clazz, String user, Object msg) {
-    	if (!INFO_ACTIVE) {
-    		INFO_ACTIVE = Dbg.get().isLogicalChannelActive(INFO);
-    	}
     	if (INFO_ACTIVE) {
             Dbg.get().println(INFO, clazz, user, msg);
         }

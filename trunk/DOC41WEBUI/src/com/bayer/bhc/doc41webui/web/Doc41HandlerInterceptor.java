@@ -93,12 +93,13 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 				request.setAttribute(USER, usr);
 			}
 			return true;
+		} catch (NestingException e1) {
+		    //no logging for NestingException to prevent duplicate logs as the NestingException constructor already logs
+            throw e1;
 		} catch (Exception e1) {
-			if(!(e1 instanceof NestingException)){ //to prevent duplicate logs as the NestingException constructor already logs
-				Doc41Log.get().error(
-						this.getClass(),
-						usr.getCwid(),e1);
-			}
+            Doc41Log.get().error(
+		            this.getClass(),
+		            (usr!=null)?usr.getCwid():"",e1);
 			throw e1;
 		}
 	}
@@ -141,11 +142,9 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			}
 		} catch (Exception e1) {
 			User usr = determineUser(request);
-			if(!(e1 instanceof NestingException)){ //to prevent duplicate logs as the NestingException constructor already logs
-				Doc41Log.get().error(
-						this.getClass(),
-						usr.getCwid(),e1);
-			}
+			Doc41Log.get().error(
+					this.getClass(),
+					usr.getCwid(),e1);
 			throw e1;
 		}
 

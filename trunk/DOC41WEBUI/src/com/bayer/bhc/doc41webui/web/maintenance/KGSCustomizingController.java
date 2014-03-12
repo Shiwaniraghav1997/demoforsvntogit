@@ -3,6 +3,7 @@ package com.bayer.bhc.doc41webui.web.maintenance;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -158,12 +159,11 @@ public class KGSCustomizingController extends AbstractDoc41Controller {
 		if(map==null){
 			sb.append("  null\n");
 		} else {
-			for (String key : map.keySet()) {
-				String value = map.get(key);
+			for (Entry<String, String> entry : map.entrySet()) {
 				sb.append("  ");
-				sb.append(key);
+				sb.append(entry.getKey());
 				sb.append("=");
-				sb.append(""+value);
+				sb.append(""+entry.getValue());
 				sb.append('\n');
 			}
 		}

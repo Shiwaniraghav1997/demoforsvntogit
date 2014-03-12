@@ -138,6 +138,9 @@ public class UserManagementRepository extends AbstractRepository {
         } catch (Doc41TechnicalException e) {
             throw new Doc41RepositoryException(Doc41ErrorMessageKeys.USR_MGT_LDAP_LOOKUPUSER_FAILED, e);
         }
+        if(person==null){
+            return null;
+        }
 		User domainUser = userMapper.mapToDomainObject(person, new User());
 		domainUser.setType(User.TYPE_INTERNAL);
 		

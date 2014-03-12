@@ -38,13 +38,13 @@ public class LabelTag extends TagSupport {
     boolean noEsc = false;
       
     private String merge(int i, String[] tokens) {
-        String result = tokens[i];
+        StringBuilder result = new StringBuilder(tokens[i]);
         for (int j = i+1; j < tokens.length; j++) {
             if (!tokens[j].equals(ignore)) {
-                result += "."+tokens[j];
+                result.append("."+tokens[j]);
             }
         }
-        return result;
+        return result.toString();
     }
     
     /* (non-Javadoc)

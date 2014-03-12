@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.bayer.bbs.aila.AilaAccess;
 import com.bayer.bbs.aila.exception.AilaException;
+import com.bayer.bbs.aila.exception.AilaIntranetUserNotFoundException;
 import com.bayer.bbs.aila.model.AILAPerson;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41InvalidPasswordException;
@@ -112,7 +113,8 @@ public class LdapDAO {
     public AILAPerson lookupUser(String cwid) throws Doc41TechnicalException  {
 		try {
 			return getAilaAccess().getIntranetUser(cwid, UserInSession.getCwid());
-			
+		} catch (AilaIntranetUserNotFoundException e){
+		    return null;
 		} catch (AilaException e) {
 			throw new Doc41TechnicalException(this.getClass(), "lookupUser", e);
 		}

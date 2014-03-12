@@ -10,24 +10,22 @@ import com.bayer.bhc.doc41webui.integration.db.dc.masterdata.MDSysParamDC;
 
 @Component
 public class SystemParameterRepository {
-	
-	private static Boolean dbPersistence = Boolean.FALSE;
-	private static long lastRefreshStamp = 0L;
-	private static long REFRESH_TIMEOUT = 30000;  // 30 seconds
-	
-	public static synchronized void setLastRefreshStamp(long lastRefreshStamp) {
-		SystemParameterRepository.lastRefreshStamp = lastRefreshStamp;
-	}
+    /* Parameter Names */
+    private static final String PARAM_NAME_DB_PERSISTENCE   = "DB_SESSION_PERSISTENCE";
+    
+    private static final long REFRESH_TIMEOUT = 30000;  // 30 seconds
+    
+	private Boolean dbPersistence = Boolean.FALSE;
+	private long lastRefreshStamp = 0L;
 	
 	@Autowired
-	private SysParamDAO sysParamDAO;
+    private SysParamDAO sysParamDAO;
 	
-	/* Parameter Names */
-	private static final String PARAM_NAME_DB_PERSISTENCE	= "DB_SESSION_PERSISTENCE";
+	public synchronized void setLastRefreshStamp(long lastRefreshStamp) {
+		this.lastRefreshStamp = lastRefreshStamp;
+	}
 	
-	
-	
-	public Boolean isDBSessionPersistence() throws Doc41RepositoryException {
+	public synchronized Boolean isDBSessionPersistence() throws Doc41RepositoryException {
 		if ((System.currentTimeMillis() - lastRefreshStamp) > REFRESH_TIMEOUT) {
 		
 			try {

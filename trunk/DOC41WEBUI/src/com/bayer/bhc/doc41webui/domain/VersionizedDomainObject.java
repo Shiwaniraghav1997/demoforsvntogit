@@ -48,7 +48,7 @@ public abstract class VersionizedDomainObject extends DomainObject {
         }
         
         StringTokenizer st = new StringTokenizer(id, SEPARATOR);
-        return new Long(Long.parseLong(st.nextToken()));
+        return Long.valueOf(st.nextToken());
     }
     
     /**
@@ -68,7 +68,7 @@ public abstract class VersionizedDomainObject extends DomainObject {
         if (!st.hasMoreTokens()) {
             return null;
         } else {
-            return new Long(Long.parseLong(st.nextToken()));
+            return Long.valueOf(st.nextToken());
         }
     }
 }

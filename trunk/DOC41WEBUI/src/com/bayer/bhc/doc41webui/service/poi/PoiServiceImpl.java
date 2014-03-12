@@ -112,9 +112,7 @@ private Map<String,PoiMapper> mappers;
 					dcsToStore.add(existingDC);
 				}
 			}
-			for (String key : remainingExisting.keySet()) {
-				T dcToDelete = remainingExisting.get(key);
-				
+			for (T dcToDelete : remainingExisting.values()) {
 				boolean markedForDelete = mapper.markAsDeleted(dcToDelete);
 				if(markedForDelete){
 					dcsToStore.add(dcToDelete);

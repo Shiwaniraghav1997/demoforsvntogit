@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
@@ -81,13 +82,12 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
 			sb.append(UserInSession.getCwid());
 			sb.append("|");
 		}
-		Set<String> keySet = attribValues.keySet();
-		for (String key : keySet) {
-			String value = attribValues.get(key);
-			if(value!=null){
-				sb.append(key);
+		Set<Entry<String, String>> entries = attribValues.entrySet();
+		for (Entry<String, String> entry : entries) {
+			if(entry.getValue()!=null){
+				sb.append(entry.getKey());
 				sb.append('=');
-				sb.append(value);
+				sb.append(entry.getValue());
 				sb.append('|');
 			}
 		}

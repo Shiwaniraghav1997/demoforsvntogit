@@ -109,7 +109,7 @@ public class Doc41TransactionManager {
             int txid = getDBOX().beginTransaction();
             if (withCache) {
             	Map<Object,Object> trxCache = new HashMap<Object, Object>();
-                trxCache.put("t0", new Long(System.currentTimeMillis()));
+                trxCache.put("t0", Long.valueOf(System.currentTimeMillis()));
                 transctionalCache.put(txid+"", trxCache);
             }
             return txid;

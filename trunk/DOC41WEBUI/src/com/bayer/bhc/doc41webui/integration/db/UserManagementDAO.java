@@ -132,11 +132,11 @@ public class UserManagementDAO extends AbstractDAOImpl {
             ResultObject resultObject = null;
             if (!StringTool.isTrimmedEmptyOrNull(pUserRequest.getRole()) && StringTool.isTrimmedEmptyOrNull(pUserRequest.getCwid())) {
                 UMProfileNDC profileNDC = getProfileByName(pUserRequest.getRole(), LocaleInSession.get());
-                resultObject = OTUserManagementN.get().getUsersByProfile(profileNDC.getObjectID(),pUserRequest.getFirstname(), pUserRequest.getSurname(), pUserRequest.getEmail(), objectState, pUserRequest.getIsExternal(), pUserRequest.getStartIndex(), pUserRequest.getEndIndex(), pUserRequest.getCompany(), null, orderBy, new Long(pUserRequest.getTotalSize()), LocaleInSession.get());
+                resultObject = OTUserManagementN.get().getUsersByProfile(profileNDC.getObjectID(),pUserRequest.getFirstname(), pUserRequest.getSurname(), pUserRequest.getEmail(), objectState, pUserRequest.getIsExternal(), pUserRequest.getStartIndex(), pUserRequest.getEndIndex(), pUserRequest.getCompany(), null, orderBy, Long.valueOf(pUserRequest.getTotalSize()), LocaleInSession.get());
                 Doc41Log.get().debug(this.getClass(), "System", "getUsers(...) getUsersByProfile returned (hitCount): " + resultObject.getHitCount());
             } else {
                 // company as quicksearch:
-                resultObject = OTUserManagementN.get().getUsers(pUserRequest.getCwid(), null, pUserRequest.getFirstname(), pUserRequest.getSurname(), pUserRequest.getEmail(), objectState, null, pUserRequest.getIsExternal(), pUserRequest.getStartIndex(), pUserRequest.getEndIndex(), pUserRequest.getCompany(), null, orderBy, new Long(pUserRequest.getTotalSize()), LocaleInSession.get());
+                resultObject = OTUserManagementN.get().getUsers(pUserRequest.getCwid(), null, pUserRequest.getFirstname(), pUserRequest.getSurname(), pUserRequest.getEmail(), objectState, null, pUserRequest.getIsExternal(), pUserRequest.getStartIndex(), pUserRequest.getEndIndex(), pUserRequest.getCompany(), null, orderBy, Long.valueOf(pUserRequest.getTotalSize()), LocaleInSession.get());
             }
             @SuppressWarnings("unchecked")
 			List<UMUserNDC> userDCList = resultObject.getDCListResult();

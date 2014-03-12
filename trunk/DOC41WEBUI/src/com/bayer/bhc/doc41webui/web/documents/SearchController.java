@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -129,11 +130,10 @@ public class SearchController extends AbstractDoc41Controller {
 	
 	private void checkForbiddenWildcards(BindingResult result, String fieldNamePrefix,
 			String fieldNameSuffix, Map<String, String> attributes) {
-		Set<String> keySet = attributes.keySet();
-		for (String key : keySet) {
-			String value = attributes.get(key);
-			String fieldName = fieldNamePrefix+key+fieldNameSuffix;
-			checkForbiddenWildcards(result, fieldName , value);			
+		Set<Entry<String, String>> entrySet = attributes.entrySet();
+		for (Entry<String, String> entry : entrySet) {
+			String fieldName = fieldNamePrefix+entry.getKey()+fieldNameSuffix;
+			checkForbiddenWildcards(result, fieldName , entry.getValue());			
 		}
 	}
 
