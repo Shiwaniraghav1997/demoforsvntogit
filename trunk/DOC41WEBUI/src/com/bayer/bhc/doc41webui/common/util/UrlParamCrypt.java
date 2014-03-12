@@ -4,6 +4,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import javax.crypto.BadPaddingException;
@@ -61,14 +62,13 @@ public class UrlParamCrypt {
     public static String encryptParameters(Map<String,String> params){
         try{
             StringBuilder sb = new StringBuilder();
-            for (String key : params.keySet()) {
-                final String value = params.get(key);
+            for (Entry<String, String> entry : params.entrySet()) {
                 if(sb.length()>0){
                     sb.append('&');
                 }
-                sb.append(StringTool.encodeURLWithDefaultFileEnc(key));
+                sb.append(StringTool.encodeURLWithDefaultFileEnc(entry.getKey()));
                 sb.append('=');
-                sb.append(StringTool.encodeURLWithDefaultFileEnc(value));	
+                sb.append(StringTool.encodeURLWithDefaultFileEnc(entry.getValue()));	
             }
             return encrypt(sb.toString());
         } catch (Exception e){
