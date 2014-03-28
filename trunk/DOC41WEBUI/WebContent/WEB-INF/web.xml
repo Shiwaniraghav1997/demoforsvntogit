@@ -77,6 +77,10 @@
     <servlet-name>Status</servlet-name>
     <url-pattern>/status/*</url-pattern>
   </servlet-mapping>
+  <mime-mapping>  
+	     <extension>sap</extension>  
+	     <mime-type>application/x-sapshortcut</mime-type>  
+  </mime-mapping> 
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
