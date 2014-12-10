@@ -425,10 +425,15 @@ public class DocumentUC {
 			DocTypeDef docDef = metadata.getDocDef();
 			String d41id = docDef.getD41id();
 			List<String> sapObjList = docDef.getSapObjList();
-			List<HitListEntry> allResults = new ArrayList<HitListEntry>();
-			for (String sapObj : sapObjList) {
-				List<HitListEntry> oneResult = bwRFCService.findDocs(d41id, sapObj, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKey);
-				allResults.addAll(oneResult);
+			List<HitListEntry> allResults;
+			if(objectIds==null || objectIds.isEmpty()){
+			    allResults = bwRFCService.findDocs(d41id, null, null, attributeValues, maxResults, maxVersionOnly,seqToKey);
+			} else {
+                allResults = new ArrayList<HitListEntry>();
+    			for (String sapObj : sapObjList) {
+    				List<HitListEntry> oneResult = bwRFCService.findDocs(d41id, sapObj, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKey);
+    				allResults.addAll(oneResult);
+    			}
 			}
 			for (HitListEntry hitListEntry : allResults) {
 				hitListEntry.initCustValuesMap(seqToKey);
