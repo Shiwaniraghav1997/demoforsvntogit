@@ -22,7 +22,9 @@ import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
+import com.bayer.bhc.doc41webui.usecase.DocClassNotAllowed;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
+import com.bayer.bhc.doc41webui.usecase.UnknownExtensionException;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.bhc.doc41webui.web.Doc41Tags;
@@ -71,7 +73,12 @@ public abstract class UploadController extends AbstractDoc41Controller {
 				documentUC.hasVendorNumber(type),null);
 		checkPartnerNumbers(result,type,uploadForm.getCustomerNumber(),uploadForm.getVendorNumber());
 		checkAndFillObjectId(result,type,uploadForm);
-		checkFileParameter(result,uploadForm.getFile(),uploadForm.getFileId(),uploadForm.getFileName());
+		MultipartFile file = uploadForm.getFile();
+        if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
+		    String fileName = limitFilenameSize(file.getOriginalFilename());
+		    uploadForm.setFileName(fileName);
+		}
+		checkFileParameter(result,uploadForm.getFile(),uploadForm.getFileId(),uploadForm.getFileName(),type);
 		if(result.hasErrors()){
 			return failedURL;
 		}
@@ -88,17 +95,15 @@ public abstract class UploadController extends AbstractDoc41Controller {
 			allAttributeValues.putAll(additionalAttributes);
 		}
 		
-		MultipartFile file = uploadForm.getFile();
 		if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
 			File localFile = documentUC.checkForVirus(file);
 			if(localFile==null){
 				result.reject("VirusDetected");
 				return failedURL;
 			}
-			String fileName = limitFilenameSize(file.getOriginalFilename());
-			String fileId = documentUC.uploadDocument(type,localFile,file.getContentType(),fileName);
+			
+			String fileId = documentUC.uploadDocument(type,localFile,file.getContentType(),uploadForm.getFileName());
 			uploadForm.setFileId(fileId);
-			uploadForm.setFileName(fileName);
 		}
 		if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){
 			result.reject("UploadFailed");
@@ -194,7 +199,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 	}
 
 	private void checkFileParameter(BindingResult errors, MultipartFile file,
-			String fileId, String fileName) {
+			String fileId, String fileName,String type) throws Doc41BusinessException {
 		boolean isfileEmpty = (file==null||file.getSize()==0);
 		if(isfileEmpty && StringTool.isTrimmedEmptyOrNull(fileId)){
 			errors.rejectValue("file", "uploadFileMissing", "upload file is missing");
@@ -204,6 +209,13 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		}
 		if(!isfileEmpty && !StringTool.isTrimmedEmptyOrNull(fileId)){
 			errors.rejectValue("file", "FileAndFileId", "both file and fileId filled");
+		}
+		try{
+		    documentUC.checkFileTypeBeforeUpload(type,fileName);
+		} catch (UnknownExtensionException e){
+		    errors.rejectValue("file", "UnknownExtension", e.getMessage());
+		} catch (DocClassNotAllowed e){
+		    errors.rejectValue("file", "OnlyAllowedDocClass"+e.getAllowedDocClass(), e.getMessage());
 		}
 	}
 

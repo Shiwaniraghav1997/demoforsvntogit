@@ -289,6 +289,12 @@ public class DocumentUC {
 			localFile.delete();
 		}
 	}
+	
+	public void checkFileTypeBeforeUpload(String type,String fileName) throws Doc41BusinessException{
+	    DocMetadata metadata = getMetadata(type);
+        ContentRepositoryInfo crepInfo = metadata.getContentRepository();
+        getDocClass(fileName,crepInfo.getAllowedDocClass());
+	}
 
 
 	public void setAttributesForNewDocument(String type, String fileId,
@@ -326,7 +332,6 @@ public class DocumentUC {
 	}
 
 
-
 	private String getDocClass(String fileName, String allowedDocClass) throws Doc41BusinessException {
 		String docClass;
 		boolean isAllClassesAllowed = StringTool.equals(allowedDocClass, "*");
@@ -358,11 +363,12 @@ public class DocumentUC {
 		} else if (fileNameUpper.endsWith(".TXT")){
 			docClass = "TXT";
 		} else {
-			throw new Doc41BusinessException("unknown extension :"+fileNameUpper);
+		    String extension = fileNameUpper.substring(fileNameUpper.indexOf('.'));
+			throw new UnknownExtensionException(extension);
 		}
 		
 		if(!isAllClassesAllowed && !StringTool.equals(docClass, allowedDocClass.toUpperCase())){
-			throw new Doc41BusinessException("Doc class "+docClass+" is not allowed ("+allowedDocClass+")");
+			throw new DocClassNotAllowed(docClass,allowedDocClass);
 		}
 		
 		return docClass;
