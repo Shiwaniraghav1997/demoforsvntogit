@@ -200,22 +200,28 @@ public abstract class UploadController extends AbstractDoc41Controller {
 
 	private void checkFileParameter(BindingResult errors, MultipartFile file,
 			String fileId, String fileName,String type) throws Doc41BusinessException {
-		boolean isfileEmpty = (file==null||file.getSize()==0);
-		if(isfileEmpty && StringTool.isTrimmedEmptyOrNull(fileId)){
+		boolean isfileNull = file==null;
+		boolean isFileEmpty = file.getSize()==0;
+		if(isfileNull && StringTool.isTrimmedEmptyOrNull(fileId)){
 			errors.rejectValue("file", "uploadFileMissing", "upload file is missing");
 		}
-		if(isfileEmpty && !StringTool.isTrimmedEmptyOrNull(fileId) && StringTool.isTrimmedEmptyOrNull(fileName)){
+		if(isfileNull && !StringTool.isTrimmedEmptyOrNull(fileId) && StringTool.isTrimmedEmptyOrNull(fileName)){
 			errors.rejectValue("file", "uploadFileNameMissing", "upload fileId is present but fileName is missing");
 		}
-		if(!isfileEmpty && !StringTool.isTrimmedEmptyOrNull(fileId)){
+		if(!isfileNull && !StringTool.isTrimmedEmptyOrNull(fileId)){
 			errors.rejectValue("file", "FileAndFileId", "both file and fileId filled");
 		}
-		try{
-		    documentUC.checkFileTypeBeforeUpload(type,fileName);
-		} catch (UnknownExtensionException e){
-		    errors.rejectValue("file", "UnknownExtension", e.getMessage());
-		} catch (DocClassNotAllowed e){
-		    errors.rejectValue("file", "OnlyAllowedDocClass"+e.getAllowedDocClass(), e.getMessage());
+		if(!isfileNull&&isFileEmpty){
+		    errors.rejectValue("file", "FileEmpty", "file is empty");
+		}
+		if(!errors.hasErrors()){
+    		try{
+    		    documentUC.checkFileTypeBeforeUpload(type,fileName);
+    		} catch (UnknownExtensionException e){
+    		    errors.rejectValue("file", "UnknownExtension", e.getMessage());
+    		} catch (DocClassNotAllowed e){
+    		    errors.rejectValue("file", "OnlyAllowedDocClass"+e.getAllowedDocClass(), e.getMessage());
+    		}
 		}
 	}
 
