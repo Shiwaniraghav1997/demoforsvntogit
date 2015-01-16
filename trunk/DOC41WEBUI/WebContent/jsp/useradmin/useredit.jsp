@@ -46,7 +46,7 @@ title="User Management">
 						<th style="width: 15%"><label for="password"><doc41:translate label="Password"/></label></th>
 						<td style="width: 35%">
 							<c:if test="${userEditForm.type eq 'external'}">
-								<form:password path="password" cssClass="portlet-form-input-field portlet-mandatory"/>
+								<form:password path="password" cssClass="portlet-form-input-field"/>
 							</c:if>
 							<c:if test="${userEditForm.type eq 'internal'}">
 								<doc41:translate label="NotChangeable"/>
@@ -67,7 +67,7 @@ title="User Management">
 						<th><label for="passwordRepeated"><doc41:translate label="RepeatPassword"/></label></th>
 						<td>
 							<c:if test="${userEditForm.type eq 'external'}">
-								<form:password path="passwordRepeated" cssClass="portlet-form-input-field portlet-mandatory" />
+								<form:password path="passwordRepeated" cssClass="portlet-form-input-field" />
 							</c:if>
 							<c:if test="${userEditForm.type eq 'internal'}">
 								<doc41:translate label="NotChangeable"/>

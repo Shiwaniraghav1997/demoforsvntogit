@@ -39,10 +39,16 @@ public class UserEditForm implements Serializable{
 	
 
 	public void validate(HttpServletRequest request, Errors errors) {
-		if(StringTool.equals(getType(), User.TYPE_EXTERNAL)){
+		boolean isExternal = StringTool.equals(getType(), User.TYPE_EXTERNAL);
+		boolean isNew = StringTool.isTrimmedEmptyOrNull(getCwid());
+        if(isExternal){
 			checkMandatory("surname",getSurname(),errors);
 			checkMandatory("firstname",getFirstname(),errors);
 			checkMandatory("email",getEmail(),errors);
+			if(isNew){
+			    checkMandatory("password",getPassword(),errors);
+			    checkMandatory("passwordRepeated",getPasswordRepeated(),errors);
+			}
 		}
 		if(!StringTool.equals(getPassword(), getPasswordRepeated())){
 			errors.rejectValue("passwordRepeated", "pwDifferent", "password and passwordRepeated do not match.");
