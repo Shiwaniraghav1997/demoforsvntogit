@@ -26,6 +26,8 @@
 				</c:if>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonUpload"/>" />
 			</div>
+         
+            <doc41:errors form="uploadForm"/>
 
 			<div class="portlet-section-body">
 				<table cellpadding="4" cellspacing="0" class="nohover">
@@ -39,15 +41,6 @@
 						</colcolgroup>
 					</thead>
 					<tbody class="portlet-table-body">
-						<spring:hasBindErrors name="uploadForm">
-							<c:forEach items="${errors.globalErrors}" var="error">
-							<tr>
-								<td colspan="2" style="color: red">
-									<doc41:translate label="${error.code}" />
-								</td>
-							</tr>
-							</c:forEach>
-						</spring:hasBindErrors>
 						
 						<c:if test="${uploadForm.customerNumberUsed && (empty showCustomerNumber or showCustomerNumber)}">
 						<tr>

@@ -16,6 +16,8 @@ title="My Profile">
 	<div class="portlet-section-header">
 		<input type="submit" name="_finish" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
 	</div>
+   
+    <doc41:errors form="user"/>
 
 	<div class="portlet-section-body">
 		<div class="section-separator"><doc41:translate label="TitelUserData" /></div>
@@ -29,20 +31,6 @@ title="My Profile">
 				</colcolgroup>
 			</thead>
 			<tbody class="portlet-table-body">
-				<spring:hasBindErrors name="user">
-					<tr>
-						<td colspan="4">
-							<c:forEach items="${errors.fieldErrors}" var="error">
-								<tr>
-									<td onmouseover="style.cursor='pointer';" onclick="$('#${error.field}').focus();" style="color: blue"> <doc41:translate label="${error.field}"/> </td>
-					    			<td style="color: red;"><doc41:translate label="${error.field}.${error.code}" /></td>
-								</tr>
-							</c:forEach>
-						</td>
-					</tr>
-				</spring:hasBindErrors>
-				
-				
 				<tr>
 					<th style="width: 15%"><doc41:translate label="Surname"/></th> 
 					<td style="width: 35%">

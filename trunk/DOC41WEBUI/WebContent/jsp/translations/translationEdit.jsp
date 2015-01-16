@@ -19,21 +19,12 @@ title="Translations">
 				<a class="portlet-form-button" href='translationOverview'><doc41:translate label="ButtonCancel"/></a>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSave"/>" />
 			</div>
+         
+            <doc41:errors form="translationsForm"/>
 
 			<div class="portlet-section-body">
 				<table class="nohover" cellpadding="4" cellspacing="0">
 					<thead class="portlet-table-header">
-					<spring:hasBindErrors name="translationsForm">
-						<tr>
-							<td colspan="4">
-								<c:forEach items="${errors.fieldErrors}" var="error">
-									<tr style="color: red">
-										<doc41:translate label="${error.code}" />
-									</tr>
-								</c:forEach>
-							</td>
-						</tr>
-					</spring:hasBindErrors>
 						
 					<tr>
 						<th><doc41:translate label="Mandant" /></th>

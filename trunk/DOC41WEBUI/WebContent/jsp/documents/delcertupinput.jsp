@@ -18,19 +18,10 @@
 				</div>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonContinue"/>" name="ButtonContinue"/>
 			</div>
+         
+            <doc41:errors form="batchObjectForm"/>
 			
 			<div class="portlet-section-body">
-				<spring:hasBindErrors name="batchObjectForm">
-					<tr>
-						<td colspan="2"><c:forEach items="${errors.globalErrors}"
-								var="error">
-								<tr style="color: red">
-									<doc41:translate label="${error.code}" />
-								</tr>
-							</c:forEach>
-						</td>
-					</tr>
-				</spring:hasBindErrors>
 				<table cellpadding="4" cellspacing="0" class="nohover">
 					<thead class="portlet-table-header">
 						<tr>
@@ -44,16 +35,6 @@
 						</colcolgroup>
 					</thead>
 					<tbody class="portlet-table-body">
-						<spring:hasBindErrors name="searchForm">
-							<tr>
-								<td colspan="2"><c:forEach items="${errors.globalErrors}"
-										var="error">
-										<tr style="color: red">
-											<doc41:translate label="${error.code}" />
-										</tr>
-									</c:forEach></td>
-							</tr>
-						</spring:hasBindErrors>
 
 						<tr>
 							<th><label for="vendorNumber"><doc41:translate label="VendorNumber" /></label></th>

@@ -42,6 +42,8 @@
 				<a class="portlet-form-button" type="button" href='${action}?type=${searchForm.type}'><doc41:translate label="ButtonReset" /></a>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSearch"/>" name="ButtonSearch"/>
 			</div>
+         
+            <doc41:errors form="searchForm"/>
 			
 			<div class="portlet-section-body">
 				<div class="section-separator"><doc41:translate label="attributes" /></div>
@@ -53,15 +55,6 @@
 						</colcolgroup>
 					</thead>
 					<tbody class="portlet-table-body">
-						<spring:hasBindErrors name="searchForm">
-							<c:forEach items="${errors.globalErrors}" var="error">
-							<tr>
-								<td colspan="2" style="color: red">
-									<doc41:translate label="${error.code}" />
-								</td>
-							</tr>
-							</c:forEach>
-						</spring:hasBindErrors>
 
 						<tr>
 							<c:if test="${searchForm.customerNumberUsed && (empty showCustomerNumber or showCustomerNumber)}">

@@ -16,6 +16,8 @@ title="User Management">
 				<a class="portlet-form-button" href='userlist'><doc41:translate label="ButtonCancel"/></a>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonCreateInternalUser"/>" />
 			</div>
+         
+            <doc41:errors form="userLookupForm"/>
 		
 			<div class="portlet-section-body">
 				<table cellpadding="4" cellspacing="0" class="nohover">
@@ -25,18 +27,6 @@ title="User Management">
 						</tr>
 					</thead>
 					<tbody class="portlet-table-body">	
-						<spring:hasBindErrors name="userLookupForm">
-							<tr>
-								<td colspan="4">
-									<c:forEach items="${errors.fieldErrors}" var="error">
-										<tr>
-											<td onmouseover="style.cursor='pointer';" onclick="$('#${error.field}').focus();" style="color: blue"> <doc41:translate label="${error.field}"/> </td>
-							    			<td style="color: red;"><doc41:translate label="${error.field}.${error.code}" /></td>
-										</tr>
-									</c:forEach>
-								</td>
-							</tr>
-						</spring:hasBindErrors>	
 						<tr>
 							<th style="width: 15%"><label for="surname"><doc41:translate label="Surname"/></label></th> 
 							<td style="width: 35%">
