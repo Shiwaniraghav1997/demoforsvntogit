@@ -19,7 +19,6 @@
   <tr>
   	<th>Permissions</th>
 	<th><doc41:translate label="Doc41Carr" /></th>	
-	<th><doc41:translate label="Doc41Cusbr" /></th>	
 	<th><doc41:translate label="Doc41Laysup" /></th>
 	<th><doc41:translate label="Doc41Pmsup" /></th>
 	<th><doc41:translate label="Doc41Delcertvcountry" /></th>	
@@ -37,7 +36,6 @@
   <tr>
 	<td><span title="${varpps.Permissiondescription}">${varpps.Permissionname}</span></td>
 	<td class="centered"><c:if test="${varpps.Doc41Carr}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
-	<td class="centered"><c:if test="${varpps.Doc41Cusbr}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
 	<td class="centered"><c:if test="${varpps.Doc41Laysup}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>
 	<td class="centered"><c:if test="${varpps.Doc41Pmsup}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	
 	<td class="centered"><c:if test="${varpps.Doc41Delcertvcountry}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>	

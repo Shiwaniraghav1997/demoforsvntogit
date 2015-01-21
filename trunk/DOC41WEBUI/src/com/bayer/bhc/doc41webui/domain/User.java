@@ -31,8 +31,6 @@ public class User extends DomainObject {
 
 	public static final String ROLE_CARRIER = "doc41_carr";
 	
-	public static final String ROLE_CUSTOMS_BROKER = "doc41_cusbr";
-	
 	public static final String ROLE_MATERIAL_SUPPLIER = "doc41_matsup";
 	
 	public static final String ROLE_PRODUCT_SUPPLIER = "doc41_prodsup";
@@ -56,7 +54,7 @@ public class User extends DomainObject {
 	public static final String STATUS_INACTIVE = "inactive";
 
 	public static final String[] ALL_ROLES = new String[] {
-			ROLE_CARRIER, ROLE_CUSTOMS_BROKER, ROLE_MATERIAL_SUPPLIER, ROLE_PRODUCT_SUPPLIER,
+			ROLE_CARRIER, ROLE_MATERIAL_SUPPLIER, ROLE_PRODUCT_SUPPLIER,
 			ROLE_DEL_CERT_VIEWER_COUNTRY, ROLE_DEL_CERT_VIEWER_CUSTOMER, ROLE_LAYOUT_SUPPLIER,
 			ROLE_PM_SUPPLIER,ROLE_BUSINESS_ADMIN, ROLE_TECH_ADMIN, ROLE_OBSERVER };
 	

@@ -38,14 +38,9 @@
 						<form:checkbox path="roles" value="<%=User.ROLE_CARRIER %>" disabled="true"/>
 					</c:if>
 				</td>
-				<th style="width: 15%"><doc41:translate label="<%=User.ROLE_CUSTOMS_BROKER %>"/></th>
+				<th style="width: 15%"></th>
 				<td style="width: 35%">
-					<c:if test="${userEditForm.type eq 'external'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMS_BROKER %>"/>
-					</c:if>
-					<c:if test="${userEditForm.type eq 'internal'}">
-						<form:checkbox path="roles" value="<%=User.ROLE_CUSTOMS_BROKER %>" disabled="true"/>
-					</c:if>
+					
 				</td>
 			</tr>
 			

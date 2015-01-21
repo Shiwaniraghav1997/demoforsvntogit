@@ -1,7 +1,7 @@
 /*
  * (c)2007 Bayer AG Leverkusen, Bayer Business Solutions
  * All rights reserved.
- * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini,v 1.82 2012/10/05 12:22:39 evfpu Exp )
+ * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini 9611 2014-10-23 15:31:04Z imdis )
  *
  * $Id$
  */
@@ -34,10 +34,6 @@ public class ProfilePermissionDC
 	/** Maps DB-Column: doc41_Carr */
 	Boolean cDoc41Carr;
 	public static final String FIELD_DOC41CARR = "Doc41Carr";
-
-	/** Maps DB-Column: doc41_Cusbr */
-	Boolean cDoc41Cusbr;
-	public static final String FIELD_DOC41CUSBR = "Doc41Cusbr";
 
 	/** Maps DB-Column: doc41_Laysup */
 	Boolean cDoc41Laysup;
@@ -75,20 +71,22 @@ public class ProfilePermissionDC
 	Boolean cDoc41Delcertvcust;
 	public static final String FIELD_DOC41DELCERTVCUST = "Doc41Delcertvcust";
 
-	/** The master Class of this class. */
-	public final Class<DataCarrier> MASTER_CLASS = DataCarrier.class;
+	public Class<DataCarrier> c = null; // dummy variable to avoid warning
 
-	/** Set the database tablename (null if unspecified) for this DC. */
+	/** The master Class of this class. */
+	public final Class<BasicDataCarrier> MASTER_CLASS = BasicDataCarrier.class;
+
+	/** Set the database table-name (null if unspecified) for this DC. */
 	static {
 		setDBTablename( ProfilePermissionDC.class, null );
 	}
 
-	private static final long serialVersionUID = 20131111052250143L;
+	private static final long serialVersionUID = 20150121032208462L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_PROFILEPERMISSIONDC = java.math.BigDecimal.class;
 
 	@SuppressWarnings("unchecked")
-	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PERMISSIONNAME, FIELD_PERMISSIONDESCRIPTION, FIELD_DOC41CARR, FIELD_DOC41CUSBR, FIELD_DOC41LAYSUP, FIELD_DOC41PMSUP, FIELD_DOC41BADM, FIELD_DOC41TADM, FIELD_DOC41OBSV, FIELD_DOC41MATSUP, FIELD_DOC41PRODSUP, FIELD_DOC41DELCERTVCOUNTRY, FIELD_DOC41DELCERTVCUST};
+    private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldMetaMap() );
+	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PERMISSIONNAME, FIELD_PERMISSIONDESCRIPTION, FIELD_DOC41CARR, FIELD_DOC41LAYSUP, FIELD_DOC41PMSUP, FIELD_DOC41BADM, FIELD_DOC41TADM, FIELD_DOC41OBSV, FIELD_DOC41MATSUP, FIELD_DOC41PRODSUP, FIELD_DOC41DELCERTVCOUNTRY, FIELD_DOC41DELCERTVCUST};
 	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
 
 	static {
@@ -96,7 +94,6 @@ public class ProfilePermissionDC
 			FIELD_META.put( FIELD_PERMISSIONNAME,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_PERMISSIONDESCRIPTION,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_DOC41CARR,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
-			FIELD_META.put( FIELD_DOC41CUSBR,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 			FIELD_META.put( FIELD_DOC41LAYSUP,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 			FIELD_META.put( FIELD_DOC41PMSUP,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 			FIELD_META.put( FIELD_DOC41BADM,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
@@ -141,7 +138,7 @@ public class ProfilePermissionDC
 
 	/**
 	 * Create a new instance, supports replacement by subclass!!!
-	 * @throws InitException if the instanciation failes.
+	 * @throws InitException if the instantiation fails.
 	 */
 	public static ProfilePermissionDC newInstanceOfProfilePermissionDC() throws InitException {
 		return (ProfilePermissionDC)newInstanceOf( ProfilePermissionDC.class );
@@ -150,7 +147,7 @@ public class ProfilePermissionDC
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
 	 * @param pLoc java.util.Locale the Locale to localize the new instance to, automatically.
-	 * @throws InitException if the instanciation failes.
+	 * @throws InitException if the instantiation fails.
 	 */
 	public static ProfilePermissionDC newInstanceOfProfilePermissionDC( Locale pLoc ) throws InitException {
 		return (ProfilePermissionDC)localizeDC( newInstanceOfProfilePermissionDC(), pLoc );
@@ -159,7 +156,7 @@ public class ProfilePermissionDC
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
 	 * @param pDC dc to copy the attributes from.
-	 * @throws InitException if the instanciation failes.
+	 * @throws InitException if the instantiation fails.
 	 */
 	public static ProfilePermissionDC newInstanceOfProfilePermissionDC( BasicDataCarrier pDC ) throws InitException {
 		return (ProfilePermissionDC)newInstanceOfProfilePermissionDC().copyFrom( pDC );
@@ -180,6 +177,7 @@ public class ProfilePermissionDC
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
+	@Override
 	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
 		super.copyFrom(pOther);
 		if (ProfilePermissionDC.class.isAssignableFrom(pOther.getClass())) {
@@ -215,17 +213,17 @@ public class ProfilePermissionDC
 	}
 
 	/**
-	 * Get the CVS metadata of this DC and it's used generator.
+	 * Get the CVS meta-data of this DC and it's used generator.
 	 */
 	public static BasicDCGeneratorMeta localGetCVSMeta() {
 		return new BasicDCGeneratorMeta(
 			"com.bayer.bhc.doc41webui.integration.db.dc",
 			"ProfilePermissionDC",
 			"com.bayer.ecim.foundation.dbx.DataCarrier",
-			"Date: 2012/10/05 12:22:39 ",
-			"Revision: 1.82 ",
-			"Author: evfpu ",
-			"Header: /bo/foundation/resources/DCGenerator.ini,v 1.82 2012/10/05 12:22:39 evfpu Exp ",
+			"Date: 2014-10-23 17:31:04 +0200 (Do, 23 Okt 2014) ",
+			"Revision: 9611 ",
+			"Author: imdis ",
+			"Header",
 			"$Date$",
 			"$Revision$",
 			"$Author$",
@@ -235,8 +233,9 @@ public class ProfilePermissionDC
 
 
 	/**
-	 * Get the CVS metadata of this DC and it's used generator.
+	 * Get the CVS meta-data of this DC and it's used generator.
 	 */
+	@Override
 	public BasicDCGeneratorMeta getCVSMeta() {
 		return ProfilePermissionDC.localGetCVSMeta();
 	}
@@ -252,9 +251,10 @@ public class ProfilePermissionDC
 	 * Provides field meta information for a specific field.
 	 */
 	public static BasicDCFieldMeta localGetFieldMeta( String pFieldName ) {
-		return (BasicDCFieldMeta)FIELD_META.get( pFieldName );
+		return FIELD_META.get( pFieldName );
 	}
 
+	@Override
 	public BasicDCFieldMeta getFieldMeta( String pFieldName ) {
 		return ProfilePermissionDC.localGetFieldMeta( pFieldName );
 	}
@@ -547,100 +547,6 @@ public class ProfilePermissionDC
 		return getBasicDCColumnMetaData( FIELD_DOC41CARR );
 	}
 	// END Method getColumnMetaDataDoc41Carr
-
-
-	// START Method getDoc41Cusbr generated
-	/**
-	 * Maps DB-Column: doc41_Cusbr
-	 * Logical type: BOOLEAN
-	 */
-	public Boolean getDoc41Cusbr() {
-		return cDoc41Cusbr;
-	}
-	// END Method getDoc41Cusbr
-
-
-	// START Method setDoc41Cusbr generated
-	/**
-	 * Maps DB-Column: doc41_Cusbr
-	 * Logical type: BOOLEAN
-	 */
-	public void setDoc41Cusbr( Boolean pDoc41Cusbr ) {
-		cDoc41Cusbr = pDoc41Cusbr;
-		forgetOriginalValue( FIELD_DOC41CUSBR );
-		touchField( FIELD_DOC41CUSBR );
-	}
-	// END Method setDoc41Cusbr
-
-
-	// START Method getFormattedDoc41Cusbr generated
-	/**
-	 * Maps DB-Column: doc41_Cusbr
-	 * Logical type: BOOLEAN
-	 */
-	public String getFormattedDoc41Cusbr() {
-		return hasInvalidValue( FIELD_DOC41CUSBR ) ? getOriginalValue( FIELD_DOC41CUSBR ) : getPool().formatBoolean( cDoc41Cusbr );
-	}
-	// END Method getFormattedDoc41Cusbr
-
-
-	// START Method setFormattedDoc41Cusbr generated
-	/**
-	 * Maps DB-Column: doc41_Cusbr
-	 * Logical type: BOOLEAN
-	 */
-	public void setFormattedDoc41Cusbr( String pDoc41Cusbr )
-		throws java.text.ParseException
-	{
-		setDoc41Cusbr( null );
-		memorizeOriginalValue( FIELD_DOC41CUSBR, pDoc41Cusbr );
-		setDoc41Cusbr( getPool().parseBoolean( pDoc41Cusbr ) );
-	}
-	// END Method setFormattedDoc41Cusbr
-
-
-	// START Method getFormattedHTMLDoc41Cusbr generated
-	/**
-	 * Maps DB-Column: doc41_Cusbr
-	 * Logical type: BOOLEAN
-	 */
-	public String getFormattedHTMLDoc41Cusbr() {
-		return StringTool.escapeHTML( getFormattedDoc41Cusbr() );
-	}
-	// END Method getFormattedHTMLDoc41Cusbr
-
-
-	// START Method getToStringDoc41Cusbr generated
-	/**
-	 * Maps DB-Column: doc41_Cusbr
-	 * Logical type: BOOLEAN
-	 */
-	public String getDoc41CusbrToString() {
-		return StringTool.nullToEmpty(getDoc41Cusbr());
-	}
-	// END Method getToStringDoc41Cusbr
-
-
-	// START Method setFromStringDoc41Cusbr generated
-	/**
-	 * Maps DB-Column: doc41_Cusbr
-	 * Logical type: BOOLEAN
-	 */
-	public void setDoc41CusbrFromString( String pDoc41Cusbr ) {
-		setDoc41Cusbr( BooleanTool.parseBoolean( pDoc41Cusbr, null ) );
-	}
-	// END Method setFromStringDoc41Cusbr
-
-
-	// START Method getColumnMetaDataDoc41Cusbr generated
-	/**
-	 * Maps DB-Column: doc41_Cusbr
-	 * Logical type: BOOLEAN
-	 */
-	public BasicDCColumnMetaData getColumnMetaDataForDoc41Cusbr() {
-		return getBasicDCColumnMetaData( FIELD_DOC41CUSBR );
-	}
-	// END Method getColumnMetaDataDoc41Cusbr
 
 
 	// START Method getDoc41Laysup generated
