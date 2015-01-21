@@ -3,7 +3,6 @@
 "int","internal user from Bayer","0"
 "exu","external user","1"
 "doc41_carr","carrier","1"
-"doc41_cusbr","customs broker","1"
 "doc41_laysup","layout supplier","1"
 "doc41_pmsup","pm supplier","1"
 "doc41_badm","Business Admin","0"
