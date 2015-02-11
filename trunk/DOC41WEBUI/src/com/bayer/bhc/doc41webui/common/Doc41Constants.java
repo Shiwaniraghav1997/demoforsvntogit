@@ -36,6 +36,8 @@ public interface Doc41Constants {
 	public static final String URL_PARAM_DOC_ID = "docId";
 	public static final String URL_PARAM_CWID = "cwid";
 	public static final String URL_PARAM_FILENAME = "filename";
+	public static final String URL_PARAM_SAP_OBJ_ID = "sapObjId";
+	public static final String URL_PARAM_SAP_OBJ_TYPE = "sapObjType";
 	
 	public static final String ATTRIB_NAME_FILENAME = "FILENAME";
 	public static final String ATTRIB_NAME_VENDOR = "VENDOR";

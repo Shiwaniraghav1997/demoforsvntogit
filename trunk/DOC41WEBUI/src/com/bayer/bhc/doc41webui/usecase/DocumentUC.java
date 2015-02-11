@@ -58,8 +58,8 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.ArtworkForLayoutSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.LayoutForLayoutSupplierDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.PackMatSpecForLayoutSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.PZTecDrawingForLayoutSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.PackMatSpecForLayoutSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.ArtworkForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.LayoutForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PZTecDrawingForPMSupplierDocumentType;
@@ -255,7 +255,7 @@ public class DocumentUC {
 		}
 	}
 
-	public String uploadDocument(String type, File localFile, String contentType, String fileName) throws Doc41BusinessException {
+	public String uploadDocument(String type, File localFile, String contentType, String fileName, String sapObjId, String sapObjType) throws Doc41BusinessException {
 		try{
 			DocMetadata metadata = getMetadata(type);
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
@@ -278,7 +278,7 @@ public class DocumentUC {
 			//test docstatus
 			boolean docPresent = kgsRFCService.testDocStatus(guid,crep);
 			if(docPresent){
-				logWebMetrix("DOC_UPLOADED",guid,null);
+				logWebMetrix("DOC_UPLOADED",guid,null,type, sapObjId, sapObjType);
 				return guid;
 			} else {
 				return null;
@@ -448,6 +448,8 @@ public class DocumentUC {
                 params.put(Doc41Constants.URL_PARAM_TYPE,type);
                 params.put(Doc41Constants.URL_PARAM_DOC_ID,hitListEntry.getDocId());
                 params.put(Doc41Constants.URL_PARAM_CWID,UserInSession.getCwid());
+                params.put(Doc41Constants.URL_PARAM_SAP_OBJ_ID,hitListEntry.getObjectId());
+                params.put(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE,hitListEntry.getObjectType());
                 params.put(Doc41Constants.URL_PARAM_FILENAME,StringTool.encodeURLWithDefaultFileEnc(StringTool.nullToEmpty(hitListEntry.getFileName())));
                 String key = UrlParamCrypt.encryptParameters(params);
 				hitListEntry.setKey(key);
@@ -472,7 +474,7 @@ public class DocumentUC {
 	}
 
 	public String downloadDocument(HttpServletResponse targetResponse, String type,
-			String docId,String fileName) throws Doc41BusinessException {
+			String docId,String fileName, String sapObjId, String sapObjType) throws Doc41BusinessException {
 		try{
 			DocMetadata metadata = getMetadata(type);
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
@@ -487,7 +489,7 @@ public class DocumentUC {
 			URI docURL = kgsRFCService.getDocURL(crepId, docId,compId);
 		
 			String statusText = httpClientService.downloadDocumentToResponse(docURL,targetResponse,docId,fileName);
-			logWebMetrix("DOC_DOWNLOADED",docId,statusText);
+			logWebMetrix("DOC_DOWNLOADED",docId,statusText,type,sapObjId,sapObjType);
 			return statusText;
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("downloadDocument",e);
@@ -630,10 +632,10 @@ public class DocumentUC {
 		}
 	}
 	
-	private void logWebMetrix(String action, String docId, String statusText) {
+	private void logWebMetrix(String action, String docId, String statusText, String docType, String sapObjId, String sapObjType) {
 		String loggedInUser = UserInSession.getCwid();
 		Doc41Log.get().logWebMetrix(this.getClass(),new Doc41LogEntry(loggedInUser, loggedInUser, "DOCUMENTS", action, 
-				docId, statusText, null, null, null, null, null, null, null),loggedInUser);
+				docId, statusText, sapObjId, sapObjType, null, null, null, null, null),loggedInUser);
 	}
 
 	public void sendUploadNotification(String notificationEMail, String typeName,  String fileName, String guid) {

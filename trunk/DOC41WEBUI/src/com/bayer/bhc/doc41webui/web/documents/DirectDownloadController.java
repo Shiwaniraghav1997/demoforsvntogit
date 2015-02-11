@@ -75,7 +75,8 @@ public class DirectDownloadController extends AbstractDoc41Controller {
 			}
 			String docId = newestDocument.getDocId();
 			String fileName =newestDocument.getFileName();
-			documentUC.downloadDocument(response,type,docId,fileName);
+			String sapObjectType = newestDocument.getObjectType();
+            documentUC.downloadDocument(response,type,docId,fileName,refId,sapObjectType);
 		}
 	}
 	

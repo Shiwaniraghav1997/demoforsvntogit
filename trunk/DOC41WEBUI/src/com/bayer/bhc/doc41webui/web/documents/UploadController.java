@@ -102,7 +102,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 				return failedURL;
 			}
 			
-			String fileId = documentUC.uploadDocument(type,localFile,file.getContentType(),uploadForm.getFileName());
+			String fileId = documentUC.uploadDocument(type,localFile,file.getContentType(),uploadForm.getFileName(),uploadForm.getObjectId(),checkResult.getSapObject());
 			uploadForm.setFileId(fileId);
 		}
 		if(StringTool.isTrimmedEmptyOrNull(uploadForm.getFileId())){

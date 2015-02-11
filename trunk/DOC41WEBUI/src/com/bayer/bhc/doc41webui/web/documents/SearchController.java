@@ -194,6 +194,8 @@ public class SearchController extends AbstractDoc41Controller {
 		String type = decryptParameters.get(Doc41Constants.URL_PARAM_TYPE);
 		String docId = decryptParameters.get(Doc41Constants.URL_PARAM_DOC_ID);
 		String cwid = decryptParameters.get(Doc41Constants.URL_PARAM_CWID);
+		String sapObjId = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_ID);
+		String sapObjType = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE);
 		String filename = StringTool.emptyToNull(StringTool.decodeURLWithDefaultFileEnc(decryptParameters.get(Doc41Constants.URL_PARAM_FILENAME)));
 		if(StringTool.isTrimmedEmptyOrNull(type)){
 			throw new Doc41BusinessException("type is missing in download link");
@@ -204,7 +206,7 @@ public class SearchController extends AbstractDoc41Controller {
 		if(cwid==null || !cwid.equalsIgnoreCase(UserInSession.getCwid())){
 			throw new Doc41BusinessException("download link for different user");
 		}
-		documentUC.downloadDocument(response,type,docId,filename);
+		documentUC.downloadDocument(response,type,docId,filename,sapObjId,sapObjType);
 	}
 	
 	private void checkPartnerNumbers(BindingResult errors, String type,
