@@ -127,9 +127,11 @@ public class HttpClientService {
 				HttpHeaders headers = response.getHeaders();
 				MediaType contentType = headers.getContentType();
 				targetResponse.setContentType(""+contentType);
-				targetResponse.setHeader("Content-Disposition", "attachment; filename=\""+generateFileName(fileName,docId,contentType)+"\"");
+				String generateFileName = generateFileName(fileName,docId,contentType);
+				String encodedFileName = StringTool.encodeURL(generateFileName, "UTF-8");
+                targetResponse.setHeader("Content-Disposition", "attachment; filename=\""+generateFileName+"\"; filename*=UTF-8''"+encodedFileName);
 				targetResponse.setDateHeader("Expires", 0);
-				targetResponse.setCharacterEncoding("cp1252");
+				targetResponse.setCharacterEncoding("UTF-8");
 				targetResponse.setContentLength((int)headers.getContentLength());
 				InputStream inputStream = response.getBody();
 				IOUtils.copy(inputStream,targetResponse.getOutputStream());
