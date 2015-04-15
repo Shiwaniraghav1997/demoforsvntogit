@@ -214,6 +214,22 @@ public class UserManagementRepository extends AbstractRepository {
                 			addVendorToUserInDB(userDC, vendor, pUser.getLocale());
                 		}
                 	}
+                	List<String> countriesFromUserParam = pUser.getCountries();
+                    if(countriesFromUserParam!=null){
+                        Set<String> countriesFromInput = new LinkedHashSet<String>(countriesFromUserParam);
+                        
+                        for (String country : countriesFromInput) {
+                            addCountryToUserInDB(userDC, country, pUser.getLocale());
+                        }
+                    }
+                    List<String> plantsFromUserParam = pUser.getPlants();
+                    if(plantsFromUserParam!=null){
+                        Set<String> plantsFromInput = new LinkedHashSet<String>(plantsFromUserParam);
+                        
+                        for (String plant : plantsFromInput) {
+                            addPlantToUserInDB(userDC, plant, pUser.getLocale());
+                        }
+                    }
                 }
             } else {
                 // if user already exists, update the activity status:
