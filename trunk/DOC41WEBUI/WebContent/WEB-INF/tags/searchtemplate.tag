@@ -207,6 +207,6 @@
 		<doc41:pager />
 		
 	</div>
-	<div id="div-body" class="portlet-body">
+	<%--<div id="div-body" class="portlet-body">
 	<doc41:translate label="${stage}.searchSyncComment" />
-	</div>
+	</div>--%>
