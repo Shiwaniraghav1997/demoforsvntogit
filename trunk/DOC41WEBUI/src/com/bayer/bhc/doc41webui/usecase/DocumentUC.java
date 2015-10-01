@@ -278,7 +278,7 @@ public class DocumentUC {
 			//test docstatus
 			boolean docPresent = kgsRFCService.testDocStatus(guid,crep);
 			if(docPresent){
-				logWebMetrix("DOC_UPLOADED",guid,null,type, sapObjId, sapObjType);
+				logWebMetrix("DOC_UPLOADED",guid,type, sapObjId, sapObjType,fileName);
 				return guid;
 			} else {
 				return null;
@@ -489,7 +489,7 @@ public class DocumentUC {
 			URI docURL = kgsRFCService.getDocURL(crepId, docId,compId);
 		
 			String statusText = httpClientService.downloadDocumentToResponse(docURL,targetResponse,docId,fileName);
-			logWebMetrix("DOC_DOWNLOADED",docId,statusText,type,sapObjId,sapObjType);
+			logWebMetrix("DOC_DOWNLOADED",docId,type,sapObjId,sapObjType,fileName);
 			return statusText;
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("downloadDocument",e);
@@ -632,10 +632,10 @@ public class DocumentUC {
 		}
 	}
 	
-	private void logWebMetrix(String action, String docId, String statusText, String docType, String sapObjId, String sapObjType) {
+	private void logWebMetrix(String action, String docId, String docType, String sapObjId, String sapObjType,String fileName) {
 		String loggedInUser = UserInSession.getCwid();
 		Doc41Log.get().logWebMetrix(this.getClass(),new Doc41LogEntry(loggedInUser, loggedInUser, "DOCUMENTS", action, 
-				docId, statusText, sapObjId, sapObjType, null, null, null, null, null),loggedInUser);
+				docId, docType, sapObjId, sapObjType, fileName, null, null, null, null),loggedInUser);
 	}
 
 	public void sendUploadNotification(String notificationEMail, String typeName,  String fileName, String guid) {
