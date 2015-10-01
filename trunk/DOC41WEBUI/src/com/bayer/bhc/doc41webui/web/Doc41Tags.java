@@ -65,4 +65,8 @@ public class Doc41Tags extends Tags {
 	public String getTagNoUntranslatedMonitor(String pTag) {
 		return StringTool.escapeHTML(getTagNoEscNoUntranslatedMonitor(pTag));
 	}
+	
+	public String getTagJSNoUntranslatedMonitor(String pTag, Object[] values, String[] keys) {
+        return StringTool.escapeJS(super.getTagNoEsc(pTag, values, keys));
+    }
 }
