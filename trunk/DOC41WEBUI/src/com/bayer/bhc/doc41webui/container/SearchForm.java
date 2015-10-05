@@ -9,10 +9,17 @@ import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 public class SearchForm extends CustomizedDocumentForm {
+    
+    private static final int MAX_RESULTS = 100;
+    private static final int MAX_MAX_RESULTS = 5000;
 	
 	private List<HitListEntry> documents;
+	private int maxResults = MAX_RESULTS;
 	
 	
+	/**
+     * @param errors  
+     */
 	public void validate(Errors errors) {
 	  //no check necessary
 	}
@@ -39,4 +46,13 @@ public class SearchForm extends CustomizedDocumentForm {
 		return false;
 	}
 
+	public int getMaxResults() {
+	    if(maxResults<=0 || maxResults>MAX_MAX_RESULTS){
+	        maxResults=MAX_RESULTS;
+	    }
+        return maxResults;
+    }
+	public void setMaxResults(int maxResults) {
+        this.maxResults = maxResults;
+    }
 }

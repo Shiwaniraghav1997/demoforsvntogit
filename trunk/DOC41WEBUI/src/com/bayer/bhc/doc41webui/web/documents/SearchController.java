@@ -13,11 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
@@ -27,6 +29,7 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.SearchForm;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.domain.Attribute;
+import com.bayer.bhc.doc41webui.domain.BdsServiceDocumentEntry;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
@@ -39,8 +42,6 @@ import com.bayer.ecim.foundation.basic.StringTool;
 @Controller
 public class SearchController extends AbstractDoc41Controller {
 	
-	private static final int MAX_RESULTS = 100;
-
 	@Autowired
 	private DocumentUC documentUC;
 	
@@ -48,9 +49,15 @@ public class SearchController extends AbstractDoc41Controller {
 	protected boolean hasPermission(User usr, HttpServletRequest request) throws Doc41BusinessException{
 		String type = request.getParameter("type");
 		if(StringTool.isTrimmedEmptyOrNull(type)){
-			throw new IllegalArgumentException("type is missing");
+		    return true;
+//			throw new IllegalArgumentException("type is missing");
 		}
-		String permission = documentUC.getDownloadPermission(type);
+		return hasPermission(usr, type);
+    }
+
+    private boolean hasPermission(User usr, String type)
+            throws Doc41BusinessException {
+        String permission = documentUC.getDownloadPermission(type);
 		return usr.hasPermission(permission);
     }
 	
@@ -104,11 +111,12 @@ public class SearchController extends AbstractDoc41Controller {
 							objectIds.addAll(additionalObjectIds);
 						}
 						if(!result.hasErrors()){
-							List<HitListEntry> documents = documentUC.searchDocuments(type, 
-									objectIds, allAttributeValues, MAX_RESULTS+1, false);
+							int maxResults = searchForm.getMaxResults();
+                            List<HitListEntry> documents = documentUC.searchDocuments(type, 
+									objectIds, allAttributeValues, maxResults+1, false);
 							if(documents.isEmpty()){
 								result.reject("NoDocumentsFound");
-							} else	if(documents.size()>MAX_RESULTS){
+							} else	if(documents.size()>maxResults){
 								result.reject("ToManyResults");
 							} else {
 								searchForm.setDocuments(documents);
@@ -127,6 +135,36 @@ public class SearchController extends AbstractDoc41Controller {
 		
 		return searchForm;
 	}
+	
+	@RequestMapping(value="/docservice/sdsearch",method = RequestMethod.GET,produces={"application/json; charset=utf-8"})
+    public @ResponseBody List<BdsServiceDocumentEntry> getSDListForService( @RequestParam(required=true) String vendor,@RequestParam String refnumber) throws Doc41BusinessException{
+	    List<BdsServiceDocumentEntry> documents = new ArrayList<BdsServiceDocumentEntry>();
+	    
+        Set<String> types = documentUC.getAvailableSDDownloadDocumentTypes();
+        for (String type : types) {
+            
+            if(hasPermission(UserInSession.get(), type)){
+                SearchForm searchForm = new SearchForm();
+                searchForm.setType(type);
+                searchForm.setVendorNumber(vendor);
+                searchForm.setObjectId(refnumber);
+                searchForm.setMaxResults(2000);
+                
+                BindingResult result = new BeanPropertyBindingResult(searchForm, "searchForm");
+                get(searchForm, result, "DocServiceSearch");
+                if(!result.hasErrors()){
+                    List<HitListEntry> docsOneType = searchForm.getDocuments();
+                    if(docsOneType!=null){
+                        for (HitListEntry hitListEntry : docsOneType) {
+                            BdsServiceDocumentEntry entry = new BdsServiceDocumentEntry(hitListEntry);
+                            documents.add(entry);
+                        }
+                    }
+                }
+            }
+        }
+        return documents;
+    }
 	
 	private void checkForbiddenWildcards(BindingResult result, String fieldNamePrefix,
 			String fieldNameSuffix, Map<String, String> attributes) {
@@ -188,7 +226,7 @@ public class SearchController extends AbstractDoc41Controller {
 	
 	
 	
-	@RequestMapping(value="/documents/download",method = RequestMethod.GET)
+	@RequestMapping(value={"/documents/download","/docservice/download"},method = RequestMethod.GET)
 	public void download(@RequestParam String key,HttpServletResponse response) throws Doc41BusinessException{
 		Map<String, String> decryptParameters = UrlParamCrypt.decryptParameters(key);
 		String type = decryptParameters.get(Doc41Constants.URL_PARAM_TYPE);

@@ -23,6 +23,7 @@ public class HitListEntry implements Serializable {
 	private String[] customizedValues;
 	private Map<String, String> customizedValuesByKey;
 	private String key;
+	private String type;
 	public String getDocId() {
 		return docId;
 	}
@@ -71,9 +72,25 @@ public class HitListEntry implements Serializable {
 	public void setKey(String key) {
 		this.key = key;
 	}
+	public String getType() {
+        return type;
+    }
+	public void setType(String type) {
+        this.type = type;
+    }
 	
 	
-	public void initCustValuesMap(Map<Integer, String> seqToKey){
+	@Override
+    public String toString() {
+        return "HitListEntry [docId=" + docId + ", objectId=" + objectId
+                + ", storageDate=" + storageDate + ", archiveLinkDate="
+                + archiveLinkDate + ", objectType=" + objectType
+                + ", documentClass=" + documentClass + ", customizedValues="
+                + Arrays.toString(customizedValues) + ", customizedValuesByKey="
+                + customizedValuesByKey + ", key=" + key + ", type=" + type
+                + "]";
+    }
+    public void initCustValuesMap(Map<Integer, String> seqToKey){
 		customizedValuesByKey = new HashMap<String, String>();
 		for(int i=0;i<Doc41Constants.CUSTOMIZATION_VALUES_COUNT;i++){
 			String oneKey = seqToKey.get(i+1);

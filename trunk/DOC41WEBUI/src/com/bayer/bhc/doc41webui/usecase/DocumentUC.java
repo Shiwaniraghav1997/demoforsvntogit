@@ -74,6 +74,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.BOLDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.CMRDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.CMROutDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.FDACertDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.SDDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.ShippersDeclDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.WaybillDocumentType;
 import com.bayer.ecim.foundation.basic.ConfigMap;
@@ -198,6 +199,16 @@ public class DocumentUC {
 		}
 		return supportedSapTypes ;
 	}
+	
+	public Set<String> getAvailableSDDownloadDocumentTypes() {
+        Set<String> sdDLTypes = new HashSet<String>();
+        for (DocumentType docType : documentTypes.values()) {
+            if(docType instanceof SDDocumentType && docType instanceof DownloadDocumentType){
+                sdDLTypes.add(docType.getTypeConst());
+            }
+        }
+        return sdDLTypes ;
+    }
 	
 	public String getTypeLabel(String doctype,String language) throws Doc41BusinessException{
 		DocMetadata metadata = getMetadata(doctype);
@@ -442,6 +453,7 @@ public class DocumentUC {
     			}
 			}
 			for (HitListEntry hitListEntry : allResults) {
+			    hitListEntry.setType(type);
 				hitListEntry.initCustValuesMap(seqToKey);
 				
 				Map<String,String> params = new LinkedHashMap<String, String>();
