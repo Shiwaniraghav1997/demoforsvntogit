@@ -30,7 +30,18 @@ public abstract class SDDocumentType implements DocumentType {
 		return true;
 	}
 	
-	//implements method from UploadDocumentType
+	/**
+	 * implements method from UploadDocumentType
+	 * @param errors
+	 * @param documentUC
+	 * @param customerNumber
+	 * @param vendorNumber
+	 * @param objectId
+	 * @param attributeValues
+	 * @param viewAttributes
+	 * @return
+	 * @throws Doc41BusinessException
+	 */
 	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber, String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes) throws Doc41BusinessException {
 		
@@ -56,7 +67,18 @@ public abstract class SDDocumentType implements DocumentType {
 		
 	}
 
-	//implements method from DownloadDocumentType
+	/**
+	 * implements method from DownloadDocumentType
+	 * @param errors
+	 * @param documentUC
+	 * @param customerNumber
+	 * @param vendorNumber
+	 * @param objectId
+	 * @param attributeValues
+	 * @param viewAttributes
+	 * @return
+	 * @throws Doc41BusinessException
+	 */
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber, String objectId,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
