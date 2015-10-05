@@ -45,8 +45,15 @@ public class DocserviceTestClient {
         int i=0;
         for (BdsServiceDocumentEntry doc : documents) {
             String filename = doc.getCustomizedValuesByKey().get(BdsServiceDocumentEntry.ATTRIB_NAME_FILENAME);
-            OutputStream outputStream = new FileOutputStream("C:\\eclipse\\BOEAH\\wasproj\\doc41webui\\temp\\"+i+"_"+filename);
-            client.testDownload(URL_PREFIX,doc,outputStream);
+            OutputStream outputStream = null;
+            try{
+                outputStream = new FileOutputStream("C:\\eclipse\\BOEAH\\wasproj\\doc41webui\\temp\\"+i+"_"+filename);
+                client.testDownload(URL_PREFIX,doc,outputStream);
+            } finally {
+                if(outputStream!=null){
+                    outputStream.close();
+                }
+            }
             i++;
         }
     }

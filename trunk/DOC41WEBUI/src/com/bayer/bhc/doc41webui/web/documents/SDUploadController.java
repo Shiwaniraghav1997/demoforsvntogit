@@ -19,7 +19,7 @@ public class SDUploadController extends UploadController {
 		return super.get(type);
 	}
 	
-	@RequestMapping(value="/documents/sduploadpost",method = RequestMethod.POST)
+	@RequestMapping(value={"/documents/sduploadpost","/docservice/sdupload"},method = RequestMethod.POST)
 	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result) throws Doc41BusinessException { //ggf. kein modelattribute wegen sessionattribute
 		return super.postUpload(uploadForm, result);
 	}
