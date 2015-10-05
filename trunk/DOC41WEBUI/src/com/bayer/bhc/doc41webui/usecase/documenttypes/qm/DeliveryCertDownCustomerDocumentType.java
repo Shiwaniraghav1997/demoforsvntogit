@@ -43,7 +43,7 @@ public class DeliveryCertDownCustomerDocumentType extends
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber, String objectId,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
-		
+		//TODO Customer for user
 		String countryCode = attributeValues.get(ATTRIB_COUNTRY);
 		if(StringTool.isTrimmedEmptyOrNull(countryCode)){
 			errors.rejectValue("attributeValues['"+ATTRIB_COUNTRY+"']","CountryMissing");
