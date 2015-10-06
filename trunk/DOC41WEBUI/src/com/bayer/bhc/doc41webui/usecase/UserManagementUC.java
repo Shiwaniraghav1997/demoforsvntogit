@@ -216,4 +216,12 @@ public class UserManagementUC {
 				StringTool.maxRString(info, 750, "..."), changedUser.getCwid(), null, null, null, null, null, null, null),loggedInUser);
 	}
 
+    public void addPermissionsToUser(User user)throws Doc41BusinessException{
+        try {
+            getUserManagementRepository().addPermissionsToUser(user);
+        } catch (Doc41RepositoryException e) {
+            throw new Doc41BusinessException("addPermissionsToUser",e);
+        }
+    }
+
 }

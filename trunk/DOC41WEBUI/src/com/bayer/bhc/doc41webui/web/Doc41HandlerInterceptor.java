@@ -55,6 +55,8 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 
 	private static final String DB_SESSION_DC_REQ_ATTR ="DB_SESSION_DC_REQ_ATTR";
 	
+	private static final String CWID_PREFIX_DOC_SERVICE = "DS_";
+	
 	@Autowired
 	protected UserManagementUC userManagementUC;
 	@Autowired
@@ -178,6 +180,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 		String cwid = null;
 		User user = (User) request.getSession().getAttribute(DOC41_USER);
 		String webSealCwid = getWebSealUser(request);
+		User docServiceUser = getDocServiceUser(request);
 		
 		//kill session if webseal user differs from session user
 		if(webSealCwid!=null && user !=null && user.getCwid()!=null
@@ -186,9 +189,20 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			request.getSession().invalidate();
 			request.getSession(true);
 		}
+		
+		//kill session if docservice user in session but not in request
+		if(isDocServiceUser(user) && (docServiceUser == null || !StringTool.equals(user.getCwid(), docServiceUser.getCwid()))){
+		    user = null;
+            request.getSession().invalidate();
+            request.getSession(true);
+		}
 
 		if (user != null && (webSealCwid==null || webSealCwid.equalsIgnoreCase(user.getCwid()) )) {
 			cwid = user.getCwid();
+		} else if(docServiceUser!=null){
+		    if(user==null || !StringTool.equals(user.getCwid(), docServiceUser.getCwid())){
+		        user=docServiceUser;
+		    }
 		} else {
 			cwid = webSealCwid;
 
@@ -246,7 +260,49 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 		return user;
 	}
 	
-	protected String getWebSealUser(HttpServletRequest request) {
+	private User getDocServiceUser(HttpServletRequest request) {
+	    String tmpCwid=request.getHeader("docservice-user");
+        String tmpRole=request.getHeader("docservice-role");
+        String tmpHost=request.getRemoteHost();
+        String tmpAddr=request.getRemoteAddr();
+        try {
+            // check for positive list (IPs of servers), list maintained in DB, properties, etc.
+            // if not host in list return null
+            
+            if (!StringTool.isTrimmedEmptyOrNull(tmpCwid)){
+                Doc41Log.get().debug(this.getClass(), tmpCwid, "DocService user request from: ["+tmpHost+"] "+tmpAddr+" for uri: "+request.getRequestURI()+" / url: "+request.getRequestURL());
+                @SuppressWarnings("unchecked")
+                Map<String,String> subConfig = ConfigMap.get().getSubConfig("doc41controller", "docservicecheck");
+                String allowedIPs = subConfig.get("allowedIPs");
+                if(allowedIPs!=null && allowedIPs.contains(tmpAddr)){
+                    User tmpUser = new User();
+                    tmpUser.setCwid(CWID_PREFIX_DOC_SERVICE+tmpCwid);
+                    tmpUser.setFirstname("DocService");
+                    tmpUser.setSurname("DocService");
+                    tmpUser.setType(User.TYPE_EXTERNAL);
+                    tmpUser.setActive(true);
+                    tmpUser.setLocale(Locale.GERMANY);
+                    tmpUser.setReadOnly(false);
+                    tmpUser.getRoles().add(tmpRole);
+                    tmpUser.setSkipCustomerCheck(true);
+                    tmpUser.setSkipVendorCheck(true);
+                    tmpUser.setSkipCountryCheck(true);
+                    userManagementUC.addPermissionsToUser(tmpUser);
+                    return tmpUser;
+                }
+            }
+        } catch (Doc41BusinessException e) {
+            Doc41Log.get().error(this.getClass(), tmpCwid, e);
+        }
+        return null;
+    }
+	
+	private boolean isDocServiceUser(User user) {
+        return (user !=null && user.getCwid()!=null && user.getCwid().startsWith(CWID_PREFIX_DOC_SERVICE));
+    }
+
+
+    protected String getWebSealUser(HttpServletRequest request) {
 		String tmpCwid=request.getHeader("iv-user");
 		String tmpHost=request.getRemoteHost();
 		String tmpAddr=request.getRemoteAddr();

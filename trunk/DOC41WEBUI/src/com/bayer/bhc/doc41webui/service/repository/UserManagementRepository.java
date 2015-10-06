@@ -283,7 +283,7 @@ public class UserManagementRepository extends AbstractRepository {
 	}
 	
 	
-	private void addPermissionsToUser(User pUser) throws Doc41RepositoryException {
+	public void addPermissionsToUser(User pUser) throws Doc41RepositoryException {
 		try{
 			List<String> oldPermissions = pUser.getPermissions();
 			if(oldPermissions!=null && !oldPermissions.isEmpty()){

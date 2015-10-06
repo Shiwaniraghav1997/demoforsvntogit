@@ -6,9 +6,11 @@ import java.io.InputStream;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.InputStreamBody;
@@ -48,8 +50,9 @@ public class DocServiceUploadTestClient {
             String refnumber) throws ClientProtocolException, IOException {
 
         String url=getUploadUrl(urlPrefix);
-        HttpPut httpput = new HttpPut(url);
-        System.out.println("Executing request " + httpput.getRequestLine());
+        HttpPost httpPost = new HttpPost(url);
+        addUser(httpPost);
+        System.out.println("Executing request " + httpPost.getRequestLine());
         
         DefaultHttpClient httpclient = new DefaultHttpClient();
         try{
@@ -64,20 +67,28 @@ public class DocServiceUploadTestClient {
             InputStreamBody fileBody = new InputStreamBody(fileInputStream, "application/octet-stream",fileName);
             entity.addPart("file", fileBody);
 
-            HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(entity);
             HttpResponse response = httpclient.execute(httpPost);
+            StatusLine statusLine = response.getStatusLine();
+            if (statusLine.getStatusCode() >= 300) {
+                throw new HttpResponseException(
+                        statusLine.getStatusCode(),
+                        statusLine.getReasonPhrase());
+            }
             HttpEntity result = response.getEntity();
             return result;
             
             
         } finally {
-            httpput.releaseConnection();
+            httpPost.releaseConnection();
         }
     }
 
 
-
+    private void addUser(HttpRequestBase request) {
+        request.setHeader("docservice-user", "ABCDE");
+        request.setHeader("docservice-role", "doc41_carr");
+    }
 
 
     private String getUploadUrl(String urlPrefix) {

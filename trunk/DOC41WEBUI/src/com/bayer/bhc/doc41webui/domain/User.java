@@ -107,6 +107,10 @@ public class User extends DomainObject {
 
 	private List<String> permissions = new ArrayList<String>();
 	
+	private boolean skipCustomerCheck = false;
+	private boolean skipVendorCheck = false;
+	private boolean skipCountryCheck = false;
+	
 	public boolean hasPermission(String ... permissions) {
 		for (String permission : permissions) {
 			if (getPermissions().contains(permission)) {
@@ -373,6 +377,9 @@ public class User extends DomainObject {
 	}
 
 	public boolean hasCustomer(String customerNumber){
+	    if(skipCustomerCheck){
+	        return true;
+	    }
 		if(customers!=null){
 			for (SapCustomer userCustomer : customers) {
 				if(StringTool.equals(customerNumber, userCustomer.getNumber())){
@@ -384,6 +391,9 @@ public class User extends DomainObject {
 	}
 	
 	public boolean hasVendor(String vendorNumber){
+	    if(skipVendorCheck){
+            return true;
+        }
 		if(vendors!=null){
 			for (SapVendor userVendor : vendors) {
 				if(StringTool.equals(vendorNumber, userVendor.getNumber())){
@@ -395,6 +405,9 @@ public class User extends DomainObject {
 	}
 	
 	public boolean hasCountry(String countryCode){
+	    if(skipCountryCheck){
+            return true;
+        }
 		if(countries!=null){
 			for (String oneCountryCode : countries) {
 				if(StringTool.equals(countryCode, oneCountryCode)){
@@ -404,5 +417,15 @@ public class User extends DomainObject {
 		}
 		return false;
 	}
+	
+	public void setSkipCustomerCheck(boolean skipCustomerCheck) {
+        this.skipCustomerCheck = skipCustomerCheck;
+    }
+	public void setSkipVendorCheck(boolean skipVendorCheck) {
+        this.skipVendorCheck = skipVendorCheck;
+    }
+	public void setSkipCountryCheck(boolean skipCountryCheck) {
+        this.skipCountryCheck = skipCountryCheck;
+    }
 
 }

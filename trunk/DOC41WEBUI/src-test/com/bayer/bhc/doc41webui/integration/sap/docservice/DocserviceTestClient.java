@@ -20,6 +20,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -63,6 +64,7 @@ public class DocserviceTestClient {
 
         HttpGet httpget = new HttpGet(url);
         httpget.setHeader("Accept", "application/json");
+        addUser(httpget);
 
         System.out.println("Executing request " + httpget.getRequestLine());
 
@@ -108,17 +110,29 @@ public class DocserviceTestClient {
             httpget.releaseConnection();
         }
     }
+
+    private void addUser(HttpRequestBase request) {
+        request.setHeader("docservice-user", "ABCDE");
+        request.setHeader("docservice-role", "doc41_carr");
+    }
     
     private void testDownload(String urlPrefix,BdsServiceDocumentEntry doc, OutputStream target) throws ClientProtocolException, IOException {
         String url=getDownloadUrl(urlPrefix, doc.getKey());
 
         HttpGet httpget = new HttpGet(url);
+        addUser(httpget);
 
         System.out.println("Executing request " + httpget.getRequestLine());
 
         DefaultHttpClient httpclient = new DefaultHttpClient();
         try{
             HttpResponse response = httpclient.execute(httpget);
+            StatusLine statusLine = response.getStatusLine();
+            if (statusLine.getStatusCode() >= 300) {
+                throw new HttpResponseException(
+                        statusLine.getStatusCode(),
+                        statusLine.getReasonPhrase());
+            }
             InputStream inputStream = response.getEntity().getContent();
             IOUtils.copy(inputStream, target);
             
