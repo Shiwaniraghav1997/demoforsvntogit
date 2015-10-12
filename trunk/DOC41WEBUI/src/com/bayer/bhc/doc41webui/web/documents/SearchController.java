@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41DocServiceException;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UrlParamCrypt;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -62,7 +63,7 @@ public class SearchController extends AbstractDoc41Controller {
     }
 	
 	@RequestMapping(value="/documents/documentsearch",method = RequestMethod.GET)
-	public SearchForm get(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
+	public SearchForm get(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch,@RequestParam(required=false,defaultValue="true") boolean errorOnNoDocuments) throws Doc41BusinessException{
 		String language = LocaleInSession.get().getLanguage();
 		String type = searchForm.getType();
 		if(StringTool.isTrimmedEmptyOrNull(type)){
@@ -115,7 +116,9 @@ public class SearchController extends AbstractDoc41Controller {
                             List<HitListEntry> documents = documentUC.searchDocuments(type, 
 									objectIds, allAttributeValues, maxResults+1, false);
 							if(documents.isEmpty()){
-								result.reject("NoDocumentsFound");
+							    if(errorOnNoDocuments){
+							        result.reject("NoDocumentsFound");
+							    }
 							} else	if(documents.size()>maxResults){
 								result.reject("ToManyResults");
 							} else {
@@ -137,33 +140,39 @@ public class SearchController extends AbstractDoc41Controller {
 	}
 	
 	@RequestMapping(value="/docservice/sdsearch",method = RequestMethod.GET,produces={"application/json; charset=utf-8"})
-    public @ResponseBody List<BdsServiceDocumentEntry> getSDListForService( @RequestParam(required=true) String vendor,@RequestParam String refnumber) throws Doc41BusinessException{
-	    List<BdsServiceDocumentEntry> documents = new ArrayList<BdsServiceDocumentEntry>();
-	    
-        Set<String> types = documentUC.getAvailableSDDownloadDocumentTypes();
-        for (String type : types) {
+    public @ResponseBody List<BdsServiceDocumentEntry> getSDListForService( @RequestParam(required=true) String vendor,@RequestParam String refnumber) throws Doc41DocServiceException{
+	    try {
+            List<BdsServiceDocumentEntry> documents = new ArrayList<BdsServiceDocumentEntry>();
             
-            if(hasPermission(UserInSession.get(), type)){
-                SearchForm searchForm = new SearchForm();
-                searchForm.setType(type);
-                searchForm.setVendorNumber(vendor);
-                searchForm.setObjectId(refnumber);
-                searchForm.setMaxResults(2000);
+            Set<String> types = documentUC.getAvailableSDDownloadDocumentTypes();
+            for (String type : types) {
                 
-                BindingResult result = new BeanPropertyBindingResult(searchForm, "searchForm");
-                get(searchForm, result, "DocServiceSearch");
-                if(!result.hasErrors()){
-                    List<HitListEntry> docsOneType = searchForm.getDocuments();
-                    if(docsOneType!=null){
-                        for (HitListEntry hitListEntry : docsOneType) {
-                            BdsServiceDocumentEntry entry = new BdsServiceDocumentEntry(hitListEntry);
-                            documents.add(entry);
+                if(hasPermission(UserInSession.get(), type)){
+                    SearchForm searchForm = new SearchForm();
+                    searchForm.setType(type);
+                    searchForm.setVendorNumber(vendor);
+                    searchForm.setObjectId(refnumber);
+                    searchForm.setMaxResults(2000);
+                    
+                    BindingResult result = new BeanPropertyBindingResult(searchForm, "searchForm");
+                    get(searchForm, result, "DocServiceSearch",false);
+                    if(!result.hasErrors()){
+                        List<HitListEntry> docsOneType = searchForm.getDocuments();
+                        if(docsOneType!=null){
+                            for (HitListEntry hitListEntry : docsOneType) {
+                                BdsServiceDocumentEntry entry = new BdsServiceDocumentEntry(hitListEntry);
+                                documents.add(entry);
+                            }
                         }
+                    } else {
+                        throw new Doc41DocServiceException(""+getAllErrorsAsString(result));
                     }
                 }
             }
+            return documents;
+        } catch (Doc41BusinessException e) {
+            throw new Doc41DocServiceException("getSDListForService", e);
         }
-        return documents;
     }
 	
 	private void checkForbiddenWildcards(BindingResult result, String fieldNamePrefix,
@@ -185,7 +194,7 @@ public class SearchController extends AbstractDoc41Controller {
 	@RequestMapping(value="/documents/searchdelcertcountry",method = RequestMethod.GET)
 	public ModelMap getDelCertCountry(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
 		ModelMap map = new ModelMap();
-		SearchForm searchForm2 = get(searchForm, result, ButtonSearch);
+		SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
 		map.addAttribute(searchForm2);
 		
 		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
@@ -200,7 +209,7 @@ public class SearchController extends AbstractDoc41Controller {
 	@RequestMapping(value="/documents/searchdelcertcustomer",method = RequestMethod.GET)
 	public ModelMap getDelCertCustomer(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
 		ModelMap map = new ModelMap();
-		SearchForm searchForm2 = get(searchForm, result, ButtonSearch);
+		SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
 		map.addAttribute(searchForm2);
 		
 		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
@@ -216,7 +225,7 @@ public class SearchController extends AbstractDoc41Controller {
 	@RequestMapping(value="/documents/searchpmsupplier",method = RequestMethod.GET)
 	public ModelMap getPMSupplier(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
 		ModelMap map = new ModelMap();
-		SearchForm searchForm2 = get(searchForm, result, ButtonSearch);
+		SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
 		map.addAttribute(searchForm2);
 		
 		map.addAttribute("keyPONumber",PMSupplierDownloadDocumentType.VIEW_ATTRIB_PO_NUMBER);

@@ -41,10 +41,6 @@ public class DocServiceUploadTestClient {
         }
     }
     
-    
-    
-    
-    
     private HttpEntity testUpload(String urlPrefix, InputStream fileInputStream,
             String fileName, String type, String vendorNumber,
             String refnumber) throws ClientProtocolException, IOException {

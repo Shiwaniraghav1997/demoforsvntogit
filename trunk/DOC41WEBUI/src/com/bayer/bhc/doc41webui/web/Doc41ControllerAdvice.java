@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41AccessDeniedException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41DocServiceException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41OptimisticLockingException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
@@ -83,6 +84,10 @@ public class Doc41ControllerAdvice {
 	
 	@ExceptionHandler(Exception.class)
 	public String processHandlerException(HttpServletRequest request, HttpServletResponse response, Exception ex) throws Exception {
+	    if(ex instanceof Doc41DocServiceException){
+	        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getLocalizedMessage());
+	        return "exception";
+	    }
 		if (ex instanceof MaxUploadSizeExceededException){
 			ex = new Doc41ExceptionBase("File is to big for upload!",ex);
 		}
@@ -115,5 +120,6 @@ public class Doc41ControllerAdvice {
 		StringTrimmerEditor stringtrimmer = new StringTrimmerEditor(true);
 		binder.registerCustomEditor(String.class, stringtrimmer);
 	}
+	
 	
 }

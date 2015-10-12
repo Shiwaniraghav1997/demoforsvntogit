@@ -1,9 +1,13 @@
 package com.bayer.bhc.doc41webui.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -85,7 +89,18 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
 		}
 	}
 	
-	public static HttpSession session() {
+	protected String getAllErrorsAsString(BindingResult result) {
+        StringBuilder sb = new StringBuilder();
+        List<ObjectError> allErrors = result.getAllErrors();
+        for (ObjectError objectError : allErrors) {
+            sb.append(objectError.toString());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+
+    public static HttpSession session() {
 	    ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 	    return attr.getRequest().getSession(true); // true == allow create
 	}
