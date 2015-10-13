@@ -1,0 +1,44 @@
+package com.bayer.bhc.doc41webui.web.documents;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41DocServiceException;
+import com.bayer.bhc.doc41webui.container.UploadForm;
+
+@Controller
+public class SDUploadController extends UploadController {
+
+	
+	@RequestMapping(value="/documents/sdupload",method = RequestMethod.GET)
+	public UploadForm get(@RequestParam() String type) throws Doc41BusinessException{
+		return super.get(type);
+	}
+	
+	@RequestMapping(value={"/documents/sduploadpost","/docservice/sdupload"},method = RequestMethod.POST)
+	public String postUploadService(@ModelAttribute UploadForm uploadForm,BindingResult result) throws Doc41DocServiceException { //ggf. kein modelattribute wegen sessionattribute
+		try {
+            String postUpload = super.postUpload(uploadForm, result);
+            if(result.hasErrors()){
+                throw new Doc41DocServiceException(""+getAllErrorsAsString(result));
+            }
+            return postUpload;
+        } catch (Doc41BusinessException e) {
+            throw new Doc41DocServiceException("postUploadService", e);
+        }
+	}
+	
+	protected String getFailedURL() {
+		return "/documents/sdupload";
+	}
+
+	@Override
+	protected String getSuccessURL() {
+		return "sdupload";
+	}
+}
