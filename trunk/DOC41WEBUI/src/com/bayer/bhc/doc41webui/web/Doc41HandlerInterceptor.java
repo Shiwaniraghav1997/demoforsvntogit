@@ -263,6 +263,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 	private User getDocServiceUser(HttpServletRequest request) {
 	    String tmpCwid=request.getHeader("docservice-user");
         String tmpRole=request.getHeader("docservice-role");
+        String tmpPwd=request.getHeader("docservice-password");
         String tmpHost=request.getRemoteHost();
         String tmpAddr=request.getRemoteAddr();
         try {
@@ -275,20 +276,27 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
                 Map<String,String> subConfig = ConfigMap.get().getSubConfig("doc41controller", "docservicecheck");
                 String allowedIPs = subConfig.get("allowedIPs");
                 if(allowedIPs!=null && allowedIPs.contains(tmpAddr)){
-                    User tmpUser = new User();
-                    tmpUser.setCwid(CWID_PREFIX_DOC_SERVICE+tmpCwid);
-                    tmpUser.setFirstname("DocService");
-                    tmpUser.setSurname("DocService");
-                    tmpUser.setType(User.TYPE_EXTERNAL);
-                    tmpUser.setActive(true);
-                    tmpUser.setLocale(Locale.GERMANY);
-                    tmpUser.setReadOnly(false);
-                    tmpUser.getRoles().add(tmpRole);
-                    tmpUser.setSkipCustomerCheck(true);
-                    tmpUser.setSkipVendorCheck(true);
-                    tmpUser.setSkipCountryCheck(true);
-                    userManagementUC.addPermissionsToUser(tmpUser);
-                    return tmpUser;
+                    String password = subConfig.get("pwd_"+tmpRole);
+                    if(password!=null && password.startsWith("*")){
+                        password = StringTool.code(password.substring(1));
+                    }
+                    if(!StringTool.isTrimmedEmptyOrNull(tmpPwd) && !StringTool.isTrimmedEmptyOrNull(password)
+                            && StringTool.equals(tmpPwd, password)){
+                        User tmpUser = new User();
+                        tmpUser.setCwid(CWID_PREFIX_DOC_SERVICE+tmpCwid);
+                        tmpUser.setFirstname("DocService");
+                        tmpUser.setSurname("DocService");
+                        tmpUser.setType(User.TYPE_EXTERNAL);
+                        tmpUser.setActive(true);
+                        tmpUser.setLocale(Locale.GERMANY);
+                        tmpUser.setReadOnly(false);
+                        tmpUser.getRoles().add(tmpRole);
+                        tmpUser.setSkipCustomerCheck(true);
+                        tmpUser.setSkipVendorCheck(true);
+                        tmpUser.setSkipCountryCheck(true);
+                        userManagementUC.addPermissionsToUser(tmpUser);
+                        return tmpUser;
+                    }
                 }
             }
         } catch (Doc41BusinessException e) {
