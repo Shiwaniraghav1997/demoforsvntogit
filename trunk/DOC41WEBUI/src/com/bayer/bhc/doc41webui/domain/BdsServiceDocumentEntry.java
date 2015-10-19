@@ -23,18 +23,6 @@ public class BdsServiceDocumentEntry {
     
     public BdsServiceDocumentEntry() {
     }
-    public BdsServiceDocumentEntry(HitListEntry hitListEntry) {
-        this();
-        this.docId=hitListEntry.getDocId();
-        this.objectId=hitListEntry.getObjectId();
-        this.storageDate=hitListEntry.getStorageDate();
-        this.archiveLinkDate=hitListEntry.getArchiveLinkDate();
-        this.objectType=hitListEntry.getObjectType();
-        this.documentClass=hitListEntry.getDocumentClass();
-        this.customizedValuesByKey=hitListEntry.getCustomizedValuesByKey();
-        this.key=hitListEntry.getKey();
-        this.type=hitListEntry.getType();
-    }
     
     public String getDocId() {
         return docId;

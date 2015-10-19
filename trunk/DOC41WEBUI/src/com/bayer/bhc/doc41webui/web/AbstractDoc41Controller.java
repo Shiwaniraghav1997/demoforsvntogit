@@ -7,12 +7,14 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.bayer.bhc.doc41webui.common.Doc41SessionKeys;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.domain.BdsServiceError;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DisplaytextUC;
 import com.bayer.bhc.doc41webui.usecase.UserManagementUC;
@@ -97,6 +99,24 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
             sb.append("\n");
         }
         return sb.toString();
+    }
+	
+	protected BdsServiceError[] getAllErrorsAsServiceErrors(
+            BindingResult result) {
+	    List<ObjectError> allErrors = result.getAllErrors();
+	    BdsServiceError[] errors = new BdsServiceError[allErrors.size()];
+	    int i=0;
+        for (ObjectError objectError : allErrors) {
+            errors[i] = new BdsServiceError();
+            errors[i].setErrorCode(objectError.getCode());
+            if(objectError instanceof FieldError){
+                FieldError fieldError = (FieldError) objectError;
+                errors[i].setField(fieldError.getField());
+                errors[i].setRejectedValue(""+fieldError.getRejectedValue());
+            }
+            i++;
+        }
+        return errors;
     }
 
 

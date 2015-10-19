@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41DocServiceException;
 import com.bayer.bhc.doc41webui.container.UploadForm;
+import com.bayer.bhc.doc41webui.domain.BdsServiceUploadDocumentResult;
 
 @Controller
 public class SDUploadController extends UploadController {
@@ -20,18 +22,23 @@ public class SDUploadController extends UploadController {
 		return super.get(type);
 	}
 	
-	@RequestMapping(value={"/documents/sduploadpost","/docservice/sdupload"},method = RequestMethod.POST)
-	public String postUploadService(@ModelAttribute UploadForm uploadForm,BindingResult result) throws Doc41DocServiceException { //ggf. kein modelattribute wegen sessionattribute
-		try {
-            String postUpload = super.postUpload(uploadForm, result);
+	@RequestMapping(value="/documents/sduploadpost",method = RequestMethod.POST)
+	public String postUpload(@ModelAttribute UploadForm uploadForm,BindingResult result) throws Doc41BusinessException { //ggf. kein modelattribute wegen sessionattribute
+	    return super.postUpload(uploadForm, result);
+	}
+	
+	@RequestMapping(value="/docservice/sdupload",method = RequestMethod.POST,produces={"application/json; charset=utf-8"})
+    public @ResponseBody BdsServiceUploadDocumentResult postUploadService(@ModelAttribute UploadForm uploadForm,BindingResult result) throws Doc41DocServiceException { //ggf. kein modelattribute wegen sessionattribute
+        try {
+            /*String postUpload =*/ super.postUpload(uploadForm, result);
             if(result.hasErrors()){
-                throw new Doc41DocServiceException(""+getAllErrorsAsString(result));
+                return new BdsServiceUploadDocumentResult(getAllErrorsAsServiceErrors(result));
             }
-            return postUpload;
+            return new BdsServiceUploadDocumentResult();
         } catch (Doc41BusinessException e) {
             throw new Doc41DocServiceException("postUploadService", e);
         }
-	}
+    }
 	
 	protected String getFailedURL() {
 		return "/documents/sdupload";

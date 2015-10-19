@@ -31,6 +31,7 @@ import com.bayer.bhc.doc41webui.container.SearchForm;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.BdsServiceDocumentEntry;
+import com.bayer.bhc.doc41webui.domain.BdsServiceSearchDocumentsResult;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
@@ -140,7 +141,7 @@ public class SearchController extends AbstractDoc41Controller {
 	}
 	
 	@RequestMapping(value="/docservice/sdsearch",method = RequestMethod.GET,produces={"application/json; charset=utf-8"})
-    public @ResponseBody List<BdsServiceDocumentEntry> getSDListForService( @RequestParam(required=true) String vendor,@RequestParam String refnumber) throws Doc41DocServiceException{
+    public @ResponseBody BdsServiceSearchDocumentsResult getSDListForService( @RequestParam(required=true) String vendor,@RequestParam String refnumber) throws Doc41DocServiceException{
 	    try {
             List<BdsServiceDocumentEntry> documents = new ArrayList<BdsServiceDocumentEntry>();
             
@@ -160,22 +161,31 @@ public class SearchController extends AbstractDoc41Controller {
                         List<HitListEntry> docsOneType = searchForm.getDocuments();
                         if(docsOneType!=null){
                             for (HitListEntry hitListEntry : docsOneType) {
-                                BdsServiceDocumentEntry entry = new BdsServiceDocumentEntry(hitListEntry);
+                                BdsServiceDocumentEntry entry = new BdsServiceDocumentEntry();
+                                entry.setDocId(hitListEntry.getDocId());
+                                entry.setObjectId(hitListEntry.getObjectId());
+                                entry.setStorageDate(hitListEntry.getStorageDate());
+                                entry.setArchiveLinkDate(hitListEntry.getArchiveLinkDate());
+                                entry.setObjectType(hitListEntry.getObjectType());
+                                entry.setDocumentClass(hitListEntry.getDocumentClass());
+                                entry.setCustomizedValuesByKey(hitListEntry.getCustomizedValuesByKey());
+                                entry.setKey(hitListEntry.getKey());
+                                entry.setType(hitListEntry.getType());
                                 documents.add(entry);
                             }
                         }
                     } else {
-                        throw new Doc41DocServiceException(""+getAllErrorsAsString(result));
+                        return new BdsServiceSearchDocumentsResult(getAllErrorsAsServiceErrors(result));
                     }
                 }
             }
-            return documents;
+            return new BdsServiceSearchDocumentsResult(documents);
         } catch (Doc41BusinessException e) {
             throw new Doc41DocServiceException("getSDListForService", e);
         }
     }
 	
-	private void checkForbiddenWildcards(BindingResult result, String fieldNamePrefix,
+    private void checkForbiddenWildcards(BindingResult result, String fieldNamePrefix,
 			String fieldNameSuffix, Map<String, String> attributes) {
 		Set<Entry<String, String>> entrySet = attributes.entrySet();
 		for (Entry<String, String> entry : entrySet) {
