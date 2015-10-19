@@ -28,5 +28,10 @@ public class ArtworkForLayoutSupplierDocumentType extends LayoutSupplierDocument
 	public String getPermissionDownload() {
 		return "DOC_ARTWORK_DOWN_LS";
 	}
+	
+	@Override
+	protected boolean checkExistingDocs() {
+	    return true;
+	}
 
 }

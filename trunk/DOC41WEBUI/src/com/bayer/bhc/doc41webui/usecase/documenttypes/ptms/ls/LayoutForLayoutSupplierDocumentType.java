@@ -27,5 +27,8 @@ public class LayoutForLayoutSupplierDocumentType extends LayoutSupplierDocumentT
 		return "DOC_LAYOUT_DOWN_LS";
 	}
 
-	
+	@Override
+	protected boolean checkExistingDocs() {
+	    return true;
+	}
 }

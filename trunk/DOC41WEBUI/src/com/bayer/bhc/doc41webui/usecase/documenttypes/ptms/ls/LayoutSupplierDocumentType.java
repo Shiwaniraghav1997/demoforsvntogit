@@ -50,9 +50,11 @@ public abstract class LayoutSupplierDocumentType implements DocumentType{
 		
 		Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
 		
-		String deliveryCheck = documentUC.checkArtworkLayoutForVendor(vendorNumber,getSapTypeId());
-		if(deliveryCheck != null){
-			errors.reject(""+deliveryCheck);
+		if(checkExistingDocs()){
+    		String deliveryCheck = documentUC.checkArtworkLayoutForVendor(vendorNumber,getSapTypeId());
+    		if(deliveryCheck != null){
+    			errors.reject(""+deliveryCheck);
+    		}
 		}
 		Map<String, String> additionalAttributes = new HashMap<String, String>();
 		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
@@ -60,7 +62,9 @@ public abstract class LayoutSupplierDocumentType implements DocumentType{
 		return new CheckForDownloadResult(additionalAttributes,null);
 	}
 	
-	@Override
+	protected abstract boolean checkExistingDocs();
+
+    @Override
 	public int getObjectIdFillLength() {
 		return Doc41Constants.FIELD_SIZE_MATNR;
 	}

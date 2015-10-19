@@ -20,4 +20,9 @@ implements DownloadDocumentType{
 		return "DOC_PZ_DOWN_LS";
 	}
 
+    @Override
+    protected boolean checkExistingDocs() {
+        return false;
+    }
+
 }
