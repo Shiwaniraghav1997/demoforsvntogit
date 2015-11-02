@@ -42,6 +42,7 @@
     <servlet-name>doc41</servlet-name>
     <!-- <servlet-class>com.bayer.bhc.doc41webui.web.Doc41ExceptionResolver</servlet-class> -->
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>2</load-on-startup>
   </servlet>
   <servlet-mapping>
     <servlet-name>doc41</servlet-name>
