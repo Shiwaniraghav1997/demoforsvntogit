@@ -54,20 +54,25 @@ public class User extends DomainObject {
 	public static final String STATUS_INACTIVE = "inactive";
 
 	public static final String[] ALL_ROLES = new String[] {
-			ROLE_CARRIER, ROLE_MATERIAL_SUPPLIER, ROLE_PRODUCT_SUPPLIER,
-			ROLE_DEL_CERT_VIEWER_COUNTRY, ROLE_DEL_CERT_VIEWER_CUSTOMER, ROLE_LAYOUT_SUPPLIER,
-			ROLE_PM_SUPPLIER,ROLE_BUSINESS_ADMIN, ROLE_TECH_ADMIN, ROLE_OBSERVER };
+			ROLE_CARRIER,
+			ROLE_MATERIAL_SUPPLIER,
+			ROLE_PRODUCT_SUPPLIER,
+			ROLE_DEL_CERT_VIEWER_COUNTRY,
+			ROLE_DEL_CERT_VIEWER_CUSTOMER,
+			ROLE_LAYOUT_SUPPLIER,
+			ROLE_PM_SUPPLIER,
+			ROLE_BUSINESS_ADMIN,
+			ROLE_TECH_ADMIN,
+			ROLE_OBSERVER
+			};
 	
 	public static final String[] ROLES_WITH_CUSTOMERS = new String[] {ROLE_DEL_CERT_VIEWER_CUSTOMER};
 	
-	public static final String[] ROLES_WITH_VENDORS = new String[] {
-		ROLE_CARRIER, ROLE_MATERIAL_SUPPLIER, ROLE_PRODUCT_SUPPLIER,
-		ROLE_LAYOUT_SUPPLIER, ROLE_PM_SUPPLIER };
+	public static final String[] ROLES_WITH_VENDORS = new String[] {ROLE_CARRIER, ROLE_MATERIAL_SUPPLIER, ROLE_PRODUCT_SUPPLIER, ROLE_LAYOUT_SUPPLIER, ROLE_PM_SUPPLIER };
 	
 	public static final String[] ROLES_WITH_COUNTRY = new String[] {ROLE_DEL_CERT_VIEWER_COUNTRY};
 	
-	public static final String[] ROLES_WITH_PLANT = new String[] {
-		ROLE_MATERIAL_SUPPLIER, ROLE_PRODUCT_SUPPLIER };
+	public static final String[] ROLES_WITH_PLANT = new String[] {ROLE_MATERIAL_SUPPLIER, ROLE_PRODUCT_SUPPLIER };
 
 	private String cwid;
 
@@ -128,7 +133,8 @@ public class User extends DomainObject {
 			}
 			for (String permission : permissions) {
 				if (!allPermissions.contains(permission)) {
-					throw new RuntimeException(String.format("Permission %s doesn't exist.", permission));
+				    Doc41Log.get().debug(this,  null, "Permission \"" + permission + "\" currently not available, may be global deactivated.");
+//					throw new RuntimeException(String.format("Permission %s doesn't exist.", permission));
 				}
 			}
 		} catch (QueryException e) {

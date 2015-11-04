@@ -8,7 +8,7 @@ public class UnknownExtensionException extends Doc41BusinessException {
     private String extension;
 
     public UnknownExtensionException(String extension) {
-        super("unknown extension :"+extension);
+        super("unknown extension: "+extension);
         this.extension = extension;
     }
     

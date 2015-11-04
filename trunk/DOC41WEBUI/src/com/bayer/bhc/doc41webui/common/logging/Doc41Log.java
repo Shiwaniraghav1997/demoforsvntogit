@@ -11,7 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bayer.bhc.doc41webui.common.Doc41SessionKeys;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.ecim.foundation.basic.Dbg;
+import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.NestingException;
+import com.bayer.ecim.foundation.basic.Singleton;
 
 /**
  * Foundation specific logger class for CargoCockpit.
@@ -19,15 +21,38 @@ import com.bayer.ecim.foundation.basic.NestingException;
  * @author ezzqb
  * @id $Id: Doc41LoggerImpl.java,v 1.2 2012/02/22 14:16:09 ezzqc Exp $
  */
-public class Doc41Log {
-	private static Doc41Log instance;
-	
-	public static synchronized Doc41Log get() {
-		if (instance == null) {
-			instance = new Doc41Log();
-		}
-		return instance;
-	}
+public class Doc41Log extends Singleton {
+
+
+    public static final String ID = "Doc41Log";
+
+    
+    /**
+     * Initializes the singleton
+     * @throws InitException
+     */
+    public Doc41Log( String pID ) throws InitException {
+        super(pID, true); // register and lock for init by this thread (with 30 sec safty lock timeout to protect from deadlock)
+        try {
+            /** nothing to init... */
+            initSucceeded( Doc41Log.class ); // success, release lock
+        } catch (Exception mEx) {
+            initFailed( new InitException( "Failed to initialize " + pID + "!", mEx) ); // fail, trace & release lock for retry
+        } catch (Error mErr) {
+            initFailed( mErr ); // ERROR, release lock for retry
+        }
+    }
+    
+    /**
+     * Gets a singletion instance of the Doc41Log.
+     * @return Doc41Log
+     * @throws InitException
+     */
+    public static Doc41Log get() throws InitException {
+        Doc41Log mSing = (Doc41Log) getSingleton(ID);
+        return (mSing == null) ? new Doc41Log(ID) : mSing;
+    }
+    
 
     /** the error channel */
     private static final int ERROR = Dbg.ERROR;
@@ -40,29 +65,22 @@ public class Doc41Log {
 
     /** the logging channel */
     private static final int LOGGING = Dbg.LOGGING;
-
-    /** a flag indicating whether INFO logging is active */
-    private static boolean INFO_ACTIVE = Dbg.get().isLogicalChannelActive(INFO);
-
-    /** a flag indicating whether WARNING logging is active */
-    private static final boolean WARNING_ACTIVE = Dbg.get().isLogicalChannelActive(WARNING);
-
-    /** a flag indicating whether ERROR logging is active */
-    private static final boolean ERROR_ACTIVE = Dbg.get().isLogicalChannelActive(ERROR);
-
-    /** a flag indicating whether Webmetrix logging is active */
-    private static final boolean LOGGING_ACTIVE = Dbg.get().isLogicalChannelActive(LOGGING);
-   
+    
+    /**
+     * Looks, if debug channel ist active - this is NOT static/final!!!
+     */
+    public boolean isDebugActive() {
+        return Dbg.get().isLogicalChannelActive(Dbg.INFO);
+    }
+    
     /**
      * Logs debug message.
      * @param clazz   The Log Class
      * @param user    The User
      * @param msg     The Debug message
      */
-    public void debug(Class<?> clazz, String user, Object msg) {
-    	if (INFO_ACTIVE) {
-            Dbg.get().println(INFO, clazz, user, msg);
-        }
+    public void debug(Object clazz, String user, Object msg) {
+        Dbg.get().println(INFO, clazz, user, msg);
     }
 
     /**
@@ -71,10 +89,8 @@ public class Doc41Log {
      * @param user    The User
      * @param msg     The error message
      */
-    public void warning(Class<?> clazz, String user, Object msg) {
-        if (WARNING_ACTIVE) {
-            Dbg.get().println(INFO, clazz, user, msg);
-        }
+    public void warning(Object clazz, String user, Object msg) {
+        Dbg.get().println(WARNING, clazz, user, msg);
     }
 
     /**
@@ -83,15 +99,13 @@ public class Doc41Log {
      * @param user    The User
      * @param msg     The error message
      */
-    public void error(Class<?> clazz, String user, Object msg) {
+    public void error(Object clazz, String user, Object msg) {
     	//to log stacktrace
     	if(msg instanceof Throwable && !(msg instanceof NestingException)){
     		Throwable ex = (Throwable) msg;
     		new NestingException(ex.getMessage(), ex);
     	}
-        if (ERROR_ACTIVE) {
-            Dbg.get().println(ERROR, clazz, user, msg);
-        }
+        Dbg.get().println(ERROR, clazz, user, msg);
     }
 
     /**
@@ -101,15 +115,12 @@ public class Doc41Log {
      * @param modelAndView      The ModelAndView
      */
 	public void logWebMetrix(HttpServletRequest pRequest, Object handler, ModelAndView modelAndView) {
-		if (LOGGING_ACTIVE) {
-			String usr = UserInSession.getCwid();
-			String jspName =modelAndView.getViewName();
-			String logClass = handler.getClass().getName();
-			String action = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL);
+	    String usr = UserInSession.getCwid();
+		String jspName =modelAndView.getViewName();
+		String action = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL);
 					
-			Doc41LogEntry pObj = new Doc41LogEntry(usr, usr, null, action, jspName, null, null, null, null, null, null, null, null);
-			Dbg.get().println(LOGGING, logClass, pRequest.getRemoteUser(),pObj);
-		}
+		Doc41LogEntry pObj = new Doc41LogEntry(usr, usr, null, action, jspName, null, null, null, null, null, null, null, null);
+		Dbg.get().println(LOGGING, handler, pRequest.getRemoteUser(),pObj);
 	}
 
 
@@ -120,14 +131,11 @@ public class Doc41Log {
      * @param URI      The requested URI
      */
 	public void logWebMetrix(HttpServletRequest pRequest, Object handler, String anURI) {
-		if (LOGGING_ACTIVE) {
-			String usr = UserInSession.getCwid();
-			String logClass = handler.getClass().getName();
-			String action = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL);
+		String usr = UserInSession.getCwid();
+		String action = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL);
 					
-			Doc41LogEntry pObj = new Doc41LogEntry(usr, usr, null, action, anURI, null, null, null, null, null, null, null, null);
-			Dbg.get().println(LOGGING, logClass, pRequest.getRemoteUser(),pObj);
-		}
+		Doc41LogEntry pObj = new Doc41LogEntry(usr, usr, null, action, anURI, null, null, null, null, null, null, null, null);
+		Dbg.get().println(LOGGING, handler, pRequest.getRemoteUser(),pObj);
 	}
 
 	/**
@@ -136,15 +144,12 @@ public class Doc41Log {
      * @param handler         	The PortletHandlerObject
      */
 	public void logWebMetrix(HttpServletRequest pRequest, Object handler) {
-		if (LOGGING_ACTIVE) {
-			String jspName = null;
-			String usr = UserInSession.getCwid();
-			String logClass = handler.getClass().getName();
-			String action = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL);
-			jspName = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_VIEW);
-			Doc41LogEntry pObj = new Doc41LogEntry(usr, usr, null, action, jspName, null, null, null, null, null, null, null, null);
-			Dbg.get().println(LOGGING, logClass, pRequest.getRemoteUser(),pObj);
-		}
+		String jspName = null;
+		String usr = UserInSession.getCwid();
+		String action = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL);
+		jspName = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_VIEW);
+		Doc41LogEntry pObj = new Doc41LogEntry(usr, usr, null, action, jspName, null, null, null, null, null, null, null, null);
+		Dbg.get().println(LOGGING, handler, pRequest.getRemoteUser(),pObj);
 	}
 	
 	
@@ -154,9 +159,7 @@ public class Doc41Log {
 	 * @param logEntry
 	 * @param usr
 	 */
-	public void logWebMetrix(Class<?> clazz, Doc41LogEntry logEntry, String usr) {
-		if (LOGGING_ACTIVE) {				
-			Dbg.get().println(LOGGING, clazz, usr, logEntry);
-		}
+	public void logWebMetrix(Object clazz, Doc41LogEntry logEntry, String usr) {
+		Dbg.get().println(LOGGING, clazz, usr, logEntry);
 	}
 }

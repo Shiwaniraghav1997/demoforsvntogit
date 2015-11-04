@@ -51,7 +51,7 @@ Column.9.Comment=Maps DB-Column: is_Deleted
 #Column.9.DBDefault="..."/new ...
 
 Column.10.Name=SapChanged
-Column.10.Type=DATE/MONTH/TIMESTAMP/TIMESTAMPSHORT/TZDATE
+Column.10.Type=TIMESTAMP
 Column.10.Comment=Maps DB-Column: sap_Changed
 #Column.10.DBDefault="..."/new ...
 

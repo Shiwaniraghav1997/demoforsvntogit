@@ -9,6 +9,13 @@ import com.bayer.ecim.foundation.sap3.SAPException;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
+/**
+ * CheckArtworkLayoutForVendorRFC
+ * Check if there is already Artwork Layout of same material number (TODO). Currently checks only, if ther is any Artwork Layout for this vendor.
+ * currently implemented parameters: vendor (partner) number, sap (doc) type id
+ * further required parameter: material number
+ * @author ???, IMWIF
+ */
 public class CheckArtworkLayoutForVendorRFC extends AbstractDoc41RFC<String>{
 	private static final String IN_VENDOR = "IV_VENDOR";
 	private static final String IN_DOC_TYPE = "IV_DOCTYPE_ID";
@@ -17,12 +24,10 @@ public class CheckArtworkLayoutForVendorRFC extends AbstractDoc41RFC<String>{
 	private static final String RETURNCODE_OK = "0";
 	private static final String RETURNCODE_NOT_FOUND = "4";
 
-	
-
 	@Override
 	public void prepareCall(JCoFunction pFunction, List<?> pInputParms)
 			throws SAPException {
-		Doc41Log.get().debug(CheckArtworkLayoutForVendorRFC.class, null, "prepareCall():ENTRY");
+		Doc41Log.get().debug(this, null, "prepareCall():ENTRY");
     	
         if (pFunction != null) {
             if (pInputParms != null) {
@@ -33,6 +38,7 @@ public class CheckArtworkLayoutForVendorRFC extends AbstractDoc41RFC<String>{
 				
 				sapInput.setValue(IN_VENDOR,vendorNumber);
 				sapInput.setValue(IN_DOC_TYPE,doctype);
+		        Doc41Log.get().debug(this, null, RFCFunctionDumper.dumpFunction(pFunction));
             } else {
                 throw new SAPException(
                         "CheckArtworkLayoutForVendorRFC pInputParms list is null", null);
@@ -41,7 +47,7 @@ public class CheckArtworkLayoutForVendorRFC extends AbstractDoc41RFC<String>{
             throw new SAPException(
                     "CheckArtworkLayoutForVendorRFC pFunction list is null", null);
         }
-        Doc41Log.get().debug(CheckArtworkLayoutForVendorRFC.class, null, "prepareCall():EXIT");
+        Doc41Log.get().debug(this, null, "prepareCall():EXIT");
 	}
 
 	@Override
@@ -50,6 +56,7 @@ public class CheckArtworkLayoutForVendorRFC extends AbstractDoc41RFC<String>{
 		Doc41Log.get().debug(CheckArtworkLayoutForVendorRFC.class, null, "processResult():ENTRY");
 		ArrayList<String> mResult = new ArrayList<String>();
         if (pFunction != null) {
+            Doc41Log.get().debug(this, null, RFCFunctionDumper.dumpFunction(pFunction));
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
             mResult.add(mapReturnCodeToTag(returnCode));

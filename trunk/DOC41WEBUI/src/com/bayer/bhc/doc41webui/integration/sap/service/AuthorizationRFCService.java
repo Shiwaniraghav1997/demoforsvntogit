@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -59,12 +60,23 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		return deliveries ;
 	}
 	
-	public String checkArtworkLayoutForVendor(String vendorNumber,String sapDocType) throws Doc41ServiceException{
+	/**
+    /**
+     * Check for the vendor (partner), if already a artwork document exist with the same material number. Current old version only checks, if any ArtWork document existing for vendor.
+     * Upload only allowed, if already first document existing (as follow up)
+     * @param vendorNumber the vondor/partner number
+     * @param materialNumber the material number of their artwork document (new, not yet checked by RFC but prepared TODO)
+     * @param sapDocType = sapTypeId
+     * @return seems to be null if ok, else an error message (not 100% sure, if also success message may be returned)
+	 * @throws Doc41ServiceException
+	 */
+	public String checkArtworkLayoutForVendor(String vendorNumber, String materialNumber, String sapDocType) throws Doc41ServiceException{
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
         		"checkArtworkForVendor() - vendorNumber="+vendorNumber+".");
        
         List<Object> params = new ArrayList<Object>();
         params.add(vendorNumber);
+        //params.add(materialNumber); // TODO
         params.add(sapDocType);
         
         List<String> returnTexts = performRFC(params,RFC_NAME_CHECK_ARTWORK_LAYOUT_FOR_VENDOR);

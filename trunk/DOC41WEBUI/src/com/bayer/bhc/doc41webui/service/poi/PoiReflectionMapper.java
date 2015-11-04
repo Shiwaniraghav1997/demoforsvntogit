@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
+import com.bayer.ecim.foundation.basic.NestingRuntimeException;
 import com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier;
 
 
@@ -100,7 +101,7 @@ public class PoiReflectionMapper implements PoiMapper {
 		try {
 			return dcClass.newInstance();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new NestingRuntimeException("GetDCInstance failed: " + dcClass.getName(), e);
 		} 
 	}
 	

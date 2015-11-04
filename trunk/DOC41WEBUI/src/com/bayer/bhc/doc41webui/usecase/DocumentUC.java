@@ -60,6 +60,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.ArtworkForLayoutSu
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.LayoutForLayoutSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.PZTecDrawingForLayoutSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.PackMatSpecForLayoutSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.AntiCounSpecForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.ArtworkForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.LayoutForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PZTecDrawingForPMSupplierDocumentType;
@@ -134,6 +135,7 @@ public class DocumentUC {
 		addDocumentType(new PackMatSpecForPMSupplierDocumentType());
 		addDocumentType(new PZTecDrawingForPMSupplierDocumentType());
 		addDocumentType(new TecPackDelReqForPMSupplierDocumentType());
+        addDocumentType(new AntiCounSpecForPMSupplierDocumentType());
 	}
 	
 	private void addDocumentType(DocumentType documentType) {
@@ -355,6 +357,11 @@ public class DocumentUC {
 		}
 		
 		String fileNameUpper = fileName.toUpperCase();
+		String[] mFileSeg = StringTool.split(fileNameUpper, '.');
+		String mFileExt = (mFileSeg.length == 1) ? "" : mFileSeg[mFileSeg.length - 1];
+		
+		docClass = (String)ConfigMap.get().getSubConfig("documents", "fieltype").get(mFileExt);
+		/*
 		if(fileNameUpper.endsWith(".PDF")){
 			docClass = "PDF";
 		} else if (fileNameUpper.endsWith(".TIFF") || fileNameUpper.endsWith(".TIF")){
@@ -374,8 +381,10 @@ public class DocumentUC {
 		} else if (fileNameUpper.endsWith(".TXT")){
 			docClass = "TXT";
 		} else {
-		    String extension = fileNameUpper.substring(fileNameUpper.indexOf('.'));
-			throw new UnknownExtensionException(extension);
+		*/
+		if (docClass == null) {
+		    //String extension = fileNameUpper.substring(fileNameUpper.indexOf('.'));
+			throw new UnknownExtensionException(mFileExt);
 		}
 		
 		if(!isAllClassesAllowed && !StringTool.equals(docClass, allowedDocClass.toUpperCase())){
@@ -599,9 +608,18 @@ public class DocumentUC {
 		return getDocType(type).getObjectIdFillLength();
 	}
 
-	public String checkArtworkLayoutForVendor(String vendorNumber,String sapTypeId) throws Doc41BusinessException {
+	/**
+	 * Check for the vendor (partner), if already a artwork document exist with the same material number.
+	 * Upload only allowed, if already first document existing (as follow up)
+	 * @param vendorNumber the vondor/partner number
+	 * @param materialNumber the material number of their artwork document (new, possibly not yet checked but prepared TODO)
+	 * @param sapTypeId
+	 * @return seems to be null if ok, else an error message (not 100% sure, if also success message may be returned)
+	 * @throws Doc41BusinessException
+	 */
+	public String checkArtworkLayoutForVendor(String vendorNumber, String materialNumber, String sapTypeId) throws Doc41BusinessException {
 		try {
-			return authorizationRFCService.checkArtworkLayoutForVendor(vendorNumber,sapTypeId);
+			return authorizationRFCService.checkArtworkLayoutForVendor(vendorNumber, materialNumber, sapTypeId);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("checkArtworkForVendor",e);
 		}

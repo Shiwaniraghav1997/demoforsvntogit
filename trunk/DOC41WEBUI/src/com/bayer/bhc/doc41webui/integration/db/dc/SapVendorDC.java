@@ -1,7 +1,7 @@
 /*
  * (c)2007 Bayer AG Leverkusen, Bayer Business Solutions
  * All rights reserved.
- * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini,v 1.82 2012/10/05 12:22:39 evfpu Exp )
+ * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini 10163 2015-10-28 17:47:12Z imwif )
  *
  * $Id$
  */
@@ -56,21 +56,23 @@ public class SapVendorDC
 	public static final String FIELD_ISDELETED = "IsDeleted";
 
 	/** Maps DB-Column: sap_Changed */
-	Object cSapChanged;
+	Date cSapChanged;
 	public static final String FIELD_SAPCHANGED = "SapChanged";
 
-	/** The master Class of this class. */
-	public final Class<DataCarrier> MASTER_CLASS = DataCarrier.class;
+	/** for compatibility, suppress import warning...*/
+	public static final Class<DataCarrier> _DBX_DC_CLASS_SAPVENDORDC = DataCarrier.class; // dummy variable to avoid warning
 
-	/** Set the database tablename (null if unspecified) for this DC. */
+	/** The master Class of this class. */
+	public final Class<BasicDataCarrier> MASTER_CLASS_SAPVENDORDC = BasicDataCarrier.class;
+
+	/** Set the database table-name (null if unspecified) for this DC. */
 	static {
 		setDBTablename( SapVendorDC.class, "[DOC41WEB_MGR].SAP_VENDOR" );
 	}
 
-	private static final long serialVersionUID = 20140103053443088L;
+	private static final long serialVersionUID = 20151102033319642L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_SAPVENDORDC = java.math.BigDecimal.class;
 
-	@SuppressWarnings("unchecked")
 	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
 	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PARTNERNUMBER, FIELD_NAME1, FIELD_NAME2, FIELD_STREET, FIELD_POSTALCODE, FIELD_CITY, FIELD_COUNTRYISOCODE, FIELD_ISDELETED, FIELD_SAPCHANGED};
 	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
@@ -85,7 +87,7 @@ public class SapVendorDC
 			FIELD_META.put( FIELD_CITY,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_COUNTRYISOCODE,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_ISDELETED,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
-			FIELD_META.put( FIELD_SAPCHANGED,	new BasicDCFieldMeta( "DATE",	"DATE/MONTH/TIMESTAMP/TIMESTAMPSHORT/TZDATE",	Object.class,	null ) );
+			FIELD_META.put( FIELD_SAPCHANGED,	new BasicDCFieldMeta( "DATETS",	"TIMESTAMP",	Date.class,	null ) );
 		} catch ( Exception e ) {
 			throw new InitException( "Failed to detect return types of the getter methods of SapVendorDC!", null );
 		}
@@ -121,7 +123,7 @@ public class SapVendorDC
 
 	/**
 	 * Create a new instance, supports replacement by subclass!!!
-	 * @throws InitException if the instanciation failes.
+	 * @throws InitException if the instantiation fails.
 	 */
 	public static SapVendorDC newInstanceOfSapVendorDC() throws InitException {
 		return (SapVendorDC)newInstanceOf( SapVendorDC.class );
@@ -130,7 +132,7 @@ public class SapVendorDC
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
 	 * @param pLoc java.util.Locale the Locale to localize the new instance to, automatically.
-	 * @throws InitException if the instanciation failes.
+	 * @throws InitException if the instantiation fails.
 	 */
 	public static SapVendorDC newInstanceOfSapVendorDC( Locale pLoc ) throws InitException {
 		return (SapVendorDC)localizeDC( newInstanceOfSapVendorDC(), pLoc );
@@ -139,7 +141,7 @@ public class SapVendorDC
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
 	 * @param pDC dc to copy the attributes from.
-	 * @throws InitException if the instanciation failes.
+	 * @throws InitException if the instantiation fails.
 	 */
 	public static SapVendorDC newInstanceOfSapVendorDC( BasicDataCarrier pDC ) throws InitException {
 		return (SapVendorDC)newInstanceOfSapVendorDC().copyFrom( pDC );
@@ -160,6 +162,7 @@ public class SapVendorDC
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
+	@Override
 	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
 		super.copyFrom(pOther);
 		if (SapVendorDC.class.isAssignableFrom(pOther.getClass())) {
@@ -195,28 +198,29 @@ public class SapVendorDC
 	}
 
 	/**
-	 * Get the CVS metadata of this DC and it's used generator.
+	 * Get the CVS meta-data of this DC and it's used generator.
 	 */
 	public static BasicDCGeneratorMeta localGetCVSMeta() {
 		return new BasicDCGeneratorMeta(
 			"com.bayer.bhc.doc41webui.integration.db.dc",
 			"SapVendorDC",
 			"com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier",
-			"Date: 2012/10/05 12:22:39 ",
-			"Revision: 1.82 ",
-			"Author: evfpu ",
-			"Header: /bo/foundation/resources/DCGenerator.ini,v 1.82 2012/10/05 12:22:39 evfpu Exp ",
+			"Date: 2015-10-28 18:47:12 +0100 (Wed, 28 Oct 2015) ",
+			"Revision: 10163 ",
+			"Author: imwif ",
+			"Header",
 			"$Date$",
 			"$Revision$",
 			"$Author$",
-			"$Header$"
+			"$Header$/generics"
 		);
 	}
 
 
 	/**
-	 * Get the CVS metadata of this DC and it's used generator.
+	 * Get the CVS meta-data of this DC and it's used generator.
 	 */
+	@Override
 	public BasicDCGeneratorMeta getCVSMeta() {
 		return SapVendorDC.localGetCVSMeta();
 	}
@@ -232,9 +236,10 @@ public class SapVendorDC
 	 * Provides field meta information for a specific field.
 	 */
 	public static BasicDCFieldMeta localGetFieldMeta( String pFieldName ) {
-		return (BasicDCFieldMeta)FIELD_META.get( pFieldName );
+		return FIELD_META.get( pFieldName );
 	}
 
+	@Override
 	public BasicDCFieldMeta getFieldMeta( String pFieldName ) {
 		return SapVendorDC.localGetFieldMeta( pFieldName );
 	}
@@ -997,6 +1002,194 @@ public class SapVendorDC
 		return getBasicDCColumnMetaData( FIELD_ISDELETED );
 	}
 	// END Method getColumnMetaDataIsDeleted
+
+
+	// START Method getSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public Date getSapChanged() {
+		return cSapChanged;
+	}
+	// END Method getSapChanged
+
+
+	// START Method setSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public void setSapChanged( Date pSapChanged ) {
+		cSapChanged = pSapChanged;
+		forgetOriginalValue( FIELD_SAPCHANGED );
+		touchField( FIELD_SAPCHANGED );
+	}
+	// END Method setSapChanged
+
+
+	// START Method getFormattedSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public String getFormattedSapChanged() {
+		return hasInvalidValue( FIELD_SAPCHANGED ) ? getOriginalValue( FIELD_SAPCHANGED ) : getPool().formatDate( "TimeStamp", "T:TimeStampShort|Date|TimeStamp$|TimeStampShort$|Date$", getSapChanged() );
+	}
+	// END Method getFormattedSapChanged
+
+
+	// START Method setFormattedSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public void setFormattedSapChanged( String pSapChanged )
+		throws java.text.ParseException
+	{
+		setSapChanged( null );
+		memorizeOriginalValue( FIELD_SAPCHANGED, pSapChanged );
+		setSapChanged( getPool().parseDate( "TimeStamp", "T:TimeStampShort|Date|TimeStamp$|TimeStampShort$|Date$", pSapChanged ) );
+	}
+	// END Method setFormattedSapChanged
+
+
+	// START Method getFormattedHTMLSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public String getFormattedHTMLSapChanged() {
+		return StringTool.escapeHTML( getFormattedSapChanged() );
+	}
+	// END Method getFormattedHTMLSapChanged
+
+
+	// START Method getToStringSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public String getSapChangedToString() {
+		return StringTool.nullToEmpty( DateTool.convertSQLTimestamp( getSapChanged() ) );
+	}
+	// END Method getToStringSapChanged
+
+
+	// START Method setFromStringSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public void setSapChangedFromString( String pSapChanged ) {
+		setSapChanged( DateTool.convertDate( DateTool.parseSQLTimestamp( pSapChanged ) ) );
+	}
+	// END Method setFromStringSapChanged
+
+
+	// START Method getColumnMetaDataSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public BasicDCColumnMetaData getColumnMetaDataForSapChanged() {
+		return getBasicDCColumnMetaData( FIELD_SAPCHANGED );
+	}
+	// END Method getColumnMetaDataSapChanged
+
+
+	// START Method getTZSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public Date getSapChanged( String pSrcTZ, String pDestTZ )
+		throws DateToolException
+	{
+		Date mRes = getSapChanged();
+		return (mRes == null) ? null : new Date( mRes.getTime() + DateTool.getTimeZoneOffsetForDateInMillis( mRes, pSrcTZ, pDestTZ, true ) );
+	}
+	// END Method getTZSapChanged
+
+
+	// START Method setTZSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public void setSapChanged( Date pSapChanged, String pSrcTZ, String pDestTZ )
+		throws DateToolException
+	{
+		setSapChanged( (pSapChanged == null) ? null : new Date( pSapChanged.getTime() + DateTool.getTimeZoneOffsetForDateInMillis( pSapChanged, pSrcTZ, pDestTZ, true ) ) );
+	}
+	// END Method setTZSapChanged
+
+
+	// START Method getFormattedTZSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public String getFormattedSapChanged( String pSrcTZ, String pDestTZ )
+		throws DateToolException
+	{
+		return hasInvalidValue( FIELD_SAPCHANGED ) ? getOriginalValue( FIELD_SAPCHANGED ) : getPool().formatDate( "TimeStamp", "T:TimeStampShort|Date|TimeStamp$|TimeStampShort$|Date$", getSapChanged( pSrcTZ, pDestTZ ) );
+	}
+	// END Method getFormattedTZSapChanged
+
+
+	// START Method setFormattedTZSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public void setFormattedSapChanged( String pSapChanged, String pSrcTZ, String pDestTZ )
+		throws DateToolException, java.text.ParseException
+	{
+		setSapChanged( null );
+		memorizeOriginalValue( FIELD_SAPCHANGED, pSapChanged );
+		setSapChanged( getPool().parseDate( "TimeStamp", "T:TimeStampShort|Date|TimeStamp$|TimeStampShort$|Date$", pSapChanged ), pSrcTZ, pDestTZ );
+	}
+	// END Method setFormattedTZSapChanged
+
+
+	// START Method getFormattedHTMLTZSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public String getFormattedHTMLSapChanged( String pSrcTZ, String pDestTZ )
+		throws DateToolException
+	{
+		return StringTool.escapeHTML( getFormattedSapChanged( pSrcTZ, pDestTZ ) );
+	}
+	// END Method getFormattedHTMLTZSapChanged
+
+
+	// START Method getToStringTZSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public String getSapChangedToString( String pSrcTZ, String pDestTZ )
+		throws DateToolException
+	{
+		return StringTool.nullToEmpty( DateTool.convertSQLTimestamp( getSapChanged( pSrcTZ, pDestTZ ) ) );
+	}
+	// END Method getToStringTZSapChanged
+
+
+	// START Method setFromStringTZSapChanged generated
+	/**
+	 * Maps DB-Column: sap_Changed
+	 * Logical type: TimeStamp
+	 */
+	public void setSapChangedFromString( String pSapChanged, String pSrcTZ, String pDestTZ )
+		throws DateToolException
+	{
+		setSapChanged( DateTool.convertDate( DateTool.parseSQLTimestamp( pSapChanged ) ), pSrcTZ, pDestTZ );
+	}
+	// END Method setFromStringTZSapChanged
 
 
 	// START Protected ( insert your personal code here ) -- do not modify this line!!

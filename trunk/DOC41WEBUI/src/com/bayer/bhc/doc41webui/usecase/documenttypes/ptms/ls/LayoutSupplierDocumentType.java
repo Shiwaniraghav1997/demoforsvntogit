@@ -42,7 +42,19 @@ public abstract class LayoutSupplierDocumentType implements DocumentType{
 		
 		return new CheckForUpdateResult(SAP_OBJECT,null,additionalAttributes);
 	}
-	
+
+	/**
+	 * checkForDownload - will be deleted soon, need to be moved to subclasses.
+	 * @param errors
+	 * @param documentUC
+	 * @param customerNumber
+	 * @param vendorNumber
+	 * @param objectId = materialNumber
+	 * @param attributeValues - what kind of magic attributes?
+	 * @param viewAttributes - what kind of magic attributes?
+	 * @return
+	 * @throws Doc41BusinessException
+	 */
 //	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber, String objectId,
@@ -51,7 +63,7 @@ public abstract class LayoutSupplierDocumentType implements DocumentType{
 		Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
 		
 		if(checkExistingDocs()){
-    		String deliveryCheck = documentUC.checkArtworkLayoutForVendor(vendorNumber,getSapTypeId());
+    		String deliveryCheck = documentUC.checkArtworkLayoutForVendor(vendorNumber, objectId, getSapTypeId());
     		if(deliveryCheck != null){
     			errors.reject(""+deliveryCheck);
     		}

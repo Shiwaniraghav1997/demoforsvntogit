@@ -39,7 +39,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	@Override
 	public void prepareCall(JCoFunction pFunction, List<?> pInputParms)
 			throws SAPException {
-		Doc41Log.get().debug(ProcessDrReqRFC.class, null, "prepareCall():ENTRY");
+		Doc41Log.get().debug(this, null, "prepareCall():ENTRY");
     	
         if (pFunction != null) {
             if (pInputParms != null) {
@@ -75,7 +75,10 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 						setEmptyParam(key,seqno,sapInput);
 					}
 				}
-				Doc41Log.get().debug(FindDocsRFC.class, null, "prepareCall():attributs are set");
+				if (Doc41Log.get().isDebugActive()) {
+				    Doc41Log.get().debug(this, null, RFCFunctionDumper.dumpFunction(pFunction));
+				}
+				Doc41Log.get().debug(this, null, "prepareCall():attributs are set");
             } else {
                 throw new SAPException(
                         "FindDocsRFC pInputParms list is null", null);
@@ -124,6 +127,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
         if (pFunction != null) {
             processReturnTable(pFunction,"OT_RETURN");
             JCoTable table = pFunction.getTableParameterList().getTable(OT_HITS);
+            Doc41Log.get().debug(getClass(), null, RFCFunctionDumper.dumpFunction(pFunction));
             if(table!=null){
             	for(int i=0;i<table.getNumRows();i++){
             		HitListEntry doc = new HitListEntry();

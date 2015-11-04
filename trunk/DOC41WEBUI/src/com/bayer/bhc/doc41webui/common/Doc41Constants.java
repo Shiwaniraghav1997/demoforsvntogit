@@ -41,6 +41,7 @@ public interface Doc41Constants {
 	
 	public static final String ATTRIB_NAME_FILENAME = "FILENAME";
 	public static final String ATTRIB_NAME_VENDOR = "VENDOR";
+    public static final String ATTRIB_NAME_MATERIAL = "MATERIAL";
 	public static final String ATTRIB_NAME_VKORG = "VKORG";
 	public static final String ATTRIB_NAME_PLANT = "PLANT";
 	public static final String ATTRIB_NAME_WEBUI_USER = "WEBUI_USER";
