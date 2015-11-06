@@ -2,16 +2,21 @@ package com.bayer.bhc.doc41webui.container;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.domain.SapCustomer;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.domain.User;
+import com.bayer.ecim.foundation.basic.ReflectTool;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 public class UserEditForm implements Serializable{
@@ -36,6 +41,7 @@ public class UserEditForm implements Serializable{
 	private List<SapVendor> vendors;
 	private List<String> countries;
 	private List<String> plants;
+	private HashSet<String> existingRoles;
 	
 
 	public void validate(HttpServletRequest request, Errors errors) {
@@ -313,6 +319,77 @@ public class UserEditForm implements Serializable{
 		this.vendors = vendors;
 	}
 	
+    public HashSet<String> getExistingRoles() {
+        return existingRoles;
+    }
+    public final void setExistingRoles(HashSet<String> existingRoles) {
+        if(existingRoles==null){
+            existingRoles = new HashSet<String>();
+        }
+        this.existingRoles = existingRoles;
+    }
+    
+    /**
+     * Map of all declared ROLE constants to their real role names (created on first request, for supporting constant access on EL 2.1).
+     */
+    private static Map<String,String> cRoleConstToNameMap = null;
+    
+    /**
+     * get a Map of Constants to Realnames of roles.
+     * @return
+     */
+    public Map<String, String> getRoleConstToNameMap() {
+        if (cRoleConstToNameMap == null) {
+            @SuppressWarnings({ "rawtypes", "unchecked" })
+            HashMap<String, String> hashMap = (HashMap<String, String>)(HashMap)ReflectTool.getStaticFieldMap(User.class, true, "ROLE_", null, false);
+            cRoleConstToNameMap = hashMap; 
+        }
+        return cRoleConstToNameMap;
+    }
+    
+    /**
+     * Map of all declared ROLE names to their constant names (created on first request, for supporting constant access on EL 2.1).
+     */
+    private static Map<String,String> cRoleNameToConstMap = null;
+    
+    /**
+     * get a Map of Constants to Realnames of roles.
+     * @return
+     */
+    public Map<String, String> getRoleNameToConstMap() {
+        if (cRoleConstToNameMap == null) {
+            @SuppressWarnings({ "rawtypes", "unchecked" })
+            HashMap<String, String> hashMap = (HashMap<String, String>)(HashMap)ReflectTool.getStaticFieldMap(User.class, true, "ROLE_", null, true);
+            cRoleConstToNameMap = hashMap; 
+        }
+        return cRoleConstToNameMap;
+    }
+    
+    private Map<String, Integer> existingRoleMap = null;
+    
+    /**
+     * Return Map of Role-Constants and assigned value Integer/String 1 for all Roles existing and having declared constant. 
+     * @return
+     */
+    public Map<String,Integer> getExistingRoleMap() {
+        if (existingRoleMap == null) {
+            HashMap<String, Integer> mRes = new HashMap<String, Integer>();
+            if (existingRoles != null) {
+                Map<String, String> mValToConst = getRoleNameToConstMap();
+                for (String role : existingRoles) {
+                    String mConst = mValToConst.get(role);
+                    if (mConst != null) {
+                        mRes.put(mConst, 1);
+                    }
+                }
+            }
+//            return mRes;
+            existingRoleMap = mRes;
+        }
+        return existingRoleMap;
+    }
+    
+    
 	@Override
 	public String toString() {
 		return "UserEditForm [objectID=" + objectID + ", cwid=" + cwid

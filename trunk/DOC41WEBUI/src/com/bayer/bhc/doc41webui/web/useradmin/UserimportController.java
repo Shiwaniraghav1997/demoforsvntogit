@@ -47,6 +47,7 @@ public class UserimportController extends AbstractDoc41Controller {
 		UserEditForm userEditForm;
 		User importUser = getUserManagementUC().lookupUser(cwid);
 		userEditForm = new UserEditForm(importUser);
+        userEditForm.setExistingRoles(getUserManagementUC().getAllRoleNames());
 		return userEditForm;
     }
 

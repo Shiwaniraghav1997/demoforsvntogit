@@ -4,6 +4,9 @@
  */
 package com.bayer.bhc.doc41webui.usecase;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +25,9 @@ import com.bayer.bhc.doc41webui.domain.SapCustomer;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.service.repository.UserManagementRepository;
+import com.bayer.ecim.foundation.basic.BasicDataCarrier;
 import com.bayer.ecim.foundation.basic.StringTool;
+import com.bayer.ecim.foundation.web.usermanagementN.UMProfileNDC;
 
 /**
  * User management use case implementation. Finds, edits, creates user. Also used for to active or deactive user accounts. 
@@ -95,6 +100,20 @@ public class UserManagementUC {
         }
     }
 
+    /**
+     * Get the list of all ProfileNames of currently existing profiles (not deleted)
+     * @return
+     * @throws Doc41BusinessException
+     */
+    public HashSet<String> getAllRoleNames() throws Doc41BusinessException {
+        try {
+            return getUserManagementRepository().getAllProfileNames();
+        } catch (Doc41RepositoryException e) {
+            throw new Doc41BusinessException("getAllRoleNames", e);
+        }
+    }
+    
+    
     /**
 	 * find users matching the given filtercriterias 
 	 * in Usermanagement DB 

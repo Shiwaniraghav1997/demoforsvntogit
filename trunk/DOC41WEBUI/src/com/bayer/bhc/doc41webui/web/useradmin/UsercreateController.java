@@ -50,6 +50,7 @@ public class UsercreateController extends AbstractDoc41Controller {
 		UserEditForm userEditForm = new UserEditForm(new User());
 		userEditForm.setActive(Boolean.FALSE);
 		userEditForm.setType(User.TYPE_EXTERNAL);
+		userEditForm.setExistingRoles(getUserManagementUC().getAllRoleNames());
 		return userEditForm;
     }
 	

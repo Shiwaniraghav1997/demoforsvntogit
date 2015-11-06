@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.springframework.stereotype.Component;
 
+import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
@@ -118,7 +119,23 @@ public class UserManagementDAO extends AbstractDAOImpl {
 		}
         return userDC;
 	}
-   
+
+
+    /**
+     * Get the list of all ProfileNames of currently existing profiles (not deleted).
+     * @return
+     * @throws Doc41TechnicalException
+     */
+	public ArrayList<UMProfileNDC> getAllProfiles() throws Doc41TechnicalException {
+	    try {
+            @SuppressWarnings("unchecked")
+            ArrayList<UMProfileNDC> result = (ArrayList<UMProfileNDC>)OTUserManagementN.get().getProfiles(null, null, null, -1, -1, null, null, null, null, LocaleInSession.get()).getResult();
+            return result;
+        } catch (Exception e) {
+            throw new Doc41TechnicalException(getClass(), "getAllProfiles", e);
+        }
+	}
+	
 	public PagingResult<UMUserNDC> getUMUserNDCs(UserPagingRequest pUserRequest) throws Doc41TechnicalException {
        Long objectState = null;
         if (Boolean.TRUE.equals(pUserRequest.getIsActive())) {

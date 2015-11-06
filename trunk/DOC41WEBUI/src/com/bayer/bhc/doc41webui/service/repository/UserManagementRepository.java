@@ -40,6 +40,7 @@ import com.bayer.bhc.doc41webui.integration.db.dc.UserCustomerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPlantDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserVendorDC;
 import com.bayer.bhc.doc41webui.service.mapping.UserMapper;
+import com.bayer.ecim.foundation.basic.BasicDataCarrier;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.SendMail;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -253,6 +254,25 @@ public class UserManagementRepository extends AbstractRepository {
             }
         }
 	}
+
+	/**
+	 * Get the list of all ProfileNames of currently existing profiles (not deleted)
+	 * @return
+	 * @throws Doc41RepositoryException
+	 */
+	public HashSet<String>getAllProfileNames() throws Doc41RepositoryException {
+        try {
+            @SuppressWarnings("unchecked")
+            HashSet<String> mRes = (HashSet<String>)BasicDataCarrier.getFieldHashSet(getUserManagementDAO().getAllProfiles(), UMProfileNDC.FIELD_PROFILENAME);
+            return mRes;
+        } catch (Doc41TechnicalException e) {
+            throw new Doc41RepositoryException("getAllProfileNames", e);
+        }
+	    
+	}
+
+	
+	
 	private void updateLdapGroup(User pUser) throws Doc41RepositoryException {
 		try {
 			addPermissionsToUser(pUser);
@@ -850,4 +870,6 @@ public class UserManagementRepository extends AbstractRepository {
 			throw new Doc41RepositoryException("Error during loadSAPVendor.", e);
 		}
 	}
+	
+	
 }

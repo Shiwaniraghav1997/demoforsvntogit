@@ -52,6 +52,7 @@ public class UsereditController extends AbstractDoc41Controller {
 		UserEditForm userEditForm;
 		User updateUser = getUserManagementUC().findUser(cwid);
 		userEditForm = new UserEditForm(updateUser);
+        userEditForm.setExistingRoles(getUserManagementUC().getAllRoleNames());
 		return userEditForm;
     }
 	
