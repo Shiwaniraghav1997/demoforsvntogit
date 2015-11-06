@@ -31,38 +31,45 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
+import com.bayer.ecim.foundation.basic.BasicDCFieldMeta;
+import com.bayer.ecim.foundation.basic.BasicDataCarrier;
+import com.bayer.ecim.foundation.basic.ReflectTool;
 import com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier;
 
 
 public class PoiServiceImpl implements PoiService {
 	
-private Map<String,PoiMapper> mappers;
-	
-	public void setMappers(Map<String, PoiMapper> mappers) {
-		this.mappers = mappers;
-	}
+    
+    /**
+     * Just define ClassReplacements in a generic way:
+     * @param name
+     * @return
+     * @throws Doc41ServiceException
+     */
 	private PoiMapper getMapper(String name) throws Doc41ServiceException{
-		if(mappers==null){
-			throw new Doc41ServiceException("no mapper configured");
-		}
-		if(mappers.containsKey(name)){
-			return mappers.get(name);
-		} else {
-			throw new Doc41ServiceException("mapper "+name+" not configured");
+	    String mVirtClass = PoiMapper.class.getName()+"<"+name+">_";
+	    try {
+	        return (PoiMapper)ReflectTool.newInstance(mVirtClass);
+	    } catch (Exception e) {
+			throw new Doc41ServiceException("Could not instanciate Mapper: "+name+", not configured? (<stage>.CMN.classes." + mVirtClass +"=<classname>)" );
 		}
 	}
 
 	@Override
 	public <T extends UserChangeableDataCarrier> List<T> importExcel(String importName,
-			InputStream inStream, List<T> existingDCs)
+			InputStream inStream, List<T> existingDCs, String userCwid)
 			throws Doc41ServiceException {
 		try {
 			PoiMapper mapper = getMapper(importName);
 			Workbook wb = new XSSFWorkbook(inStream);
 			List<T> newDCs = new ArrayList<T>();
 			Sheet sheet = wb.getSheetAt(0);
-			Class<? extends UserChangeableDataCarrier> dcClass = mapper.getDCClass();
-			List<Method> setterMethods = getSetterMethods(mapper);
+			@SuppressWarnings("unchecked")
+            Class<T> dcClass = (Class<T>)mapper.getDCClass();
+			T dc = ReflectTool.newInstance(dcClass);
+
+			String[] fields = dc.getFieldList();
+
 			int rowsToSkip=1;
 			for (Row row : sheet) {
 				if(rowsToSkip>0){
@@ -70,17 +77,17 @@ private Map<String,PoiMapper> mappers;
 				} else {
 					if(row.getPhysicalNumberOfCells()>0){
 						@SuppressWarnings("unchecked")
-						T newInstance = (T) dcClass.newInstance();
-						for (int c=0;c<setterMethods.size();c++) {
-							Method setterMethod = setterMethods.get(c);
+						T newInstance = ReflectTool.newInstance(dcClass);
+						for (int c=0;c<fields.length;c++) {
 							Cell cell = row.getCell(c);
-							setValueFromCell(cell,setterMethod,newInstance);
+							setValueFromCell(cell,fields[c],newInstance.getFieldMeta(fields[c]), newInstance);
 						}
 						newDCs.add(newInstance);
 					}
 				}
 			}
-			
+
+/** use interface of listeners for callbacks...			
 			String fixMethodName = mapper.getFixMethodName();
 			if(fixMethodName!=null){
 				for (T newDC : newDCs) {
@@ -88,11 +95,11 @@ private Map<String,PoiMapper> mappers;
 					fixMethod.invoke(newDC);
 				}
 			}
-			
+*/			
 			Map<String, T> remainingExisting = new HashMap<String, T>();
 			if(existingDCs!=null){
-				for (T dc : existingDCs) {
-					remainingExisting.put(mapper.getObjectKey(dc), dc);
+				for (T dc3 : existingDCs) {
+					remainingExisting.put(mapper.getObjectKey(dc3), dc3);
 				}
 			}
 			
@@ -107,33 +114,25 @@ private Map<String,PoiMapper> mappers;
 					setTechnicalValues(newDC, false);
 					dcsToStore.add(newDC);
 				} else {
-					copyValues(newDC,existingDC,mapper.getColumnOrder());
+					copyValues(newDC,existingDC);
 					setTechnicalValues(existingDC, true);
 					dcsToStore.add(existingDC);
 				}
 			}
 			for (T dcToDelete : remainingExisting.values()) {
-				boolean markedForDelete = mapper.markAsDeleted(dcToDelete);
+				boolean markedForDelete = mapper.markAsDeleted(dcToDelete, userCwid);
 				if(markedForDelete){
 					dcsToStore.add(dcToDelete);
 				}
 			}
 			return dcsToStore;
-		} catch (IOException e) {
-			throw new Doc41ServiceException(e.getMessage(), e);
-		} catch (InstantiationException e) {
-			throw new Doc41ServiceException(e.getMessage(), e);
-		} catch (IllegalAccessException e) {
-			throw new Doc41ServiceException(e.getMessage(), e);
-		} catch (NoSuchMethodException e) {
-			throw new Doc41ServiceException(e.getMessage(), e);
-		} catch (InvocationTargetException e) {
+		} catch (Exception e) {
 			throw new Doc41ServiceException(e.getMessage(), e);
 		}
 	}
 	
-	private <T extends UserChangeableDataCarrier> void setValueFromCell(Cell cell, Method setterMethod, T newInstance) throws Doc41ServiceException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		Class<?> type = setterMethod.getParameterTypes()[0];
+	private <T extends UserChangeableDataCarrier> void setValueFromCell(Cell cell, String field, BasicDCFieldMeta fieldmeta, T newInstance) throws Doc41ServiceException {
+		Class<?> type = fieldmeta.getFieldClass();
 		
 		Object value;
 		if(cell==null || cell.getCellType()==Cell.CELL_TYPE_BLANK){
@@ -175,21 +174,14 @@ private Map<String,PoiMapper> mappers;
 				value = cell.getStringCellValue();
 			} 
 		} else {
-			throw new Doc41ServiceException("unsupported type: "+type+" in method: "+setterMethod.getName());
+			throw new Doc41ServiceException("unsupported type: "+type+" in setter method for field: " + newInstance.getClass().getSimpleName()+".set"+field+"(...)");
 		}
-		setterMethod.invoke(newInstance,value);
+		newInstance.set(field, value);
 		
 	}
 	
-	private <T extends UserChangeableDataCarrier> void copyValues(T fromDC, T toDC,String[] columnNames) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException{
-		for (int i = 0; i < columnNames.length; i++) {
-			String colname = columnNames[i];
-			Method getMethod = fromDC.getClass().getMethod("get"+Character.toUpperCase(colname.charAt(0))+colname.substring(1));
-			Class<?> returnType = getMethod.getReturnType();
-			Method setMethod = toDC.getClass().getMethod("set"+Character.toUpperCase(colname.charAt(0))+colname.substring(1),returnType);
-			Object value = getMethod.invoke(fromDC);
-			setMethod.invoke(toDC, value);
-		}
+	private <T extends UserChangeableDataCarrier> void copyValues(T fromDC, T toDC) {
+	    toDC.copyFrom(fromDC);
 	}
 	
 	private <T extends UserChangeableDataCarrier> void setTechnicalValues(T dc,boolean isUpdate) {
@@ -232,7 +224,9 @@ private Map<String,PoiMapper> mappers;
 				cell.setCellStyle(headerStyle);
 			}
 
-			List<Method> getterMethods = getGetterMethods(mapper);
+			Class<? extends UserChangeableDataCarrier> dcClass = mapper.getDCClass();
+			BasicDataCarrier mDC = ReflectTool.newInstance(dcClass);
+			String[] fields = mDC.getFieldList();
 
 			CreationHelper createHelper = wb.getCreationHelper();
 			short dateFormat = createHelper.createDataFormat().getFormat(BuiltinFormats.getBuiltinFormat(0xe));
@@ -256,12 +250,11 @@ private Map<String,PoiMapper> mappers;
 			for (int r=0;r<dcs.size();r++) {
 				UserChangeableDataCarrier dc = dcs.get(r);
 				Row row = sheet.createRow(r+1);
-				for(int c=0;c<getterMethods.size();c++){
-					Method method = getterMethods.get(c);
+				for(int c=0;c<fields.length;c++){
 					Cell cell = row.createCell(c);
-					Object value = method.invoke(dc);
-					Class<?> returnType = method.getReturnType();
-					setValueInCell(cell,value,returnType,method.getName());
+					Object value = dc.get(fields[c]);
+					Class<?> returnType = dc.getFieldMeta(fields[c]).getFieldClass();
+					setValueInCell(cell,value,returnType,dc.getClass().getSimpleName()+".get"+fields[c]+"()");
 					if(r%2==0){
 						if(Date.class.isAssignableFrom(returnType)){
 							cell.setCellStyle(altLineDateStyle);
@@ -280,9 +273,9 @@ private Map<String,PoiMapper> mappers;
 
 			//Column Formatting
 			DataValidationHelper dataValidationHelper = new XSSFDataValidationHelper((XSSFSheet) sheet);
-			for(int c=0;c<getterMethods.size();c++){
+			for(int c=0;c<fields.length;c++){
 				sheet.autoSizeColumn(c);
-				if(Boolean.class.isAssignableFrom(getterMethods.get(c).getReturnType())){
+				if(Boolean.class.isAssignableFrom(mDC.getFieldMeta(fields[c]).getFieldClass())){
 					DataValidationConstraint constraint = dataValidationHelper.createExplicitListConstraint(new String[]{"0", "1"});
 					CellRangeAddressList addressList = new CellRangeAddressList(1, dcs.size()+100, c, c);
 					DataValidation validation = dataValidationHelper.createValidation(constraint, addressList);
@@ -291,17 +284,7 @@ private Map<String,PoiMapper> mappers;
 				}
 			}
 			wb.write(outStream);
-		} catch(IOException e){
-			throw new Doc41ServiceException(e.getMessage(),e);
-		} catch (SecurityException e) {
-			throw new Doc41ServiceException(e.getMessage(),e);
-		} catch (NoSuchMethodException e) {
-			throw new Doc41ServiceException(e.getMessage(),e);
-		} catch (IllegalArgumentException e) {
-			throw new Doc41ServiceException(e.getMessage(),e);
-		} catch (IllegalAccessException e) {
-			throw new Doc41ServiceException(e.getMessage(),e);
-		} catch (InvocationTargetException e) {
+		} catch(Exception e){
 			throw new Doc41ServiceException(e.getMessage(),e);
 		}
 	}
@@ -342,38 +325,4 @@ private Map<String,PoiMapper> mappers;
 		}
 	}
 	
-	private List<Method> getGetterMethods(PoiMapper mapper) throws SecurityException, NoSuchMethodException {
-		String[] columnOrder = mapper.getColumnOrder();
-		Class<? extends UserChangeableDataCarrier> dcClass = mapper.getDCClass();
-		List<Method> getterMethods = new ArrayList<Method>();
-		for (String colName : columnOrder) {
-			Method getMethod=dcClass.getMethod(createGetterName(colName));
-			getterMethods.add(getMethod);
-		}
-		return getterMethods;
-	}
-	
-	private List<Method> getSetterMethods(PoiMapper mapper) throws SecurityException, NoSuchMethodException {
-		String[] columnOrder = mapper.getColumnOrder();
-		Class<? extends UserChangeableDataCarrier> dcClass = mapper.getDCClass();
-		List<Method> setterMethods = new ArrayList<Method>();
-		for (String colName : columnOrder) {
-			Method getMethod=dcClass.getMethod(createGetterName(colName));
-			Class<?> type = getMethod.getReturnType();
-			Method setMethod=dcClass.getMethod(createSetterName(colName),type);
-			
-			setterMethods.add(setMethod);
-		}
-		return setterMethods;
-	}
-
-	private String createGetterName(String column) {
-		return "get"+Character.toUpperCase(column.charAt(0))+column.substring(1);
-	}
-	
-	private String createSetterName(String column) {
-		return "set"+Character.toUpperCase(column.charAt(0))+column.substring(1);
-	}
-
-
 }

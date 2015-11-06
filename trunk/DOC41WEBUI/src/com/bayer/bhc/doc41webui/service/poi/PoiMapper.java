@@ -12,10 +12,16 @@ public interface PoiMapper {
 
 	String[] getColumnOrder();
 	
-	<T extends UserChangeableDataCarrier> boolean markAsDeleted(T dc) throws Doc41ServiceException;
+    /**
+     * Mark a DC supporting soft deletion as deleted. If DC does not support soft deletion, print a warning once.
+     * @param dc the DC to deleted.
+     * @param userCwid the DC to deleted.
+     * @return true, if dc was changed and needs to be stored. 
+     */
+	<T extends UserChangeableDataCarrier> boolean markAsDeleted(T dc, String userCwid) throws Doc41ServiceException;
 	
 	<T extends UserChangeableDataCarrier> String getObjectKey(T dc) throws Doc41ServiceException;
 
-	String getFixMethodName();
+	//String getFixMethodName(); // not understanding, what this is good for... esp. because such methode needs parameters, use interface to implement...
 
 }

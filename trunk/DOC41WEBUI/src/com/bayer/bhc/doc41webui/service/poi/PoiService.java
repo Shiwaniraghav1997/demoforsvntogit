@@ -10,7 +10,7 @@ import com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier;
 
 public interface PoiService {
 	
-	<T extends UserChangeableDataCarrier> List<T> importExcel(String importName,InputStream inStream, List<T> existingDCs) throws Doc41ServiceException;
+	<T extends UserChangeableDataCarrier> List<T> importExcel(String importName,InputStream inStream, List<T> existingDCs, String userCwid) throws Doc41ServiceException;
 
 	void exportExcel(String exportName,OutputStream outStream, List<? extends UserChangeableDataCarrier> dcs) throws Doc41ServiceException;
 	

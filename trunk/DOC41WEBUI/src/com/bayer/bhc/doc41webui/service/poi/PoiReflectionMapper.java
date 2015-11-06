@@ -10,8 +10,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.bayer.bhc.doc41webui.common.exception.Doc41RuntimeExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
-import com.bayer.ecim.foundation.basic.NestingRuntimeException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.ecim.foundation.basic.BasicDCOnlySoftDeletableDataCarrier;
+import com.bayer.ecim.foundation.basic.BasicDCReflectFailedException;
+import com.bayer.ecim.foundation.basic.ReflectTool;
 import com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier;
 
 
@@ -34,20 +38,21 @@ public class PoiReflectionMapper implements PoiMapper {
 		this.keyColumns = keyColumns;
 		
 		defaultExcludeColumns = new HashSet<String>();
-		this.defaultExcludeColumns.add("ObjectID");
+		this.defaultExcludeColumns.add(UserChangeableDataCarrier.FIELD_OBJECTID);
 		this.defaultExcludeColumns.add("ClientId");
-		this.defaultExcludeColumns.add("Created");
-		this.defaultExcludeColumns.add("Changed");
-		this.defaultExcludeColumns.add("CreatedBy");
-		this.defaultExcludeColumns.add("ChangedBy");
-		this.defaultExcludeColumns.add("CreatedOn");
-		this.defaultExcludeColumns.add("ChangedOn");
+		this.defaultExcludeColumns.add(UserChangeableDataCarrier.FIELD_CREATED);
+		this.defaultExcludeColumns.add(UserChangeableDataCarrier.FIELD_CHANGED);
+		this.defaultExcludeColumns.add(UserChangeableDataCarrier.FIELD_CREATEDBY);
+		this.defaultExcludeColumns.add(UserChangeableDataCarrier.FIELD_CHANGEDBY);
+		this.defaultExcludeColumns.add(UserChangeableDataCarrier.FIELD_CREATEDON);
+		this.defaultExcludeColumns.add(UserChangeableDataCarrier.FIELD_CHANGEDON);
 	}
 	
 	public void setExcludeColumns(List<String> excludeColumns) {
 		this.excludeColumns = new HashSet<String>(excludeColumns);
 	}
-	
+
+/* not understanding, what this is good for... esp. because such methode needs parameters, use interface to implement...	
 	@Override
 	public String getFixMethodName() {
 		return fixMethodName;
@@ -56,7 +61,8 @@ public class PoiReflectionMapper implements PoiMapper {
 	public void setFixMethodName(String fixMethodName) {
 		this.fixMethodName = fixMethodName;
 	}
-
+*/
+	
 	/**
 	 * @see com.bayer.bhc.doc41webui.service.poi.PoiMapper#getHeaderLabels()
 	 */
@@ -99,32 +105,28 @@ public class PoiReflectionMapper implements PoiMapper {
 
 	private UserChangeableDataCarrier getDCInstance(){
 		try {
-			return dcClass.newInstance();
+			return ReflectTool.newInstance(dcClass);
 		} catch (Exception e) {
-			throw new NestingRuntimeException("GetDCInstance failed: " + dcClass.getName(), e);
+			throw new Doc41RuntimeExceptionBase("GetDCInstance failed: " + dcClass.getName(), e);
 		} 
 	}
-	
-	public <T extends UserChangeableDataCarrier> boolean markAsDeleted(T dc) throws Doc41ServiceException {
-		try {
-			//check old status
-			Method getMethod = dcClass.getMethod("getObjectstateId");
-			Long oldStatus = (Long) getMethod.invoke(dc);
-			if(oldStatus!=null && oldStatus.longValue()==OBJECTSTATE_DELETED){
-				return false;
-			}
-			Method setMethod = dcClass.getMethod("setObjectstateId", Long.class);
-			setMethod.invoke(dc, Long.valueOf(OBJECTSTATE_DELETED));
-			return true;
-		} catch (NoSuchMethodException e) {
-			return false;
-		} catch (IllegalArgumentException e) {
-			throw new Doc41ServiceException("markAsDeleted", e);
-		} catch (IllegalAccessException e) {
-			throw new Doc41ServiceException("markAsDeleted", e);
-		} catch (InvocationTargetException e) {
-			throw new Doc41ServiceException("markAsDeleted", e);
-		} 
+
+	/**
+     * Mark a DC supporting soft deletion as deleted. If DC does not support soft deletion, print a warning once.
+     * @param dc the DC to deleted.
+     * @return true, if dc was changed and needs to be stored. 
+     */
+	public <T extends UserChangeableDataCarrier> boolean markAsDeleted(T dc, String userCwid) throws Doc41ServiceException {
+	    if (dc instanceof BasicDCOnlySoftDeletableDataCarrier) {
+	        if (((BasicDCOnlySoftDeletableDataCarrier)dc).isDeleted()) {
+	            return false;
+	        }
+	        ((BasicDCOnlySoftDeletableDataCarrier)dc).setDeleted(true);
+	        dc.setChangedBy(userCwid);
+	        return true;
+	    }
+	    Doc41Log.get().warnMessageOnce(this, null, "Try to softdelete DC, but dc does not support: " + dc.getClass().getSimpleName());
+	    return false;
 	}
 	
 	public <T extends UserChangeableDataCarrier> String getObjectKey(T dc)  throws Doc41ServiceException {
@@ -136,23 +138,12 @@ public class PoiReflectionMapper implements PoiMapper {
 				}
 				sb.append(column);
 				sb.append(':');
-				Method getMethod=dc.getClass().getMethod(createGetterName(column));
-				Object value = getMethod.invoke(dc);
-				sb.append(value);
+				sb.append(dc.get(column));
 			}
 			return sb.toString();
-		} catch (NoSuchMethodException e) {
-			throw new Doc41ServiceException("getObjectKey", e);
-		} catch (InvocationTargetException e) {
-			throw new Doc41ServiceException("getObjectKey", e);
-		} catch (IllegalAccessException e) {
+		} catch (BasicDCReflectFailedException e) {
 			throw new Doc41ServiceException("getObjectKey", e);
 		}
-	}
-
-	private String createGetterName(String column) {
-		return "get"+Character.toUpperCase(column.charAt(0))+column.substring(1);
-		
 	}
 
 }
