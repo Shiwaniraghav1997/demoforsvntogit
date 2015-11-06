@@ -17,7 +17,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
-import com.bayer.ecim.foundation.basic.NestingRuntimeException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41RuntimeExceptionBase;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 /**
@@ -73,7 +73,7 @@ public class UrlParamCrypt {
             }
             return encrypt(sb.toString());
         } catch (Exception e){
-            throw new NestingRuntimeException("Encrypt Parameters failed!\n" + params, e);
+            throw new Doc41RuntimeExceptionBase("Encrypt Parameters failed!\n" + params, e);
         }
     }
 
@@ -90,7 +90,7 @@ public class UrlParamCrypt {
             }
             return params;
         } catch (Exception e){
-            throw new NestingRuntimeException("Decrypt Parameters failed!\n" + encrypted, e);
+            throw new Doc41RuntimeExceptionBase("Decrypt Parameters failed!\n" + encrypted, e);
         }
     }
 }

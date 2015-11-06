@@ -11,9 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bayer.bhc.doc41webui.common.Doc41SessionKeys;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.ecim.foundation.basic.Dbg;
-import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.NestingException;
-import com.bayer.ecim.foundation.basic.Singleton;
+import com.bayer.ecim.foundation.basic.NestingExceptions;
 
 /**
  * Foundation specific logger class for CargoCockpit.
@@ -21,36 +20,16 @@ import com.bayer.ecim.foundation.basic.Singleton;
  * @author ezzqb
  * @id $Id: Doc41LoggerImpl.java,v 1.2 2012/02/22 14:16:09 ezzqc Exp $
  */
-public class Doc41Log extends Singleton {
+public class Doc41Log {
 
 
-    public static final String ID = "Doc41Log";
-
-    
-    /**
-     * Initializes the singleton
-     * @throws InitException
-     */
-    public Doc41Log( String pID ) throws InitException {
-        super(pID, true); // register and lock for init by this thread (with 30 sec safty lock timeout to protect from deadlock)
-        try {
-            /** nothing to init... */
-            initSucceeded( Doc41Log.class ); // success, release lock
-        } catch (Exception mEx) {
-            initFailed( new InitException( "Failed to initialize " + pID + "!", mEx) ); // fail, trace & release lock for retry
-        } catch (Error mErr) {
-            initFailed( mErr ); // ERROR, release lock for retry
+    private static Doc41Log instance;
+        
+    public static synchronized Doc41Log get() {
+        if (instance == null) {
+            instance = new Doc41Log();
         }
-    }
-    
-    /**
-     * Gets a singletion instance of the Doc41Log.
-     * @return Doc41Log
-     * @throws InitException
-     */
-    public static Doc41Log get() throws InitException {
-        Doc41Log mSing = (Doc41Log) getSingleton(ID);
-        return (mSing == null) ? new Doc41Log(ID) : mSing;
+        return instance;
     }
     
 
@@ -60,17 +39,21 @@ public class Doc41Log extends Singleton {
     /** the info channel */
     private static final int INFO = Dbg.INFO;
 
+    /** the dump channel */
+    private static final int BIGINFO = Dbg.BIGINFO;
+
     /** the WARNING channel */
     private static final int WARNING = Dbg.WARNING;
 
     /** the logging channel */
     private static final int LOGGING = Dbg.LOGGING;
     
+    
     /**
-     * Looks, if debug channel ist active - this is NOT static/final!!!
+     * Looks, if debug channel is active - this is NOT static/final!!!
      */
     public boolean isDebugActive() {
-        return Dbg.get().isLogicalChannelActive(Dbg.INFO);
+        return Dbg.get().isLogicalChannelActive(INFO);
     }
     
     /**
@@ -81,6 +64,23 @@ public class Doc41Log extends Singleton {
      */
     public void debug(Object clazz, String user, Object msg) {
         Dbg.get().println(INFO, clazz, user, msg);
+    }
+
+    /**
+     * Looks, if debug channel is active - this is NOT static/final!!!
+     */
+    public boolean isDumpActive() {
+        return Dbg.get().isLogicalChannelActive(BIGINFO);
+    }
+    
+    /**
+     * Logs debug(dump) message (extra channel for heavy debug, dumps).
+     * @param clazz   The Log Class
+     * @param user    The User
+     * @param msg     The Debug message
+     */
+    public void dump(Object clazz, String user, Object msg) {
+        Dbg.get().println(BIGINFO, clazz, user, msg);
     }
 
     /**
@@ -101,7 +101,7 @@ public class Doc41Log extends Singleton {
      */
     public void error(Object clazz, String user, Object msg) {
     	//to log stacktrace
-    	if(msg instanceof Throwable && !(msg instanceof NestingException)){
+    	if(msg instanceof Throwable && !(msg instanceof NestingExceptions)){
     		Throwable ex = (Throwable) msg;
     		new NestingException(ex.getMessage(), ex);
     	}
@@ -123,6 +123,26 @@ public class Doc41Log extends Singleton {
 		Dbg.get().println(LOGGING, handler, pRequest.getRemoteUser(),pObj);
 	}
 
+	/**
+	 * Print (debug) a message one time, but then no more (until next logfile change - prevent spamming)
+	 * @param clazz
+	 * @param user
+	 * @param mMessage
+	 */
+	public void debugMessageOnce(Object clazz, String user, String mMessage ) {
+	    Dbg.get().dbgLogMessageOnce(INFO, 0, clazz, user, user, "", mMessage);
+	}
+	
+    /**
+     * Print (warn) a message one time, and on further occurence only to dump channel(until next logfile change - prevent spamming)
+     * @param clazz
+     * @param user
+     * @param mMessage
+     */
+    public void warnMessageOnce(Object clazz, String user, String mMessage ) {
+        Dbg.get().dbgLogMessageOnce(WARNING, BIGINFO, clazz, user, user, "", mMessage);
+    }
+    
 
     /**
      * Controllers specific method to log webmetrix data in Webmetrix table.
