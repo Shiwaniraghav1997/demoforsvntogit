@@ -52,13 +52,14 @@ public class UsereditController extends AbstractDoc41Controller {
 		UserEditForm userEditForm;
 		User updateUser = getUserManagementUC().findUser(cwid);
 		userEditForm = new UserEditForm(updateUser);
-        userEditForm.setExistingRoles(getUserManagementUC().getAllRoleNames());
+        userEditForm.setExistingRoles(getUserManagementUC().getAllProfiles());
+        userEditForm.setExistingRoleNames(getUserManagementUC().getAllProfileNamesList());
 		return userEditForm;
     }
 	
     @RequestMapping(value="/useradmin/updateuser",method = RequestMethod.POST)
     public String save(HttpServletRequest request,@ModelAttribute UserEditForm userEditForm, BindingResult result) throws Doc41ExceptionBase{
-    	userEditForm.validate(request, result);
+    	userEditForm.validate(request, result, getUserManagementUC());
     	if (result.hasErrors()) {
     		return "/useradmin/useredit";
         }
@@ -72,4 +73,6 @@ public class UsereditController extends AbstractDoc41Controller {
     	
         return "redirect:/useradmin/userlist";
     }
+    
+  
 }

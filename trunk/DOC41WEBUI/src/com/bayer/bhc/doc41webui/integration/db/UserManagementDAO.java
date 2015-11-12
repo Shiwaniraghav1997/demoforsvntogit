@@ -1,24 +1,29 @@
 package com.bayer.bhc.doc41webui.integration.db;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
 import org.springframework.stereotype.Component;
 
-import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
+import com.bayer.bhc.doc41webui.domain.Profile;
 import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.SapCustomerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.SapVendorDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.UMDoc41PermissionNDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.UMDoc41ProfileNDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserCountryDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserCustomerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPlantDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserVendorDC;
+import com.bayer.ecim.foundation.basic.ArrayTool;
+import com.bayer.ecim.foundation.basic.BasicDataCarrier;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.dbx.DeleteException;
@@ -61,7 +66,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	public UMProfileNDC getProfileByName(String pName, Locale pLocale) throws Doc41TechnicalException {
 		try {
 	        UMProfileNDC profile = null;
-	        ResultObject profiles = OTUserManagementN.get().getProfiles(null, null, pName, -1, -1, null, null, null, null, pLocale);
+	        ResultObject<UMProfileNDC> profiles = OTUserManagementN.get().getProfiles(null, null, pName, -1, -1, null, null, null, null, pLocale);
 	        if (profiles != null && profiles.getResult() != null && !profiles.getResult().isEmpty()) {
 	            // get profile by name should return a unique result
 	            profile = (UMProfileNDC) profiles.getResult().get(0);
@@ -120,16 +125,222 @@ public class UserManagementDAO extends AbstractDAOImpl {
         return userDC;
 	}
 
+	
+	/**
+	 * Check if user has a permissions requiring at least one Customer assigned.
+	 * @param pCwid
+	 * @return
+	 * @throws Doc41TechnicalException
+	 */
+	public boolean userNeedsCustomers(String pCwid) throws Doc41TechnicalException {
+	    UMUserNDC mUser = getUserByCWID(pCwid);
+	    for (UMPermissionNDC mPerm : mUser.getResolvedUserPermissions()) {
+	        UMDoc41PermissionNDC mDoc41Perm = (UMDoc41PermissionNDC)mPerm;
+	        if (mDoc41Perm.getHasCustomer()) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 
+    /**
+     * Check if user has a permissions requiring at least one Country assigned.
+     * @param pCwid
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsCountries(String pCwid) throws Doc41TechnicalException {
+        UMUserNDC mUser = getUserByCWID(pCwid);
+        for (UMPermissionNDC mPerm : mUser.getResolvedUserPermissions()) {
+            UMDoc41PermissionNDC mDoc41Perm = (UMDoc41PermissionNDC)mPerm;
+            if (mDoc41Perm.getHasCountry()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Vendor assigned.
+     * @param pCwid
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsVendors(String pCwid) throws Doc41TechnicalException {
+        UMUserNDC mUser = getUserByCWID(pCwid);
+        for (UMPermissionNDC mPerm : mUser.getResolvedUserPermissions()) {
+            UMDoc41PermissionNDC mDoc41Perm = (UMDoc41PermissionNDC)mPerm;
+            if (mDoc41Perm.getHasVendor()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Plant assigned.
+     * @param pCwid
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsPlants(String pCwid) throws Doc41TechnicalException {
+        UMUserNDC mUser = getUserByCWID(pCwid);
+        for (UMPermissionNDC mPerm : mUser.getResolvedUserPermissions()) {
+            UMDoc41PermissionNDC mDoc41Perm = (UMDoc41PermissionNDC)mPerm;
+            if (mDoc41Perm.getHasPlant()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Customer assigned.
+     * @param pProfiles
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsCustomers(String[] pProfiles) throws Doc41TechnicalException {
+        if ((pProfiles == null) || (pProfiles.length == 0)) {
+            return false;
+        }
+        ArrayList<UMPermissionNDC> mList = getProfilePermissions(pProfiles);
+        for (UMPermissionNDC mPerm : mList) {
+            UMDoc41PermissionNDC mDoc41Perm = (UMDoc41PermissionNDC)mPerm;
+            if (mDoc41Perm.getHasCustomer()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Country assigned.
+     * @param pProfiles
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsCountries(String[] pProfiles) throws Doc41TechnicalException {
+        if ((pProfiles == null) || (pProfiles.length == 0)) {
+            return false;
+        }
+        ArrayList<UMPermissionNDC> mList = getProfilePermissions(pProfiles);
+        for (UMPermissionNDC mPerm : mList) {
+            UMDoc41PermissionNDC mDoc41Perm = (UMDoc41PermissionNDC)mPerm;
+            if (mDoc41Perm.getHasCountry()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Vendor assigned.
+     * @param pProfiles
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsVendors(String[] pProfiles) throws Doc41TechnicalException {
+        if ((pProfiles == null) || (pProfiles.length == 0)) {
+            return false;
+        }
+        ArrayList<UMPermissionNDC> mList = getProfilePermissions(pProfiles);
+        for (UMPermissionNDC mPerm : mList) {
+            UMDoc41PermissionNDC mDoc41Perm = (UMDoc41PermissionNDC)mPerm;
+            if (mDoc41Perm.getHasVendor()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Plant assigned.
+     * @param pProfiles
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsPlants(String[] pProfiles) throws Doc41TechnicalException {
+        if ((pProfiles == null) || (pProfiles.length == 0)) {
+            return false;
+        }
+        ArrayList<UMPermissionNDC> mList = getProfilePermissions(pProfiles);
+        for (UMPermissionNDC mPerm : mList) {
+            UMDoc41PermissionNDC mDoc41Perm = (UMDoc41PermissionNDC)mPerm;
+            if (mDoc41Perm.getHasPlant()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get All Profile(Beans). Transform DC to internal Profile bean.
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public List<Profile> getAllProfiles() throws Doc41TechnicalException {
+        ArrayList<Profile>res = new ArrayList<Profile>();
+        String mLastType = null;
+        boolean mIsEvenInList = false;
+        boolean mIsEvenInType = false;
+        Profile mProf = null;
+        Profile mPrevProf = null;
+        for (UMProfileNDC mDC : getAllProfileDCs()) {
+            UMDoc41ProfileNDC mDCD = (UMDoc41ProfileNDC)mDC;
+            mPrevProf = mProf;
+            mProf = new Profile().copyFrom(mDCD);
+            mProf.setIsFirstOfType((mLastType == null) || !mLastType.equals(mProf.getType()));
+            if (mProf.isIsFirstOfType()) {
+                if (mPrevProf != null) {
+                    mPrevProf.setIsLastOfType(true);
+                }
+                mIsEvenInType = false;
+            }
+            mProf.setIsEvenInList(mIsEvenInList);
+            mProf.setIsEvenInType(mIsEvenInType);
+            mIsEvenInList = !mIsEvenInList;
+            mIsEvenInType = !mIsEvenInType;
+            mLastType = mProf.getType();
+            res.add(mProf);
+        }
+        if (res.size() > 0) {
+            res.get(0).setIsFirst(true);
+            res.get(res.size() - 1).setIsLast(true);
+        }
+        return res;
+    }
+    
+    /**
+     * Get the ordered List of all ProfileNames of currently existing profiles (not deleted)
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public List<String>getAllProfileNamesList() throws Doc41TechnicalException {
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        List<String> mRes = (List<String>)(List)ArrayTool.toList(BasicDataCarrier.getFieldsAsObjectArray(getAllProfileDCs(), UMProfileNDC.FIELD_PROFILENAME));
+        return mRes;
+    }
+    
+    /**
+     * Get the HashSet of all ProfileNames of currently existing profiles (not deleted)
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public HashSet<String>getAllProfileNames() throws Doc41TechnicalException {
+        @SuppressWarnings("unchecked")
+        HashSet<String> mRes = (HashSet<String>)BasicDataCarrier.getFieldHashSet(getAllProfileDCs(), UMProfileNDC.FIELD_PROFILENAME);
+        return mRes;
+    }
+    
     /**
      * Get the list of all ProfileNames of currently existing profiles (not deleted).
      * @return
      * @throws Doc41TechnicalException
      */
-	public ArrayList<UMProfileNDC> getAllProfiles() throws Doc41TechnicalException {
+	protected ArrayList<UMProfileNDC> getAllProfileDCs() throws Doc41TechnicalException {
 	    try {
-            @SuppressWarnings("unchecked")
-            ArrayList<UMProfileNDC> result = (ArrayList<UMProfileNDC>)OTUserManagementN.get().getProfiles(null, null, null, -1, -1, null, null, null, null, LocaleInSession.get()).getResult();
+            ArrayList<UMProfileNDC> result = (ArrayList<UMProfileNDC>)OTUserManagementN.get().getProfiles(null, null, null, -1, -1, null, null, "d41_Order_By", null, LocaleInSession.get()).getResult();
             return result;
         } catch (Exception e) {
             throw new Doc41TechnicalException(getClass(), "getAllProfiles", e);
@@ -146,7 +357,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
         try {
             // default ordering
             String orderBy = StringTool.isTrimmedEmptyOrNull(pUserRequest.getOrderBy()) ? "LASTNAME" : pUserRequest.getOrderBy();
-            ResultObject resultObject = null;
+            ResultObject<UMUserNDC> resultObject = null;
             if (!StringTool.isTrimmedEmptyOrNull(pUserRequest.getRole()) && StringTool.isTrimmedEmptyOrNull(pUserRequest.getCwid())) {
                 UMProfileNDC profileNDC = getProfileByName(pUserRequest.getRole(), LocaleInSession.get());
                 resultObject = OTUserManagementN.get().getUsersByProfile(profileNDC.getObjectID(),pUserRequest.getFirstname(), pUserRequest.getSurname(), pUserRequest.getEmail(), objectState, pUserRequest.getIsExternal(), pUserRequest.getStartIndex(), pUserRequest.getEndIndex(), pUserRequest.getCompany(), null, orderBy, Long.valueOf(pUserRequest.getTotalSize()), LocaleInSession.get());
@@ -155,7 +366,6 @@ public class UserManagementDAO extends AbstractDAOImpl {
                 // company as quicksearch:
                 resultObject = OTUserManagementN.get().getUsers(pUserRequest.getCwid(), null, pUserRequest.getFirstname(), pUserRequest.getSurname(), pUserRequest.getEmail(), objectState, null, pUserRequest.getIsExternal(), pUserRequest.getStartIndex(), pUserRequest.getEndIndex(), pUserRequest.getCompany(), null, orderBy, Long.valueOf(pUserRequest.getTotalSize()), LocaleInSession.get());
             }
-            @SuppressWarnings("unchecked")
 			List<UMUserNDC> userDCList = resultObject.getDCListResult();
             
             PagingResult<UMUserNDC> result = new PagingResult<UMUserNDC>();
@@ -176,7 +386,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	public UMUserNDC getUserByCWID(final String pCwid) throws Doc41TechnicalException {
         UMUserNDC user = null;
 		try {
-			user = OTUserManagementN.get().getUserByCWID(pCwid, Locale.ENGLISH);
+			user = OTUserManagementN.get().getUserByCWID(pCwid, Locale.US);
 		} catch (InitException e) {
             throw new Doc41TechnicalException(this.getClass(), "getUserByCwid", e);
 		} catch (QueryException e) {
@@ -185,6 +395,16 @@ public class UserManagementDAO extends AbstractDAOImpl {
 		return user;
 	}
 	
+    public ArrayList<UMPermissionNDC> getProfilePermissions(final String[] pProfiles) throws Doc41TechnicalException {
+        try {
+            return OTUserManagementN.get().getPermissionsByProfile(null, null, pProfiles, null, null, Locale.US);
+        } catch (InitException e) {
+            throw new Doc41TechnicalException(this.getClass(), "getProfilePermissions", e);
+        } catch (QueryException e) {
+            throw new Doc41TechnicalException(this.getClass(), "getProfilePermissions", e);
+        }
+    }
+    
 	public UMUserNDC createUser(Locale pLoc) throws Doc41TechnicalException {
         UMUserNDC user = null;
         checkUser();        
@@ -218,7 +438,6 @@ public class UserManagementDAO extends AbstractDAOImpl {
     }
 	
 	
-	@SuppressWarnings("unchecked")
 	public List<UMProfileNDC> getProfilesByUser(Long pUserId) throws Doc41TechnicalException {
 		List<UMProfileNDC> profiles;
         try {
@@ -255,7 +474,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 
 	public UserCustomerDC createUserCustomer(Locale locale) throws Doc41TechnicalException {
 		checkUser();
-		return new UserCustomerDC();
+        return (UserCustomerDC)OTUserManagementN.localizeDC(UserCustomerDC.newInstanceOfUserCustomerDC(), (locale == null) ? Locale.US : locale);
 	}
 
 	public void saveUserCustomer(UserCustomerDC newCustomer) throws Doc41TechnicalException {
@@ -325,7 +544,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 
 	public UserVendorDC createUserVendor(Locale locale) throws Doc41TechnicalException {
 		checkUser();
-		return new UserVendorDC();
+        return (UserVendorDC)OTUserManagementN.localizeDC(UserVendorDC.newInstanceOfUserVendorDC(), (locale == null) ? Locale.US : locale);
 	}
 
 	public void saveUserVendor(UserVendorDC newVendor) throws Doc41TechnicalException {
@@ -395,7 +614,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 
 	public UserCountryDC createUserCountry(Locale locale) throws Doc41TechnicalException {
 		checkUser();
-		return new UserCountryDC();
+		return (UserCountryDC)OTUserManagementN.localizeDC(UserCountryDC.newInstanceOfUserCountryDC(), (locale == null) ? Locale.US : locale);
 	}
 
 	public void saveUserCountry(UserCountryDC newCountry) throws Doc41TechnicalException {
@@ -450,7 +669,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 
 	public UserPlantDC createUserPlant(Locale locale) throws Doc41TechnicalException {
 		checkUser();
-		return new UserPlantDC();
+        return (UserPlantDC)OTUserManagementN.localizeDC(UserPlantDC.newInstanceOfUserPlantDC(), (locale == null) ? Locale.US : locale);
 	}
 
 	public void saveUserPlant(UserPlantDC newPlant) throws Doc41TechnicalException {
@@ -505,12 +724,28 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	}
 
 	
-	@SuppressWarnings("unchecked")
 	public ArrayList<UMPermissionNDC> getPermissionsByProfile(Long profileId, Locale pLoc) throws Doc41TechnicalException {
         try {
-            return OTUserManagementN.get().getPermissionsByProfile(profileId,null,null,pLoc);
+            return OTUserManagementN.get().getPermissionsByProfile(profileId,null,null, null, null,pLoc);
         } catch (QueryException e) {
             throw new Doc41TechnicalException(this.getClass(), "getPermissionsByProfile", e);
         }
 	}
+
+	/**
+	 * Get a list of all Permission codes currently available.
+	 * @return
+	 * @throws Doc41TechnicalException
+	 */
+    public HashSet<String> getAllPermissionCodes() throws Doc41TechnicalException {
+        try {
+            @SuppressWarnings("unchecked")
+            HashSet<String> fieldHashSet = (HashSet<String>)UMPermissionNDC.getFieldHashSet(OTUserManagementN.get().getPermissions(null, null, null, null, null, null, null, -1, -1, null, null, null, null, Locale.US).getResult(), UMPermissionNDC.FIELD_CODE);
+            return fieldHashSet;
+        } catch (QueryException e) {
+            throw new Doc41TechnicalException(this.getClass(), "getPermissionsByProfile", e);
+        }
+    }
+
 }
+

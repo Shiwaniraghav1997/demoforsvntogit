@@ -3,7 +3,6 @@ package com.bayer.bhc.doc41webui.container;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
-import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.common.exception.Doc41RuntimeExceptionBase;
+import com.bayer.bhc.doc41webui.domain.Profile;
 import com.bayer.bhc.doc41webui.domain.SapCustomer;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.domain.User;
+import com.bayer.bhc.doc41webui.usecase.UserManagementUC;
 import com.bayer.ecim.foundation.basic.ReflectTool;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -41,11 +42,12 @@ public class UserEditForm implements Serializable{
 	private List<SapVendor> vendors;
 	private List<String> countries;
 	private List<String> plants;
-	private HashSet<String> existingRoles;
+	private List<Profile> existingRoles;
+    private List<String> existingRoleNames;
 	
 
-	public void validate(HttpServletRequest request, Errors errors) {
-		boolean isExternal = StringTool.equals(getType(), User.TYPE_EXTERNAL);
+	public void validate(@SuppressWarnings("unused") HttpServletRequest request, Errors errors, UserManagementUC umUC) {
+		boolean isExternal = isExternal();
 		boolean isNew = StringTool.isTrimmedEmptyOrNull(getCwid());
         if(isExternal){
 			checkMandatory("surname",getSurname(),errors);
@@ -92,7 +94,31 @@ public class UserEditForm implements Serializable{
 		if(roles==null || roles.isEmpty()){
 			errors.reject("noRoles", "at least one role must be selected.");
 		}
-		
+		String[] rolesArr = (roles == null) ? new String[0] : roles.toArray(new String[0]); 
+
+		try {
+		    
+		    if (umUC.userNeedsCustomers(rolesArr) && isEmpty(customers)) {
+		        errors.rejectValue("customers", "customerPartnerNeededForRole", "for the selected roles at least one customer is required");
+		    }
+
+            if (umUC.userNeedsVendors(rolesArr) && isEmpty(vendors)) {
+                errors.rejectValue("vendors", "vendorPartnerNeededForRole", "for the selected roles at least one vendor is required");
+            }
+		    
+            if (umUC.userNeedsCountries(rolesArr) && isEmpty(countries)) {
+                errors.rejectValue("countries", "countryNeededForRole", "for the selected roles at least one country is required");
+            }
+		    
+            if (umUC.userNeedsPlants(rolesArr) && isEmpty(plants)) {
+                errors.rejectValue("plants", "plantNeededForRole", "for the selected roles at least one plant is required");
+            }
+
+		} catch ( Exception e ) {
+		    throw new Doc41RuntimeExceptionBase("Validation of User edit failed!", e);
+		}
+		    
+/*		
 		if(containsRoleFromList(roles,User.ROLES_WITH_CUSTOMERS) && isEmpty(customers)){
 			errors.rejectValue("customers", "customerPartnerNeededForRole", "for the selected roles at least one customer is required");
 		}
@@ -108,12 +134,14 @@ public class UserEditForm implements Serializable{
 		if(containsRoleFromList(roles,User.ROLES_WITH_PLANT) && isEmpty(plants)){
 			errors.rejectValue("plants", "plantNeededForRole", "for the selected roles at least one plant is required");
 		}
+*/
 	}
 
 	private static boolean isEmpty(List<?> list) {
 		return list==null || list.isEmpty();
 	}
 
+	/*
 	private static boolean containsRoleFromList(List<String> userRoles,
 			String[] rolesToCheck) {
 		if(userRoles==null){
@@ -126,6 +154,7 @@ public class UserEditForm implements Serializable{
 		}
 		return false;
 	}
+	*/
 
 	private void checkMandatory(String field, String value, Errors errors) {
 		if(StringTool.isTrimmedEmptyOrNull(value)){
@@ -273,6 +302,10 @@ public class UserEditForm implements Serializable{
 		this.active = active;
 	}
 
+	public boolean isExternal() {
+	    return StringTool.equals(getType(), User.TYPE_EXTERNAL);
+	}
+	
 	public String getType() {
 		return type;
 	}
@@ -319,14 +352,27 @@ public class UserEditForm implements Serializable{
 		this.vendors = vendors;
 	}
 	
-    public HashSet<String> getExistingRoles() {
+    public List<Profile> getExistingRoles() {
         return existingRoles;
     }
-    public final void setExistingRoles(HashSet<String> existingRoles) {
+    public final void setExistingRoles(List<Profile> existingRoles) {
         if(existingRoles==null){
-            existingRoles = new HashSet<String>();
+            existingRoles = new ArrayList<Profile>();
+        }
+        for (Profile role : existingRoles) {
+            role.setUserTypeMatchesRoleByUser( isExternal() );
         }
         this.existingRoles = existingRoles;
+    }
+    
+    public List<String> getExistingRoleNames() {
+        return existingRoleNames;
+    }
+    public final void setExistingRoleNames(List<String> existingRoleNames) {
+        if(existingRoleNames==null){
+            existingRoleNames = new ArrayList<String>();
+        }
+        this.existingRoleNames = existingRoleNames;
     }
     
     /**
@@ -357,12 +403,12 @@ public class UserEditForm implements Serializable{
      * @return
      */
     public Map<String, String> getRoleNameToConstMap() {
-        if (cRoleConstToNameMap == null) {
+        if (cRoleNameToConstMap == null) {
             @SuppressWarnings({ "rawtypes", "unchecked" })
             HashMap<String, String> hashMap = (HashMap<String, String>)(HashMap)ReflectTool.getStaticFieldMap(User.class, true, "ROLE_", null, true);
-            cRoleConstToNameMap = hashMap; 
+            cRoleNameToConstMap = hashMap; 
         }
-        return cRoleConstToNameMap;
+        return cRoleNameToConstMap;
     }
     
     private Map<String, Integer> existingRoleMap = null;
@@ -370,13 +416,15 @@ public class UserEditForm implements Serializable{
     /**
      * Return Map of Role-Constants and assigned value Integer/String 1 for all Roles existing and having declared constant. 
      * @return
+     * @deprecated Will be soon replaced by iteration ofer ProfileList...
      */
+    @Deprecated
     public Map<String,Integer> getExistingRoleMap() {
         if (existingRoleMap == null) {
             HashMap<String, Integer> mRes = new HashMap<String, Integer>();
-            if (existingRoles != null) {
+            if (existingRoleNames != null) {
                 Map<String, String> mValToConst = getRoleNameToConstMap();
-                for (String role : existingRoles) {
+                for (String role : existingRoleNames) {
                     String mConst = mValToConst.get(role);
                     if (mConst != null) {
                         mRes.put(mConst, 1);

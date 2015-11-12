@@ -1,20 +1,14 @@
 package com.bayer.bhc.doc41webui.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
-import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.TimeZone;
-import com.bayer.bhc.doc41webui.common.util.UserInSession;
-import com.bayer.ecim.foundation.basic.BasicDataCarrier;
 import com.bayer.ecim.foundation.basic.LocaleTool;
 import com.bayer.ecim.foundation.basic.StringTool;
-import com.bayer.ecim.foundation.dbx.QueryException;
-import com.bayer.ecim.foundation.dbx.ResultObject;
-import com.bayer.ecim.foundation.web.usermanagementN.OTUserManagementN;
-import com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC;
 
 /**
  * User domain object.
@@ -25,6 +19,8 @@ public class User extends DomainObject {
 
 	private static final long serialVersionUID = -88472347824568763L;
 
+	// constants to be removed, currently only still in use by roles.jspf (will be replaces by c:foreach over Roles list)
+/*	
 	public static final String ROLE_BUSINESS_ADMIN = "doc41_badm";
 
 	public static final String ROLE_TECH_ADMIN = "doc41_tadm";
@@ -44,6 +40,7 @@ public class User extends DomainObject {
 	public static final String ROLE_PM_SUPPLIER = "doc41_pmsup";
 	
 	public static final String ROLE_OBSERVER = "doc41_obsv";
+*/
 
 	public static final String TYPE_INTERNAL = "internal";
 
@@ -53,6 +50,7 @@ public class User extends DomainObject {
 
 	public static final String STATUS_INACTIVE = "inactive";
 
+/*
 	public static final String[] ALL_ROLES = new String[] {
 			ROLE_CARRIER,
 			ROLE_MATERIAL_SUPPLIER,
@@ -65,7 +63,8 @@ public class User extends DomainObject {
 			ROLE_TECH_ADMIN,
 			ROLE_OBSERVER
 			};
-	
+*/
+/*	
 	public static final String[] ROLES_WITH_CUSTOMERS = new String[] {ROLE_DEL_CERT_VIEWER_CUSTOMER};
 	
 	public static final String[] ROLES_WITH_VENDORS = new String[] {ROLE_CARRIER, ROLE_MATERIAL_SUPPLIER, ROLE_PRODUCT_SUPPLIER, ROLE_LAYOUT_SUPPLIER, ROLE_PM_SUPPLIER };
@@ -73,7 +72,7 @@ public class User extends DomainObject {
 	public static final String[] ROLES_WITH_COUNTRY = new String[] {ROLE_DEL_CERT_VIEWER_COUNTRY};
 	
 	public static final String[] ROLES_WITH_PLANT = new String[] {ROLE_MATERIAL_SUPPLIER, ROLE_PRODUCT_SUPPLIER };
-
+*/
 	private String cwid;
 
 	private String surname;
@@ -111,6 +110,9 @@ public class User extends DomainObject {
 	private Long timeZone = new Long(TimeZone.GMT_1);
 
 	private List<String> permissions = new ArrayList<String>();
+
+	private HashSet<String> allDoc41Permissions = new HashSet<String>();
+
 	
 	private boolean skipCustomerCheck = false;
 	private boolean skipVendorCheck = false;
@@ -124,6 +126,16 @@ public class User extends DomainObject {
 		}
 
 		// Check if permissions exists, throw Error otherwise
+		if (allDoc41Permissions == null) {
+		    Doc41Log.get().warning(this, getCwid(), "AllPermissions NULL! Object not properly initialized!");
+		} else {
+		    for (String permission : permissions) {
+		        if (!allDoc41Permissions.contains(permission)) {
+		            Doc41Log.get().debugMessageOnce(this,  null, "Permission \"" + permission + "\" currently not available, may be global deactivated.");
+		        }
+		    }
+		}
+/*		
 		try {
 			ResultObject ro = OTUserManagementN.get().getPermissions(null, null, null, null, null, null, null, -1, -1, null, null, null, null, LocaleInSession.get());
 			List<String> allPermissions = new ArrayList<String>();
@@ -133,14 +145,14 @@ public class User extends DomainObject {
 			}
 			for (String permission : permissions) {
 				if (!allPermissions.contains(permission)) {
-				    Doc41Log.get().debug(this,  null, "Permission \"" + permission + "\" currently not available, may be global deactivated.");
+				    Doc41Log.get().debugMessageOnce(this,  null, "Permission \"" + permission + "\" currently not available, may be global deactivated.");
 //					throw new RuntimeException(String.format("Permission %s doesn't exist.", permission));
 				}
 			}
 		} catch (QueryException e) {
 			Doc41Log.get().error(getClass(),UserInSession.getCwid(),e);
 		}
-	
+*/
 		return false;
 	}
 	
@@ -309,7 +321,15 @@ public class User extends DomainObject {
 		this.permissions = permissions;
 	}
 
-	private String company = "";
+    public void setAllDoc41Permissions(HashSet<String> allDoc41Permissions) {
+        this.allDoc41Permissions = allDoc41Permissions;
+    }
+
+    public HashSet<String> getAllDoc41Permissions() {
+        return allDoc41Permissions;
+    }
+    
+    private String company = "";
 
 
 	public String getCompany() {
@@ -333,12 +353,16 @@ public class User extends DomainObject {
 	 * Needed for EL in JSPs
 	 * @return
 	 */
+	/* get from UserEditForm: getExistingRoles()...
 	public String[] getALL_ROLES() {
 		return User.ALL_ROLES;
 	}
-	
+	*/
 
-
+	/**
+	 * String representation for e.g. logging.
+	 * @return String the String representation especially for logging,
+	 */
 	@Override
 	public String toString() {
 		return "User [cwid=" + cwid + ", surname=" + surname + ", firstname="

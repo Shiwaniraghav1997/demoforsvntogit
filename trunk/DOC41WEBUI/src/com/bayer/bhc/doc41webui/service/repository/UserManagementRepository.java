@@ -28,6 +28,7 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
+import com.bayer.bhc.doc41webui.domain.Profile;
 import com.bayer.bhc.doc41webui.domain.SapCustomer;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.domain.User;
@@ -40,7 +41,6 @@ import com.bayer.bhc.doc41webui.integration.db.dc.UserCustomerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPlantDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserVendorDC;
 import com.bayer.bhc.doc41webui.service.mapping.UserMapper;
-import com.bayer.ecim.foundation.basic.BasicDataCarrier;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.SendMail;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -255,6 +255,38 @@ public class UserManagementRepository extends AbstractRepository {
         }
 	}
 
+    /**
+     * Get All Profile(Beans)Map (by key: profiename).
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public HashMap<String, Profile> getAllProfilesMap() throws Doc41TechnicalException {
+        HashMap<String,Profile> mRes = new HashMap<String, Profile>();
+        for (Profile p : getAllProfiles()) {
+            mRes.put(p.getProfilename(), p);
+        }
+        return mRes;
+    }
+    
+    /**
+     * Get All Profile(Beans).
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public List<Profile> getAllProfiles() throws Doc41TechnicalException {
+        return getUserManagementDAO().getAllProfiles();
+    }
+	
+    /**
+     * Get the ordered List of all ProfileNames of currently existing profiles (not deleted)
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public List<String>getAllProfileNamesList() throws Doc41TechnicalException {
+        return getUserManagementDAO().getAllProfileNamesList();
+    }
+
+	
 	/**
 	 * Get the list of all ProfileNames of currently existing profiles (not deleted)
 	 * @return
@@ -262,16 +294,22 @@ public class UserManagementRepository extends AbstractRepository {
 	 */
 	public HashSet<String>getAllProfileNames() throws Doc41RepositoryException {
         try {
-            @SuppressWarnings("unchecked")
-            HashSet<String> mRes = (HashSet<String>)BasicDataCarrier.getFieldHashSet(getUserManagementDAO().getAllProfiles(), UMProfileNDC.FIELD_PROFILENAME);
-            return mRes;
+            return getUserManagementDAO().getAllProfileNames();
         } catch (Doc41TechnicalException e) {
             throw new Doc41RepositoryException("getAllProfileNames", e);
         }
 	    
 	}
 
-	
+    /**
+     * Get a list of all Permission codes currently available.
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public HashSet<String> getAllPermissionCodes() throws Doc41TechnicalException {
+        return getUserManagementDAO().getAllPermissionCodes();
+    }
+
 	
 	private void updateLdapGroup(User pUser) throws Doc41RepositoryException {
 		try {
@@ -323,10 +361,96 @@ public class UserManagementRepository extends AbstractRepository {
 				}
 			}
 			pUser.setPermissions(permissions);
+			if (pUser.getAllDoc41Permissions().isEmpty()) {
+			    pUser.setAllDoc41Permissions(getAllPermissionCodes());
+			}
 		} catch (Doc41TechnicalException e) {
 			throw new Doc41RepositoryException("UserManagementRepository.addPermissionsToUser", e);
 		}
 	}
+
+	
+    /**
+     * Check if user has a permissions requiring at least one Customer assigned.
+     * @param pCwid
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsCustomers(String pCwid) throws Doc41TechnicalException {
+        return userManagementDAO.userNeedsCustomers(pCwid);
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Country assigned.
+     * @param pCwid
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsCountries(String pCwid) throws Doc41TechnicalException {
+        return userManagementDAO.userNeedsCountries(pCwid);
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Vendor assigned.
+     * @param pCwid
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsVendors(String pCwid) throws Doc41TechnicalException {
+        return userManagementDAO.userNeedsVendors(pCwid);
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Plant assigned.
+     * @param pCwid
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsPlants(String pCwid) throws Doc41TechnicalException {
+        return userManagementDAO.userNeedsPlants(pCwid);
+    }
+	
+    /**
+     * Check if user has a permissions requiring at least one Customer assigned.
+     * @param pProfiles
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsCustomers(String[] pProfiles) throws Doc41TechnicalException {
+        return userManagementDAO.userNeedsCustomers(pProfiles);
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Country assigned.
+     * @param pProfiles
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsCountries(String[] pProfiles) throws Doc41TechnicalException {
+        return userManagementDAO.userNeedsCountries(pProfiles);
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Vendor assigned.
+     * @param pProfiles
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsVendors(String[] pProfiles) throws Doc41TechnicalException {
+        return userManagementDAO.userNeedsVendors(pProfiles);
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Plant assigned.
+     * @param pProfiles
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsPlants(String[] pProfiles) throws Doc41TechnicalException {
+        return userManagementDAO.userNeedsPlants(pProfiles);
+    }
+    
+	
 	public void updateUser(User pUser, boolean updateRoles,boolean updateLdap,boolean updatePartner,boolean updateCountries,boolean updatePlants) throws Doc41RepositoryException, Doc41BusinessException {
         checkUser(Doc41ErrorMessageKeys.USR_MGT_UPDATE_USER_FAILED);
         
@@ -380,19 +504,20 @@ public class UserManagementRepository extends AbstractRepository {
         try {
         	if (updateRoles) {
 	            Map<String, Long> userProfileMap = getUserProfileMap(userDC.getObjectID());
+	            String[] allRoles = getAllProfileNames().toArray(new String[0]);
 	
-	            for (int i = 0; i < User.ALL_ROLES.length; i++) {
-	                if ((pUser.getRoles() != null) && pUser.getRoles().contains(User.ALL_ROLES[i])) {
+	            for (int i = 0; i < allRoles.length; i++) {
+	                if ((pUser.getRoles() != null) && pUser.getRoles().contains(allRoles[i])) {
 	                    // add role
-	                    if (!userProfileMap.containsKey(User.ALL_ROLES[i])) {
-	                        addUserToProfileInDB(userDC, User.ALL_ROLES[i], pUser.getLocale());
+	                    if (!userProfileMap.containsKey(allRoles[i])) {
+	                        addUserToProfileInDB(userDC, allRoles[i], pUser.getLocale());
 	                    }
 	                } else {
 	                    // remove role
-	                    if (userProfileMap.containsKey(User.ALL_ROLES[i])) {
+	                    if (userProfileMap.containsKey(allRoles[i])) {
 	                        // profilesOfUser contains DC that know the ObjectIds of the UserProfileDC
 	                    	userManagementDAO.removeUserProfile((Long) userProfileMap
-	                                .get(User.ALL_ROLES[i]));
+	                                .get(allRoles[i]));
 	                    }
 	                }
 	            }
@@ -783,7 +908,6 @@ public class UserManagementRepository extends AbstractRepository {
 			domainUser.setPlants(copyDcToDomainPlants(plantsInDB));
 			
 			pUserDC.loadResolvedUserPermissions(LocaleInSession.get());
-			@SuppressWarnings("unchecked")
 			List<UMPermissionNDC> permissionDCs = pUserDC.getResolvedUserPermissions();
 			List<String> permissions = new ArrayList<String>();
 			for (UMPermissionNDC permissionDC : permissionDCs) {                    
@@ -791,6 +915,9 @@ public class UserManagementRepository extends AbstractRepository {
 	            permissions.add(permissionDC.getCode());
 	        }
 			domainUser.setPermissions(permissions);
+            if (domainUser.getAllDoc41Permissions().isEmpty()) {
+                domainUser.setAllDoc41Permissions(getAllPermissionCodes());
+            }
 			
 			return domainUser;
 		} catch (Doc41TechnicalException e) {

@@ -47,14 +47,15 @@ public class UserimportController extends AbstractDoc41Controller {
 		UserEditForm userEditForm;
 		User importUser = getUserManagementUC().lookupUser(cwid);
 		userEditForm = new UserEditForm(importUser);
-        userEditForm.setExistingRoles(getUserManagementUC().getAllRoleNames());
+        userEditForm.setExistingRoles(getUserManagementUC().getAllProfiles());
+        userEditForm.setExistingRoleNames(getUserManagementUC().getAllProfileNamesList());
 		return userEditForm;
     }
 
 	
     @RequestMapping(value="/useradmin/importuser",method = RequestMethod.POST)
     public String save(HttpServletRequest request,@ModelAttribute UserEditForm userEditForm, BindingResult result) throws Doc41ExceptionBase{
-    	userEditForm.validate(request, result);
+    	userEditForm.validate(request, result, getUserManagementUC());
     	if (result.hasErrors()) {
     		return "/useradmin/userimport";
         }

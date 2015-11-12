@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
+import com.bayer.bhc.doc41webui.common.exception.Doc41RuntimeExceptionBase;
+import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.paging.TableSorterParams;
 import com.bayer.bhc.doc41webui.common.paging.TablesorterPagingData;
@@ -46,7 +48,11 @@ public class UserlistController extends AbstractDoc41Controller {
 	
 	@ModelAttribute("allRoles")
 	public String[] getAllRoles(){
-		return User.ALL_ROLES;
+		try {
+            return getUserManagementUC().getAllProfileNamesList().toArray(new String[0]);
+        } catch (Doc41TechnicalException e) {
+            throw new Doc41RuntimeExceptionBase("Failed to receive list of all Role names.", e);
+        }
 	}
 	
 	@RequestMapping(value="/useradmin/userlist",method=RequestMethod.GET)

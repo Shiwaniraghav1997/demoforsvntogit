@@ -5,7 +5,9 @@
 package com.bayer.bhc.doc41webui.usecase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ import com.bayer.bhc.doc41webui.common.Doc41ErrorMessageKeys;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.logging.Doc41LogEntry;
 import com.bayer.bhc.doc41webui.common.paging.PagingData;
@@ -21,6 +24,7 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserListFilter;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
+import com.bayer.bhc.doc41webui.domain.Profile;
 import com.bayer.bhc.doc41webui.domain.SapCustomer;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.domain.User;
@@ -101,16 +105,112 @@ public class UserManagementUC {
     }
 
     /**
+     * Get All Profile(Beans).
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public List<Profile> getAllProfiles() throws Doc41TechnicalException {
+        return getUserManagementRepository().getAllProfiles();
+    }
+    
+    /**
+     * Get the ordered List of all ProfileNames of currently existing profiles (not deleted)
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public List<String>getAllProfileNamesList() throws Doc41TechnicalException {
+        return getUserManagementRepository().getAllProfileNamesList();
+    }
+
+    /**
      * Get the list of all ProfileNames of currently existing profiles (not deleted)
      * @return
-     * @throws Doc41BusinessException
+     * @throws Doc41TechnicalException 
      */
-    public HashSet<String> getAllRoleNames() throws Doc41BusinessException {
-        try {
-            return getUserManagementRepository().getAllProfileNames();
-        } catch (Doc41RepositoryException e) {
-            throw new Doc41BusinessException("getAllRoleNames", e);
-        }
+    public HashMap<String,Profile> getAllProfilesMap() throws Doc41TechnicalException {
+        return getUserManagementRepository().getAllProfilesMap();
+    }
+    
+
+    /**
+     * Check if user has a permissions requiring at least one Customer assigned.
+     * @param pCwid
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsCustomers(String pCwid) throws Doc41TechnicalException {
+        return getUserManagementRepository().userNeedsCustomers(pCwid);
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Country assigned.
+     * @param pCwid
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsCountries(String pCwid) throws Doc41TechnicalException {
+        return getUserManagementRepository().userNeedsCountries(pCwid);
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Vendor assigned.
+     * @param pCwid
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsVendors(String pCwid) throws Doc41TechnicalException {
+        return getUserManagementRepository().userNeedsVendors(pCwid);
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Plant assigned.
+     * @param pCwid
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsPlants(String pCwid) throws Doc41TechnicalException {
+        return getUserManagementRepository().userNeedsPlants(pCwid);
+    }
+    
+    
+    /**
+     * Check if user has a permissions requiring at least one Customer assigned.
+     * @param pCwid
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsCustomers(String[] pProfiles) throws Doc41TechnicalException {
+        return getUserManagementRepository().userNeedsCustomers(pProfiles);
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Country assigned.
+     * @param pProfiles
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsCountries(String[] pProfiles) throws Doc41TechnicalException {
+        return getUserManagementRepository().userNeedsCountries(pProfiles);
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Vendor assigned.
+     * @param pProfiles
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsVendors(String[] pProfiles) throws Doc41TechnicalException {
+        return getUserManagementRepository().userNeedsVendors(pProfiles);
+    }
+
+    /**
+     * Check if user has a permissions requiring at least one Plant assigned.
+     * @param pProfiles
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public boolean userNeedsPlants(String[] pProfiles) throws Doc41TechnicalException {
+        return getUserManagementRepository().userNeedsPlants(pProfiles);
     }
     
     
