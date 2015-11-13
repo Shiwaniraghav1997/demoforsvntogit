@@ -93,6 +93,14 @@ public class Profile extends DomainObject {
     }
 
     /**
+     * For better EL handling: return "extern" on Isextern = true, "intern" on Isextern = false, "ext+int" on Isextern = null.
+     * @return
+     */
+    public String getExtType() {
+        return (getIsexternal() == null) ? "ext+int" : (getIsexternal().booleanValue() ? "extern" : "intern" );
+    }
+    
+    /**
      * @return the type
      */
     public String getType() {

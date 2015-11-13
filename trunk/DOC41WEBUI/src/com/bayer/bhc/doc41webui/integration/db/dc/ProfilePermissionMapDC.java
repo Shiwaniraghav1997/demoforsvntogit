@@ -39,6 +39,10 @@ public class ProfilePermissionMapDC
 	String cCode;
 	public static final String FIELD_CODE = "Code";
 
+	/** Maps DB-Column: type */
+	String cType;
+	public static final String FIELD_TYPE = "Type";
+
 	/** for compatibility, suppress import warning...*/
 	public static final Class<DataCarrier> _DBX_DC_CLASS_PROFILEPERMISSIONMAPDC = DataCarrier.class; // dummy variable to avoid warning
 
@@ -50,11 +54,11 @@ public class ProfilePermissionMapDC
 		setDBTablename( ProfilePermissionMapDC.class, null );
 	}
 
-	private static final long serialVersionUID = 20151113025101269L;
+	private static final long serialVersionUID = 20151113053810433L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_PROFILEPERMISSIONMAPDC = java.math.BigDecimal.class;
 
 	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PERMISSIONNAME, FIELD_PERMISSIONDESCRIPTION, FIELD_PROFILENAME, FIELD_CODE};
+	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PERMISSIONNAME, FIELD_PERMISSIONDESCRIPTION, FIELD_PROFILENAME, FIELD_CODE, FIELD_TYPE};
 	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
 
 	static {
@@ -63,6 +67,7 @@ public class ProfilePermissionMapDC
 			FIELD_META.put( FIELD_PERMISSIONDESCRIPTION,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_PROFILENAME,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_CODE,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
+			FIELD_META.put( FIELD_TYPE,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 		} catch ( Exception e ) {
 			throw new InitException( "Failed to detect return types of the getter methods of ProfilePermissionMapDC!", null );
 		}
@@ -601,6 +606,100 @@ public class ProfilePermissionMapDC
 		return getBasicDCColumnMetaData( FIELD_CODE );
 	}
 	// END Method getColumnMetaDataCode
+
+
+	// START Method getType generated
+	/**
+	 * Maps DB-Column: type
+	 * Logical type: STRING
+	 */
+	public String getType() {
+		return cType;
+	}
+	// END Method getType
+
+
+	// START Method setType generated
+	/**
+	 * Maps DB-Column: type
+	 * Logical type: STRING
+	 */
+	public void setType( String pType ) {
+		cType = StringTool.trimmedEmptyToNull( pType );
+		forgetOriginalValue( FIELD_TYPE );
+		touchField( FIELD_TYPE );
+	}
+	// END Method setType
+
+
+	// START Method getFormattedType generated
+	/**
+	 * Maps DB-Column: type
+	 * Logical type: STRING
+	 */
+	public String getFormattedType() {
+		return hasInvalidValue( FIELD_TYPE ) ? getOriginalValue( FIELD_TYPE ) : getPool().formatString( cType );
+	}
+	// END Method getFormattedType
+
+
+	// START Method setFormattedType generated
+	/**
+	 * Maps DB-Column: type
+	 * Logical type: STRING
+	 */
+	public void setFormattedType( String pType )
+		throws java.text.ParseException
+	{
+		setType( null );
+		memorizeOriginalValue( FIELD_TYPE, pType );
+		setType( getPool().parseString( pType ) );
+	}
+	// END Method setFormattedType
+
+
+	// START Method getFormattedHTMLType generated
+	/**
+	 * Maps DB-Column: type
+	 * Logical type: STRING
+	 */
+	public String getFormattedHTMLType() {
+		return StringTool.escapeHTML( getFormattedType() );
+	}
+	// END Method getFormattedHTMLType
+
+
+	// START Method getToStringType generated
+	/**
+	 * Maps DB-Column: type
+	 * Logical type: STRING
+	 */
+	public String getTypeToString() {
+		return StringTool.nullToEmpty(getType());
+	}
+	// END Method getToStringType
+
+
+	// START Method setFromStringType generated
+	/**
+	 * Maps DB-Column: type
+	 * Logical type: STRING
+	 */
+	public void setTypeFromString( String pType ) {
+		setType( StringTool.emptyToNull( pType ) );
+	}
+	// END Method setFromStringType
+
+
+	// START Method getColumnMetaDataType generated
+	/**
+	 * Maps DB-Column: type
+	 * Logical type: STRING
+	 */
+	public BasicDCColumnMetaData getColumnMetaDataForType() {
+		return getBasicDCColumnMetaData( FIELD_TYPE );
+	}
+	// END Method getColumnMetaDataType
 
 
 	// START Protected ( insert your personal code here ) -- do not modify this line!!

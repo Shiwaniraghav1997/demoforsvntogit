@@ -25,6 +25,8 @@ public class PermissionProfiles extends DomainObject {
     private String PermissionDescription = null;
         
     private HashMap<String,Long> profiles = new HashMap<String, Long>();
+    
+    private String Type = null;
 
     /**
      * @return the permissionCode
@@ -83,6 +85,20 @@ public class PermissionProfiles extends DomainObject {
             profiles = new HashMap<String,Long>();
         }
         this.profiles = profiles;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return Type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        Type = type;
     }
 
 }

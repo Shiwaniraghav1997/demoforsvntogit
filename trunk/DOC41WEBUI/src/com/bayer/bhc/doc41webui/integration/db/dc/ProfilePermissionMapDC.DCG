@@ -30,3 +30,7 @@ Column.4.Type=STRING
 Column.4.Comment=Maps DB-Column: code
 #Column.4.DBDefault="..."/new ...
 
+Column.5.Name=type
+Column.5.Type=STRING
+Column.5.Comment=Maps DB-Column: type
+#Column.5.DBDefault="..."/new ...
