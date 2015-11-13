@@ -304,9 +304,12 @@ public class UserManagementDAO extends AbstractDAOImpl {
             mLastType = mProf.getType();
             res.add(mProf);
         }
+        if (mProf != null) {
+        }
         if (res.size() > 0) {
             res.get(0).setIsFirst(true);
-            res.get(res.size() - 1).setIsLast(true);
+            mProf.setIsLastOfType(true);
+            mProf.setIsLast(true);
         }
         return res;
     }
