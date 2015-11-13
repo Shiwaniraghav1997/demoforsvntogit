@@ -14,6 +14,7 @@ import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.domain.Profile;
 import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionMapDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.SapCustomerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.SapVendorDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UMDoc41PermissionNDC;
@@ -57,6 +58,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	private static final String GET_PLANTS_BY_USER			= "getPlantsByUser";
 	private static final String GET_USER_PLANT				= "getUserPlant";
 	private static final String GET_PROFILE_PERMISSIONS		= "getProfilePermissions";
+    private static final String GET_PROFILE_PERMISSIONMAP     = "getProfilePermissionMap";
 	
 	@Override
 	public String getTemplateComponentName() {		
@@ -710,6 +712,26 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	
 	//---- 
 	
+	/**
+	 * Get a list of ProfilePermissionAtoms for building a Map of Profiles per Permission, needs at least order by permission_Name
+	 * @param pOrderBy
+	 * @return
+	 * @throws Doc41TechnicalException
+	 */
+	public List<ProfilePermissionMapDC> getProfilePermissionMap(String pOrderBy) throws Doc41TechnicalException {
+        try {
+            String[] parameterNames             = { "ORDER_BY" };
+            Object[] parameterValues            = { pOrderBy };
+            String templateName                 = GET_PROFILE_PERMISSIONMAP;
+            Class<ProfilePermissionMapDC> dcClass  = ProfilePermissionMapDC.class;       
+            
+            List<ProfilePermissionMapDC> dcs = find(parameterNames, parameterValues, templateName, dcClass);                           
+            
+            return dcs;
+        } catch (Exception e) {
+            throw new Doc41TechnicalException(this.getClass(), "getProfilePermissionMap", e);
+        }
+	}
 	
 	public List<ProfilePermissionDC> getProfilePermissions() throws Doc41TechnicalException {
 		try {

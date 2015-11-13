@@ -24,10 +24,12 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserListFilter;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
+import com.bayer.bhc.doc41webui.domain.PermissionProfiles;
 import com.bayer.bhc.doc41webui.domain.Profile;
 import com.bayer.bhc.doc41webui.domain.SapCustomer;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.domain.User;
+import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionMapDC;
 import com.bayer.bhc.doc41webui.service.repository.UserManagementRepository;
 import com.bayer.ecim.foundation.basic.BasicDataCarrier;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -131,6 +133,15 @@ public class UserManagementUC {
         return getUserManagementRepository().getAllProfilesMap();
     }
     
+    /**
+     * Get a list of Permissions with ProfileMap of assigned Profiles, only assigned Profiles included, value is Long(1).
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public List<PermissionProfiles> getPermissionProfiles() throws Doc41TechnicalException {
+        return getUserManagementRepository().getPermissionProfiles();
+    }
+
 
     /**
      * Check if user has a permissions requiring at least one Customer assigned.

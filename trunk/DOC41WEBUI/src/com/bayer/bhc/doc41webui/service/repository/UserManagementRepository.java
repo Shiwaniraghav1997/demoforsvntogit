@@ -28,12 +28,14 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
+import com.bayer.bhc.doc41webui.domain.PermissionProfiles;
 import com.bayer.bhc.doc41webui.domain.Profile;
 import com.bayer.bhc.doc41webui.domain.SapCustomer;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.db.LdapDAO;
 import com.bayer.bhc.doc41webui.integration.db.UserManagementDAO;
+import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionMapDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.SapCustomerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.SapVendorDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserCountryDC;
@@ -310,6 +312,28 @@ public class UserManagementRepository extends AbstractRepository {
         return getUserManagementDAO().getAllPermissionCodes();
     }
 
+    /**
+     * Get a list of Permissions with ProfileMap of assigned Profiles, only assigned Profiles included, value is Long(1).
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public List<PermissionProfiles> getPermissionProfiles() throws Doc41TechnicalException {
+        ArrayList<PermissionProfiles> mRes = new ArrayList<PermissionProfiles>();
+        ProfilePermissionMapDC mLastPerm = null;
+        PermissionProfiles mElem = null;
+        for (ProfilePermissionMapDC mPerm : getUserManagementDAO().getProfilePermissionMap(null)) {
+            if ((mLastPerm == null) || !mPerm.getCode().equals(mLastPerm.getCode()) ) {
+                mElem = new PermissionProfiles();
+                mElem.setPermissionCode(mPerm.getCode());
+                mElem.setPermissionName(mPerm.getPermissionname());
+                mElem.setPermissionDescription(mPerm.getPermissiondescription());
+                mRes.add(mElem);
+            }
+            mElem.getProfiles().put(mPerm.getProfilename(), Long.valueOf(1));
+            mLastPerm = mPerm;
+        }
+        return mRes;
+    }
 	
 	private void updateLdapGroup(User pUser) throws Doc41RepositoryException {
 		try {
