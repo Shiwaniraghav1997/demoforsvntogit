@@ -1,0 +1,235 @@
+/* Content */
+#content {
+	clear: 				both;
+	padding:			4px;
+}
+
+#rfcDumpBox {
+	width: 				100%;  
+ 	height: 			100%;  
+ 	background: 		#ebf8ff;  
+  
+ 	padding: 			10px;  
+ 	border:				10px solid #BAD9DD;  
+  
+ -webkit-box-sizing:	border-box;  
+    -moz-box-sizing:	border-box;  
+         box-sizing:	border-box;  
+}
+
+#dumpBox {
+	width: 				100%;  
+ 	height: 			100%;  
+ 	background: 		#ebf8ff;  
+  
+ 	padding: 			10px;  
+ 	border:				10px solid #BAD9DD;  
+  
+ -webkit-box-sizing:	border-box;  
+    -moz-box-sizing:	border-box;  
+         box-sizing:	border-box;  
+}
+
+/*.inheritcolor{
+	color:inherit !important;
+}*/
+
+/* Center Element */
+.centered {
+	margin: 			auto; 
+	text-align: 		center;
+	vertical-align: 	middle;
+}
+
+
+
+/* Tablesorter Table Design */
+table.tablesorter
+{
+	color: #000000;
+	font-family: Arial,Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	text-decoration:none;
+	border-collapse:collapse;
+}
+
+table.tablesorter tr td
+{
+	border: 1px solid #e2e4e4;
+	height: 5px;
+	padding: 5px;
+}
+
+table.tablesorter tr th
+{
+	border: 1px solid #e2e4e4;
+	height: 15px;
+	padding: 5px;
+}
+
+table.tablesorter th 
+{
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 10px; 
+	COLOR: #006fa1; 
+	BACKGROUND-COLOR: #f2f9fc; 
+	TEXT-ALIGN: center; 
+	TEXT-DECORATION: none;
+	height: 15px;
+}
+
+table.tablesorter td 
+{
+    font-size: 10px;
+}
+
+table.tablesorter .tablesorter-filter-row  td {
+	height: 10px;
+	margin-left: auto; margin-right: auto; text-align: center;
+	padding: 1px;
+}
+
+table.tablesorter .tablesorter-filter {
+	height: 10px;
+	font-size: 9px;
+	min-width: 80%;
+}
+
+.tablesorter-filter.disabled {
+	display: none;
+}
+
+table.tablesorter select.tablesorter-filter {
+	height: 17px;
+}
+
+table.tablesorter tr:hover
+{
+	background-color: #e5f5fa;
+}
+
+
+.tablesorter-blue .header, .tablesorter-blue .tablesorter-header {
+    background-image: url("data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==");
+    background-position: right center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    padding: 4px 18px 4px 4px;
+    white-space: normal;
+}
+.tablesorter-blue .headerSortUp, .tablesorter-blue .tablesorter-headerSortUp, .tablesorter-blue .tablesorter-headerAsc {
+/*     background-color: #9FBFDF; */
+    background-image: url("data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7");
+}
+.tablesorter-blue .headerSortDown, .tablesorter-blue .tablesorter-headerSortDown, .tablesorter-blue .tablesorter-headerDesc {
+/*     background-color: #8CB3D9; */
+    background-image: url("data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7");
+}
+
+
+
+
+.pagedisplay {
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size: 12px;
+}
+
+
+
+/* Tooltip */
+.ui-tooltip {
+     background: url("../img/toolTipBack.png") repeat-x scroll left top #006FA1;
+/*      border-radius: 5px 5px 5px 5px; */
+     border: 0px solid #CCCCCC;
+     box-shadow: 0px 0px 4px #999999;
+     color: #FFFFFF;
+     display: block;
+     font-size: 10px;
+     font-weight: bold;
+     left: 1.8em;
+     padding: 3px 7px;
+     position: absolute;
+     text-align: left;
+     text-decoration: none;
+     top: 1.8em;
+     width: auto;
+     z-index: 20;
+}
+
+
+
+
+/* Button */
+.portlet-form-button
+{ /* außerhalb Tabellen */
+	
+	background: #f4f4f4 url("../img/common/buttonBG.jpg") bottom repeat-x;
+	margin: 0.2em;
+	
+	color: #5c5454;
+	font-weight:bold;
+	border: 1px solid #999999;
+	
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 8pt; 
+	cursor: pointer; cursor: hand;
+	FONT-FAMILY: Arial,Helvetica,sans-serif;
+	
+	text-decoration: none;
+}
+
+a.portlet-form-button {
+	padding: 0.2em 1em 0.2em 1em;
+}
+
+input.portlet-form-button {
+	padding: 0.1em 0.5em 0.1em 0.5em;
+}
+
+span.portlet-form-button {
+	padding: 0.1em 0.5em 0.1em 0.5em;
+}
+
+
+
+/* Management->User Management */
+/* TODO: IE8 does not support nth-child 
+	Vielleicht ist es möglich, direkt über das Tablesorter-Plugin, 
+	die entsprechenden Zellen der Styleclass 'centered' zuzuweisen!?
+*/
+
+table#doc41table tbody tr td:nth-child(1) {
+	margin: 			auto; 
+	text-align: 		center;
+	vertical-align: 	middle;
+}
+table#doc41table tbody tr td:nth-child(9) {
+	margin: 			auto; 
+	text-align: 		center;
+	vertical-align: 	middle;
+}
+table#doc41table tbody tr td:nth-child(10) {
+	margin: 			auto; 
+	text-align: 		center;
+	vertical-align: 	middle;
+}
+
+
+/* Section Separator */
+.section-separator {
+    font-family: 		Verdana,Arial,Helvetica,sans-serif;
+    font-size: 			12px;
+    font-weight: 		bold;
+    padding: 			4px;
+    text-align: 		left;
+    color: 				#0077AC;
+	background-image:	   -moz-linear-gradient(left top , #EBF8FF 50%, #FFFFFF 100%);
+	background-image:	-webkit-linear-gradient(left top , #EBF8FF 50%, #FFFFFF 100%);
+	background-image:	    -ms-linear-gradient(left top , #EBF8FF 50%, #FFFFFF 100%);
+	background-image:	     -o-linear-gradient(left top , #EBF8FF 50%, #FFFFFF 100%);
+}
+
+
+
+
