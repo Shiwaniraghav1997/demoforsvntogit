@@ -360,7 +360,7 @@ public class DocumentUC {
 		String[] mFileSeg = StringTool.split(fileNameUpper, '.');
 		String mFileExt = (mFileSeg.length == 1) ? "" : mFileSeg[mFileSeg.length - 1];
 		
-		docClass = (String)ConfigMap.get().getSubConfig("documents", "fieltype").get(mFileExt);
+		docClass = (String)ConfigMap.get().getSubConfig("documents", "filetype").get(mFileExt);
 		/*
 		if(fileNameUpper.endsWith(".PDF")){
 			docClass = "PDF";
