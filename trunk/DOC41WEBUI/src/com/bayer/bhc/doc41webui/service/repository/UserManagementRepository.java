@@ -328,6 +328,10 @@ public class UserManagementRepository extends AbstractRepository {
                 mElem.setPermissionName(mPerm.getPermissionname());
                 mElem.setPermissionDescription(mPerm.getPermissiondescription());
                 mElem.setType(mPerm.getType());
+                mElem.setHasVendor(mPerm.getHasVendor());
+                mElem.setHasPlant(mPerm.getHasPlant());
+                mElem.setHasCustomer(mPerm.getHasCustomer());
+                mElem.setHasCountry(mPerm.getHasCountry());
                 mRes.add(mElem);
             }
             mElem.getProfiles().put(mPerm.getProfilename(), Long.valueOf(1));

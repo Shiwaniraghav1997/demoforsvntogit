@@ -28,6 +28,15 @@ public class PermissionProfiles extends DomainObject {
     
     private String Type = null;
 
+    private boolean HasCustomer = false;
+    
+    private boolean HasVendor = false;
+    
+    private boolean HasCountry = false;
+    
+    private boolean HasPlant = false;
+    
+    
     /**
      * @return the permissionCode
      */
@@ -101,4 +110,68 @@ public class PermissionProfiles extends DomainObject {
         Type = type;
     }
 
+    /**
+     * @return the hasCustomer
+     */
+    public boolean isHasCustomer() {
+        return HasCustomer;
+    }
+
+    /**
+     * @param hasCustomer the hasCustomer to set
+     */
+    public void setHasCustomer(boolean hasCustomer) {
+        HasCustomer = hasCustomer;
+    }
+
+    /**
+     * @return the hasVendor
+     */
+    public boolean isHasVendor() {
+        return HasVendor;
+    }
+
+    /**
+     * @param hasVendor the hasVendor to set
+     */
+    public void setHasVendor(boolean hasVendor) {
+        HasVendor = hasVendor;
+    }
+
+    /**
+     * @return the hasCountry
+     */
+    public boolean isHasCountry() {
+        return HasCountry;
+    }
+
+    /**
+     * @param hasCountry the hasCountry to set
+     */
+    public void setHasCountry(boolean hasCountry) {
+        HasCountry = hasCountry;
+    }
+
+    /**
+     * @return the hasPlant
+     */
+    public boolean isHasPlant() {
+        return HasPlant;
+    }
+
+    /**
+     * @param hasPlant the hasPlant to set
+     */
+    public void setHasPlant(boolean hasPlant) {
+        HasPlant = hasPlant;
+    }
+
+    public String getPermissionStatus() {
+        return
+                ( isHasVendor() ? "Vnd" : "---" ) +
+                ( isHasPlant() ? "Plt" : "---" ) +
+                ( isHasCustomer() ? "Cst" : "---" ) +
+                ( isHasCountry() ? "Cty" : "---" );
+    }
+    
 }

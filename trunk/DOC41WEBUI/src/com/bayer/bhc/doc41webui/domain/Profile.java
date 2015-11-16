@@ -97,7 +97,7 @@ public class Profile extends DomainObject {
      * @return
      */
     public String getExtType() {
-        return (getIsexternal() == null) ? "ext+int" : (getIsexternal().booleanValue() ? "extern" : "intern" );
+        return (getIsexternal() == null) ? "int+ext" : (getIsexternal().booleanValue() ? "extern" : "intern" );
     }
     
     /**

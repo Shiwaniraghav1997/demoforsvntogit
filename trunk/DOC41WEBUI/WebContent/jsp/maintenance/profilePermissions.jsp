@@ -30,7 +30,7 @@
   <tbody>
   <c:forEach items="${pps}" var="varpps">
   <tr>
-	<td><span title="${varpps.permissionDescription}">${varpps.permissionName}<BR>[${varpps.type}]</span></td>
+	<td><span title="${varpps.permissionDescription}">${varpps.permissionName}<BR>[${varpps.type}: ${varpps.permissionStatus}]</span></td>
     <c:forEach items="${pro}" var="varpro">
         <td class="centered"><c:if test="${varpps.profiles[varpro.profilename] eq '1'}"><img src="${pageContext.request.contextPath}/resources/img/common/check_green.gif" alt="<doc41:translate label="CheckGreen" />" style="border: 0px;"/></c:if></td>
     </c:forEach>

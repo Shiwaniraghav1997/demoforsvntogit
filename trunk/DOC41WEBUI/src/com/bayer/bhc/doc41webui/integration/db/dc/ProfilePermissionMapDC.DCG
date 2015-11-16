@@ -34,3 +34,23 @@ Column.5.Name=type
 Column.5.Type=STRING
 Column.5.Comment=Maps DB-Column: type
 #Column.5.DBDefault="..."/new ...
+
+Column.6.Name=HasCustomer
+Column.6.Type=BOOLEAN
+Column.6.Comment=Maps DB-Column: has_Customer
+Column.6.DBDefault=Boolean.FALSE
+
+Column.7.Name=HasVendor
+Column.7.Type=BOOLEAN
+Column.7.Comment=Maps DB-Column: has_Vendor
+Column.7.DBDefault=Boolean.FALSE
+
+Column.8.Name=HasCountry
+Column.8.Type=BOOLEAN
+Column.8.Comment=Maps DB-Column: has_Country
+Column.8.DBDefault=Boolean.FALSE
+
+Column.9.Name=HasPlant
+Column.9.Type=BOOLEAN
+Column.9.Comment=Maps DB-Column: has_Plant
+Column.9.DBDefault=Boolean.FALSE

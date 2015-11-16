@@ -43,6 +43,22 @@ public class ProfilePermissionMapDC
 	String cType;
 	public static final String FIELD_TYPE = "Type";
 
+	/** Maps DB-Column: has_Customer */
+	Boolean cHasCustomer = Boolean.FALSE;
+	public static final String FIELD_HASCUSTOMER = "HasCustomer";
+
+	/** Maps DB-Column: has_Vendor */
+	Boolean cHasVendor = Boolean.FALSE;
+	public static final String FIELD_HASVENDOR = "HasVendor";
+
+	/** Maps DB-Column: has_Country */
+	Boolean cHasCountry = Boolean.FALSE;
+	public static final String FIELD_HASCOUNTRY = "HasCountry";
+
+	/** Maps DB-Column: has_Plant */
+	Boolean cHasPlant = Boolean.FALSE;
+	public static final String FIELD_HASPLANT = "HasPlant";
+
 	/** for compatibility, suppress import warning...*/
 	public static final Class<DataCarrier> _DBX_DC_CLASS_PROFILEPERMISSIONMAPDC = DataCarrier.class; // dummy variable to avoid warning
 
@@ -54,11 +70,11 @@ public class ProfilePermissionMapDC
 		setDBTablename( ProfilePermissionMapDC.class, null );
 	}
 
-	private static final long serialVersionUID = 20151113053810433L;
+	private static final long serialVersionUID = 20151116120545872L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_PROFILEPERMISSIONMAPDC = java.math.BigDecimal.class;
 
 	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PERMISSIONNAME, FIELD_PERMISSIONDESCRIPTION, FIELD_PROFILENAME, FIELD_CODE, FIELD_TYPE};
+	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PERMISSIONNAME, FIELD_PERMISSIONDESCRIPTION, FIELD_PROFILENAME, FIELD_CODE, FIELD_TYPE, FIELD_HASCUSTOMER, FIELD_HASVENDOR, FIELD_HASCOUNTRY, FIELD_HASPLANT};
 	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
 
 	static {
@@ -68,6 +84,10 @@ public class ProfilePermissionMapDC
 			FIELD_META.put( FIELD_PROFILENAME,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_CODE,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_TYPE,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
+			FIELD_META.put( FIELD_HASCUSTOMER,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
+			FIELD_META.put( FIELD_HASVENDOR,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
+			FIELD_META.put( FIELD_HASCOUNTRY,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
+			FIELD_META.put( FIELD_HASPLANT,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 		} catch ( Exception e ) {
 			throw new InitException( "Failed to detect return types of the getter methods of ProfilePermissionMapDC!", null );
 		}
@@ -700,6 +720,382 @@ public class ProfilePermissionMapDC
 		return getBasicDCColumnMetaData( FIELD_TYPE );
 	}
 	// END Method getColumnMetaDataType
+
+
+	// START Method getHasCustomer generated
+	/**
+	 * Maps DB-Column: has_Customer
+	 * Logical type: BOOLEAN
+	 */
+	public Boolean getHasCustomer() {
+		return cHasCustomer;
+	}
+	// END Method getHasCustomer
+
+
+	// START Method setHasCustomer generated
+	/**
+	 * Maps DB-Column: has_Customer
+	 * Logical type: BOOLEAN
+	 */
+	public void setHasCustomer( Boolean pHasCustomer ) {
+		cHasCustomer = pHasCustomer;
+		forgetOriginalValue( FIELD_HASCUSTOMER );
+		touchField( FIELD_HASCUSTOMER );
+	}
+	// END Method setHasCustomer
+
+
+	// START Method getFormattedHasCustomer generated
+	/**
+	 * Maps DB-Column: has_Customer
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedHasCustomer() {
+		return hasInvalidValue( FIELD_HASCUSTOMER ) ? getOriginalValue( FIELD_HASCUSTOMER ) : getPool().formatBoolean( cHasCustomer );
+	}
+	// END Method getFormattedHasCustomer
+
+
+	// START Method setFormattedHasCustomer generated
+	/**
+	 * Maps DB-Column: has_Customer
+	 * Logical type: BOOLEAN
+	 */
+	public void setFormattedHasCustomer( String pHasCustomer )
+		throws java.text.ParseException
+	{
+		setHasCustomer( null );
+		memorizeOriginalValue( FIELD_HASCUSTOMER, pHasCustomer );
+		setHasCustomer( getPool().parseBoolean( pHasCustomer ) );
+	}
+	// END Method setFormattedHasCustomer
+
+
+	// START Method getFormattedHTMLHasCustomer generated
+	/**
+	 * Maps DB-Column: has_Customer
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedHTMLHasCustomer() {
+		return StringTool.escapeHTML( getFormattedHasCustomer() );
+	}
+	// END Method getFormattedHTMLHasCustomer
+
+
+	// START Method getToStringHasCustomer generated
+	/**
+	 * Maps DB-Column: has_Customer
+	 * Logical type: BOOLEAN
+	 */
+	public String getHasCustomerToString() {
+		return StringTool.nullToEmpty(getHasCustomer());
+	}
+	// END Method getToStringHasCustomer
+
+
+	// START Method setFromStringHasCustomer generated
+	/**
+	 * Maps DB-Column: has_Customer
+	 * Logical type: BOOLEAN
+	 */
+	public void setHasCustomerFromString( String pHasCustomer ) {
+		setHasCustomer( BooleanTool.parseBoolean( pHasCustomer, null ) );
+	}
+	// END Method setFromStringHasCustomer
+
+
+	// START Method getColumnMetaDataHasCustomer generated
+	/**
+	 * Maps DB-Column: has_Customer
+	 * Logical type: BOOLEAN
+	 */
+	public BasicDCColumnMetaData getColumnMetaDataForHasCustomer() {
+		return getBasicDCColumnMetaData( FIELD_HASCUSTOMER );
+	}
+	// END Method getColumnMetaDataHasCustomer
+
+
+	// START Method getHasVendor generated
+	/**
+	 * Maps DB-Column: has_Vendor
+	 * Logical type: BOOLEAN
+	 */
+	public Boolean getHasVendor() {
+		return cHasVendor;
+	}
+	// END Method getHasVendor
+
+
+	// START Method setHasVendor generated
+	/**
+	 * Maps DB-Column: has_Vendor
+	 * Logical type: BOOLEAN
+	 */
+	public void setHasVendor( Boolean pHasVendor ) {
+		cHasVendor = pHasVendor;
+		forgetOriginalValue( FIELD_HASVENDOR );
+		touchField( FIELD_HASVENDOR );
+	}
+	// END Method setHasVendor
+
+
+	// START Method getFormattedHasVendor generated
+	/**
+	 * Maps DB-Column: has_Vendor
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedHasVendor() {
+		return hasInvalidValue( FIELD_HASVENDOR ) ? getOriginalValue( FIELD_HASVENDOR ) : getPool().formatBoolean( cHasVendor );
+	}
+	// END Method getFormattedHasVendor
+
+
+	// START Method setFormattedHasVendor generated
+	/**
+	 * Maps DB-Column: has_Vendor
+	 * Logical type: BOOLEAN
+	 */
+	public void setFormattedHasVendor( String pHasVendor )
+		throws java.text.ParseException
+	{
+		setHasVendor( null );
+		memorizeOriginalValue( FIELD_HASVENDOR, pHasVendor );
+		setHasVendor( getPool().parseBoolean( pHasVendor ) );
+	}
+	// END Method setFormattedHasVendor
+
+
+	// START Method getFormattedHTMLHasVendor generated
+	/**
+	 * Maps DB-Column: has_Vendor
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedHTMLHasVendor() {
+		return StringTool.escapeHTML( getFormattedHasVendor() );
+	}
+	// END Method getFormattedHTMLHasVendor
+
+
+	// START Method getToStringHasVendor generated
+	/**
+	 * Maps DB-Column: has_Vendor
+	 * Logical type: BOOLEAN
+	 */
+	public String getHasVendorToString() {
+		return StringTool.nullToEmpty(getHasVendor());
+	}
+	// END Method getToStringHasVendor
+
+
+	// START Method setFromStringHasVendor generated
+	/**
+	 * Maps DB-Column: has_Vendor
+	 * Logical type: BOOLEAN
+	 */
+	public void setHasVendorFromString( String pHasVendor ) {
+		setHasVendor( BooleanTool.parseBoolean( pHasVendor, null ) );
+	}
+	// END Method setFromStringHasVendor
+
+
+	// START Method getColumnMetaDataHasVendor generated
+	/**
+	 * Maps DB-Column: has_Vendor
+	 * Logical type: BOOLEAN
+	 */
+	public BasicDCColumnMetaData getColumnMetaDataForHasVendor() {
+		return getBasicDCColumnMetaData( FIELD_HASVENDOR );
+	}
+	// END Method getColumnMetaDataHasVendor
+
+
+	// START Method getHasCountry generated
+	/**
+	 * Maps DB-Column: has_Country
+	 * Logical type: BOOLEAN
+	 */
+	public Boolean getHasCountry() {
+		return cHasCountry;
+	}
+	// END Method getHasCountry
+
+
+	// START Method setHasCountry generated
+	/**
+	 * Maps DB-Column: has_Country
+	 * Logical type: BOOLEAN
+	 */
+	public void setHasCountry( Boolean pHasCountry ) {
+		cHasCountry = pHasCountry;
+		forgetOriginalValue( FIELD_HASCOUNTRY );
+		touchField( FIELD_HASCOUNTRY );
+	}
+	// END Method setHasCountry
+
+
+	// START Method getFormattedHasCountry generated
+	/**
+	 * Maps DB-Column: has_Country
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedHasCountry() {
+		return hasInvalidValue( FIELD_HASCOUNTRY ) ? getOriginalValue( FIELD_HASCOUNTRY ) : getPool().formatBoolean( cHasCountry );
+	}
+	// END Method getFormattedHasCountry
+
+
+	// START Method setFormattedHasCountry generated
+	/**
+	 * Maps DB-Column: has_Country
+	 * Logical type: BOOLEAN
+	 */
+	public void setFormattedHasCountry( String pHasCountry )
+		throws java.text.ParseException
+	{
+		setHasCountry( null );
+		memorizeOriginalValue( FIELD_HASCOUNTRY, pHasCountry );
+		setHasCountry( getPool().parseBoolean( pHasCountry ) );
+	}
+	// END Method setFormattedHasCountry
+
+
+	// START Method getFormattedHTMLHasCountry generated
+	/**
+	 * Maps DB-Column: has_Country
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedHTMLHasCountry() {
+		return StringTool.escapeHTML( getFormattedHasCountry() );
+	}
+	// END Method getFormattedHTMLHasCountry
+
+
+	// START Method getToStringHasCountry generated
+	/**
+	 * Maps DB-Column: has_Country
+	 * Logical type: BOOLEAN
+	 */
+	public String getHasCountryToString() {
+		return StringTool.nullToEmpty(getHasCountry());
+	}
+	// END Method getToStringHasCountry
+
+
+	// START Method setFromStringHasCountry generated
+	/**
+	 * Maps DB-Column: has_Country
+	 * Logical type: BOOLEAN
+	 */
+	public void setHasCountryFromString( String pHasCountry ) {
+		setHasCountry( BooleanTool.parseBoolean( pHasCountry, null ) );
+	}
+	// END Method setFromStringHasCountry
+
+
+	// START Method getColumnMetaDataHasCountry generated
+	/**
+	 * Maps DB-Column: has_Country
+	 * Logical type: BOOLEAN
+	 */
+	public BasicDCColumnMetaData getColumnMetaDataForHasCountry() {
+		return getBasicDCColumnMetaData( FIELD_HASCOUNTRY );
+	}
+	// END Method getColumnMetaDataHasCountry
+
+
+	// START Method getHasPlant generated
+	/**
+	 * Maps DB-Column: has_Plant
+	 * Logical type: BOOLEAN
+	 */
+	public Boolean getHasPlant() {
+		return cHasPlant;
+	}
+	// END Method getHasPlant
+
+
+	// START Method setHasPlant generated
+	/**
+	 * Maps DB-Column: has_Plant
+	 * Logical type: BOOLEAN
+	 */
+	public void setHasPlant( Boolean pHasPlant ) {
+		cHasPlant = pHasPlant;
+		forgetOriginalValue( FIELD_HASPLANT );
+		touchField( FIELD_HASPLANT );
+	}
+	// END Method setHasPlant
+
+
+	// START Method getFormattedHasPlant generated
+	/**
+	 * Maps DB-Column: has_Plant
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedHasPlant() {
+		return hasInvalidValue( FIELD_HASPLANT ) ? getOriginalValue( FIELD_HASPLANT ) : getPool().formatBoolean( cHasPlant );
+	}
+	// END Method getFormattedHasPlant
+
+
+	// START Method setFormattedHasPlant generated
+	/**
+	 * Maps DB-Column: has_Plant
+	 * Logical type: BOOLEAN
+	 */
+	public void setFormattedHasPlant( String pHasPlant )
+		throws java.text.ParseException
+	{
+		setHasPlant( null );
+		memorizeOriginalValue( FIELD_HASPLANT, pHasPlant );
+		setHasPlant( getPool().parseBoolean( pHasPlant ) );
+	}
+	// END Method setFormattedHasPlant
+
+
+	// START Method getFormattedHTMLHasPlant generated
+	/**
+	 * Maps DB-Column: has_Plant
+	 * Logical type: BOOLEAN
+	 */
+	public String getFormattedHTMLHasPlant() {
+		return StringTool.escapeHTML( getFormattedHasPlant() );
+	}
+	// END Method getFormattedHTMLHasPlant
+
+
+	// START Method getToStringHasPlant generated
+	/**
+	 * Maps DB-Column: has_Plant
+	 * Logical type: BOOLEAN
+	 */
+	public String getHasPlantToString() {
+		return StringTool.nullToEmpty(getHasPlant());
+	}
+	// END Method getToStringHasPlant
+
+
+	// START Method setFromStringHasPlant generated
+	/**
+	 * Maps DB-Column: has_Plant
+	 * Logical type: BOOLEAN
+	 */
+	public void setHasPlantFromString( String pHasPlant ) {
+		setHasPlant( BooleanTool.parseBoolean( pHasPlant, null ) );
+	}
+	// END Method setFromStringHasPlant
+
+
+	// START Method getColumnMetaDataHasPlant generated
+	/**
+	 * Maps DB-Column: has_Plant
+	 * Logical type: BOOLEAN
+	 */
+	public BasicDCColumnMetaData getColumnMetaDataForHasPlant() {
+		return getBasicDCColumnMetaData( FIELD_HASPLANT );
+	}
+	// END Method getColumnMetaDataHasPlant
 
 
 	// START Protected ( insert your personal code here ) -- do not modify this line!!
