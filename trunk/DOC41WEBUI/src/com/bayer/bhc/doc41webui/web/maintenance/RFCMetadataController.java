@@ -22,6 +22,7 @@ import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
 import com.bayer.ecim.foundation.basic.InitException;
+import com.bayer.ecim.foundation.basic.Sorter;
 import com.bayer.ecim.foundation.sap3.SAPException;
 import com.bayer.ecim.foundation.sap3.SAPSingleton;
 import com.sap.conn.jco.JCoException;
@@ -38,16 +39,21 @@ public class RFCMetadataController extends AbstractDoc41Controller {
     public void get(ModelMap model, @RequestParam(value="rfcName",required=false) String rfcName) throws Doc41TechnicalException {
 		// RFC Names Selection Box
 		Set<String> rfcNamesSet = SAPSingleton.get().getRFCNames();
-		List<SelectionItem> rfcNames = new ArrayList<SelectionItem>();
-		for (String tmpRfcName : rfcNamesSet) {
-			rfcNames.add(new SelectionItem(tmpRfcName, tmpRfcName));
-		}
+		ArrayList<SelectionItem> rfcNames = new ArrayList<SelectionItem>();
+        String rfcDump = "";
+        try {
+            for (String tmpRfcName : rfcNamesSet) {
+                rfcNames.add(new SelectionItem(
+                        tmpRfcName,
+                        SAPSingleton.get().getRFCPoolName(tmpRfcName) + " - " +
+                        SAPSingleton.get().getRFCFunctionGroup(tmpRfcName) + " - " +
+                        tmpRfcName + " -- " +
+                        SAPSingleton.get().getRFCSAPFunctionName(tmpRfcName)));
+            }
 
-		// RFC Dump
-		String rfcDump = "";
-		try {
+            // RFC Dump
 			if (!StringUtils.isBlank(rfcName)) {
-				rfcDump = SAPSingleton.get().dumpMetadata(rfcName);
+				rfcDump = "Class:\n" + SAPSingleton.get().getRFCClassName(rfcName) + "\n" + SAPSingleton.get().dumpMetadata(rfcName);
 			}
 		} catch (InitException e) {
 			rfcDump = "InitException:\n" + e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e);
@@ -58,6 +64,9 @@ public class RFCMetadataController extends AbstractDoc41Controller {
 		} catch (Exception e) {
 			rfcDump = "Exception:\n" + e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e);
 		}
+        @SuppressWarnings("unchecked")
+        ArrayList<SelectionItem> quickSort = Sorter.quickSort(rfcNames, Sorter.ASCENDING);
+        rfcNames = quickSort;
 		
 		Form form = new Form();
 		form.setRfcName(rfcName);
@@ -67,7 +76,7 @@ public class RFCMetadataController extends AbstractDoc41Controller {
     }
 	
 	@RequestMapping(value="/maintenance/selectRFCName", method=RequestMethod.POST)
-	 public String select(HttpServletRequest request, @ModelAttribute Form form, BindingResult result) {
+	 public String select(@SuppressWarnings("unused") HttpServletRequest request, @ModelAttribute Form form, @SuppressWarnings("unused") BindingResult result) {
 		return "redirect:/maintenance/rfcMetadata?rfcName="+form.getRfcName();
 	}
 

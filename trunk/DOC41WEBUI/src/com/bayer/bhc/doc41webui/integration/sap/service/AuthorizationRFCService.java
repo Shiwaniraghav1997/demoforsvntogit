@@ -60,7 +60,6 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		return deliveries ;
 	}
 	
-	/**
     /**
      * Check for the vendor (partner), if already a artwork document exist with the same material number. Current old version only checks, if any ArtWork document existing for vendor.
      * Upload only allowed, if already first document existing (as follow up)

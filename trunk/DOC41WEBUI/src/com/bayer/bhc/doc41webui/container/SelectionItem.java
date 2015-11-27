@@ -9,7 +9,7 @@ package com.bayer.bhc.doc41webui.container;
  * 
  * @author ezzqc
  */
-public class SelectionItem extends ItemObject {
+public class SelectionItem extends ItemObject implements Comparable<SelectionItem> {
 	private static final long serialVersionUID = 1L;
 	
     /** used for unique identification. */
@@ -97,6 +97,14 @@ public class SelectionItem extends ItemObject {
         this.label = label;
         inactive = inactiveFlag;
         defaultValue = isDefault;
+    }
+
+    @Override
+    /**
+     * Make the Selection Items sortable by label.
+     */
+    public int compareTo(SelectionItem o) {
+        return (label == null) ? -1 : label.compareTo(o.label);
     }
  
 }

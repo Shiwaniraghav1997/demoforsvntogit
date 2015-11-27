@@ -12,7 +12,7 @@ public class AntiCounSpecForPMSupplierDocumentType extends PMSupplierDownloadDoc
 
 	@Override
 	public String getSapTypeId() {
-		return "DOC41.02";
+		return "DOC41.54";
 	}
 
 	@Override
