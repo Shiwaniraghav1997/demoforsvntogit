@@ -96,5 +96,10 @@ UPDATE UM_Permissions SET has_Plant    = 1 WHERE code IN ('DOC_SUPCOA_UP','DOC_D
 UPDATE UM_Permissions SET has_Vendor   = 1 WHERE TYPE IN ('DOC_SD','DOC_QM','DOC_LS','DOC_PM');
 UPDATE UM_Permissions SET has_Vendor   = 0 WHERE code IN ('DOC_DELCERT_DOWN_CUSTOMER','DOC_DELCERT_DOWN_COUNTRY');
 
+INSERT INTO UM_Users ( cwid, createdBy, changedBy, firstname, lastname, language_Code, country_Code, display_Language_Code, display_Country_Code, isExternal )
+  VALUES ( 'SD_CARR', '_DOC41_', '_DOC41_', 'DocService', 'DocService', 'de', 'DE', 'de', 'DE', 1 );
+INSERT INTO UM_USERS_PROFILES (user_Id, profile_Id, createdBy, changedBy)
+  SELECT u.object_Id, pr.object_Id, '_DOC41_', '_DOC41_' FROM UM_Users u, UM_Profiles pr WHERE (u.cwid = 'SD_CARR') AND (pr.profilename = 'doc41_carr');
+
 UPDATE Versions SET subVersion = 2 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 1 );
 COMMIT WORK;
