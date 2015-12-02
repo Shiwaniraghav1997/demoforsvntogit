@@ -2,7 +2,7 @@
 			<!--  BEGIN Header -->
 			<div id="head">
 			 <div id="headLeft">
-			  <div id="namingArea" style="background-image: url('../resources/img/gradient.png')"><img src="${pageContext.request.contextPath}/resources/img/bhc.gif" alt="Doc41"/></div>
+			  <div id="namingArea" ><img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="Doc41"/></div>
 			  <div class="support"><doc41:stageInfo/><br/><a href="${pageContext.request.contextPath}/logout">Logout</a></div>
 			 </div>
 			 <div id="headRight">
