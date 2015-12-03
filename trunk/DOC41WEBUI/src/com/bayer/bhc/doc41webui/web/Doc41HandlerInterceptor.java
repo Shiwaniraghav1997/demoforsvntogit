@@ -56,6 +56,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 	private static final String DB_SESSION_DC_REQ_ATTR ="DB_SESSION_DC_REQ_ATTR";
 	
 	private static final String CWID_PREFIX_DOC_SERVICE = "DS_";
+    private static final String CWID_DOC_SERVICE_CARR = "DS_CARR";
 	
 	@Autowired
 	protected UserManagementUC userManagementUC;
@@ -282,19 +283,11 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
                     }
                     if(!StringTool.isTrimmedEmptyOrNull(tmpPwd) && !StringTool.isTrimmedEmptyOrNull(password)
                             && StringTool.equals(tmpPwd, password)){
-                        User tmpUser = new User();
-                        tmpUser.setCwid(CWID_PREFIX_DOC_SERVICE+tmpCwid);
-                        tmpUser.setFirstname("DocService");
-                        tmpUser.setSurname("DocService");
-                        tmpUser.setType(User.TYPE_EXTERNAL);
-                        tmpUser.setActive(true);
-                        tmpUser.setLocale(Locale.GERMANY);
-                        tmpUser.setReadOnly(false);
-                        tmpUser.getRoles().add(tmpRole);
+                        // TODO: if introduce further remote roles, introduce a external service function TO service user MAPPING. currently only SD_CARR allowed
+                        User tmpUser = userManagementUC.findUser(CWID_DOC_SERVICE_CARR);
                         tmpUser.setSkipCustomerCheck(true);
                         tmpUser.setSkipVendorCheck(true);
                         tmpUser.setSkipCountryCheck(true);
-                        userManagementUC.addPermissionsToUser(tmpUser);
                         return tmpUser;
                     }
                 }

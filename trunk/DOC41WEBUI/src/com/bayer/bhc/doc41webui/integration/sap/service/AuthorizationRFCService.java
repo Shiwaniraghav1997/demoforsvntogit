@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -22,6 +21,7 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_GET_DELIVERIES_WITHOUT_DOC						="GetDeliveriesWithoutDocument";
 	private static final String RFC_NAME_CHECK_ARTWORK_LAYOUT_FOR_VENDOR				="CheckArtworkLayoutForVendor";
 	private static final String RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR				="CheckPOAndMaterialForVendor";
+    private static final String RFC_NAME_CHECK_MATERIAL_FOR_VENDOR                      ="CheckMaterialForVendor";
 	private static final String RFC_NAME_GET_INSPECTION_LOTS_FOR_VENDOR_BATCH			="GetInspectionLotsForVendorBatch";
 	private static final String RFC_NAME_GET_BATCH_OBJECTS_FOR_SUPPLIER					="GetBatchObjectsForSupplier";
 	private static final String RFC_NAME_GET_BATCH_OBJECTS_FOR_CUSTOMER					="GetBatchObjectsForCustomer";
@@ -105,6 +105,34 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		return errorMsg ;
 	}
 	
+	/**
+	 * Check if any PO for this vendor exists using the specified material number.
+	 * EMULATION until function exists as RFC!!!
+	 * @param vendorNumber
+	 * @param materialNumber
+	 * @return null if exist, else an error message.
+	 * @throws Doc41ServiceException in case of general RFC failure
+	 */
+    public String checkMaterialForVendor(String vendorNumber, String materialNumber) throws Doc41ServiceException{
+        Doc41Log.get().debug(this, UserInSession.getCwid(),
+                "vendorNumber="+vendorNumber+", materialNumber="+materialNumber+".");
+       
+        List<Object> params = new ArrayList<Object>();
+        params.add(vendorNumber);
+        params.add(materialNumber);
+
+// TODO:
+//      List<String> returnTexts = performRFC(params,RFC_NAME_CHECK_MATERIAL_FOR_VENDOR);
+        List<String> returnTexts = new ArrayList<String>();
+        Doc41Log.get().warning(this, null, "Called emulated RFC, real RFC not yet enabled: " + RFC_NAME_CHECK_MATERIAL_FOR_VENDOR);        
+        
+        String errorMsg=null;
+        if(!returnTexts.isEmpty()){
+            errorMsg = returnTexts.get(0);
+        }
+        return errorMsg ;
+    }
+    
 	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor, String vendorBatch, String plant) throws Doc41ServiceException{
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
         		"getInspectionLotsForVendorBatch() - vendor="+vendor+", vendorBatch="+vendorBatch+", plant="+plant+".");

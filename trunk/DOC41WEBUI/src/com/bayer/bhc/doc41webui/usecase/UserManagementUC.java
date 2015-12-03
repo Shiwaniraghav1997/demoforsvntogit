@@ -4,9 +4,7 @@
  */
 package com.bayer.bhc.doc41webui.usecase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +27,8 @@ import com.bayer.bhc.doc41webui.domain.Profile;
 import com.bayer.bhc.doc41webui.domain.SapCustomer;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.domain.User;
-import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionMapDC;
 import com.bayer.bhc.doc41webui.service.repository.UserManagementRepository;
-import com.bayer.ecim.foundation.basic.BasicDataCarrier;
 import com.bayer.ecim.foundation.basic.StringTool;
-import com.bayer.ecim.foundation.web.usermanagementN.UMProfileNDC;
 
 /**
  * User management use case implementation. Finds, edits, creates user. Also used for to active or deactive user accounts. 
@@ -142,6 +137,14 @@ public class UserManagementUC {
         return getUserManagementRepository().getPermissionProfiles();
     }
 
+    /**
+     * Get a list of all Permissions currently available.
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public List<PermissionProfiles> getAllPermissions() throws Doc41TechnicalException {
+        return getUserManagementRepository().getAllPermissions();
+    }
 
     /**
      * Check if user has a permissions requiring at least one Customer assigned.

@@ -70,6 +70,9 @@ public class SearchController extends AbstractDoc41Controller {
 		if(StringTool.isTrimmedEmptyOrNull(type)){
 			throw new Doc41BusinessException("typeIsMissing");
 		}
+		
+        // TODO: support of permission types as type representing a group of document types (for implementation of global searches)
+		// TODO: foreach documentType...
 		searchForm.initPartnerNumbers(documentUC.hasCustomerNumber(type),getLastCustomerNumberFromSession(),
 				documentUC.hasVendorNumber(type),getLastVendorNumberFromSession());
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type,false);
@@ -231,14 +234,23 @@ public class SearchController extends AbstractDoc41Controller {
 		map.addAttribute("allCountryList",allCountries);
 		return map;
 	}
-	
+
+	/**
+	 * Map the searchDocument request, adding extra attributes for PMSupplierDownload
+	 * @param searchForm
+	 * @param result
+	 * @param ButtonSearch
+	 * @return
+	 * @throws Doc41BusinessException
+	 */
 	@RequestMapping(value="/documents/searchpmsupplier",method = RequestMethod.GET)
 	public ModelMap getPMSupplier(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
 		ModelMap map = new ModelMap();
 		SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
 		map.addAttribute(searchForm2);
 		
-		map.addAttribute("keyPONumber",PMSupplierDownloadDocumentType.VIEW_ATTRIB_PO_NUMBER);
+//		map.addAttribute("keyPONumber",PMSupplierDownloadDocumentType.VIEW_ATTRIB_PO_NUMBER);
+		map.addAttribute("keyFileName",PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
 		
 		return map;
 	}

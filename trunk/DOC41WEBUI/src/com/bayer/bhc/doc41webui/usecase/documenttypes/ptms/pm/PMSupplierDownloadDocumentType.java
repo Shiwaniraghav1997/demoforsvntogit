@@ -16,8 +16,11 @@ import com.bayer.ecim.foundation.basic.StringTool;
 
 public abstract class PMSupplierDownloadDocumentType implements DownloadDocumentType{
 
-	public static final String VIEW_ATTRIB_PO_NUMBER = "poNumber";
+//	public static final String VIEW_ATTRIB_PO_NUMBER = "poNumber";
 
+    public static final String VIEW_ATTRIB_FILENAME = "FILENAME";
+
+    
 	@Override
 	public boolean hasCustomerNumber() {
 		return false;
@@ -34,13 +37,17 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 
 		Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
 		
-		String poNumber = viewAttributes.get(VIEW_ATTRIB_PO_NUMBER);
-		if(StringTool.isTrimmedEmptyOrNull(poNumber)){
-			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_PO_NUMBER+"']","PONumberMissing");
-		}
+		String fileName = viewAttributes.get(VIEW_ATTRIB_FILENAME);
+        if(!StringTool.isTrimmedEmptyOrNull(fileName)){
+            attributeValues.put(VIEW_ATTRIB_FILENAME, fileName);
+        }
+//		if(StringTool.isTrimmedEmptyOrNull(poNumber)){
+//			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_PO_NUMBER+"']","PONumberMissing");
+//		}
 		
 		if(!errors.hasErrors()){
-			String deliveryCheck = documentUC.checkPOAndMaterialForVendor(vendorNumber, poNumber, objectId);
+//			String deliveryCheck = documentUC.checkPOAndMaterialForVendor(vendorNumber, poNumber, objectId);
+            String deliveryCheck = documentUC.checkMaterialForVendor(vendorNumber, objectId);
 			if(deliveryCheck != null){
 				errors.reject(""+deliveryCheck);
 			}
@@ -59,4 +66,22 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 		return Collections.emptySet();
 	}
 
+	/**
+     * Flag to determine, if document uses DIRS store.
+     * @return true, if using DIRS. 
+     */
+	@Override
+    public boolean isDirs() {
+        return false;
+    }
+
+    /**
+     * Flag to determine, if document uses KGS store.
+     * @return true, if using KGS. 
+     */
+    @Override
+    public boolean isKgs() {
+        return true;
+    }
+	
 }

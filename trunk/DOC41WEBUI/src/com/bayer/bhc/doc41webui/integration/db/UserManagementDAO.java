@@ -127,8 +127,23 @@ public class UserManagementDAO extends AbstractDAOImpl {
         return userDC;
 	}
 
-	
 	/**
+	 * Make sure, the resolved permissions are loaded.
+	 * @param pUser
+	 * @throws Doc41TechnicalException
+	 */
+    protected void ensureResolvedPermissionsLoaded(UMUserNDC pUser) throws Doc41TechnicalException {
+        if (!pUser.resolvedUserPermissionsLoaded()) {
+             try {
+                 pUser.loadResolvedUserPermissions(LocaleInSession.get());
+             } catch (QueryException ex) {
+                 throw new Doc41TechnicalException(getClass(), "Failed to load resolved permissions for user: " + pUser.getCwid(), ex);
+             }
+         }
+    } 
+
+
+    /**
 	 * Check if user has a permissions requiring at least one Customer assigned.
 	 * @param pCwid
 	 * @return
@@ -136,6 +151,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	 */
 	public boolean userNeedsCustomers(String pCwid) throws Doc41TechnicalException {
 	    UMUserNDC mUser = getUserByCWID(pCwid);
+	    ensureResolvedPermissionsLoaded(mUser);
 	    for (UMPermissionNDC mPerm : mUser.getResolvedUserPermissions()) {
 	        UMDoc41PermissionNDC mDoc41Perm = (UMDoc41PermissionNDC)mPerm;
 	        if (mDoc41Perm.getHasCustomer()) {
@@ -144,7 +160,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	    }
 	    return false;
 	}
-
+	
     /**
      * Check if user has a permissions requiring at least one Country assigned.
      * @param pCwid
@@ -153,6 +169,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
      */
     public boolean userNeedsCountries(String pCwid) throws Doc41TechnicalException {
         UMUserNDC mUser = getUserByCWID(pCwid);
+        ensureResolvedPermissionsLoaded(mUser);
         for (UMPermissionNDC mPerm : mUser.getResolvedUserPermissions()) {
             UMDoc41PermissionNDC mDoc41Perm = (UMDoc41PermissionNDC)mPerm;
             if (mDoc41Perm.getHasCountry()) {
@@ -170,6 +187,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
      */
     public boolean userNeedsVendors(String pCwid) throws Doc41TechnicalException {
         UMUserNDC mUser = getUserByCWID(pCwid);
+        ensureResolvedPermissionsLoaded(mUser);
         for (UMPermissionNDC mPerm : mUser.getResolvedUserPermissions()) {
             UMDoc41PermissionNDC mDoc41Perm = (UMDoc41PermissionNDC)mPerm;
             if (mDoc41Perm.getHasVendor()) {
@@ -187,6 +205,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
      */
     public boolean userNeedsPlants(String pCwid) throws Doc41TechnicalException {
         UMUserNDC mUser = getUserByCWID(pCwid);
+        ensureResolvedPermissionsLoaded(mUser);
         for (UMPermissionNDC mPerm : mUser.getResolvedUserPermissions()) {
             UMDoc41PermissionNDC mDoc41Perm = (UMDoc41PermissionNDC)mPerm;
             if (mDoc41Perm.getHasPlant()) {
@@ -748,7 +767,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 		}
 	}
 
-	
+/*	
 	public ArrayList<UMPermissionNDC> getPermissionsByProfile(Long profileId, Locale pLoc) throws Doc41TechnicalException {
         try {
             return OTUserManagementN.get().getPermissionsByProfile(profileId,null,null, null, null,pLoc);
@@ -756,19 +775,33 @@ public class UserManagementDAO extends AbstractDAOImpl {
             throw new Doc41TechnicalException(this.getClass(), "getPermissionsByProfile", e);
         }
 	}
-
+*/
+	
 	/**
 	 * Get a list of all Permission codes currently available.
 	 * @return
 	 * @throws Doc41TechnicalException
 	 */
     public HashSet<String> getAllPermissionCodes() throws Doc41TechnicalException {
+        @SuppressWarnings("unchecked")
+        HashSet<String> fieldHashSet = (HashSet<String>)UMPermissionNDC.getFieldHashSet(getAllPermissions(), UMPermissionNDC.FIELD_CODE);
+        return fieldHashSet;
+    }
+
+    /**
+     * Get a list of all Permission codes currently available.
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public ArrayList<UMDoc41PermissionNDC> getAllPermissions() throws Doc41TechnicalException {
         try {
+            @SuppressWarnings("rawtypes")
+            ArrayList mRes = OTUserManagementN.get().getPermissions(null, null, null, null, null, null, null, -1, -1, null, null, null, null, Locale.US).getResult();
             @SuppressWarnings("unchecked")
-            HashSet<String> fieldHashSet = (HashSet<String>)UMPermissionNDC.getFieldHashSet(OTUserManagementN.get().getPermissions(null, null, null, null, null, null, null, -1, -1, null, null, null, null, Locale.US).getResult(), UMPermissionNDC.FIELD_CODE);
-            return fieldHashSet;
+            ArrayList<UMDoc41PermissionNDC> mRes2 = (ArrayList<UMDoc41PermissionNDC>)mRes;
+            return mRes2;
         } catch (QueryException e) {
-            throw new Doc41TechnicalException(this.getClass(), "getPermissionsByProfile", e);
+            throw new Doc41TechnicalException(this.getClass(), "getPermissions", e);
         }
     }
 

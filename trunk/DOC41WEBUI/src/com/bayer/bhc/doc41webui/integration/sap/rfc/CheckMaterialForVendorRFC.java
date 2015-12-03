@@ -9,9 +9,9 @@ import com.bayer.ecim.foundation.sap3.SAPException;
 import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoParameterList;
 
-public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
+public class CheckMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 	private static final String IN_VENDOR = "IV_VENDOR";
-	private static final String IN_PO = "IV_PONUMBER";
+//	private static final String IN_PO = "IV_PONUMBER";
 	private static final String IN_MATERIAL = "IV_MATNR";
 	
 	private static final String OUT_RETURNCODE = "EV_RETURN";
@@ -29,21 +29,21 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
         if (pFunction != null) {
             if (pInputParms != null) {
             	String vendorNumber = (String) pInputParms.get(0);
-                String poNumber = (String) pInputParms.get(1);
-                String materialNumber = (String) pInputParms.get(2);
+//                String poNumber = (String) pInputParms.get(1);
+                String materialNumber = (String) pInputParms.get(1);
                 
                 JCoParameterList sapInput = pFunction.getImportParameterList();
 				
 				sapInput.setValue(IN_VENDOR,vendorNumber);
-				sapInput.setValue(IN_PO,poNumber);
+//				sapInput.setValue(IN_PO,poNumber);
 				sapInput.setValue(IN_MATERIAL,materialNumber);
             } else {
                 throw new SAPException(
-                        "CheckPOAndMaterialForVendorRFC pInputParms list is null", null);
+                        "CheckMaterialForVendorRFC pInputParms list is null", null);
             }
         } else {
             throw new SAPException(
-                    "CheckPOAndMaterialForVendorRFC pFunction list is null", null);
+                    "CheckMaterialForVendorRFC pFunction list is null", null);
         }
         Doc41Log.get().debug(this, null, "prepareCall():EXIT");
 	}

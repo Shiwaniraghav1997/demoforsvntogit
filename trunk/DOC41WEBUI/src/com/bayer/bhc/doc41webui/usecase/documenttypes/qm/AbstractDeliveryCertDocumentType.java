@@ -36,4 +36,22 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
 		return Collections.emptySet();
 	}
 	
+    /**
+     * Flag to determine, if document uses DIRS store.
+     * @return true, if using DIRS. 
+     */
+    @Override
+    public boolean isDirs() {
+        return false;
+    }
+
+    /**
+     * Flag to determine, if document uses KGS store.
+     * @return true, if using KGS. 
+     */
+    @Override
+    public boolean isKgs() {
+        return true;
+    }
+    
 }

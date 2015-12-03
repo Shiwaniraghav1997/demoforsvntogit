@@ -9,16 +9,16 @@
 	
 	<doc41:searchtemplate action="searchpmsupplier">
 		<jsp:attribute name="fragmentCustomSearchFields">
-			<tr class="portlet-table">
-				<th><label for="${keyPONumber}"><doc41:translate label="PONumber" /></label></th>
+			<!-- tr class="portlet-table">
+				<th><label for="${keyFileName}"><doc41:translate label="FileName" /></label></th>
 				<td>
-					<input id="${keyPONumber}"
-						class="portlet-form-input-field portlet-mandatory portlet-big" maxlength="70"
-						name="viewAttributes['${keyPONumber}']"
-						value="${searchForm.viewAttributes[keyPONumber]}" />
-						<doc41:error path="viewAttributes['${keyPONumber}']" />
+					<input id="${keyFileName}"
+						class="portlet-form-input-field portlet-big" maxlength="70"
+						name="viewAttributes['${keyFileName}']"
+						value="${searchForm.viewAttributes[keyFileName]}" />
+						<doc41:error path="viewAttributes['${keyFileName}']" />
 				</td>
-			</tr>
+			</tr -->
 		</</jsp:attribute>
 	</doc41:searchtemplate>
 

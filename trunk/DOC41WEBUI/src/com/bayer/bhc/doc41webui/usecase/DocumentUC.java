@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.logging.Doc41LogEntry;
 import com.bayer.bhc.doc41webui.common.util.UrlParamCrypt;
@@ -42,6 +43,7 @@ import com.bayer.bhc.doc41webui.domain.DocMetadata;
 import com.bayer.bhc.doc41webui.domain.DocTypeDef;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.InspectionLot;
+import com.bayer.bhc.doc41webui.domain.PermissionProfiles;
 import com.bayer.bhc.doc41webui.domain.QMBatchObject;
 import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.domain.User;
@@ -50,6 +52,7 @@ import com.bayer.bhc.doc41webui.integration.sap.service.BwRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
+import com.bayer.bhc.doc41webui.service.repository.UserManagementRepository;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DirectDownloadDocumentType;
@@ -102,15 +105,21 @@ public class DocumentUC {
 	@Autowired
 	private TranslationsRepository translationsRepository;
 	
+    @Autowired
+    private UserManagementRepository userManagementRepository;
+    
 	@Autowired
 	private HttpClientService httpClientService;
 	
 	private Map<String, DocMetadata> docMetadataContainer;
 	
 	private final Map<String,DocumentType> documentTypes;
+    private final Map<String,DocumentType> documentTypesBySapId;
+	private Map<String,ArrayList<String>> documentTypesByDownloadPermissionType = null;
 	
 	public DocumentUC() {
 		documentTypes = new HashMap<String, DocumentType>();
+        documentTypesBySapId = new HashMap<String, DocumentType>();
 		
 		addDocumentType(new AWBDocumentType());
 		addDocumentType(new BOLDocumentType());
@@ -139,24 +148,87 @@ public class DocumentUC {
 	}
 	
 	private void addDocumentType(DocumentType documentType) {
-		String typeConst = documentType.getTypeConst();
-		documentTypes.put(typeConst, documentType);
+		documentTypes.put(documentType.getTypeConst(), documentType);
+        documentTypesBySapId.put(documentType.getSapTypeId(), documentType);
 	}
 
+	/**
+	 * Get al list of all document types belonging to the same permission type.
+	 * This is required to allow global search/download for document types of the same permission type, e.g. DOC_LS, DOC_PM, DOC_SD and eventually DOC_QM.
+	 * This way we know, which permissions belong together. But still needed: check for each document type, taht the user has the corresponding permission for download.
+	 * Permission types (representing a document group) should all start with DOC_ as prefix to differentiate for a single document type. 
+	 * @param mPermissionType the permission type (used instead of a document type) to handle a group of document types instead of a single one.
+	 * @return
+	 */
+	public List<String> getAllDownloadDocumentTypesOfSamePermissionType(String mPermissionType) throws Doc41TechnicalException {
+	    if (documentTypesByDownloadPermissionType == null) {
+	        Map<String,ArrayList<String>> mDocumentTypesByDownloadPermissionType = new HashMap<String, ArrayList<String>>();
+	        HashMap<String,PermissionProfiles>mProfileByCode = new HashMap<String, PermissionProfiles>();
+	        List <PermissionProfiles> mPermList = userManagementRepository.getAllPermissions();
+	        for (PermissionProfiles mPP : mPermList) {
+	            mProfileByCode.put(mPP.getPermissionCode(), mPP);
+	        }
+	        for (DocumentType documentType : documentTypes.values()) {
+	            String typeConst = documentType.getTypeConst();
+	            if (documentType instanceof DownloadDocumentType) {
+	                String mPerm = ((DownloadDocumentType)documentType).getPermissionDownload();
+	                ArrayList<String> mList = documentTypesByDownloadPermissionType.get(mPerm);
+	                if (mList == null) {
+	                    mList = new ArrayList<String>();
+	                    documentTypesByDownloadPermissionType.put(mPerm, mList);
+	                }
+	                mList.add(typeConst);
+	            }
+	        }
+	        documentTypesByDownloadPermissionType = mDocumentTypesByDownloadPermissionType;
+	    }
+	    return documentTypesByDownloadPermissionType.get(mPermissionType);
+	}
+	
 	public DocMetadata getMetadata(String type) throws Doc41BusinessException{
-		String sapDocType = getDocType(type).getSapTypeId();
-		DocMetadata docMetadata = getDocMetadataBySapDocType(sapDocType);
-		if(docMetadata==null){
-			throw new Doc41BusinessException("document type "+type+"/"+sapDocType+" not found in SAP");
+	    DocumentType dt = getDocType(type);
+	    if (dt == null) {
+	        throw new Doc41BusinessException("document type "+type+" unknown!");
+	    }
+		String sapDocType = dt.getSapTypeId();
+		DocMetadata docMetadata = null;
+		if (dt.isKgs()) {
+		    docMetadata = getDocMetadataBySapDocType(sapDocType);
+	        if( docMetadata == null ) {
+	            throw new Doc41BusinessException("document type "+type+"/"+sapDocType+" not found in SAP");
+	        }
+		} else if (dt.isDirs()) {
+		    docMetadata = createTempMetaDataForDIRS(dt);
+		} else {
+            throw new Doc41BusinessException("document type "+type+"/"+sapDocType+", unknown type of document store (not KGS and not DIRS!!!)");
 		}
 		return docMetadata;
 	}
 
+	private DocMetadata createTempMetaDataForDIRS( DocumentType dt ) {
+        DocTypeDef docDef = new DocTypeDef();
+        docDef.setD41id(dt.getSapTypeId());
+        docDef.setTechnicalId(null);                                //  currently needed only in setAttributesForNewDocument(KGS)
+        docDef.setDescription("DIRS emulated: " + dt.getTypeConst());
+        docDef.setSapObjList(new ArrayList<String>());              // additional search (and upload) attributes used for search only, if no objectIds specified(matNos), but they are obligatory for DIRS
+        docDef.setDvs(false);                                       // KGS only, marks extra DocInfoComponent available via extra RFC...
+        docDef.setTranslations(new HashMap<String, String>());      // what kind of translations? Seems not to be used...
+
+        ContentRepositoryInfo contentRepository = new ContentRepositoryInfo();
+        //FIXME: do we need that for DIRS? currently needed only in Upload(KGS), Download(KGS), setAttributesForNewDocument(KGS)
+        //contentRepository.setContentRepository("...");
+        contentRepository.setAllowedDocClass("*");
+        DocMetadata docMetadata = new DocMetadata(docDef);
+        docMetadata.setAttributes(new ArrayList<Attribute>());
+        docMetadata.setContentRepository(contentRepository);
+	    return docMetadata;
+	}
+	
 	private synchronized Map<String, DocMetadata> getDocMetadataContainer() throws Doc41BusinessException {
 		try{
 			if(docMetadataContainer==null){
 				Set<String> languageCodes = translationsRepository.getLanguageCodes().keySet();
-				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes,getSupportedSapDocTypes());
+				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes, getAllDocTypesBySapTypeIdMap() /*getSupportedSapDocTypes()*/);
 			}
 			return docMetadataContainer;
 		} catch (Doc41ServiceException e) {
@@ -164,16 +236,41 @@ public class DocumentUC {
 		}
 	}
 
+	/**
+	 * This returns real Metadata on a KGS Custumized RFC. In case of DIRS an "empty" MetaData object is created.
+	 * @param sapDocType
+	 * @return
+	 * @throws Doc41BusinessException
+	 */
 	public DocMetadata getDocMetadataBySapDocType(String sapDocType) throws Doc41BusinessException {
 		Map<String, DocMetadata> mdContainer = getDocMetadataContainer();
 		return mdContainer.get(sapDocType);
 	}
 	
+    /**
+     * This returns a list of real Metadata Objects on KGS Custumized RFCs. No DIRS Metadata in this list.
+     * @param sapDocType
+     * @return
+     * @throws Doc41BusinessException
+     */
 	private Set<String> getSapDocTypesFromMetadata() throws Doc41BusinessException {
-		Map<String, DocMetadata> mdContainer = getDocMetadataContainer();
-		return mdContainer.keySet();
+		return getDocMetadataContainer().keySet();
 	}
 	
+	/**
+	 * Get a list of all DocumentType Doc41Ids/SapTypeIds by defined DocumentTypes (including not only DocTypes with Custumizing RFCs - KGS but also those without - DIRS).
+	 * @return
+	 */
+    @SuppressWarnings("unused")
+    private Set<String> getSapDocTypesList() {
+        return getAllDocTypesBySapTypeIdMap().keySet();
+    }
+    
+    /**
+     * Create a selection list for KGS Customizing Metadata (not including Types having no Customizing Metadata, e.g. DIRS)
+     * @return
+     * @throws Doc41BusinessException
+     */
 	public List<SelectionItem> getDocMetadataSelectionItems() throws Doc41BusinessException {
 		List<SelectionItem> items = new ArrayList<SelectionItem>();
 		
@@ -194,15 +291,40 @@ public class DocumentUC {
 		return items ;
 	}
 
-	private Set<String> getSupportedSapDocTypes() {
-		Set<String> supportedSapTypes = new HashSet<String>();
-		for (DocumentType docType : documentTypes.values()) {
-			supportedSapTypes.add(docType.getSapTypeId());
-		}
-		return supportedSapTypes ;
+    /**
+     * Get the Collection of all DocumentType by TypeConstant
+     * @return
+     */
+    private Map<String,DocumentType> getAllDocTypesMap() {
+        return documentTypes;
+    }
+    
+    /**
+     * Get the Collection of all DocumentType by SapTypeId 
+     * @return
+     */
+    private Map<String,DocumentType> getAllDocTypesBySapTypeIdMap() {
+        return documentTypesBySapId;
+    }
+    
+	/**
+	 * Get a Set of all document types sapIds.
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+    private Set<String> getSupportedSapDocTypes() {
+	    return documentTypesBySapId.keySet();
+/*	    
+        Set<String> supportedSapTypes = new HashSet<String>();
+        for (DocumentType docType : documentTypes.values()) {
+            supportedSapTypes.add(docType.getSapTypeId());
+        }
+        return supportedSapTypes ;
+*/
 	}
 	
 	public Set<String> getAvailableSDDownloadDocumentTypes() {
+	    // FIXME: can just use: getAllDownloadDocumentTypesOfSamePermissionType("DOC_SD"); // should be defined as Constants soon
         Set<String> sdDLTypes = new HashSet<String>();
         for (DocumentType docType : documentTypes.values()) {
             if(docType instanceof SDDocumentType && docType instanceof DownloadDocumentType){
@@ -444,6 +566,7 @@ public class DocumentUC {
 			Map<String, String> attributeValues, int maxResults, boolean maxVersionOnly)
 					throws Doc41BusinessException {
 		try{
+		    //FIXME: DIRS support needed
 			checkAttribsWithCustomizing(attributeValues,type);
 			
 			Map<Integer, String> seqToKey = getSeqToKeyFromDefinitions(type);
@@ -499,6 +622,7 @@ public class DocumentUC {
 		try{
 			DocMetadata metadata = getMetadata(type);
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
+			// FIXME: DIRS support needed
 			String crepId = crepInfo.getContentRepository();
 			DocTypeDef docDef = metadata.getDocDef();
 			String compId = null;
@@ -576,13 +700,34 @@ public class DocumentUC {
 		return (DirectDownloadDocumentType) documentType;
 	}
 
-	private DocumentType getDocType(String type) throws Doc41BusinessException {
-		DocumentType documentType = documentTypes.get(type);
+	/**
+	 * Get a DocumentType by its TypeConstant.
+	 * @param typeConstant
+	 * @return
+	 * @throws Doc41BusinessException thrown, if not available
+	 */
+	private DocumentType getDocType(String typeConstant) throws Doc41BusinessException {
+		DocumentType documentType = documentTypes.get(typeConstant);
 		if(documentType==null){
-			throw new Doc41BusinessException("unknown doctype: "+type);
+			throw new Doc41BusinessException("unknown doctype, typeConstant: "+typeConstant);
 		}
 		return documentType;
 	}
+
+	/**
+	 * Get a DocumentType by its SapTypeId
+	 * @param sapTypeId
+	 * @return
+	 * @throws Doc41BusinessException thrown, if not available
+	 */
+    @SuppressWarnings("unused")
+    private DocumentType getDocTypeBySapId(String sapTypeId) throws Doc41BusinessException {
+        DocumentType documentType = documentTypesBySapId.get(sapTypeId);
+        if(documentType==null){
+            throw new Doc41BusinessException("unknown doctype, sapTypeId: "+sapTypeId);
+        }
+        return documentType;
+    }
 
 	public boolean hasCustomerNumber(String type) throws Doc41BusinessException {
 		return getDocType(type).hasCustomerNumber();
@@ -635,6 +780,14 @@ public class DocumentUC {
 		}
 	}
 	
+    public String checkMaterialForVendor(String vendorNumber, String materialNumber) throws Doc41BusinessException {
+        try {
+            return authorizationRFCService.checkMaterialForVendor(vendorNumber, materialNumber);
+        } catch (Doc41ServiceException e) {
+            throw new Doc41BusinessException("checkPOAndMaterialForVendor",e);
+        }
+    }
+    
 	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor,
 			String vendorBatch, String plant) throws Doc41BusinessException {
 		try{
@@ -708,7 +861,7 @@ public class DocumentUC {
 		}
 		
 		StringBuilder missingAttrKeysInCustomizing = new StringBuilder();
-		if(attributeValues!=null){
+		if( (attributeValues != null) ){
 			for (String attrKey : attributeValues.keySet()) {
 				if(!definedAttribKeys.contains(attrKey) && !Doc41Constants.ATTRIB_NAME_PLANT.equals(attrKey) && !Doc41Constants.ATTRIB_NAME_VKORG.equals(attrKey)){
 					if(missingAttrKeysInCustomizing.length()>0){

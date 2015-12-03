@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.service.repository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,6 +39,7 @@ import com.bayer.bhc.doc41webui.integration.db.UserManagementDAO;
 import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionMapDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.SapCustomerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.SapVendorDC;
+import com.bayer.bhc.doc41webui.integration.db.dc.UMDoc41PermissionNDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserCountryDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserCustomerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPlantDC;
@@ -186,8 +188,6 @@ public class UserManagementRepository extends AbstractRepository {
             }
         }
         
-        updateLdapGroup(pUser);
-        
         // UserManagement DB part
         try {
             UMUserNDC userDC = userManagementDAO.getUserByCWID(pUser.getCwid());
@@ -241,6 +241,8 @@ public class UserManagementRepository extends AbstractRepository {
         } catch (Doc41TechnicalException e) {
             throw new Doc41RepositoryException(Doc41ErrorMessageKeys.USR_MGT_INSERT_USER_FAILED, e);
         }
+
+        updateLdapGroup(pUser);
 
         // Password notification part for external user - inform user:
         if (pUser.isExternalUser() && StringUtils.isNotBlank(pUser.getPassword())) {
@@ -302,6 +304,28 @@ public class UserManagementRepository extends AbstractRepository {
         }
 	    
 	}
+
+    /**
+     * Get a list of all Permissions currently available.
+     * @return
+     * @throws Doc41TechnicalException
+     */
+    public List<PermissionProfiles> getAllPermissions() throws Doc41TechnicalException {
+        ArrayList<PermissionProfiles> mRes = new ArrayList<PermissionProfiles>();
+        for (UMDoc41PermissionNDC mPerm : getUserManagementDAO().getAllPermissions()) {
+            PermissionProfiles mElem = new PermissionProfiles();
+            mElem.setPermissionCode(mPerm.getCode());
+            mElem.setPermissionName(mPerm.getPermissionname());
+            mElem.setPermissionDescription(mPerm.getPermissiondescription());
+            mElem.setType(mPerm.getType());
+            mElem.setHasVendor(mPerm.getHasVendor());
+            mElem.setHasPlant(mPerm.getHasPlant());
+            mElem.setHasCustomer(mPerm.getHasCustomer());
+            mElem.setHasCountry(mPerm.getHasCountry());
+            mRes.add(mElem);
+        }
+        return mRes;
+    }
 
     /**
      * Get a list of all Permission codes currently available.
@@ -380,20 +404,11 @@ public class UserManagementRepository extends AbstractRepository {
 				throw new IllegalArgumentException("addPermissionsToUser: cwid is empty");
 			}
 			
-			List<String> permissions = new ArrayList<String>();
-			List<String> roles = pUser.getRoles();
-			for (String roleName : roles) {
-				UMProfileNDC profile = userManagementDAO.getProfileByName(roleName, pUser.getLocale());
-				ArrayList<UMPermissionNDC> permissionDCs = userManagementDAO.getPermissionsByProfile(profile.getObjectID(),pUser.getLocale());
-				for (UMPermissionNDC permissionDC : permissionDCs) {
-		            permissions.add(permissionDC.getCode());
-				}
-			}
-			pUser.setPermissions(permissions);
+			pUser.setPermissions(Arrays.asList(userManagementDAO.getUserByCWID(pUser.getCwid()).getResolvedUserPermissionCodes()));
 			if (pUser.getAllDoc41Permissions().isEmpty()) {
 			    pUser.setAllDoc41Permissions(getAllPermissionCodes());
 			}
-		} catch (Doc41TechnicalException e) {
+		} catch (Exception e) {
 			throw new Doc41RepositoryException("UserManagementRepository.addPermissionsToUser", e);
 		}
 	}
@@ -517,9 +532,6 @@ public class UserManagementRepository extends AbstractRepository {
         		throw new Doc41RepositoryException(Doc41ErrorMessageKeys.USR_MGT_LDAP_UPDATEUSER_FAILED, e);
         	}
         }
-        if (updateLdap) {
-        	updateLdapGroup(pUser);
-        }
         
      	// UserManagement DB part
         UMUserNDC userDC = copyDomainToDCUser(pUser, false);
@@ -552,16 +564,10 @@ public class UserManagementRepository extends AbstractRepository {
 	            }
 	            
 	        } else {
-	        	// refresh roles
-	        	List<UMProfileNDC> userProfiles = 
-	    				userManagementDAO.getProfilesByUser(userDC.getObjectID());
-	    		
-	            List<String> roles = new ArrayList<String>();
-	            for (UMProfileNDC profile : userProfiles) {                    
-	                Doc41Log.get().debug(this.getClass(), "System", "getProfilename: " + profile.getProfilename());
-	                roles.add(profile.getProfilename());
+	            if (!userDC.userProfilesLoaded()) {
+	                userDC.loadUserProfiles(LocaleInSession.get());
 	            }
-	    		pUser.setRoles(roles);		
+	    		pUser.setRoles(Arrays.asList(userDC.getProfileNames()));
 	        }
         	
         	if (updatePartner) {
@@ -662,9 +668,12 @@ public class UserManagementRepository extends AbstractRepository {
 	    		pUser.setPlants(copyDcToDomainPlants(plantsInDB) );		
 	        }
         	
-        } catch (Doc41TechnicalException e) {
+        } catch (Exception e) {
             Doc41Log.get().error(this.getClass(), null, e);
             throw new Doc41RepositoryException(Doc41ErrorMessageKeys.USR_MGT_UPDATE_USER_FAILED, e);
+        }
+        if (updateLdap) {
+            updateLdapGroup(pUser);
         }
     }
 	
@@ -913,16 +922,10 @@ public class UserManagementRepository extends AbstractRepository {
 			}
 
 			User domainUser = userMapper.mapToDomainObject(pUserDC, new User());
-	 
-			List<UMProfileNDC> userProfiles = 
-					userManagementDAO.getProfilesByUser(pUserDC.getObjectID());
-			
-	        List<String> roles = new ArrayList<String>();
-	        for (UMProfileNDC profile : userProfiles) {                    
-	            Doc41Log.get().debug(this.getClass(), "System", "getProfilename: " + profile.getProfilename());
-	            roles.add(profile.getProfilename());
-	        }
-			domainUser.setRoles(roles);
+			if (!pUserDC.userProfilesLoaded()) {
+			    pUserDC.loadUserProfiles(LocaleInSession.get());
+			}
+			domainUser.setRoles(Arrays.asList(pUserDC.getProfileNames()));
 			
 			List<SapCustomerDC> customersInDB = getCustomersFromDB(pUserDC.getObjectID());
 			domainUser.setCustomers(copyDcToDomainCustomers(customersInDB));

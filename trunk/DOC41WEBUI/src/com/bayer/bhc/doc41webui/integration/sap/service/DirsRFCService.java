@@ -20,38 +20,25 @@ import com.bayer.bhc.doc41webui.domain.DocMetadata;
 import com.bayer.bhc.doc41webui.domain.DocTypeDef;
 import com.bayer.bhc.doc41webui.domain.DocumentStatus;
 import com.bayer.bhc.doc41webui.domain.KeyValue;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 @Component
-public class KgsRFCService extends AbstractSAPJCOService {
+public class DirsRFCService extends AbstractSAPJCOService {
 	
-	private static final String RFC_NAME_GET_DOC_DEF = "GetDocDef";
-	private static final String RFC_NAME_GET_CONTENT_REPO = "GetCrepInfo";
-	private static final String RFC_NAME_GET_ATTRIBUTES = "GetAttributes";
-	private static final String RFC_NAME_GET_ATTR_VALUES = "GetAttrValues";
-//	private static final String RFC_NAME_GET_TEXTS = "GetTexts";
-	private static final String RFC_NAME_CREATE_HTTP_PUT = "CreateHttpPut";
-	private static final String RFC_NAME_CREATE_HTTP_DVS_PUT = "CreateHttpDvsPut";
-	private static final String RFC_NAME_GET_DOC_STATUS = "GetDocStatus";
-	private static final String RFC_NAME_PROCESS_DR_REQ = "ProcessDrReq";
-	private static final String RFC_NAME_GET_DOC_URL = "GetDocUrl";
-	private static final String RFC_NAME_GET_DOC_INFO = "GetDocInfo";
-	
-	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes, Map<String, DocumentType> /*Set<String>*/ supportedSapDocTypes)
+	private static final String RFC_NAME_GET_DOC_KEYS = "DIRSGetDocKeys";
+	private static final String RFC_NAME_GET_DOC_DETAILS = "DIRSGetDocDetails";
+	private static final String RFC_NAME_GET_DOC_VIA_RFC = "DIRSGetDocViaRfc";
+	private static final String RFC_NAME_GET_DOC_CONTENT = "DIRSGetDocContentViaRfc";
+/*	
+	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes,Set<String> supportedSapDocTypes)
 			throws Doc41ServiceException {
 		Map<String, DocMetadata> metadataMap = new HashMap<String, DocMetadata>();
 		//get doctypes
 		List<DocTypeDef> docTypeDefs = getDocTypeDefs();
 //		Set<String> textKeysToTranslate = new HashSet<String>();
-		for (DocTypeDef docTypeDef : docTypeDefs) {
+        for (DocTypeDef docTypeDef : docTypeDefs) {
         	String d41id = docTypeDef.getD41id();
-
-        	DocumentType docType = supportedSapDocTypes.get(d41id); 
-        	if( (docType != null) && docType.isKgs() ){
-/*
-            if(supportedSapDocTypes.contains(d41id)){
-*/
+        	if(supportedSapDocTypes.contains(d41id)){
         		try {
 					Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "start Metadata loading for doc type "+d41id);
 					DocMetadata metadata = new DocMetadata(docTypeDef);
@@ -284,4 +271,5 @@ public class KgsRFCService extends AbstractSAPJCOService {
 			return result.get(0);
 		}
 	}
+*/
 }
