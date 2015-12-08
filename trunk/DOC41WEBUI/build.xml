@@ -3,7 +3,7 @@
 	
 	<tstamp/>
 
-	<property name="secprops.location" value="C:\eclipse\BOEAH\wasproj\doc41webui\conf/security.properties" />
+	<property name="secprops.location" value="C:/eclipse/BOEAH/wasproj/doc41webui/conf/security.properties" />
 	<property file="${secprops.location}" />
 	<property name="ECLIPSE_HOME" value="related/jenkins/eclipse_home" />
 	<property name="SLEEP_BETWEEN_SERVERS" value="0"/>
@@ -98,7 +98,7 @@
 	
     <target name="build" depends="init">
         <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="${dir.classes}" source="${source}" target="${target}">
+        <javac debug="true" debuglevel="${debuglevel}" destdir="${dir.classes}" source="${source}" target="${target}" encoding="UTF-8">
             <src path="src"/>
             <classpath refid="DOC41.classpath"/>
         </javac>
@@ -108,7 +108,40 @@
             replace="${proj.version.regexp.replace.prefix}${versionnumber}"
             flags="g"
         />
+    	<antcall target="replace-properties"/>
+    	<antcall target="replace-stage"/>
+    	<antcall target="replace-instance"/>
     </target>
+	
+	<target name="replace-properties" if="proj.properties.regexp.replace">
+		<echo message="replace properties with ${proj.properties.regexp.replace}"/>
+		<replaceregexp
+            file="${dir.classes}/${proj.basepropertiesfile}"
+            match="${proj.properties.regexp.search}"
+            replace="${proj.properties.regexp.replace}"
+            flags="g"
+        />
+	</target>
+	
+	<target name="replace-stage" if="proj.stage.regexp.replace">
+		<echo message="replace stage with ${proj.stage.regexp.replace}"/>
+		<replaceregexp
+            file="${dir.classes}/${proj.basepropertiesfile}"
+            match="${proj.stage.regexp.search}"
+            replace="app_stageS=${proj.stage.regexp.replace}"
+            flags="g"
+        />
+    </target>
+	
+	<target name="replace-instance" if="proj.instance.regexp.replace">
+		<echo message="replace instance with ${proj.instance.regexp.replace}"/>
+		<replaceregexp
+            file="${dir.classes}/${proj.basepropertiesfile}"
+            match="${proj.instance.regexp.search}"
+            replace="app_inst_local=${proj.instance.regexp.replace}"
+            flags="g"
+        />
+	</target>
 	
     <target name="build-test" depends="init">
         <echo message="${ant.project.name}: ${ant.file}"/>
@@ -118,10 +151,21 @@
         </javac>
     </target>
 
+	<target name="junit" depends="build-test">
+		<delete dir="${junit.output.dir}" failonerror="false"/>
+		<mkdir dir="${junit.output.dir}"/>
+		<junit showoutput="true"  filtertrace="true" printsummary="on" fork="true" forkmode="once">
+			<classpath refid="BOEAH.classpath" />
+			<formatter type="xml" />
+			<test name="com.bayer.bhc.boeah.AllCITests" todir="${junit.output.dir}"/>
+		</junit>
+	</target>
+
 	<target name="build-jenkins" description="build in jenkins">
 		<antcall target="clean" />
 		<antcall target="build" />
 		<antcall target="build-test" />
+		<antcall target="junit" />
 	</target>
 	
 	<target name="jenkins-deploy-dev" description="build and deploy on dev server from jenkins">
@@ -180,16 +224,26 @@
 		<sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="${tomcat.script.control} ${command}" />
 	</target>
 
+    <target name="check.tomcat">
+        <echo message="server = ${server}"/>
+    	<mkdir dir="${dir.distrib}" />
+    	<retry retrycount="10">
+        	<get src="http://${server}:9080/userprofile.htm" dest="${dir.distrib}/test-${server}.html"
+        	   maxtime="20" retries="1" httpusecaches="false"/>
+		</retry>
+    	<echo message="check OK"/>
+    </target>
+
 	<target name="deploy.to.one.tomcat">
 		<!-- copy war file to temp -->
 		<scp file="${war.file}" todir="${linux-user}:${linux-password}@${server}:${tomcat.dir.tmp}/${linux-user}" trust="true">
 		</scp>
 		<!-- stop server -->
-		<antcall target="control.apache.vh">
+		<!--<antcall target="control.apache.vh">
 			<param name="server" value="${server}"/>
 			<param name="virtual.host" value="${virtual.host}"/>
 			<param name="command" value="stop"/>
-		</antcall>
+		</antcall>-->
 		<antcall target="control.tomcat">
 			<param name="server" value="${server}"/>
 			<param name="command" value="stop"/>
@@ -202,10 +256,13 @@
 			<param name="server" value="${server}"/>
 			<param name="command" value="start"/>
 		</antcall>
-		<antcall target="control.apache.vh">
+		<!--<antcall target="control.apache.vh">
 			<param name="server" value="${server}"/>
 			<param name="virtual.host" value="${virtual.host}"/>
 			<param name="command" value="start"/>
+		</antcall>-->
+		<antcall target="check.tomcat">
+            <param name="server" value="${server}"/>
 		</antcall>
 	</target>
 	
@@ -222,6 +279,7 @@
 			<param name="server" value="${server.qa1}" />
 			<param name="virtual.host" value="${vhname.qa}" />
 		</antcall>
+		<echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
 		<sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
 		<antcall target="deploy.to.one.tomcat">
 			<param name="server" value="${server.qa2}" />
@@ -234,6 +292,7 @@
 			<param name="server" value="${server.prod1}" />
 			<param name="virtual.host" value="${vhname.prod}" />
 		</antcall>
+		<echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
 		<sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
 		<antcall target="deploy.to.one.tomcat">
 			<param name="server" value="${server.prod2}" />
@@ -246,10 +305,13 @@
 			<param name="server" value="${server1}"/>
 			<param name="command" value="start"/>
 		</antcall>
-		<antcall target="control.apache.vh">
+		<!--<antcall target="control.apache.vh">
 			<param name="server" value="${server1}"/>
 			<param name="virtual.host" value="${virtual.host}"/>
 			<param name="command" value="start"/>
+		</antcall>-->
+		<antcall target="check.tomcat">
+            <param name="server" value="${server1}"/>
 		</antcall>
 		<if>
 			<length string="${server2}" when="greater" length="0" />
@@ -258,21 +320,24 @@
 					<param name="server" value="${server2}"/>
 					<param name="command" value="start"/>
 				</antcall>
-				<antcall target="control.apache.vh">
+				<antcall target="check.tomcat">
+					<param name="server" value="${server2}"/>
+		        </antcall>
+				<!--<antcall target="control.apache.vh">
 					<param name="server" value="${server2}"/>
 					<param name="virtual.host" value="${virtual.host}"/>
 					<param name="command" value="start"/>
-				</antcall>
+				</antcall>-->
 			</then>
 		</if>
 	</target>
 	
 	<target name="servercontrol.stop" depends="servercontrol.servernames">
-		<antcall target="control.apache.vh">
+		<!--<antcall target="control.apache.vh">
 			<param name="server" value="${server1}"/>
 			<param name="virtual.host" value="${virtual.host}"/>
 			<param name="command" value="stop"/>
-		</antcall>
+		</antcall>-->
 		<antcall target="control.tomcat">
 			<param name="server" value="${server1}"/>
 			<param name="command" value="stop"/>
@@ -281,11 +346,11 @@
 		<if>
 			<length string="${server2}" when="greater" length="0" />
 			<then>
-				<antcall target="control.apache.vh">
+				<!--<antcall target="control.apache.vh">
 					<param name="server" value="${server2}"/>
 					<param name="virtual.host" value="${virtual.host}"/>
 					<param name="command" value="stop"/>
-				</antcall>
+				</antcall>-->
 				<antcall target="control.tomcat">
 					<param name="server" value="${server2}"/>
 					<param name="command" value="stop"/>
@@ -295,38 +360,45 @@
 	</target>
 	
 	<target name="servercontrol.restart" depends="servercontrol.servernames">
-		<antcall target="control.apache.vh">
+		<!--<antcall target="control.apache.vh">
 			<param name="server" value="${server1}"/>
 			<param name="virtual.host" value="${virtual.host}"/>
 			<param name="command" value="stop"/>
-		</antcall>
+		</antcall>-->
 		<antcall target="control.tomcat">
 			<param name="server" value="${server1}"/>
 			<param name="command" value="restart"/>
 		</antcall>
-		<antcall target="control.apache.vh">
+		<antcall target="check.tomcat">
+            <param name="server" value="${server1}"/>
+        </antcall>
+		<!--<antcall target="control.apache.vh">
 			<param name="server" value="${server1}"/>
 			<param name="virtual.host" value="${virtual.host}"/>
 			<param name="command" value="start"/>
-		</antcall>
+		</antcall>-->
 		<if>
 			<length string="${server2}" when="greater" length="0" />
 			<then>
+				<echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
 				<sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
-				<antcall target="control.apache.vh">
+				<!--<antcall target="control.apache.vh">
 					<param name="server" value="${server2}"/>
 					<param name="virtual.host" value="${virtual.host}"/>
 					<param name="command" value="stop"/>
-				</antcall>
+				</antcall>-->
 				<antcall target="control.tomcat">
 					<param name="server" value="${server2}"/>
 					<param name="command" value="restart"/>
 				</antcall>
-				<antcall target="control.apache.vh">
+				<antcall target="check.tomcat">
+		            <param name="server" value="${server2}"/>
+		        </antcall>
+				<!--<antcall target="control.apache.vh">
 					<param name="server" value="${server2}"/>
 					<param name="virtual.host" value="${virtual.host}"/>
 					<param name="command" value="start"/>
-				</antcall>
+				</antcall>-->
 			</then>
 		</if>
 	</target>
