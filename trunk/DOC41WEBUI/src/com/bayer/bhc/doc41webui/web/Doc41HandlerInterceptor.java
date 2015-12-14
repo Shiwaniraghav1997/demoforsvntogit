@@ -284,6 +284,9 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
                     if(!StringTool.isTrimmedEmptyOrNull(tmpPwd) && !StringTool.isTrimmedEmptyOrNull(password)
                             && StringTool.equals(tmpPwd, password)){
                         // TODO: if introduce further remote roles, introduce a external service function TO service user MAPPING. currently only SD_CARR allowed
+                        if(LocaleInSession.get()==null){
+                            LocaleInSession.put(Locale.US);
+                        }
                         User tmpUser = userManagementUC.findUser(CWID_DOC_SERVICE_CARR);
                         tmpUser.setSkipCustomerCheck(true);
                         tmpUser.setSkipVendorCheck(true);
