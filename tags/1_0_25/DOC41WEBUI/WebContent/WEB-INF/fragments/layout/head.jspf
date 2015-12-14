@@ -1,0 +1,75 @@
+	<%@taglib prefix="doc41" uri="doc41-tags" %>
+	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	<doc41:loadTranslations jspName="${jspName}" component="${component}"/>
+
+	<head>
+		<title><doc41:translate label="${title}" /></title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/img/favicon.ico" />
+		
+<%-- 		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css" /> --%>
+		
+		 
+		<!-- Doc41 javascript -->
+		<script type="text/javascript">var ctx = "${pageContext.request.contextPath}";</script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/prolog.js"></script>
+		
+		<!-- jQuery -->
+<%-- 		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui-1.10.3.custom/cupertino/jquery-ui.min.css" /> --%>
+		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui-1.10.3.custom/custom-theme/jquery-ui-1.10.3.custom.min.css" />
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.10.3.custom.min.js"></script>
+		
+		<!-- Tablesorter: required -->
+<%-- 		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/theme.jui.css"/> --%>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.tablesorter.min.js"></script>
+
+		<!-- Tablesorter pager: required -->
+		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery.tablesorter.pager.css" />
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.tablesorter.pager.min.js"></script>
+		
+		<!-- Tablesorter: optional -->
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.tablesorter.widgets.min.js"></script>
+		
+		<!-- Moment Date/Time lib -->
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/moment.min.js"></script>
+		
+		<!-- Doc41 styles -->
+		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/layoutstyle.css" />
+		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/doc41.css" />
+		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/portlet.css" />
+		
+		
+		
+		<!-- domLib/domTT -->
+<!-- 
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/domLib.js"></script>
+		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/domTT.css" />
+ -->
+ 
+ 		<!-- Make jQuery Elements -->
+ 		<script type="text/javascript">
+	 		$(function() {
+				$( document ).tooltip();
+			});
+ 		</script>
+ 		<c:if test="${not empty autoRedirectUrl}">
+ 			<meta http-equiv="refresh" content="5; URL=${autoRedirectUrl}"/>
+ 		</c:if>
+ 		
+ 		<script>
+	 		$(function(){
+	 			var mandatoryFieldTitle = "<doc41:translate label='MandatoryField'/>";
+	 			$('.portlet-mandatory').each(function() { 
+	 				   $this = $(this);
+	 				   $label = $('label[for="'+ $this.attr('id') +'"]');
+	 				   if ($label.length > 0 && $label.html().indexOf('*')==-1) {
+	 				       //this input has a label associated with it, lets do something!
+	 					   $label.html($label.html()+'<span title="'+mandatoryFieldTitle+'"> *</span>');
+	 				       $label.css('margin-right','-10px');
+	 				   }
+	 				});
+	 			
+	 		});
+ 		</script>
+	</head>
