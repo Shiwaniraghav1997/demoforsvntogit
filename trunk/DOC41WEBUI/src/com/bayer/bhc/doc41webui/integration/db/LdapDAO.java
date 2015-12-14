@@ -54,7 +54,6 @@ public class LdapDAO {
 	}
 	
 	private boolean isDevSystem(){
-	    if(true)return false;
 		String stageInfo = ConfigMap.get().getHostId().toUpperCase();
 		return stageInfo.startsWith("DEV") || stageInfo.startsWith("WORKSTATION");
 	}
