@@ -155,9 +155,9 @@
 		<delete dir="${junit.output.dir}" failonerror="false"/>
 		<mkdir dir="${junit.output.dir}"/>
 		<junit showoutput="true"  filtertrace="true" printsummary="on" fork="true" forkmode="once">
-			<classpath refid="BOEAH.classpath" />
+			<classpath refid="DOC41.classpath" />
 			<formatter type="xml" />
-			<test name="com.bayer.bhc.boeah.AllCITests" todir="${junit.output.dir}"/>
+		<!--	<test name="com.bayer.bhc.boeah.AllCITests" todir="${junit.output.dir}"/> -->
 		</junit>
 	</target>
 
