@@ -49,6 +49,7 @@ import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.sap.service.AuthorizationRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.BwRFCService;
+import com.bayer.bhc.doc41webui.integration.sap.service.DirsRFCService;
 import com.bayer.bhc.doc41webui.integration.sap.service.KgsRFCService;
 import com.bayer.bhc.doc41webui.service.httpclient.HttpClientService;
 import com.bayer.bhc.doc41webui.service.repository.TranslationsRepository;
@@ -78,7 +79,6 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.BOLDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.CMRDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.CMROutDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.FDACertDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.SDDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.ShippersDeclDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.WaybillDocumentType;
 import com.bayer.ecim.foundation.basic.ConfigMap;
@@ -99,6 +99,10 @@ public class DocumentUC {
 	@Autowired
 	private KgsRFCService kgsRFCService;
 	
+    @SuppressWarnings("unused")
+    @Autowired
+    private DirsRFCService dirsRFCService;
+    
 	@Autowired
 	private BwRFCService bwRFCService;
 	
@@ -160,7 +164,7 @@ public class DocumentUC {
 	 * @param mPermissionType the permission type (used instead of a document type) to handle a group of document types instead of a single one.
 	 * @return
 	 */
-	public List<String> getAllDownloadDocumentTypesOfSamePermissionType(String mPermissionType) throws Doc41TechnicalException {
+	public ArrayList<String> getAllDownloadDocumentTypesOfSamePermissionType(String mPermissionType) throws Doc41TechnicalException {
 	    if (documentTypesByDownloadPermissionType == null) {
 	        Map<String,ArrayList<String>> mDocumentTypesByDownloadPermissionType = new HashMap<String, ArrayList<String>>();
 	        HashMap<String,PermissionProfiles>mProfileByCode = new HashMap<String, PermissionProfiles>();
@@ -172,10 +176,10 @@ public class DocumentUC {
 	            String typeConst = documentType.getTypeConst();
 	            if (documentType instanceof DownloadDocumentType) {
 	                String mPerm = ((DownloadDocumentType)documentType).getPermissionDownload();
-	                ArrayList<String> mList = documentTypesByDownloadPermissionType.get(mPerm);
+	                ArrayList<String> mList = mDocumentTypesByDownloadPermissionType.get(mPerm);
 	                if (mList == null) {
 	                    mList = new ArrayList<String>();
-	                    documentTypesByDownloadPermissionType.put(mPerm, mList);
+	                    mDocumentTypesByDownloadPermissionType.put(mPerm, mList);
 	                }
 	                mList.add(typeConst);
 	            }
@@ -295,6 +299,7 @@ public class DocumentUC {
      * Get the Collection of all DocumentType by TypeConstant
      * @return
      */
+    @SuppressWarnings("unused")
     private Map<String,DocumentType> getAllDocTypesMap() {
         return documentTypes;
     }
@@ -323,15 +328,17 @@ public class DocumentUC {
 */
 	}
 	
-	public Set<String> getAvailableSDDownloadDocumentTypes() {
-	    // FIXME: can just use: getAllDownloadDocumentTypesOfSamePermissionType("DOC_SD"); // should be defined as Constants soon
-        Set<String> sdDLTypes = new HashSet<String>();
+	public List<String> getAvailableSDDownloadDocumentTypes() throws Doc41TechnicalException {
+	    return getAllDownloadDocumentTypesOfSamePermissionType(DocumentType.GROUP_SD); // should be defined as Constants soon
+/*
+	    Set<String> sdDLTypes = new HashSet<String>();
         for (DocumentType docType : documentTypes.values()) {
             if(docType instanceof SDDocumentType && docType instanceof DownloadDocumentType){
                 sdDLTypes.add(docType.getTypeConst());
             }
         }
         return sdDLTypes ;
+ */
     }
 	
 	public String getTypeLabel(String doctype,String language) throws Doc41BusinessException{
@@ -350,21 +357,23 @@ public class DocumentUC {
 	
 	
 	public List<Attribute> getAttributeDefinitions(String doctype,boolean filterFileName) throws Doc41BusinessException{
-		DocMetadata metadata = getMetadata(doctype);
-		List<Attribute> kgsAttributes = metadata.getAttributes();
-		DocumentType documentType = documentTypes.get(doctype);
-		Set<String> excludedAttributes = documentType.getExcludedAttributes();
-		List<Attribute> filteredAttributes = new ArrayList<Attribute>();
-		for (Attribute attribute : kgsAttributes) {
-			String name = attribute.getName();
-			if(excludedAttributes==null || !excludedAttributes.contains(name)){
-				boolean fileNameFilterCheck = !filterFileName || !StringTool.equals(name, Doc41Constants.ATTRIB_NAME_FILENAME);
-				boolean globalExcludeCheck = !StringTool.equals(name, Doc41Constants.ATTRIB_NAME_WEBUI_USER);
-				if(fileNameFilterCheck && globalExcludeCheck){
-					filteredAttributes.add(attribute);
-				}
-			}
-		}
+        DocumentType documentType = documentTypes.get(doctype);
+        List<Attribute> filteredAttributes = new ArrayList<Attribute>();
+        if (documentType.isKgs()) {
+            DocMetadata metadata = getMetadata(doctype);
+            List<Attribute> kgsAttributes = metadata.getAttributes();
+            Set<String> excludedAttributes = documentType.getExcludedAttributes();
+            for (Attribute attribute : kgsAttributes) {
+                String name = attribute.getName();
+                if(excludedAttributes==null || !excludedAttributes.contains(name)){
+                    boolean fileNameFilterCheck = !filterFileName || !StringTool.equals(name, Doc41Constants.ATTRIB_NAME_FILENAME);
+                    boolean globalExcludeCheck = !StringTool.equals(name, Doc41Constants.ATTRIB_NAME_WEBUI_USER);
+                    if(fileNameFilterCheck && globalExcludeCheck){
+                        filteredAttributes.add(attribute);
+                    }
+                }
+            }
+        }
 		//Doc41Constants.ATTRIB_NAME_FILENAME
 		return filteredAttributes;
 	}
@@ -567,38 +576,48 @@ public class DocumentUC {
 					throws Doc41BusinessException {
 		try{
 		    //FIXME: DIRS support needed
-			checkAttribsWithCustomizing(attributeValues,type);
+		    DocumentType docType = getDocType(type);
+            List<HitListEntry> allResults = new ArrayList<HitListEntry>();
+            DocMetadata metadata = getMetadata(type);
+            DocTypeDef docDef = metadata.getDocDef();
+            String d41id = docDef.getD41id();
+            List<String> sapObjList = docDef.getSapObjList();
+		    if (docType.isDirs()) {
+		        if (docType.isKgs())
+		            throw new Doc41BusinessException("DocumentType '" + type + "' reports to be KGS and DIRS at the same time!!!");
+		        // TODO:
+		        //allResults = dirsRFCService.findDocs(d41id, null, null, attributeValues, maxResults, maxVersionOnly);
+		        for (HitListEntry hitListEntry : allResults) {
+		            hitListEntry.setType(type);
+		        }
+		    
+		    } else if (docType.isKgs()) {
+		        checkAttribsWithCustomizing(attributeValues,type);
 			
-			Map<Integer, String> seqToKey = getSeqToKeyFromDefinitions(type);
-			DocMetadata metadata = getMetadata(type);
-			DocTypeDef docDef = metadata.getDocDef();
-			String d41id = docDef.getD41id();
-			List<String> sapObjList = docDef.getSapObjList();
-			List<HitListEntry> allResults;
-			if(objectIds==null || objectIds.isEmpty()){
-			    allResults = bwRFCService.findDocs(d41id, null, null, attributeValues, maxResults, maxVersionOnly,seqToKey);
-			} else {
-                allResults = new ArrayList<HitListEntry>();
-    			for (String sapObj : sapObjList) {
-    				List<HitListEntry> oneResult = bwRFCService.findDocs(d41id, sapObj, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKey);
-    				allResults.addAll(oneResult);
-    			}
-			}
-			for (HitListEntry hitListEntry : allResults) {
-			    hitListEntry.setType(type);
-				hitListEntry.initCustValuesMap(seqToKey);
+		        Map<Integer, String> seqToKey = getSeqToKeyFromDefinitions(type);
+		        if(objectIds==null || objectIds.isEmpty()){
+		            allResults = bwRFCService.findDocs(d41id, null, null, attributeValues, maxResults, maxVersionOnly,seqToKey);
+		        } else {
+		            for (String sapObj : sapObjList) {
+		                List<HitListEntry> oneResult = bwRFCService.findDocs(d41id, sapObj, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKey);
+		                allResults.addAll(oneResult);
+		            }
+		        }
+		        for (HitListEntry hitListEntry : allResults) {
+		            hitListEntry.setType(type);
+		            hitListEntry.initCustValuesMap(seqToKey);
 				
-				Map<String,String> params = new LinkedHashMap<String, String>();
-                params.put(Doc41Constants.URL_PARAM_TYPE,type);
-                params.put(Doc41Constants.URL_PARAM_DOC_ID,hitListEntry.getDocId());
-                params.put(Doc41Constants.URL_PARAM_CWID,UserInSession.getCwid());
-                params.put(Doc41Constants.URL_PARAM_SAP_OBJ_ID,hitListEntry.getObjectId());
-                params.put(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE,hitListEntry.getObjectType());
-                params.put(Doc41Constants.URL_PARAM_FILENAME,StringTool.encodeURLWithDefaultFileEnc(StringTool.nullToEmpty(hitListEntry.getFileName())));
-                String key = UrlParamCrypt.encryptParameters(params);
-				hitListEntry.setKey(key);
-			}
-			
+		            Map<String,String> params = new LinkedHashMap<String, String>();
+		            params.put(Doc41Constants.URL_PARAM_TYPE,type);
+		            params.put(Doc41Constants.URL_PARAM_DOC_ID,hitListEntry.getDocId());
+		            params.put(Doc41Constants.URL_PARAM_CWID,UserInSession.getCwid());
+		            params.put(Doc41Constants.URL_PARAM_SAP_OBJ_ID,hitListEntry.getObjectId());
+		            params.put(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE,hitListEntry.getObjectType());
+		            params.put(Doc41Constants.URL_PARAM_FILENAME,StringTool.encodeURLWithDefaultFileEnc(StringTool.nullToEmpty(hitListEntry.getFileName())));
+		            String key = UrlParamCrypt.encryptParameters(params);
+		            hitListEntry.setKey(key);
+		        }
+		    }
 			return allResults;
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("searchDocuments",e);
@@ -684,12 +703,45 @@ public class DocumentUC {
 		return (UploadDocumentType) documentType;
 	}
 	
-	private DownloadDocumentType getDocTypeForDownload(String type) throws Doc41BusinessException{
-		DocumentType documentType = getDocType(type);
-		if(!(documentType instanceof DownloadDocumentType)){
-			throw new Doc41BusinessException("doctype not enabled for download: "+type);
+    private DownloadDocumentType getDocTypeForDownload(String type) throws Doc41BusinessException{
+        DocumentType documentType = getDocType(type);
+        if(!(documentType instanceof DownloadDocumentType)){
+            throw new Doc41BusinessException("doctype not enabled for download: "+type);
+        }
+        return (DownloadDocumentType) documentType;
+    }
+    
+    /**
+     * Get a certain DownloadDocumentType or filtered DownloadDocumentType Group.
+     * @param type may be an explicite document type name of a name of a DocumentType group, see DocumentType.GROUP_* for available groups (identified by the permission group of related Document permissions)
+     * @return
+     * @throws Doc41BusinessException
+     */
+	public List<DownloadDocumentType> getFilteredDocTypesForDownload(String type) throws Doc41BusinessException{
+	    List<String> mTypeNames;
+        try {
+            mTypeNames = getAllDownloadDocumentTypesOfSamePermissionType(type);
+        } catch (Doc41TechnicalException e) {
+            throw new Doc41BusinessException("Failed to build/resolve DocumentGroups, occurred on chec for DocumentType(s): " + type, e);
+        }
+	    List<DownloadDocumentType> mDocTypes = new ArrayList<DownloadDocumentType>();
+	    if (mTypeNames == null) { // no TypeGroup, so is explicite (single) Type
+	        mTypeNames = new ArrayList<String>();
+	        mTypeNames.add( type );
+	    }
+	    for (String mType: mTypeNames) {
+	        DocumentType mDocType = getDocType(mType);
+	        if (mDocType == null) {
+	            throw new Doc41BusinessException("Undefined DocumentType requested: " + type + "." + mType);
+	        }
+	        if (mDocType instanceof DownloadDocumentType) {
+	            mDocTypes.add((DownloadDocumentType)mDocType);
+	        }
+	    }
+		if( mDocTypes.isEmpty() ) {
+			Doc41Log.get().warnMessageOnce(this, null, "Requested DocumentType(Group) is/has no DownloadDocumentType(s), List is empty: " + type);
 		}
-		return (DownloadDocumentType) documentType;
+		return mDocTypes;
 	}
 	
 	private DirectDownloadDocumentType getDocTypeForDirectDownload(String type) throws Doc41BusinessException{
@@ -706,7 +758,7 @@ public class DocumentUC {
 	 * @return
 	 * @throws Doc41BusinessException thrown, if not available
 	 */
-	private DocumentType getDocType(String typeConstant) throws Doc41BusinessException {
+	public DocumentType getDocType(String typeConstant) throws Doc41BusinessException {
 		DocumentType documentType = documentTypes.get(typeConstant);
 		if(documentType==null){
 			throw new Doc41BusinessException("unknown doctype, typeConstant: "+typeConstant);
@@ -720,8 +772,7 @@ public class DocumentUC {
 	 * @return
 	 * @throws Doc41BusinessException thrown, if not available
 	 */
-    @SuppressWarnings("unused")
-    private DocumentType getDocTypeBySapId(String sapTypeId) throws Doc41BusinessException {
+    public DocumentType getDocTypeBySapId(String sapTypeId) throws Doc41BusinessException {
         DocumentType documentType = documentTypesBySapId.get(sapTypeId);
         if(documentType==null){
             throw new Doc41BusinessException("unknown doctype, sapTypeId: "+sapTypeId);

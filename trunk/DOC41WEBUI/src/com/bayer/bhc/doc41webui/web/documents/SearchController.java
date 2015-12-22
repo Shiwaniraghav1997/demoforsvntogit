@@ -2,6 +2,7 @@ package com.bayer.bhc.doc41webui.web.documents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -36,6 +37,8 @@ import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PMSupplierDownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.AbstractDeliveryCertDocumentType;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
@@ -66,23 +69,55 @@ public class SearchController extends AbstractDoc41Controller {
 	@RequestMapping(value="/documents/documentsearch",method = RequestMethod.GET)
 	public SearchForm get(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch,@RequestParam(required=false,defaultValue="true") boolean errorOnNoDocuments) throws Doc41BusinessException{
 		String language = LocaleInSession.get().getLanguage();
-		String type = searchForm.getType();
-		if(StringTool.isTrimmedEmptyOrNull(type)){
+		String mFormType = searchForm.getType();
+		if(StringTool.isTrimmedEmptyOrNull(mFormType)){
 			throw new Doc41BusinessException("typeIsMissing");
 		}
 		
-        // TODO: support of permission types as type representing a group of document types (for implementation of global searches)
-		// TODO: foreach documentType...
-		searchForm.initPartnerNumbers(documentUC.hasCustomerNumber(type),getLastCustomerNumberFromSession(),
-				documentUC.hasVendorNumber(type),getLastVendorNumberFromSession());
-		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type,false);
+        // TODO: IMPLEMENTED, first tests passed: support of permission types as type representing a group of document types (for implementation of global searches)
+		// TODO: IMPLEMENTED, first tests passed: foreach documentType...
+		List<DownloadDocumentType> mDocTypes = documentUC.getFilteredDocTypesForDownload(mFormType);
+		searchForm.setDocumentTypes(mDocTypes);
+		List<Attribute> attributeDefinitions = new ArrayList<Attribute>();
+		HashSet<String> attributeDefinitionNames = new HashSet<String>();
+		int objectIdFillLength = -1;
+		boolean isFirst = true;
+		boolean isKgs = false;
+		for (DownloadDocumentType mDocType : mDocTypes) {
+		    if (isFirst) {
+		        isFirst = false;
+		        isKgs = mDocType.isKgs();
+		    } else {
+		        if (isKgs != mDocType.isKgs()) {
+	                throw new Doc41BusinessException("Mixed kind of DocumentType storage technology - KGS & DIRS - not supported!");
+		        }
+		    }
+		    int objectIdFillLengthLocal = mDocType.getObjectIdFillLength();
+		    if (objectIdFillLength == -1) {
+		        objectIdFillLength = objectIdFillLengthLocal;
+		    } else if (objectIdFillLength != objectIdFillLengthLocal) {
+		        throw new Doc41BusinessException("ObjectIdFillLength ambigious for Documents of Type: " + mFormType + " -> " + objectIdFillLength + " <> " + objectIdFillLengthLocal );
+		    }
+		    String mType = mDocType.getTypeConst();
+		    searchForm.initPartnerNumbers(documentUC.hasCustomerNumber(mType),getLastCustomerNumberFromSession(),
+		            documentUC.hasVendorNumber(mType),getLastVendorNumberFromSession());
+		    List<Attribute> typeAttributeDefinitions = documentUC.getAttributeDefinitions(mType,false);
+		    for (Attribute attr : typeAttributeDefinitions) {
+		        if (!attributeDefinitionNames.contains(attr.getName())) {
+		            attributeDefinitionNames.add(attr.getName());
+		            attributeDefinitions.add(attr);
+		        }
+		    }
+		}
+System.err.println("KGS="+isKgs);
+		searchForm.setKgs(isKgs);
 		searchForm.initAttributes(attributeDefinitions,language);
 		
 		if(!StringTool.isTrimmedEmptyOrNull(ButtonSearch)){
 			if(searchForm.isSearchFilled()){
 				String searchFormCustomerNumber = searchForm.getCustomerNumber();
 				String searchFormVendorNumber = searchForm.getVendorNumber();
-				checkPartnerNumbers(result,type,searchFormCustomerNumber,searchFormVendorNumber);
+				checkPartnerNumbers(result,searchForm.isCustomerNumberUsed(), searchForm.isVendorNumberUsed(),searchFormCustomerNumber,searchFormVendorNumber);
 				
 				if(!result.hasErrors()){
 					String singleObjectId = searchForm.getObjectId();
@@ -94,31 +129,56 @@ public class SearchController extends AbstractDoc41Controller {
 					checkForbiddenWildcards(result,"viewAttributes['","']",viewAttributes);
 					if(!result.hasErrors()){
 						if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
-							int objectIdFillLength = documentUC.getDocumentFillLength(type);
+						    // int objectIdFillLength = documentUC.getDocumentFillLength(type);
 							if(singleObjectId.length()<objectIdFillLength){
 								singleObjectId = StringTool.minLString(singleObjectId, objectIdFillLength, '0');
 								searchForm.setObjectId(singleObjectId);
 							}
 						}
 						
-						CheckForDownloadResult checkResult = documentUC.checkForDownload(result, type, searchFormCustomerNumber,searchFormVendorNumber, singleObjectId, attributeValues, viewAttributes);
-						Map<String, String> allAttributeValues = new HashMap<String, String>(attributeValues);
-						Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
-						if(additionalAttributes!=null){
-							allAttributeValues.putAll(additionalAttributes);
+						ArrayList<String>searchingTargetTypes = new ArrayList<String>();
+                        ArrayList<BeanPropertyBindingResult>results = new ArrayList<BeanPropertyBindingResult>();
+                        Map<String, String> allAttributeValues = new HashMap<String, String>();
+                        List<String> objectIds = new ArrayList<String>();
+						for (DocumentType mDocType: mDocTypes) {
+						    // We need to create separate BindingResults per DocType, then see which work fine and choose them, otherwise merge all to show all errors.
+						    // hope this way is fine to create local, temporary result...
+						    BeanPropertyBindingResult mTmp = new BeanPropertyBindingResult(result.getTarget(), result.getObjectName() );
+						    results.add(mTmp);
+						    CheckForDownloadResult checkResult = documentUC.checkForDownload(result, mDocType.getTypeConst(), searchFormCustomerNumber,searchFormVendorNumber, singleObjectId, attributeValues, viewAttributes);
+						    if (!result.hasErrors()) {
+						        searchingTargetTypes.add(mDocType.getTypeConst());
+						        // FIXME: We should report the types possible to search for to the mask... (in case of GroupSearch, see DocumentType.GROUP*)
+						        allAttributeValues.putAll(attributeValues);
+						        Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
+						        if(additionalAttributes!=null){
+						            allAttributeValues.putAll(additionalAttributes);
+						        }
+						        if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)) {
+						            objectIds.add(singleObjectId);
+						        }
+						        List<String> additionalObjectIds = checkResult.getAdditionalObjectIds();
+						        if(additionalObjectIds!=null && !additionalObjectIds.isEmpty()) {
+						            // FIXME: Will we hava a Duplicates Problem???
+						            objectIds.addAll(additionalObjectIds);
+						        }
+						    }
 						}
-						List<String> objectIds = new ArrayList<String>();
-						if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
-							objectIds.add(singleObjectId);
-						}
-						List<String> additionalObjectIds = checkResult.getAdditionalObjectIds();
-						if(additionalObjectIds!=null && !additionalObjectIds.isEmpty()){
-							objectIds.addAll(additionalObjectIds);
-						}
-						if(!result.hasErrors()){
+					    if (searchingTargetTypes.isEmpty()) {
+					        boolean allHaveFieldErrors = true; 
+					        for (BeanPropertyBindingResult mTmp : results) {
+					            allHaveFieldErrors &= mTmp.hasFieldErrors(); 
+					            result.addAllErrors(mTmp);
+					        }
+					        if(allHaveFieldErrors) { // no DocumentType has full setting of mandatory fields.
+                                result.reject("PleaseEnterMandatoryFields");
+                            }
+					    } else {
 							int maxResults = searchForm.getMaxResults();
-                            List<HitListEntry> documents = documentUC.searchDocuments(type, 
-									objectIds, allAttributeValues, maxResults+1, false);
+							ArrayList<HitListEntry> documents = new ArrayList<HitListEntry>();
+							for (String mType : searchingTargetTypes) {
+							    documents.addAll( documentUC.searchDocuments(mType, objectIds, allAttributeValues, maxResults+1, false) );
+							}
 							if(documents.isEmpty()){
 							    if(errorOnNoDocuments){
 							        result.reject("NoDocumentsFound");
@@ -128,18 +188,13 @@ public class SearchController extends AbstractDoc41Controller {
 							} else {
 								searchForm.setDocuments(documents);
 							}
-						} else {
-							if(result.hasFieldErrors()){
-								result.reject("PleaseEnterMandatoryFields");
-							}
-						}
+					    }
 					}
 				}
 			} else {
 				result.reject("NoSearchWithoutSearchParameters");
 			}
 		}
-		
 		return searchForm;
 	}
 	
@@ -148,7 +203,7 @@ public class SearchController extends AbstractDoc41Controller {
 	    try {
             List<BdsServiceDocumentEntry> documents = new ArrayList<BdsServiceDocumentEntry>();
             
-            Set<String> types = documentUC.getAvailableSDDownloadDocumentTypes();
+            List<String> types = documentUC.getAvailableSDDownloadDocumentTypes();
             for (String type : types) {
                 
                 if(hasPermission(UserInSession.get(), type)){
@@ -183,7 +238,7 @@ public class SearchController extends AbstractDoc41Controller {
                 }
             }
             return new BdsServiceSearchDocumentsResult(documents);
-        } catch (Doc41BusinessException e) {
+        } catch (Exception e) {
             throw new Doc41DocServiceException("getSDListForService", e);
         }
     }
@@ -246,11 +301,16 @@ public class SearchController extends AbstractDoc41Controller {
 	@RequestMapping(value="/documents/searchpmsupplier",method = RequestMethod.GET)
 	public ModelMap getPMSupplier(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
 		ModelMap map = new ModelMap();
+        String type = searchForm.getType();
+        DocumentType docType = documentUC.getDocType(type);
 		SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
 		map.addAttribute(searchForm2);
-		
+
+// check-PO-mode:
 //		map.addAttribute("keyPONumber",PMSupplierDownloadDocumentType.VIEW_ATTRIB_PO_NUMBER);
-		map.addAttribute("keyFileName",PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
+		if (docType.isDirs()) {
+		    map.addAttribute("keyFileName",PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
+		}
 		
 		return map;
 	}
@@ -278,10 +338,10 @@ public class SearchController extends AbstractDoc41Controller {
 		documentUC.downloadDocument(response,type,docId,filename,sapObjId,sapObjType);
 	}
 	
-	private void checkPartnerNumbers(BindingResult errors, String type,
+	private void checkPartnerNumbers(BindingResult errors, boolean hasCustomerNumber, boolean hasVendorNumber,
 			String customerNumber,String vendorNumber) throws Doc41BusinessException {
 		//customer
-		if(documentUC.hasCustomerNumber(type)){
+		if(hasCustomerNumber){
 			if(StringTool.isTrimmedEmptyOrNull(customerNumber)){
 				errors.rejectValue("customerNumber","CustomerNumberMissing");
 			} else {
@@ -294,7 +354,7 @@ public class SearchController extends AbstractDoc41Controller {
 		}
 		
 		//vendor
-		if(documentUC.hasVendorNumber(type)){
+		if(hasVendorNumber){
 			if(StringTool.isTrimmedEmptyOrNull(vendorNumber)){
 				errors.rejectValue("vendorNumber","VendorNumberMissing");
 			} else {

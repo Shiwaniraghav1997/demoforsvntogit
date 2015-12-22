@@ -6,6 +6,11 @@ import java.util.Set;
 
 public interface DocumentType {
 
+    public static final String GROUP_SD = "DOC_SD";
+    public static final String GROUP_QM = "DOC_QM";
+    public static final String GROUP_PM = "DOC_PM";
+    public static final String GROUP_LS = "DOC_LS";
+    
 	public boolean hasCustomerNumber();
 	public boolean hasVendorNumber();
 	public String getTypeConst();

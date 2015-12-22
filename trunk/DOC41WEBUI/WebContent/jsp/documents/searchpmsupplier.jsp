@@ -9,7 +9,8 @@
 	
 	<doc41:searchtemplate action="searchpmsupplier">
 		<jsp:attribute name="fragmentCustomSearchFields">
-			<!-- tr class="portlet-table">
+          <c:if test="!${searchForm.kgs}">
+			<tr class="portlet-table">
 				<th><label for="${keyFileName}"><doc41:translate label="FileName" /></label></th>
 				<td>
 					<input id="${keyFileName}"
@@ -18,8 +19,9 @@
 						value="${searchForm.viewAttributes[keyFileName]}" />
 						<doc41:error path="viewAttributes['${keyFileName}']" />
 				</td>
-			</tr -->
-		</</jsp:attribute>
+			</tr>
+          </c:if>
+        </jsp:attribute>
 	</doc41:searchtemplate>
 
 

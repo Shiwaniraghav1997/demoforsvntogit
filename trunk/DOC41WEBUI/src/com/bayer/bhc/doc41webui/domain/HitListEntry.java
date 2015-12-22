@@ -21,7 +21,7 @@ public class HitListEntry implements Serializable {
 	private String objectType;
 	private String documentClass;
 	private String[] customizedValues;
-	private Map<String, String> customizedValuesByKey;
+	private Map<String, String> customizedValuesByKey = new HashMap<String, String>();
 	private String key;
 	private String type;
 	public String getDocId() {
@@ -104,5 +104,9 @@ public class HitListEntry implements Serializable {
 	public String getFileName(){
 		return getCustomizedValuesByKey().get(Doc41Constants.ATTRIB_NAME_FILENAME);
 	}
+
+    public String setFileName(String filename){
+        return getCustomizedValuesByKey().put(Doc41Constants.ATTRIB_NAME_FILENAME, filename);
+    }
 
 }

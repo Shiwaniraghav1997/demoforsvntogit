@@ -11,11 +11,14 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.SapCustomer;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 public abstract class CustomizedDocumentForm {
 
 	private String type;
+	private boolean isKgs = false;
+	private List<DownloadDocumentType> documentTypes;
 	private String objectId;
 
 	private Map<String,String> attributeLabels;
@@ -27,13 +30,13 @@ public abstract class CustomizedDocumentForm {
 	
 	private String customerNumber;
 	
-	private boolean isCustomerNumberUsed;
+	private boolean isCustomerNumberUsed = false;
 	
 	private List<SapCustomer> customers;
 	
 	private String vendorNumber;
 	
-	private boolean isVendorNumberUsed;
+	private boolean isVendorNumberUsed = false;
 	
 	private List<SapVendor> vendors;	
 	
@@ -44,6 +47,13 @@ public abstract class CustomizedDocumentForm {
 		this.type = type;
 	}
 	
+    public boolean isKgs() {
+        return isKgs;
+    }
+    public void setKgs(boolean isKgs) {
+        this.isKgs = isKgs;
+    }
+    
 	public String getObjectId() {
 		return objectId;
 	}
@@ -80,6 +90,22 @@ public abstract class CustomizedDocumentForm {
 		return attributeMandatory;
 	}
 
+	/**
+	 * Set the DocumentType, make specific attributes available to the SearchForm.
+	 * @param pDocType
+	 */
+	public void setDocumentTypes(List<DownloadDocumentType> pDocTypes) {
+	    documentTypes = pDocTypes;
+	}
+	
+	/**
+	 * Get the corresponding DocumentType object.
+	 * @return
+	 */
+	public List<DownloadDocumentType> getDocumentTypes() {
+	    return documentTypes;
+	}
+	
 	public String getCustomerNumber() {
 		return customerNumber;
 	}
@@ -90,7 +116,7 @@ public abstract class CustomizedDocumentForm {
 		return isCustomerNumberUsed;
 	}
 	private void initCustomerNumber(boolean isCustomerNumberUsed,String lastCustomerNumberFromSession) {
-		this.isCustomerNumberUsed = isCustomerNumberUsed;
+		this.isCustomerNumberUsed |= isCustomerNumberUsed;
 		if(isCustomerNumberUsed){
 			customers = UserInSession.get().getCustomers();
 				
@@ -114,7 +140,7 @@ public abstract class CustomizedDocumentForm {
 		return isVendorNumberUsed;
 	}
 	private void initVendorNumber(boolean isVendorNumberUsed,String lastVendorNumberFromSession) {
-		this.isVendorNumberUsed = isVendorNumberUsed;
+		this.isVendorNumberUsed |= isVendorNumberUsed;
 		if(isVendorNumberUsed){
 			vendors = UserInSession.get().getVendors();
 				

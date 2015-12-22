@@ -44,11 +44,11 @@ public class LayoutForPMSupplierDocumentType extends PMSupplierDownloadDocumentT
 			Map<String, String> viewAttributes) throws Doc41BusinessException {
 		CheckForDownloadResult result = super.checkForDownload(errors, documentUC, customerNumber, vendorNumber,
 						objectId, attributeValues, viewAttributes);
-		
+/*		
 		Map<String, String> additionalAttributes = new HashMap<String, String>();
 		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
 		result.setAdditionalAttributes(additionalAttributes);
-		
+*/		
 		return result;
 	}
 	//TODO download check wie pm

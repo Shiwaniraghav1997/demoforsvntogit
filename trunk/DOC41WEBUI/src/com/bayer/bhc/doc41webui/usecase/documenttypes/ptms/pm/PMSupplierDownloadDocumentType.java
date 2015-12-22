@@ -12,12 +12,13 @@ import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
-import com.bayer.ecim.foundation.basic.StringTool;
 
 public abstract class PMSupplierDownloadDocumentType implements DownloadDocumentType{
 
-//	public static final String VIEW_ATTRIB_PO_NUMBER = "poNumber";
+// kgs-mode:
+	public static final String VIEW_ATTRIB_PO_NUMBER = "poNumber";
 
+// dirs-mode only:
     public static final String VIEW_ATTRIB_FILENAME = "FILENAME";
 
     
@@ -37,15 +38,19 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 
 		Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
 		
-		String fileName = viewAttributes.get(VIEW_ATTRIB_FILENAME);
-        if(!StringTool.isTrimmedEmptyOrNull(fileName)){
-            attributeValues.put(VIEW_ATTRIB_FILENAME, fileName);
-        }
+// dirs-mode
+//		String fileName = viewAttributes.get(VIEW_ATTRIB_FILENAME);
+//      if(!StringTool.isTrimmedEmptyOrNull(fileName)){
+//          attributeValues.put(VIEW_ATTRIB_FILENAME, fileName);
+//      }
+
+// check-PO-mode:
 //		if(StringTool.isTrimmedEmptyOrNull(poNumber)){
 //			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_PO_NUMBER+"']","PONumberMissing");
 //		}
 		
 		if(!errors.hasErrors()){
+// check-PO-mode:
 //			String deliveryCheck = documentUC.checkPOAndMaterialForVendor(vendorNumber, poNumber, objectId);
             String deliveryCheck = documentUC.checkMaterialForVendor(vendorNumber, objectId);
 			if(deliveryCheck != null){
@@ -66,13 +71,16 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 		return Collections.emptySet();
 	}
 
+// kgs-mode / dirs-mode:
+	
+	
 	/**
      * Flag to determine, if document uses DIRS store.
      * @return true, if using DIRS. 
      */
 	@Override
     public boolean isDirs() {
-        return false;
+        return false; //true;
     }
 
     /**
@@ -81,7 +89,7 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
      */
     @Override
     public boolean isKgs() {
-        return true;
+        return true; //false;
     }
 	
 }
