@@ -63,7 +63,7 @@ public class Doc41Log {
      * @param msg     The Debug message
      */
     public void debug(Object clazz, String user, Object msg) {
-        Dbg.get().println(INFO, clazz, user, msg);
+        Dbg.get().println(INFO, clazz, (user == null) ? UserInSession.getCwid() : user, msg);
     }
 
     /**
@@ -80,7 +80,7 @@ public class Doc41Log {
      * @param msg     The Debug message
      */
     public void dump(Object clazz, String user, Object msg) {
-        Dbg.get().println(BIGINFO, clazz, user, msg);
+        Dbg.get().println(BIGINFO, clazz, (user == null) ? UserInSession.getCwid() : user, msg);
     }
 
     /**
@@ -90,7 +90,7 @@ public class Doc41Log {
      * @param msg     The error message
      */
     public void warning(Object clazz, String user, Object msg) {
-        Dbg.get().println(WARNING, clazz, user, msg);
+        Dbg.get().println(WARNING, clazz, (user == null) ? UserInSession.getCwid() : user, msg);
     }
 
     /**
@@ -105,7 +105,7 @@ public class Doc41Log {
     		Throwable ex = (Throwable) msg;
     		new NestingException(ex.getMessage(), ex);
     	}
-        Dbg.get().println(ERROR, clazz, user, msg);
+        Dbg.get().println(ERROR, clazz, (user == null) ? UserInSession.getCwid() : user, msg);
     }
 
     /**
@@ -130,6 +130,7 @@ public class Doc41Log {
 	 * @param mMessage
 	 */
 	public void debugMessageOnce(Object clazz, String user, String mMessage ) {
+	    user = (user == null) ? UserInSession.getCwid() : user;
 	    Dbg.get().dbgLogMessageOnce(INFO, 0, clazz, user, user, "", mMessage);
 	}
 	
@@ -140,6 +141,7 @@ public class Doc41Log {
      * @param mMessage
      */
     public void warnMessageOnce(Object clazz, String user, String mMessage ) {
+        user = (user == null) ? UserInSession.getCwid() : user;
         Dbg.get().dbgLogMessageOnce(WARNING, BIGINFO, clazz, user, user, "", mMessage);
     }
     
@@ -179,7 +181,7 @@ public class Doc41Log {
 	 * @param logEntry
 	 * @param usr
 	 */
-	public void logWebMetrix(Object clazz, Doc41LogEntry logEntry, String usr) {
-		Dbg.get().println(LOGGING, clazz, usr, logEntry);
+	public void logWebMetrix(Object clazz, Doc41LogEntry logEntry, String user) {
+		Dbg.get().println(LOGGING, clazz, (user == null) ? UserInSession.getCwid() : user, logEntry);
 	}
 }
