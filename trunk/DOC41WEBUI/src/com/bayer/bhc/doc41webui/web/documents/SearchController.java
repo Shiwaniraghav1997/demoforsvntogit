@@ -109,7 +109,6 @@ public class SearchController extends AbstractDoc41Controller {
 		        }
 		    }
 		}
-System.err.println("KGS="+isKgs);
 		searchForm.setKgs(isKgs);
 		searchForm.initAttributes(attributeDefinitions,language);
 		
