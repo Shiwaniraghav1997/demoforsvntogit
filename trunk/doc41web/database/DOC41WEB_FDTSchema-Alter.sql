@@ -103,3 +103,102 @@ INSERT INTO UM_USERS_PROFILES (user_Id, profile_Id, createdBy, changedBy)
 
 UPDATE Versions SET subVersion = 2 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 1 );
 COMMIT WORK;
+
+
+
+------------------------------------
+-- Alter-Script: CVS v1.2 -> v1.3 --
+------------------------------------
+
+
+INSERT INTO UM_PERMISSIONS (permissionName, permissionDescription, code, assign_User, assign_Group, assign_Profile, type, is_Deleted) VALUES
+ ( 'DocumentGlobalPM', 'Document Global PM Search', 'DOC_GLO_PM', 0, 0, 1, 'DOC_PM', 0 );
+INSERT INTO UM_PERMISSIONS (permissionName, permissionDescription, code, assign_User, assign_Group, assign_Profile, type, is_Deleted) VALUES
+ ( 'DocumentGlobalLS', 'Document Global LS Search', 'DOC_GLO_LS', 0, 0, 1, 'DOC_LS', 0 );
+INSERT INTO UM_PERMISSIONS (permissionName, permissionDescription, code, assign_User, assign_Group, assign_Profile, type, is_Deleted) VALUES
+ ( 'DocumentGlobalSD', 'Document Global SD Search', 'DOC_GLO_SD', 0, 0, 1, 'DOC_SD', 0 );
+INSERT INTO UM_PGU_PERMISSIONS (permission_Id, profile_Id, is_Deleted)
+  SELECT pe.object_Id AS permission_Id, pr.object_Id AS profile_Id, 0 AS is_Deleted FROM UM_Permissions pe, UM_Profiles pr WHERE (pe.code = 'DOC_GLO_PM') AND (pr.profileName = 'doc41_pmsup');
+INSERT INTO UM_PGU_PERMISSIONS (permission_Id, profile_Id, is_Deleted)
+  SELECT pe.object_Id AS permission_Id, pr.object_Id AS profile_Id, 1 AS is_Deleted FROM UM_Permissions pe, UM_Profiles pr WHERE (pe.code = 'DOC_GLO_LS') AND (pr.profileName = 'doc41_laysup');
+INSERT INTO UM_PGU_PERMISSIONS (permission_Id, profile_Id, is_Deleted)
+  SELECT pe.object_Id AS permission_Id, pr.object_Id AS profile_Id, 0 AS is_Deleted FROM UM_Permissions pe, UM_Profiles pr WHERE (pe.code = 'DOC_GLO_SD') AND (pr.profileName = 'doc41_carr');
+
+-- GENERATOR:
+-- set lines 1000
+-- set pages 1000
+-- select
+--  'UPDATE UM_Permissions SET permissionDescription = '''||SUBSTR(permissionDescription||'''                                                                             ',1,70)||
+--  'WHERE code = '''||SUBSTR(code||'''                                             ',1,40)||'; -- ' || type || ' - ' || permissionName AS " "
+-- from um_permissions order by type, code
+
+SET DEFINE OFF
+UPDATE UM_Permissions SET permissionDescription = 'Admin General KGS Customizing'                   WHERE code = 'KGSCUSTOMIZING'                         ; -- ADM_OTH - KGSCustomizing
+UPDATE UM_Permissions SET permissionDescription = 'Admin General Monitoring'                        WHERE code = 'MONITORING'                             ; -- ADM_OTH - Monitoring
+UPDATE UM_Permissions SET permissionDescription = 'Admin General RFC Metadata View'                 WHERE code = 'RFCMETADATA'                            ; -- ADM_OTH - RFCMetadata
+UPDATE UM_Permissions SET permissionDescription = 'Admin General Translation'                       WHERE code = 'TRANSLATION'                            ; -- ADM_OTH - Translation
+UPDATE UM_Permissions SET permissionDescription = 'Admin General Untranslated Labels View'          WHERE code = 'UNTRANSLATEDLABELS'                     ; -- ADM_OTH - UntranslatedLabels
+UPDATE UM_Permissions SET permissionDescription = 'Admin UM Internal User To Log Group'             WHERE code = 'ADDINTERNALUSERTOLOGGROUP'              ; -- ADM_UM - AddInternalUserToLogGroup
+UPDATE UM_Permissions SET permissionDescription = 'Admin UM Profile Permissions View'               WHERE code = 'PROFILEPERMISSIONS'                     ; -- ADM_UM - ProfilePermissions
+UPDATE UM_Permissions SET permissionDescription = 'Admin UM User Create'                            WHERE code = 'USER_CREATE'                            ; -- ADM_UM - UserCreate
+UPDATE UM_Permissions SET permissionDescription = 'Admin UM User Edit'                              WHERE code = 'USER_EDIT'                              ; -- ADM_UM - UserEdit
+UPDATE UM_Permissions SET permissionDescription = 'Admin UM User Import'                            WHERE code = 'USER_IMPORT'                            ; -- ADM_UM - UserImport
+UPDATE UM_Permissions SET permissionDescription = 'Admin UM User List'                              WHERE code = 'USER_LIST'                              ; -- ADM_UM - UserList
+UPDATE UM_Permissions SET permissionDescription = 'Admin UM User Lookup'                            WHERE code = 'USER_LOOKUP'                            ; -- ADM_UM - UserLookup
+UPDATE UM_Permissions SET permissionDescription = 'Doc LS Download Artwork Low Res.'                WHERE code = 'DOC_ARTWORK_DOWN_LS'                    ; -- DOC_LS - DocumentArtworkLowResLS
+UPDATE UM_Permissions SET permissionDescription = 'Doc LS Upload Artwork Low Res.'                  WHERE code = 'DOC_ARTWORK_UP_LS'                      ; -- DOC_LS - DocumentArtworkLowResUploadLS
+UPDATE UM_Permissions SET permissionDescription = 'Doc LS Downl. Global Search'                     WHERE code = 'DOC_GLO_LS'                             ; -- DOC_LS - DocumentGlobalLS
+UPDATE UM_Permissions SET permissionDescription = 'Doc LS Download Layout High Res.'                WHERE code = 'DOC_LAYOUT_DOWN_LS'                     ; -- DOC_LS - DocumentLayoutHighResLS
+UPDATE UM_Permissions SET permissionDescription = 'Doc LS Upload Layout High Res.'                  WHERE code = 'DOC_LAYOUT_UP_LS'                       ; -- DOC_LS - DocumentLayoutHighResUploadLS
+UPDATE UM_Permissions SET permissionDescription = 'Doc LS Download Packaging Material Spec.'        WHERE code = 'DOC_PMS_DOWN_LS'                        ; -- DOC_LS - DocumentPackagingMaterialSpecificationLS
+UPDATE UM_Permissions SET permissionDescription = 'Doc LS Download Technical Drawing PZ'            WHERE code = 'DOC_PZ_DOWN_LS'                         ; -- DOC_LS - DocumentTechnicalDrawingPZLS
+UPDATE UM_Permissions SET permissionDescription = 'Doc PM Download Anti-Counterfeiting Spec.'       WHERE code = 'DOC_ACS_DOWN_PM'                        ; -- DOC_PM - DocumentAntiCounterfeitingSpecificationPM
+UPDATE UM_Permissions SET permissionDescription = 'Doc PM Download Artwork Low Res.'                WHERE code = 'DOC_ARTWORK_DOWN_PM'                    ; -- DOC_PM - DocumentArtworkLowResPM
+UPDATE UM_Permissions SET permissionDescription = 'Doc PM Downl. Global Search'                     WHERE code = 'DOC_GLO_PM'                             ; -- DOC_PM - DocumentGlobalPM
+UPDATE UM_Permissions SET permissionDescription = 'Doc PM Download Layout High Res.'                WHERE code = 'DOC_LAYOUT_DOWN_PM'                     ; -- DOC_PM - DocumentLayoutHighResPM
+UPDATE UM_Permissions SET permissionDescription = 'Doc PM Download Packaging Material Spec.'        WHERE code = 'DOC_PMS_DOWN_PM'                        ; -- DOC_PM - DocumentPackagingMaterialSpecificationPM
+UPDATE UM_Permissions SET permissionDescription = 'Doc PM Download Technical Drawing PZ'            WHERE code = 'DOC_PZ_DOWN_PM'                         ; -- DOC_PM - DocumentTechnicalDrawingPZPM
+UPDATE UM_Permissions SET permissionDescription = 'Doc PM Download Tech. Pack. & Deliv. Requirem.'  WHERE code = 'DOC_TPACKDELREQ_DOWN_PM'                ; -- DOC_PM - DocumentTechPackandDelivRequirementsPM
+UPDATE UM_Permissions SET permissionDescription = 'Doc QM Download Delivery Certificate Country'    WHERE code = 'DOC_DELCERT_DOWN_COUNTRY'               ; -- DOC_QM - DocumentDeliveryCertificateCountry
+UPDATE UM_Permissions SET permissionDescription = 'Doc QM Download Delivery Certificate Customer'   WHERE code = 'DOC_DELCERT_DOWN_CUSTOMER'              ; -- DOC_QM - DocumentDeliveryCertificateCustomer
+UPDATE UM_Permissions SET permissionDescription = 'Doc QM Upload Delivery Certificate'              WHERE code = 'DOC_DELCERT_UP'                         ; -- DOC_QM - DocumentDeliveryCertificateUpload
+UPDATE UM_Permissions SET permissionDescription = 'Doc QM Upload Supplier CoA'                      WHERE code = 'DOC_SUPCOA_UP'                          ; -- DOC_QM - DocumentSupplierCoAUpload
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Download Air Waybill Direct'              WHERE code = 'DOC_AWB_DIRECT_DOWN'                    ; -- DOC_SD - DocumentAirWaybillDirectDown
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Download Air Waybill'                     WHERE code = 'DOC_AWB_DOWN'                           ; -- DOC_SD - DocumentAirWaybill
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Upload Air Waybill'                       WHERE code = 'DOC_AWB_UP'                             ; -- DOC_SD - DocumentAirWaybillUpload
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Download Bill of Lading Direct'           WHERE code = 'DOC_BOL_DIRECT_DOWN'                    ; -- DOC_SD - DocumentBillofLadingDirectDown
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Download Bill of Lading'                  WHERE code = 'DOC_BOL_DOWN'                           ; -- DOC_SD - DocumentBillofLading
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Upload Bill of Lading'                    WHERE code = 'DOC_BOL_UP'                             ; -- DOC_SD - DocumentBillOfLadingUpload
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Download CMR Outgoing'                    WHERE code = 'DOC_CMROUT_DOWN'                        ; -- DOC_SD - DocumentCMROutgoing
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Upload CMR'                               WHERE code = 'DOC_CMR_UP'                             ; -- DOC_SD - DocumentCMRUpload
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Download Certificate of Origin'           WHERE code = 'DOC_COO_DOWN'                           ; -- DOC_SD - DocumentCertificateOfOriginDownload
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Download FDA Certificate Direct'          WHERE code = 'DOC_FDACERT_DIRECT_DOWN'                ; -- DOC_SD - DocumentFDACertificateDirectDown
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Download FDA Certificate'                 WHERE code = 'DOC_FDACERT_DOWN'                       ; -- DOC_SD - DocumentFDACertificate
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Downl. Global Search'                     WHERE code = 'DOC_GLO_SD'                             ; -- DOC_SD - DocumentGlobalSD
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Download Shippers Declaration Direct'     WHERE code = 'DOC_SHIPDECL_DIRECT_DOWN'               ; -- DOC_SD - DocumentShippersDeclarationDirectDown
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Download Shippers Declaration'            WHERE code = 'DOC_SHIPDECL_DOWN'                      ; -- DOC_SD - DocumentShippersDeclaration
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Download Waybill DirectDown'              WHERE code = 'DOC_WB_DIRECT_DOWN'                     ; -- DOC_SD - DocumentWaybillDirectDown
+UPDATE UM_Permissions SET permissionDescription = 'Doc SD Download Waybill'                         WHERE code = 'DOC_WB_DOWN'                            ; -- DOC_SD - DocumentWaybill
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Entry Application Logs'               WHERE code = 'NAV_APPLOGS'                            ; -- NAV_OTH - NavApplogs
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Entry KGS Customizing'                WHERE code = 'NAV_KGSCUSTOMIZING'                     ; -- NAV_OTH - NavKGSCustomizing
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Entry Monitoring'                     WHERE code = 'NAV_MONITORING'                         ; -- NAV_OTH - NavMonitoring
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Entry Profile Permissions'            WHERE code = 'NAV_PROFILEPERMISSIONS'                 ; -- NAV_OTH - NavProfilePermissions
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Entry RFC Metadata'                   WHERE code = 'NAV_RFCMETADATA'                        ; -- NAV_OTH - NavRFCMetadata
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Entry Support Console'                WHERE code = 'NAV_SUPPORTCONSOLE'                     ; -- NAV_OTH - NavSupportConsole
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Entry Translations'                   WHERE code = 'NAV_TRANSLATIONS'                       ; -- NAV_OTH - NavTranslations
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Entry Untranslated Labels'            WHERE code = 'NAV_UNTRANSLATEDLABELS'                 ; -- NAV_OTH - NavUntranslatedLabels
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Top Entry Download'                   WHERE code = 'TOPNAV_DOWNLOAD'                        ; -- NAV_TOP - TopNavDownload
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Top Entry Maintenance'                WHERE code = 'TOPNAV_MAINTENANCE'                     ; -- NAV_TOP - TopNavMaintenance
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Top Entry Management'                 WHERE code = 'TOPNAV_MANAGEMENT'                      ; -- NAV_TOP - TopNavManagement
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Top Entry My Profile'                 WHERE code = 'TOPNAV_MYPROFILE'                       ; -- NAV_TOP - TopNavMyProfile
+UPDATE UM_Permissions SET permissionDescription = 'Navigation Top Entry Upload'                     WHERE code = 'TOPNAV_UPLOAD'                          ; -- NAV_TOP - TopNavUpload
+UPDATE UM_Permissions SET permissionDescription = 'Restriction Allow only read access'              WHERE code = 'READ_ONLY'                              ; -- RO - ReadOnly
+commit;
+
+UPDATE UM_Permissions SET is_Deleted = 1 WHERE (code = 'DOC_GLO_LS');
+UPDATE UM_PGU_PERMISSIONS SET is_Deleted = 0 WHERE (is_Deleted = 1) AND (permission_Id = (SELECT object_Id FROM UM_Permissions WHERE (code = 'DOC_GLO_LS'))); 
+commit;
+
+UPDATE Versions SET subVersion = 3 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 2 );
+COMMIT WORK;
+
