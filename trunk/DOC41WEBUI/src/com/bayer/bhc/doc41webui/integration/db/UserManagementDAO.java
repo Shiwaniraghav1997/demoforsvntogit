@@ -751,7 +751,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
             throw new Doc41TechnicalException(this.getClass(), "getProfilePermissionMap", e);
         }
 	}
-	
+/*	
 	public List<ProfilePermissionDC> getProfilePermissions() throws Doc41TechnicalException {
 		try {
 			String[] parameterNames				= { };
@@ -766,7 +766,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 			throw new Doc41TechnicalException(this.getClass(), "getProfilePermissions", e);
 		}
 	}
-
+*/
 /*	
 	public ArrayList<UMPermissionNDC> getPermissionsByProfile(Long profileId, Locale pLoc) throws Doc41TechnicalException {
         try {
