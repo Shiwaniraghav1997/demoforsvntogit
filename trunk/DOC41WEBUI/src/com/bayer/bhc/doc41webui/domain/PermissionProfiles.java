@@ -2,6 +2,8 @@ package com.bayer.bhc.doc41webui.domain;
 
 import java.util.HashMap;
 
+import com.bayer.ecim.foundation.basic.StringTool;
+
 /**
  * User domain object.
  * 
@@ -45,6 +47,13 @@ public class PermissionProfiles extends DomainObject {
     }
 
     /**
+     * @return the permissionCode
+     */
+    public String getPermissionCodeHTML() {
+        return StringTool.escapeHTML(getPermissionCode().replace(' ', (char)160));
+    }
+
+    /**
      * @param permissionCode the permissionCode to set
      */
     public void setPermissionCode(String permissionCode) {
@@ -59,6 +68,13 @@ public class PermissionProfiles extends DomainObject {
     }
 
     /**
+     * @return the permissionName
+     */
+    public String getPermissionNameHTML() {
+        return StringTool.escapeHTML(getPermissionName().replace(' ', (char)160));
+    }
+
+    /**
      * @param permissionName the permissionName to set
      */
     public void setPermissionName(String permissionName) {
@@ -70,6 +86,13 @@ public class PermissionProfiles extends DomainObject {
      */
     public String getPermissionDescription() {
         return PermissionDescription;
+    }
+
+    /**
+     * @return the permissionDescription
+     */
+    public String getPermissionDescriptionHTML() {
+        return StringTool.escapeHTML(getPermissionDescription().replace(' ', (char)160));
     }
 
     /**
@@ -101,6 +124,13 @@ public class PermissionProfiles extends DomainObject {
      */
     public String getType() {
         return Type;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getTypeHTML() {
+        return StringTool.escapeHTML(StringTool.nullToEmpty(getType()).replace(' ', (char)160));
     }
 
     /**
@@ -166,6 +196,10 @@ public class PermissionProfiles extends DomainObject {
         HasPlant = hasPlant;
     }
 
+    /**
+     * Get a Status representation (associated/required objects).
+     * @return
+     */
     public String getPermissionStatus() {
         return
                 ( isHasVendor() ? "Vnd" : "---" ) +
@@ -173,5 +207,13 @@ public class PermissionProfiles extends DomainObject {
                 ( isHasCustomer() ? "Cst" : "---" ) +
                 ( isHasCountry() ? "Cty" : "---" );
     }
-    
+
+    /**
+     * Get a Status representation (associated/required objects).
+     * @return
+     */
+    public String getPermissionStatusHTML() {
+        return StringTool.escapeHTML(getPermissionStatus().replace(' ', (char)160));
+    }
+
 }
