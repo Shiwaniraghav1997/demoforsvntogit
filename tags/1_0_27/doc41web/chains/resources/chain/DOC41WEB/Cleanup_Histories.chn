@@ -1,0 +1,26 @@
+# Cleanup History Tables
+#############################################################################
+# author:  Ingeborg Menge (kei)
+# history: v1.1    17.12.2013  Initial version
+#          v1.2    ...         ...
+#          v1.3    ...         ...
+#############################################################################
+#
+########################################
+########## Process 1: Cleanup ##########
+########################################
+#
+chainmanager.process-1.prefix=dbscr-imp
+dbscr-imp.chain.class=com.bayer.ecim.foundation.db.DBObjectSQLServerScript
+#
+# Scripts:
+dbscr-imp.script1=Cleanup_Histories.sql
+#dbscr-imp.script2=...
+#
+# Script-Options:
+dbscr-imp.csvdelimiter=;
+#
+# include configuration:
+dbscr-imp.chain.include=inc/ORA-GBO-DOC41WEB-Connect.inc
+#
+###### End Of Chain ######
