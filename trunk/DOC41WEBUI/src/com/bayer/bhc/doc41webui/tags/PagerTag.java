@@ -26,6 +26,7 @@ public class PagerTag extends TagSupport {
 			printer.println("		<option value='30'>30</option>");
 			printer.println("		<option value='40'>40</option>");
             printer.println("       <option value='50'>50</option>");
+            printer.println("       <option value='100'>100</option>");
 			printer.println("	</select>");
 			printer.println("</div>");
 		} catch (IOException e) {
