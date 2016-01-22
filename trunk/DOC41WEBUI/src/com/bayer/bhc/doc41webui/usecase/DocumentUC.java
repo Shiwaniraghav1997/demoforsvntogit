@@ -176,12 +176,20 @@ public class DocumentUC {
 	            String typeConst = documentType.getTypeConst();
 	            if (documentType instanceof DownloadDocumentType) {
 	                String mPerm = ((DownloadDocumentType)documentType).getPermissionDownload();
-	                ArrayList<String> mList = mDocumentTypesByDownloadPermissionType.get(mPerm);
-	                if (mList == null) {
-	                    mList = new ArrayList<String>();
-	                    mDocumentTypesByDownloadPermissionType.put(mPerm, mList);
+	                PermissionProfiles mPP = mProfileByCode.get(mPerm); 
+	                String mPermType = (mPP == null) ? null : mPP.getType();
+	                if (mPermType == null) {
+	                    if (mPP != null) {
+	                        Doc41Log.get().warnMessageOnce(this, null, "Download-Permission with code: " + mPerm + " for document type: " + typeConst + " has no permission type!");
+	                    }
+	                } else {
+	                    ArrayList<String> mList = mDocumentTypesByDownloadPermissionType.get(mPermType);
+	                    if (mList == null) {
+	                        mList = new ArrayList<String>();
+	                        mDocumentTypesByDownloadPermissionType.put(mPermType, mList);
+	                    }
+	                    mList.add(typeConst);
 	                }
-	                mList.add(typeConst);
 	            }
 	        }
 	        documentTypesByDownloadPermissionType = mDocumentTypesByDownloadPermissionType;
@@ -714,10 +722,11 @@ public class DocumentUC {
     /**
      * Get a certain DownloadDocumentType or filtered DownloadDocumentType Group.
      * @param type may be an explicite document type name of a name of a DocumentType group, see DocumentType.GROUP_* for available groups (identified by the permission group of related Document permissions)
+     * @param type usr to filter list also by usr permissions - may result in an empty list...
      * @return
      * @throws Doc41BusinessException
      */
-	public List<DownloadDocumentType> getFilteredDocTypesForDownload(String type) throws Doc41BusinessException{
+	public List<DownloadDocumentType> getFilteredDocTypesForDownload(String type, User usr) throws Doc41BusinessException{
 	    List<String> mTypeNames;
         try {
             mTypeNames = getAllDownloadDocumentTypesOfSamePermissionType(type);
@@ -735,7 +744,9 @@ public class DocumentUC {
 	            throw new Doc41BusinessException("Undefined DocumentType requested: " + type + "." + mType);
 	        }
 	        if (mDocType instanceof DownloadDocumentType) {
-	            mDocTypes.add((DownloadDocumentType)mDocType);
+	            if (usr.hasPermission( ((DownloadDocumentType)mDocType).getPermissionDownload() )) {
+	                mDocTypes.add((DownloadDocumentType)mDocType);
+	            }
 	        }
 	    }
 		if( mDocTypes.isEmpty() ) {

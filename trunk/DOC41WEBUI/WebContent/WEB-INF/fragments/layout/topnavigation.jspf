@@ -51,6 +51,9 @@
 			  	<doc41:navEntry href="documents/searchpmsupplier?type=TPACKDELREQ_PM"           title="Tech. Pack. and Deliv. Requirements for PM Supplier"   id="TPACKDELREQ_PMDOWN"     cssclass=""            permission="DOC_TPACKDELREQ_DOWN_PM"/>
 			    <doc41:navEntry href="documents/searchpmsupplier?type=ACS_PM"                   title="Anti-Counterfeiting Specification for PM Supplier"     id="ACS_PMDOWN"             cssclass=""            permission="DOC_ACS_DOWN_PM"/>
 
+                <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_PM"             title="PM Supplier (global)"                                  id="ALL_PMDOWN"             cssclass=""            permission="DOC_GLO_PM"/>
+                <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_SD"             title="SD Supplier (global)"                                  id="ALL_SDDOWN"             cssclass=""            permission="DOC_GLO_SD"/>
+
               </doc41:topNavEntry>
 
 

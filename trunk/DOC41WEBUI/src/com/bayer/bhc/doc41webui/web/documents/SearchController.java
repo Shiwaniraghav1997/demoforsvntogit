@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41DocServiceException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UrlParamCrypt;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -62,12 +63,14 @@ public class SearchController extends AbstractDoc41Controller {
 
     private boolean hasPermission(User usr, String type)
             throws Doc41BusinessException {
-        String permission = documentUC.getDownloadPermission(type);
-		return usr.hasPermission(permission);
+		return
+		        !documentUC.getFilteredDocTypesForDownload(type, usr).isEmpty() || // 1. user has a permission on at least one type of a DownloadGroup (includes also check for single DownloadType)
+		        usr.hasPermission(documentUC.getDownloadPermission(type)); // 2. or user has permission on a single DocumentType (single Download alread checked on 1.)
     }
 	
 	@RequestMapping(value="/documents/documentsearch",method = RequestMethod.GET)
 	public SearchForm get(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch,@RequestParam(required=false,defaultValue="true") boolean errorOnNoDocuments) throws Doc41BusinessException{
+	    User usr = UserInSession.get();
 		String language = LocaleInSession.get().getLanguage();
 		String mFormType = searchForm.getType();
 		if(StringTool.isTrimmedEmptyOrNull(mFormType)){
@@ -76,7 +79,8 @@ public class SearchController extends AbstractDoc41Controller {
 		
         // TODO: IMPLEMENTED, first tests passed: support of permission types as type representing a group of document types (for implementation of global searches)
 		// TODO: IMPLEMENTED, first tests passed: foreach documentType...
-		List<DownloadDocumentType> mDocTypes = documentUC.getFilteredDocTypesForDownload(mFormType);
+		List<DownloadDocumentType> mDocTypes = documentUC.getFilteredDocTypesForDownload(mFormType, usr);
+		Doc41Log.get().debug(this, null, "Search for download for " + mDocTypes.size() + " document types by '" + mFormType );
 		searchForm.setDocumentTypes(mDocTypes);
 		List<Attribute> attributeDefinitions = new ArrayList<Attribute>();
 		HashSet<String> attributeDefinitionNames = new HashSet<String>();
@@ -316,6 +320,58 @@ public class SearchController extends AbstractDoc41Controller {
 	
 	
 	
+    /**
+     * Map the searchDocument request, adding extra attributes for PMSupplierDownload (global)
+     * @param searchForm
+     * @param result
+     * @param ButtonSearch
+     * @return
+     * @throws Doc41BusinessException
+     */
+    @RequestMapping(value="/documents/searchpmsupplierGlobal",method = RequestMethod.GET)
+    public ModelMap getPMSupplierGlobal(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
+        ModelMap map = new ModelMap();
+//      String type = searchForm.getType(); // DOC_PM
+//      DocumentType docType = documentUC.getDocType(type);
+        SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
+        map.addAttribute(searchForm2);
+
+// check-PO-mode:
+//      map.addAttribute("keyPONumber",PMSupplierDownloadDocumentType.VIEW_ATTRIB_PO_NUMBER);
+//      if (docType.isDirs()) {
+//          map.addAttribute("keyFileName",PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
+//      }
+        
+        return map;
+    }
+    
+    /**
+     * Map the searchDocument request, adding extra attributes for SDSupplierDownload (global)
+     * @param searchForm
+     * @param result
+     * @param ButtonSearch
+     * @return
+     * @throws Doc41BusinessException
+     */
+    @RequestMapping(value="/documents/searchsdsupplierGlobal",method = RequestMethod.GET)
+    public ModelMap getSDSupplierGlobal(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
+        ModelMap map = new ModelMap();
+//      String type = searchForm.getType(); // DOC_SD
+//      DocumentType docType = documentUC.getDocType(type);
+        SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
+        map.addAttribute(searchForm2);
+
+// check-PO-mode:
+//      map.addAttribute("keyPONumber",PMSupplierDownloadDocumentType.VIEW_ATTRIB_PO_NUMBER);
+//      if (docType.isDirs()) {
+//          map.addAttribute("keyFileName",PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
+//      }
+        
+        return map;
+    }
+    
+    
+    
 	@RequestMapping(value={"/documents/download","/docservice/download"},method = RequestMethod.GET)
 	public void download(@RequestParam String key,HttpServletResponse response) throws Doc41BusinessException{
 		Map<String, String> decryptParameters = UrlParamCrypt.decryptParameters(key);
