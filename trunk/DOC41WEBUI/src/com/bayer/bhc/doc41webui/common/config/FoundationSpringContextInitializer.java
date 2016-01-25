@@ -12,7 +12,7 @@ public class FoundationSpringContextInitializer implements
 
 	public void initialize(ConfigurableWebApplicationContext applicationContext) {
 		Dbg.get().println(Dbg.RUN, this, null,
-		        "===============================================================================================================================\n"+
+		        "\n===============================================================================================================================\n"+
 		        "Setting Spring Config Context by Foundation Config: FoundationPropertySource (@"+Thread.currentThread().getName()+")\n"+
                 "===============================================================================================================================");
         @SuppressWarnings("unchecked")
