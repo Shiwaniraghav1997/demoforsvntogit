@@ -14,7 +14,18 @@ public class BwRFCService extends AbstractSAPJCOService {
 	
 	private static final String RFC_NAME_FIND_DOCS = "FindDocs";
 
-
+/**
+ * Serach for Documents, FindDocs2
+ * @param d41id SAP RFC-ID for Doc41, see Types, getSapTypeId
+ * @param sapObj list of the different objectId types for one document type in Doc41, e.g. delivery number, material number... (each of them is searched for the object_Id)
+ * @param objectIds list pf material numbers (specify null - not empty - if no numbers available)
+ * @param attributeValues (additional attributes list - custom attributes)
+ * @param maxResults
+ * @param maxVersionOnly
+ * @param seqToKey (mapping sap keys to attribute names, custom attributes)
+ * @return
+ * @throws Doc41ServiceException
+ */
 	public List<HitListEntry> findDocs(String d41id,String sapObj,List<String> objectIds,Map<String, String> attributeValues,int maxResults,boolean maxVersionOnly, Map<Integer, String> seqToKey)
 	 throws Doc41ServiceException{
 		List<Object> params = new ArrayList<Object>();
