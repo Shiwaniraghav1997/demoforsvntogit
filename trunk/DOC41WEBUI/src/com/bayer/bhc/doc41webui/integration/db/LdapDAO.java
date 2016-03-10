@@ -100,6 +100,8 @@ public class LdapDAO {
 
     private boolean isDevTestUserCwid(String cwid) {
         return "DDEMO".equals(cwid)
+                ||"IMWIF".equalsIgnoreCase(cwid)
+                ||"XIBFK".equalsIgnoreCase(cwid)
                 ||"CARRIER".equalsIgnoreCase(cwid)
                 ||"CUSTBROK".equalsIgnoreCase(cwid)
                 ||"MATSUP".equalsIgnoreCase(cwid)
