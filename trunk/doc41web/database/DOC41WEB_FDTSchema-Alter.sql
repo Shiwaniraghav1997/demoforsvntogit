@@ -202,3 +202,54 @@ commit;
 UPDATE Versions SET subVersion = 3 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 2 );
 COMMIT WORK;
 
+
+------------------------------------
+-- Alter-Script: CVS v1.3 -> v1.4 --
+------------------------------------
+
+
+-- create / assign permissions for navigation separated from permissions for doc access (with sync)
+
+INSERT INTO UM_Permissions (Permissionname, PermissionDescription, code, type, createdBy, changedBy, Assign_Profile, is_Deleted) 
+SELECT
+  'Nav'||Permissionname             AS Permissionname,
+  'Navigation ' || PermissionDescription    AS PermissionDescription,
+  'NAV' || SUBSTR(code,4)           AS code,
+  'NAV_DOC' || SUBSTR(type,4)           AS type,
+  'BDS'                     AS createdBy,
+  'BDS'                     AS changedBy,
+  assign_Profile,
+  is_Deleted
+FROM
+  UM_Permissions pe
+WHERE
+  type in ('DOC_SD', 'DOC_LS','DOC_QM','DOC_PM')
+;
+COMMIT;
+
+INSERT INTO UM_PGU_Permissions pgup (permission_Id, profile_Id, createdBy, changedBy, is_Deleted)
+SELECT
+  pen.object_Id     AS permission_Id,
+  --pe.code, pen.code, PE.TYPE, pen.type,
+  pgup.profile_Id,
+  'BDS' AS createdBy,
+  'BDS' AS changedBy,
+  pgup.is_Deleted
+FROM
+  UM_PGU_Permissions pgup
+  INNER JOIN UM_Permissions pe  ON
+    ( pgup.permission_Id    = pe.object_Id      )
+  INNER JOIN UM_Permissions pen ON
+    ( SUBSTR(pe.code,4)     = SUBSTR(pen.code,4)    ) AND
+    ( pe.code           <> pen.code     )
+WHERE
+  ( pgup.profile_Id IS NOT NULL                         ) AND
+  ( pe.type     IN ('DOC_SD', 'DOC_LS','DOC_QM','DOC_PM')           ) AND
+  ( pen.type        IN ('NAV_DOC_SD', 'NAV_DOC_LS','NAV_DOC_QM','NAV_DOC_PM')   )
+;
+COMMIT;
+
+
+
+UPDATE Versions SET subVersion = 4 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 3 );
+COMMIT WORK;
