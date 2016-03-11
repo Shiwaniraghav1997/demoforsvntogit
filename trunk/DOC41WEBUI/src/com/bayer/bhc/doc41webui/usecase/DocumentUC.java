@@ -178,6 +178,7 @@ public class DocumentUC {
 	                String mPerm = ((DownloadDocumentType)documentType).getPermissionDownload();
 	                PermissionProfiles mPP = mProfileByCode.get(mPerm); 
 	                String mPermType = (mPP == null) ? null : mPP.getType();
+	                ((DownloadDocumentType) documentType).setDownloadPermissionType(mPermType);
 	                if (mPermType == null) {
 	                    if (mPP != null) {
 	                        Doc41Log.get().warnMessageOnce(this, null, "Download-Permission with code: " + mPerm + " for document type: " + typeConst + " has no permission type!");
@@ -290,8 +291,10 @@ public class DocumentUC {
 			DocMetadata docMetadata = getDocMetadataBySapDocType(sapDocType);
 			DocTypeDef docDef = docMetadata.getDocDef();
 			String description = docDef.getDescription();
+			DocumentType dt = getDocTypeBySapId(sapDocType);
+			String group = (dt == null) ? "???" : dt.getGroup(); 
 			
-			SelectionItem item = new SelectionItem(sapDocType,""+sapDocType+": "+description);
+			SelectionItem item = new SelectionItem(sapDocType, "" + group + " - " + sapDocType + ": " + description);
 			items.add(item);
 		}
 		Collections.sort(items, new Comparator<SelectionItem>() {
@@ -579,44 +582,49 @@ public class DocumentUC {
 		}
 	}
 	
-	public List<HitListEntry> searchDocuments(String type, List<String> objectIds,
+	public List<HitListEntry> searchDocuments(ArrayList<String> pTypes, List<String> objectIds,
 			Map<String, String> attributeValues, int maxResults, boolean maxVersionOnly)
 					throws Doc41BusinessException {
 		try{
-		    //FIXME: DIRS support needed
-		    DocumentType docType = getDocType(type);
             List<HitListEntry> allResults = new ArrayList<HitListEntry>();
-            DocMetadata metadata = getMetadata(type);
-            DocTypeDef docDef = metadata.getDocDef();
-            String d41id = docDef.getD41id();
-            List<String> sapObjList = docDef.getSapObjList();
-		    if (docType.isDirs()) {
-		        if (docType.isKgs())
-		            throw new Doc41BusinessException("DocumentType '" + type + "' reports to be KGS and DIRS at the same time!!!");
-		        // TODO:
-		        //allResults = dirsRFCService.findDocs(d41id, null, null, attributeValues, maxResults, maxVersionOnly);
-		        for (HitListEntry hitListEntry : allResults) {
-		            hitListEntry.setType(type);
-		        }
-		    
-		    } else if (docType.isKgs()) {
-		        checkAttribsWithCustomizing(attributeValues,type);
+            ArrayList<String> d41idList = new ArrayList<String>();
+            Map<Integer, String> seqToKeyGlo = new HashMap<Integer, String>();
+            Map<String, Map<Integer, String>> seqToKeyAllTypes = new HashMap<String, Map<Integer,String>>();
+            HashSet<String>mKnownKeys = new HashSet<String>();
+            for (String mType : pTypes) {
+                Map<Integer, String> seqToKey = new HashMap<Integer, String>();
+                //DocumentType docType = getDocType(mType);
+                DocMetadata metadata = getMetadata(mType);
+                DocTypeDef docDef = metadata.getDocDef();
+                d41idList.add( docDef.getD41id() );
+                checkAttribsWithCustomizing(attributeValues,mType);
+                getSeqToKeyFromDefinitions(mType, seqToKey, seqToKeyGlo, mKnownKeys);
+                seqToKeyAllTypes.put(mType, seqToKey);
+            }
+            //List<String> sapObjList = docDef.getSapObjList();
+            //if (docType.isKgs()) {
 			
-		        Map<Integer, String> seqToKey = getSeqToKeyFromDefinitions(type);
-		        if(objectIds==null || objectIds.isEmpty()){
-		            allResults = bwRFCService.findDocs(d41id, null, null, attributeValues, maxResults, maxVersionOnly,seqToKey);
-		        } else {
+            if (objectIds != null && objectIds.isEmpty()) {
+                objectIds = null;
+            }
+		        //if(objectIds == null){
+		        allResults = bwRFCService.findDocs(d41idList, null, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
+		        /* NO MORE USED, FindDocsMulti no takes care itself for al sapObj (types of objectIds = numbers, e.g. material number, po number, delivery number, ...)
+		          } else {
 		            for (String sapObj : sapObjList) {
 		                List<HitListEntry> oneResult = bwRFCService.findDocs(d41id, sapObj, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKey);
 		                allResults.addAll(oneResult);
 		            }
-		        }
+		        }*/
 		        for (HitListEntry hitListEntry : allResults) {
-		            hitListEntry.setType(type);
-		            hitListEntry.initCustValuesMap(seqToKey);
+		            String mDoc41Id = hitListEntry.getDoc41Id();
+		            DocumentType dt = getDocTypeBySapId(mDoc41Id);
+                    hitListEntry.setType(dt.getTypeConst());
+// TODO: Bug on switch of DocType, prev. DocTypes Cust-Attr still filled (const, stay last value)
+		            hitListEntry.initCustValuesMap(/*/seqToKeyGlo/*/ seqToKeyAllTypes.get(dt.getTypeConst()) /**/ );
 				
 		            Map<String,String> params = new LinkedHashMap<String, String>();
-		            params.put(Doc41Constants.URL_PARAM_TYPE,type);
+		            params.put(Doc41Constants.URL_PARAM_TYPE,hitListEntry.getType());
 		            params.put(Doc41Constants.URL_PARAM_DOC_ID,hitListEntry.getDocId());
 		            params.put(Doc41Constants.URL_PARAM_CWID,UserInSession.getCwid());
 		            params.put(Doc41Constants.URL_PARAM_SAP_OBJ_ID,hitListEntry.getObjectId());
@@ -625,7 +633,7 @@ public class DocumentUC {
 		            String key = UrlParamCrypt.encryptParameters(params);
 		            hitListEntry.setKey(key);
 		        }
-		    }
+		    //}
 			return allResults;
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("searchDocuments",e);
@@ -634,12 +642,18 @@ public class DocumentUC {
 
 
 
-	private Map<Integer, String> getSeqToKeyFromDefinitions(String type) throws Doc41BusinessException {
+	private Map<Integer, String> getSeqToKeyFromDefinitions(String type, Map<Integer, String> attributeSeqToKey, Map<Integer, String> attributeSeqToKeyGlo, HashSet<String>mKnownKeys) throws Doc41BusinessException {
 		List<Attribute> attributeDefinitions = getMetadata(type).getAttributes();
-		Map<Integer, String> attributeSeqToKey = new HashMap<Integer, String>();
 		for (Attribute attribute : attributeDefinitions) {
 			String key = attribute.getName();
-			attributeSeqToKey.put(attribute.getSeqNumber(), key);
+			Integer seq = attribute.getSeqNumber();
+			attributeSeqToKey.put(seq, key);
+			if (!mKnownKeys.contains(key)) {
+			    mKnownKeys.add(key);
+			    attributeSeqToKeyGlo.put(Integer.valueOf(mKnownKeys.size()), key);
+			    Doc41Log.get().debug(this, null, "**********************************************  SEQ2KEY new: " + key + ": " + mKnownKeys.size() );
+			}
+			Doc41Log.get().debug(this, null, "**********************************************  SEQ2KEY - " + type + " - " + key + ": " + seq );
 		}
 		return attributeSeqToKey;
 	}
@@ -934,7 +948,7 @@ public class DocumentUC {
 			}
 		}
 		if(missingAttrKeysInCustomizing.length()>0){
-			Doc41Log.get().error(getClass(), UserInSession.getCwid(), "CustomizingMissmatch: attributes "+missingAttrKeysInCustomizing+" no longer in customizing");
+			Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "CustomizingMissmatch: attributes "+missingAttrKeysInCustomizing+" no longer in customizing");
 		}
 		
 	}

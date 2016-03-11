@@ -14,7 +14,8 @@ public class HitListEntry implements Serializable {
 	private static final long serialVersionUID = 6767482424597660047L;
 	
 	//not needed: ContentRepo, CreatedUser, plant 
-	private String docId;
+	private String doc41Id; // sap ID of the document type
+    private String docId;
 	private String objectId;
 	private Date storageDate;
 	private Date archiveLinkDate;
@@ -23,8 +24,24 @@ public class HitListEntry implements Serializable {
 	private String[] customizedValues;
 	private Map<String, String> customizedValuesByKey = new HashMap<String, String>();
 	private String key;
-	private String type;
-	public String getDocId() {
+	private String type; // DOC41 internal Type
+
+	/**
+	 * Get the DOC41 sap type
+	 * @return
+	 */
+    public String getDoc41Id() {
+        return doc41Id;
+    }
+
+    /**
+     * Set the DOC41 sap type
+     */
+    public void setDoc41Id(String docId) {
+        this.doc41Id = docId;
+    }
+
+    public String getDocId() {
 		return docId;
 	}
 	public void setDocId(String docId) {

@@ -17,6 +17,13 @@ public interface DocumentType {
 	public String getSapTypeId();
 	public int getObjectIdFillLength();
 	public Set<String> getExcludedAttributes();
+
+    /**
+     * Get the profile type for download permissions (DOC_SD/QM/LS/PT), see DocumentType.GROUP_* constants.
+     * @return
+     */
+    public String getGroup();
+
 	
 	/**
 	 * Flag to determine, if document uses DIRS store.

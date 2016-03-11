@@ -27,6 +27,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	private static final String IN_LOW = "LOW";
 	private static final String IT_VALUE_RANGE = "IT_VALUE_RANGE";
 	private static final String OT_HITS = "OT_HITS";
+    private static final String OUT_D41ID = "D41ID";
 	private static final String OUT_DOC_ID = "DOCID";
 	private static final String OUT_OBJ_ID = "OBJID";
 	private static final String OUT_STOR_DATE = "ADATE";
@@ -43,8 +44,9 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
     	
         if (pFunction != null) {
             if (pInputParms != null) {
-            	String d41id = (String) pInputParms.get(0);
-            	String sapObj = (String) pInputParms.get(1);
+            	@SuppressWarnings("unchecked")
+                List<String> d41idList = (List<String>) pInputParms.get(0);
+            	String sapObj = (String) pInputParms.get(1); // expected to be null, when using FindDocsMulti!!!
                 @SuppressWarnings("unchecked")
 				List<String> objectIds = (List<String>) pInputParms.get(2);
                 Integer maxResults = (Integer) pInputParms.get(3);
@@ -55,11 +57,18 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 				Map<Integer, String> seqToKey = (Map<Integer, String>) pInputParms.get(6);
                 
                 JCoParameterList sapInput = pFunction.getImportParameterList();
+                JCoParameterList tableParameterList = pFunction.getTableParameterList();
 				
-				sapInput.setValue(IN_D41ID,d41id);
+//              Old FindDocs2, only single D41ID
+//              sapInput.setValue(IN_D41ID,d41id);
+                JCoTable table = sapInput.getTable("IT_D41ID");
+                for (String d41id : d41idList) {
+                    table.appendRow();
+                    table.setValue("D41ID", d41id);
+                }
+
 				sapInput.setValue(IN_MAXHIT,maxResults);
 				sapInput.setValue(IN_MAX_VER_ONLY,sapBooleanToChar(maxVersionOnly));
-				JCoParameterList tableParameterList = pFunction.getTableParameterList();
 				if(objectIds!=null && !objectIds.isEmpty()){
 					setParamObjectIDs(objectIds,sapObj,1,sapInput,tableParameterList);
 				}
@@ -70,8 +79,10 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 					}
 					String value = attribValues.get(key);
 					if(!StringTool.isTrimmedEmptyOrNull(value)){
-						setParamValue(key,value,seqno,sapInput,tableParameterList);
+					    Doc41Log.get().debug(this, null, "*** CUST SEARCH INPUT-" + seqno + " : '" + key + "'='" + value + "' ***" );
+					    setParamValue(key,value,seqno,sapInput,tableParameterList);
 					} else {
+					    Doc41Log.get().debug(this, null, "*** CUST SEARCH INPUT-" + seqno + " : '" + key + "' IS EMPTY ***" );
 						setEmptyParam(key,seqno,sapInput);
 					}
 				}
@@ -106,9 +117,19 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 		sapInput.setValue(IN_ATT_NAME+paramNumber, key);
 	}
 
+	/**
+	 * Set InputParameters for FindDocs2/FindDocsMulti.
+	 * @param objectIds list still supported, but only as list within table 1 (see paramNumber)
+	 * @param sapObj not set anymore, new findDocsMulty searches automatically accros all sapObj (type of object_Id, e.g. material number, shipping unit, delivery number...)
+	 * @param paramNumber only 1 supported, further tables no more exist in findDocsMulti
+	 * @param sapInput
+	 * @param tableParameterList
+	 */
 	private void setParamObjectIDs(List<String> objectIds, String sapObj, int paramNumber,
 			JCoParameterList sapInput, JCoParameterList tableParameterList) {
-		sapInput.setValue(IN_OBJ_TYPE+paramNumber, sapObj);
+	    if (sapObj != null) { // deprecated, only FinDocs2, no more at FindDocsMulti...
+	        sapInput.setValue(IN_OBJ_TYPE+paramNumber, sapObj);
+	    }
 		
 		JCoTable table = tableParameterList.getTable(IT_OBJID_RANGE+paramNumber);
 		for (String objectId : objectIds) {
@@ -132,6 +153,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
             	for(int i=0;i<table.getNumRows();i++){
             		HitListEntry doc = new HitListEntry();
             		
+            		doc.setDoc41Id(table.getString(OUT_D41ID));
             		doc.setDocId(table.getString(OUT_DOC_ID));
             		doc.setObjectId(table.getString(OUT_OBJ_ID));
             		doc.setStorageDate(table.getDate(OUT_STOR_DATE));

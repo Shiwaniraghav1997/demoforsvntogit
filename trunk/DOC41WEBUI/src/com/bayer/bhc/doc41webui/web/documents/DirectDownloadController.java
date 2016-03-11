@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.web.documents;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,7 +59,9 @@ public class DirectDownloadController extends AbstractDoc41Controller {
 			attributeValues.putAll(additionalAttributes);
 		}
 		
-		List<HitListEntry> documents = documentUC.searchDocuments(type,Collections.singletonList(refId), attributeValues, MAX_RESULTS+1, true);
+		ArrayList<String>mTypes = new ArrayList<String>();
+		mTypes.add(type);
+		List<HitListEntry> documents = documentUC.searchDocuments(mTypes,Collections.singletonList(refId), attributeValues, MAX_RESULTS+1, true);
 		if(documents==null || documents.isEmpty()){
 			throw new Doc41BusinessException("NotFound");
 		} else if(documents.size()>MAX_RESULTS){

@@ -146,6 +146,7 @@
 
 					<!-- thead text will be updated from the JSON; make sure the number of columns matches the JSON data -->
 					<!-- header update currently disabled to put names in the jsp instead of in java  -->
+                    <th><doc41:translate label="DocumentType" /></th>
 					<c:if test="${empty showTableObjectId or showTableObjectId}">
 						<th><doc41:translate label="ObjectId${searchForm.type}" /></th>
 					</c:if>
@@ -161,8 +162,9 @@
 					
 				</tr>
 			<colgroup>
+                <col width="10%" />
 				<c:if test="${empty showTableObjectId or showTableObjectId}">
-					<col width="25%" />
+					<col width="15%" />
 				</c:if>
 				<col width="15%" />
 				<c:if test="${empty showTableDocumentClass or showTableDocumentClass}">
@@ -184,6 +186,7 @@
 					varStatus="status">
 					<tr style="cursor: pointer;"
 						onclick="openDocument('${document.key}','${searchForm.type}')">
+                        <td><doc41:spaceToNbsp><doc41:translate label="${document.type}"/> - <c:out value="${document.type}" /></doc41:spaceToNbsp></td>
 						<c:if test="${empty showTableObjectId or showTableObjectId}">
 							<td><doc41:spaceToNbsp><c:out value="${document.objectId}" /></doc41:spaceToNbsp></td>
 						</c:if>

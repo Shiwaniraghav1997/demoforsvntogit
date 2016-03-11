@@ -20,7 +20,12 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 	private static final String RETURNCODE_NOT_FOUND = "4";
 
 	
-
+	/**
+	 * Check PO and material(old) / check material(new) - for vendor.
+	 * SAP-Developer: IV_PONUMBER ist optional. Es wird nur noch RC = 0 zurück gegebenen wenn es PO Positionen mit nicht gesetztem Endlieferkennzeichen gibt.
+	 * @param JCoFunction sap function object to be called.
+	 * @param pInputParams parameters to be feeded: 1. vendornumber (obligatory), 2. poNumber (optional = may be null), 3. materialNumber(obligatory)
+	 */
 	@Override
 	public void prepareCall(JCoFunction pFunction, List<?> pInputParms)
 			throws SAPException {
@@ -35,7 +40,9 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
                 JCoParameterList sapInput = pFunction.getImportParameterList();
 				
 				sapInput.setValue(IN_VENDOR,vendorNumber);
-				sapInput.setValue(IN_PO,poNumber);
+				if (poNumber != null) {
+				    sapInput.setValue(IN_PO,poNumber);
+				}
 				sapInput.setValue(IN_MATERIAL,materialNumber);
             } else {
                 throw new SAPException(

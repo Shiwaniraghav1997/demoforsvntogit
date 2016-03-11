@@ -87,6 +87,15 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		return errorMsg ;
 	}
 
+	/**
+	 * Check PO and Material for Vendor. Now PO number is optional. Check without PO now checks, if there is any PO for Vendor related to specified material.
+     * SAP-Developer: IV_PONUMBER ist optional. Es wird nur noch RC = 0 zurück gegebenen wenn es PO Positionen mit nicht gesetztem Endlieferkennzeichen gibt.
+	 * @param vendorNumber
+	 * @param poNumber optional, no more specified in new version (if specified, auth rfc is expected to only chech for this RFC)
+	 * @param materialNumber
+	 * @return
+	 * @throws Doc41ServiceException
+	 */
 	public String checkPOAndMaterialForVendor(String vendorNumber, String poNumber, String materialNumber) throws Doc41ServiceException{
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
         		"checkPOAndMaterialForVendor() - vendorNumber="+vendorNumber+".");
@@ -107,7 +116,6 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	
 	/**
 	 * Check if any PO for this vendor exists using the specified material number.
-	 * EMULATION until function exists as RFC!!!
 	 * @param vendorNumber
 	 * @param materialNumber
 	 * @return null if exist, else an error message.
@@ -116,7 +124,9 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
     public String checkMaterialForVendor(String vendorNumber, String materialNumber) throws Doc41ServiceException{
         Doc41Log.get().debug(this, UserInSession.getCwid(),
                 "vendorNumber="+vendorNumber+", materialNumber="+materialNumber+".");
-       
+/**/
+        return checkPOAndMaterialForVendor(vendorNumber, null, materialNumber);
+/*/
         List<Object> params = new ArrayList<Object>();
         params.add(vendorNumber);
         params.add(materialNumber);
@@ -131,6 +141,7 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
             errorMsg = returnTexts.get(0);
         }
         return errorMsg ;
+/**/
     }
     
 	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor, String vendorBatch, String plant) throws Doc41ServiceException{

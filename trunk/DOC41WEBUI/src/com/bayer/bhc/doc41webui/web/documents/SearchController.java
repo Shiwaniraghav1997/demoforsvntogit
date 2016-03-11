@@ -3,6 +3,7 @@ package com.bayer.bhc.doc41webui.web.documents;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -108,6 +110,7 @@ public class SearchController extends AbstractDoc41Controller {
 		    List<Attribute> typeAttributeDefinitions = documentUC.getAttributeDefinitions(mType,false);
 		    for (Attribute attr : typeAttributeDefinitions) {
 		        if (!attributeDefinitionNames.contains(attr.getName())) {
+		            Doc41Log.get().debug(this, null, "--->>> ATTR-NAME: '" + attr.getName());
 		            attributeDefinitionNames.add(attr.getName());
 		            attributeDefinitions.add(attr);
 		        }
@@ -148,8 +151,8 @@ public class SearchController extends AbstractDoc41Controller {
 						    // hope this way is fine to create local, temporary result...
 						    BeanPropertyBindingResult mTmp = new BeanPropertyBindingResult(result.getTarget(), result.getObjectName() );
 						    results.add(mTmp);
-						    CheckForDownloadResult checkResult = documentUC.checkForDownload(result, mDocType.getTypeConst(), searchFormCustomerNumber,searchFormVendorNumber, singleObjectId, attributeValues, viewAttributes);
-						    if (!result.hasErrors()) {
+						    CheckForDownloadResult checkResult = documentUC.checkForDownload(mTmp, mDocType.getTypeConst(), searchFormCustomerNumber,searchFormVendorNumber, singleObjectId, attributeValues, viewAttributes);
+						    if (!mTmp.hasErrors()) {
 						        searchingTargetTypes.add(mDocType.getTypeConst());
 						        // FIXME: We should report the types possible to search for to the mask... (in case of GroupSearch, see DocumentType.GROUP*)
 						        allAttributeValues.putAll(attributeValues);
@@ -168,26 +171,36 @@ public class SearchController extends AbstractDoc41Controller {
 						    }
 						}
 					    if (searchingTargetTypes.isEmpty()) {
-					        boolean allHaveFieldErrors = true; 
+					        boolean allHaveFieldErrors = true;
+					        HashSet<ObjectError> mKnown = new HashSet<ObjectError>();
 					        for (BeanPropertyBindingResult mTmp : results) {
-					            allHaveFieldErrors &= mTmp.hasFieldErrors(); 
-					            result.addAllErrors(mTmp);
+					            allHaveFieldErrors &= mTmp.hasFieldErrors();
+					            List<ObjectError> mErrors = mTmp.getAllErrors();
+					            for (ObjectError mErr : mErrors) {
+					                if (!mKnown.contains(mErr)) {
+					                    mKnown.add(mErr);
+					                    result.addError(mErr);
+					                }
+					            }
+					            //result.addAllErrors(mTmp);
 					        }
 					        if(allHaveFieldErrors) { // no DocumentType has full setting of mandatory fields.
                                 result.reject("PleaseEnterMandatoryFields");
                             }
 					    } else {
 							int maxResults = searchForm.getMaxResults();
-							ArrayList<HitListEntry> documents = new ArrayList<HitListEntry>();
-							for (String mType : searchingTargetTypes) {
-							    documents.addAll( documentUC.searchDocuments(mType, objectIds, allAttributeValues, maxResults+1, false) );
-							}
+							//ArrayList<HitListEntry> documents = new ArrayList<HitListEntry>();
+							//for (String mType : searchingTargetTypes) {
+							//  documents.addAll( documentUC.searchDocuments(mType, objectIds, allAttributeValues, maxResults+1, false) );
+							//}
+							List<HitListEntry> documents = documentUC.searchDocuments(searchingTargetTypes, objectIds, allAttributeValues, maxResults, false);
 							if(documents.isEmpty()){
 							    if(errorOnNoDocuments){
 							        result.reject("NoDocumentsFound");
 							    }
 							} else	if(documents.size()>maxResults){
 								result.reject("ToManyResults");
+                                result.reject("" + documents.size() + " / " + maxResults);
 							} else {
 								searchForm.setDocuments(documents);
 							}

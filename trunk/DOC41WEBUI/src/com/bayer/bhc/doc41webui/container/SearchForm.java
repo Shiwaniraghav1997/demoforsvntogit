@@ -10,7 +10,7 @@ import com.bayer.ecim.foundation.basic.StringTool;
 
 public class SearchForm extends CustomizedDocumentForm {
     
-    private static final int MAX_RESULTS = 100;
+    private static final int MAX_RESULTS = 500;
     private static final int MAX_MAX_RESULTS = 5000;
 	
 	private List<HitListEntry> documents;

@@ -104,4 +104,31 @@ public abstract class LayoutSupplierDocumentType implements DocumentType{
         return true;
     }
 	
+    /**
+     * Set the profile type for download permissions (DOC_SD/QM/LS/PM), see DocumentType.GROUP_* constants.
+     * @param pPermType
+     */
+    public void setDownloadPermissionType(String pPermType) {
+        cDownloadPermType = pPermType;
+    }
+
+    /**
+     * Get the profile type for download permissions (DOC_SD/QM/LS/PM), see DocumentType.GROUP_* constants.
+     * @return
+     */
+    public String getDownloadPermissionType() {
+        return cDownloadPermType;
+    }
+    
+    /** Type of the Profile for Download Permissions. */
+    String cDownloadPermType = null; 
+
+    /**
+     * Get the profile type for download permissions (DOC_SD/QM/LS/PM), see DocumentType.GROUP_* constants.
+     * @return
+     */
+    public String getGroup() {
+        return GROUP_LS;
+    }
+    
 }
