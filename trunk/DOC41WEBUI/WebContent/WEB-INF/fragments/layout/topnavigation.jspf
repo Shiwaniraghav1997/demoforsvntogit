@@ -41,14 +41,14 @@
             
 			  	<doc41:navEntry href="documents/documentsearch?type=ARTWORK_LS"                 title="Artwork Low Res for Layout Supplier"                   id="ARTWORK_LSDOWN"         cssclass=""            permission="NAV_ARTWORK_DOWN_LS"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=LAYOUT_LS"                  title="Layout High Res for Layout Supplier"                   id="LAYOUT_LSDOWN"          cssclass=""            permission="NAV_LAYOUT_DOWN_LS"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=PMS_LS"                     title="Packaging Material Specification for Layout Supplier"  id="PMS_LSDOWN"             cssclass="first-child" permission="NAV_PMS_DOWN_LS"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=PMS_LS"                     title="Packaging Material Specificat. for Layout Supplier"  id="PMS_LSDOWN"             cssclass="first-child" permission="NAV_PMS_DOWN_LS"/>
 			  	<doc41:navEntry href="documents/documentsearch?type=PZ_LS"                      title="Technical Drawing PZ for Layout Supplier"              id="PZ_LSDOWN"              cssclass=""            permission="NAV_PZ_DOWN_LS"/>
             
 			  	<doc41:navEntry href="documents/searchpmsupplier?type=ARTWORK_PM"               title="Artwork Low Res for PM Supplier"                       id="ARTWORK_PMDOWN"         cssclass=""            permission="NAV_ARTWORK_DOWN_PM"/>
 			  	<doc41:navEntry href="documents/searchpmsupplier?type=LAYOUT_PM"                title="Layout High Res for PM Supplier"                       id="LAYOUT_PMDOWN"          cssclass=""            permission="NAV_LAYOUT_DOWN_PM"/>
 			  	<doc41:navEntry href="documents/searchpmsupplier?type=PMS_PM"                   title="Packaging Material Specification for PM Supplier"      id="PMS_PMDOWN"             cssclass="first-child" permission="NAV_PMS_DOWN_PM"/>
 			  	<doc41:navEntry href="documents/searchpmsupplier?type=PZ_PM"                    title="Technical Drawing PZ for PM Supplier"                  id="PZ_PMDOWN"              cssclass=""            permission="NAV_PZ_DOWN_PM"/>
-			  	<doc41:navEntry href="documents/searchpmsupplier?type=TPACKDELREQ_PM"           title="Tech. Pack. and Deliv. Requirements for PM Supplier"   id="TPACKDELREQ_PMDOWN"     cssclass=""            permission="NAV_TPACKDELREQ_DOWN_PM"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=TPACKDELREQ_PM"           title="Tech. Pack. and Deliv. Requirem. for PM Supplier"   id="TPACKDELREQ_PMDOWN"     cssclass=""            permission="NAV_TPACKDELREQ_DOWN_PM"/>
 			    <doc41:navEntry href="documents/searchpmsupplier?type=ACS_PM"                   title="Anti-Counterfeiting Specification for PM Supplier"     id="ACS_PMDOWN"             cssclass=""            permission="NAV_ACS_DOWN_PM"/>
 
                 <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_PM"             title="PM Supplier (global)"                                  id="ALL_PMDOWN"             cssclass=""            permission="NAV_GLO_PM"/>
