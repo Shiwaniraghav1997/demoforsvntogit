@@ -12,16 +12,16 @@
 
 			  <doc41:topNavEntry href="#" title="navUpload" id="upload" permission="TOPNAV_UPLOAD">
 
-			  	<doc41:navEntry href="documents/sdupload?type=BOL"           title="Bill of Lading"       id="BOLUP"        cssclass="first-child" permission="DOC_BOL_UP"/>
-			  	<doc41:navEntry href="documents/sdupload?type=AWB"           title="Air Waybill"          id="AWBUP"        cssclass=""            permission="DOC_AWB_UP"/>
-			  	<doc41:navEntry href="documents/sdupload?type=CMR"           title="CMR Incoming"         id="CMRUP"        cssclass=""            permission="DOC_CMR_UP"/>
+			  	<doc41:navEntry href="documents/sdupload?type=BOL"           title="Bill of Lading"       id="BOLUP"        cssclass="first-child" permission="NAV_BOL_UP"/>
+			  	<doc41:navEntry href="documents/sdupload?type=AWB"           title="Air Waybill"          id="AWBUP"        cssclass=""            permission="NAV_AWB_UP"/>
+			  	<doc41:navEntry href="documents/sdupload?type=CMR"           title="CMR Incoming"         id="CMRUP"        cssclass=""            permission="NAV_CMR_UP"/>
 
-			  	<doc41:navEntry href="documents/supcoaupinput?type=SUPCOA"   title="Supplier CoA"         id="SUPCOAUP"     cssclass=""            permission="DOC_SUPCOA_UP"/>
+			  	<doc41:navEntry href="documents/supcoaupinput?type=SUPCOA"   title="Supplier CoA"         id="SUPCOAUP"     cssclass=""            permission="NAV_SUPCOA_UP"/>
 
-			  	<doc41:navEntry href="documents/delcertupinput?type=DELCERT" title="Delivery Certificate" id="DELCERTUP"    cssclass=""            permission="DOC_DELCERT_UP"/>
+			  	<doc41:navEntry href="documents/delcertupinput?type=DELCERT" title="Delivery Certificate" id="DELCERTUP"    cssclass=""            permission="NAV_DELCERT_UP"/>
 
-			  	<doc41:navEntry href="documents/ptupload?type=ARTWORK_LS"    title="Artwork Low Res"      id="ARTWORK_LSUP" cssclass=""            permission="DOC_ARTWORK_UP_LS"/>
-			  	<doc41:navEntry href="documents/ptupload?type=LAYOUT_LS"     title="Layout High Res"      id="LAYOUT_LSUP"  cssclass=""            permission="DOC_LAYOUT_UP_LS"/>
+			  	<doc41:navEntry href="documents/ptupload?type=ARTWORK_LS"    title="Artwork Low Res"      id="ARTWORK_LSUP" cssclass=""            permission="NAV_ARTWORK_UP_LS"/>
+			  	<doc41:navEntry href="documents/ptupload?type=LAYOUT_LS"     title="Layout High Res"      id="LAYOUT_LSUP"  cssclass=""            permission="NAV_LAYOUT_UP_LS"/>
 
 			  </doc41:topNavEntry>
 			  
@@ -29,30 +29,30 @@
 
 			  <doc41:topNavEntry href="#" title="navDownload" id="download" permission="TOPNAV_DOWNLOAD">
 
-			  	<doc41:navEntry href="documents/documentsearch?type=BOL"                        title="Bill of Lading"                                        id="BOLDOWN"                cssclass=""            permission="DOC_BOL_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=WB"                         title="Waybill"                                               id="WBDOWN"                 cssclass=""            permission="DOC_WB_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=AWB"                        title="Air Waybill"                                           id="AWBDOWN"                cssclass=""            permission="DOC_AWB_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=FDACERT"                    title="FDA Certificate"                                       id="FDACERTDOWN"            cssclass=""            permission="DOC_FDACERT_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=SHIPDECL"                   title="Shippers Declaration"                                  id="SHIPDECLDOWN"           cssclass=""            permission="DOC_SHIPDECL_DOWN"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=CMROUT"                     title="CMR Outgoing"                                          id="CMROUTDOWN"             cssclass=""            permission="DOC_CMROUT_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=BOL"                        title="Bill of Lading"                                        id="BOLDOWN"                cssclass=""            permission="NAV_BOL_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=WB"                         title="Waybill"                                               id="WBDOWN"                 cssclass=""            permission="NAV_WB_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=AWB"                        title="Air Waybill"                                           id="AWBDOWN"                cssclass=""            permission="NAV_AWB_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=FDACERT"                    title="FDA Certificate"                                       id="FDACERTDOWN"            cssclass=""            permission="NAV_FDACERT_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=SHIPDECL"                   title="Shippers Declaration"                                  id="SHIPDECLDOWN"           cssclass=""            permission="NAV_SHIPDECL_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=CMROUT"                     title="CMR Outgoing"                                          id="CMROUTDOWN"             cssclass=""            permission="NAV_CMROUT_DOWN"/>
 
-			  	<doc41:navEntry href="documents/searchdelcertcountry?type=DELCERTDOWNCOUNTRY"   title="Delivery Certificate Country"                          id="DELCERTDOWNCOUNTRY"     cssclass=""            permission="DOC_DELCERT_DOWN_COUNTRY"/>
-			  	<doc41:navEntry href="documents/searchdelcertcustomer?type=DELCERTDOWNCUSTOMER" title="Delivery Certificate Customer"                         id="DELCERTDOWNCUSTOMER"    cssclass=""            permission="DOC_DELCERT_DOWN_CUSTOMER"/>
+			  	<doc41:navEntry href="documents/searchdelcertcountry?type=DELCERTDOWNCOUNTRY"   title="Delivery Certificate Country"                          id="DELCERTDOWNCOUNTRY"     cssclass=""            permission="NAV_DELCERT_DOWN_COUNTRY"/>
+			  	<doc41:navEntry href="documents/searchdelcertcustomer?type=DELCERTDOWNCUSTOMER" title="Delivery Certificate Customer"                         id="DELCERTDOWNCUSTOMER"    cssclass=""            permission="NAV_DELCERT_DOWN_CUSTOMER"/>
             
-			  	<doc41:navEntry href="documents/documentsearch?type=ARTWORK_LS"                 title="Artwork Low Res for Layout Supplier"                   id="ARTWORK_LSDOWN"         cssclass=""            permission="DOC_ARTWORK_DOWN_LS"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=LAYOUT_LS"                  title="Layout High Res for Layout Supplier"                   id="LAYOUT_LSDOWN"          cssclass=""            permission="DOC_LAYOUT_DOWN_LS"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=PMS_LS"                     title="Packaging Material Specification for Layout Supplier"  id="PMS_LSDOWN"             cssclass="first-child" permission="DOC_PMS_DOWN_LS"/>
-			  	<doc41:navEntry href="documents/documentsearch?type=PZ_LS"                      title="Technical Drawing PZ for Layout Supplier"              id="PZ_LSDOWN"              cssclass=""            permission="DOC_PZ_DOWN_LS"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=ARTWORK_LS"                 title="Artwork Low Res for Layout Supplier"                   id="ARTWORK_LSDOWN"         cssclass=""            permission="NAV_ARTWORK_DOWN_LS"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=LAYOUT_LS"                  title="Layout High Res for Layout Supplier"                   id="LAYOUT_LSDOWN"          cssclass=""            permission="NAV_LAYOUT_DOWN_LS"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=PMS_LS"                     title="Packaging Material Specification for Layout Supplier"  id="PMS_LSDOWN"             cssclass="first-child" permission="NAV_PMS_DOWN_LS"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=PZ_LS"                      title="Technical Drawing PZ for Layout Supplier"              id="PZ_LSDOWN"              cssclass=""            permission="NAV_PZ_DOWN_LS"/>
             
-			  	<doc41:navEntry href="documents/searchpmsupplier?type=ARTWORK_PM"               title="Artwork Low Res for PM Supplier"                       id="ARTWORK_PMDOWN"         cssclass=""            permission="DOC_ARTWORK_DOWN_PM"/>
-			  	<doc41:navEntry href="documents/searchpmsupplier?type=LAYOUT_PM"                title="Layout High Res for PM Supplier"                       id="LAYOUT_PMDOWN"          cssclass=""            permission="DOC_LAYOUT_DOWN_PM"/>
-			  	<doc41:navEntry href="documents/searchpmsupplier?type=PMS_PM"                   title="Packaging Material Specification for PM Supplier"      id="PMS_PMDOWN"             cssclass="first-child" permission="DOC_PMS_DOWN_PM"/>
-			  	<doc41:navEntry href="documents/searchpmsupplier?type=PZ_PM"                    title="Technical Drawing PZ for PM Supplier"                  id="PZ_PMDOWN"              cssclass=""            permission="DOC_PZ_DOWN_PM"/>
-			  	<doc41:navEntry href="documents/searchpmsupplier?type=TPACKDELREQ_PM"           title="Tech. Pack. and Deliv. Requirements for PM Supplier"   id="TPACKDELREQ_PMDOWN"     cssclass=""            permission="DOC_TPACKDELREQ_DOWN_PM"/>
-			    <doc41:navEntry href="documents/searchpmsupplier?type=ACS_PM"                   title="Anti-Counterfeiting Specification for PM Supplier"     id="ACS_PMDOWN"             cssclass=""            permission="DOC_ACS_DOWN_PM"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=ARTWORK_PM"               title="Artwork Low Res for PM Supplier"                       id="ARTWORK_PMDOWN"         cssclass=""            permission="NAV_ARTWORK_DOWN_PM"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=LAYOUT_PM"                title="Layout High Res for PM Supplier"                       id="LAYOUT_PMDOWN"          cssclass=""            permission="NAV_LAYOUT_DOWN_PM"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=PMS_PM"                   title="Packaging Material Specification for PM Supplier"      id="PMS_PMDOWN"             cssclass="first-child" permission="NAV_PMS_DOWN_PM"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=PZ_PM"                    title="Technical Drawing PZ for PM Supplier"                  id="PZ_PMDOWN"              cssclass=""            permission="NAV_PZ_DOWN_PM"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=TPACKDELREQ_PM"           title="Tech. Pack. and Deliv. Requirements for PM Supplier"   id="TPACKDELREQ_PMDOWN"     cssclass=""            permission="NAV_TPACKDELREQ_DOWN_PM"/>
+			    <doc41:navEntry href="documents/searchpmsupplier?type=ACS_PM"                   title="Anti-Counterfeiting Specification for PM Supplier"     id="ACS_PMDOWN"             cssclass=""            permission="NAV_ACS_DOWN_PM"/>
 
-                <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_PM"             title="PM Supplier (global)"                                  id="ALL_PMDOWN"             cssclass=""            permission="DOC_GLO_PM"/>
-                <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_SD"             title="SD Supplier (global)"                                  id="ALL_SDDOWN"             cssclass=""            permission="DOC_GLO_SD"/>
+                <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_PM"             title="PM Supplier (global)"                                  id="ALL_PMDOWN"             cssclass=""            permission="NAV_GLO_PM"/>
+                <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_SD"             title="SD Supplier (global)"                                  id="ALL_SDDOWN"             cssclass=""            permission="NAV_GLO_SD"/>
 
               </doc41:topNavEntry>
 
