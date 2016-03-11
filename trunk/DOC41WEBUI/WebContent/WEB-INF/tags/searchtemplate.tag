@@ -186,7 +186,7 @@
 					varStatus="status">
 					<tr style="cursor: pointer;"
 						onclick="openDocument('${document.key}','${searchForm.type}')">
-                        <td><doc41:spaceToNbsp><doc41:translate label="${document.type}"/> - <c:out value="${document.type}" /></doc41:spaceToNbsp></td>
+                        <td><doc41:spaceToNbsp><doc41:translate label="${document.type}"/><!-- c:out value="${document.type}" / --></doc41:spaceToNbsp></td>
 						<c:if test="${empty showTableObjectId or showTableObjectId}">
 							<td><doc41:spaceToNbsp><c:out value="${document.objectId}" /></doc41:spaceToNbsp></td>
 						</c:if>
