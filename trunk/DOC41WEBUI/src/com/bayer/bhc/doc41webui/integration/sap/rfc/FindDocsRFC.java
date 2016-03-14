@@ -17,7 +17,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 
 	
 	private static final String IT_OBJID_RANGE = "IT_OBJID_RANGE";
-	private static final String IN_D41ID = "IV_D41ID";
+	//private static final String IN_D41ID = "IV_D41ID";
 	private static final String IN_MAXHIT = "IV_MAXHIT";
 	private static final String IN_MAX_VER_ONLY = "IV_GET_MAX_VERS";
 	private static final String IN_OBJ_TYPE = "IV_OBJ_TYPE";
@@ -26,6 +26,8 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	private static final String IN_OPTION = "OPTION";
 	private static final String IN_LOW = "LOW";
 	private static final String IT_VALUE_RANGE = "IT_VALUE_RANGE";
+    private static final String IT_D41ID = "IT_D41ID";
+    private static final String D41ID = "D41ID";
 	private static final String OT_HITS = "OT_HITS";
     private static final String OUT_D41ID = "D41ID";
 	private static final String OUT_DOC_ID = "DOCID";
@@ -61,10 +63,10 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 				
 //              Old FindDocs2, only single D41ID
 //              sapInput.setValue(IN_D41ID,d41id);
-                JCoTable table = sapInput.getTable("IT_D41ID");
+                JCoTable table = sapInput.getTable(IT_D41ID);
                 for (String d41id : d41idList) {
                     table.appendRow();
-                    table.setValue("D41ID", d41id);
+                    table.setValue(D41ID, d41id);
                 }
 
 				sapInput.setValue(IN_MAXHIT,maxResults);
