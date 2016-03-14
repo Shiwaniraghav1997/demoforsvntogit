@@ -120,7 +120,7 @@ public class DocumentUC {
 	private final Map<String,DocumentType> documentTypes;
     private final Map<String,DocumentType> documentTypesBySapId;
 	private Map<String,ArrayList<String>> documentTypesByDownloadPermissionType = null;
-	
+
 	public DocumentUC() {
 		documentTypes = new HashMap<String, DocumentType>();
         documentTypesBySapId = new HashMap<String, DocumentType>();
@@ -159,7 +159,7 @@ public class DocumentUC {
 	/**
 	 * Get al list of all document types belonging to the same permission type.
 	 * This is required to allow global search/download for document types of the same permission type, e.g. DOC_LS, DOC_PM, DOC_SD and eventually DOC_QM.
-	 * This way we know, which permissions belong together. But still needed: check for each document type, taht the user has the corresponding permission for download.
+	 * This way we know, which permissions belong together. But still needed: check for each document type, that the user has the corresponding permission for download.
 	 * Permission types (representing a document group) should all start with DOC_ as prefix to differentiate for a single document type. 
 	 * @param mPermissionType the permission type (used instead of a document type) to handle a group of document types instead of a single one.
 	 * @return
@@ -735,7 +735,7 @@ public class DocumentUC {
     
     /**
      * Get a certain DownloadDocumentType or filtered DownloadDocumentType Group.
-     * @param type may be an explicite document type name of a name of a DocumentType group, see DocumentType.GROUP_* for available groups (identified by the permission group of related Document permissions)
+     * @param type may be an explicite document type name or a name of a DocumentType group, see DocumentType.GROUP_* for available groups (identified by the permission group of related Document permissions)
      * @param type usr to filter list also by usr permissions - may result in an empty list...
      * @return
      * @throws Doc41BusinessException
