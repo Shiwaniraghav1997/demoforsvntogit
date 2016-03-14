@@ -120,7 +120,7 @@ public class User extends DomainObject {
 	
 	public boolean hasPermission(String ... permissions) {
 		for (String permission : permissions) {
-			if (getPermissions().contains(permission)) {
+			if ((permission != null) && getPermissions().contains(permission)) {
 				return true;
 			}
 		}
@@ -130,7 +130,7 @@ public class User extends DomainObject {
 		    Doc41Log.get().warning(this, getCwid(), "AllPermissions NULL! Object not properly initialized!");
 		} else {
 		    for (String permission : permissions) {
-		        if (!allDoc41Permissions.contains(permission)) {
+		        if ((permission != null) && !allDoc41Permissions.contains(permission)) {
 		            Doc41Log.get().debugMessageOnce(this,  null, "Permission \"" + permission + "\" currently not available, may be global deactivated.");
 		        }
 		    }
