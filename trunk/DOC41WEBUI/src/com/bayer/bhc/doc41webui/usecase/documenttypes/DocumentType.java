@@ -11,6 +11,11 @@ public interface DocumentType {
     public static final String GROUP_PM = "DOC_PM";
     public static final String GROUP_LS = "DOC_LS";
     
+    public static final String GROUP_SD_PERM_DOWNL = "DOC_GLO_SD";
+    public static final String GROUP_QM_PERM_DOWNL = null; //"DOC_GLO_QM";
+    public static final String GROUP_PM_PERM_DOWNL = "DOC_GLO_PM";
+    public static final String GROUP_LS_PERM_DOWNL = "DOC_GLO_LS";
+    
 	public boolean hasCustomerNumber();
 	public boolean hasVendorNumber();
 	public String getTypeConst();

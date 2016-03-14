@@ -758,7 +758,7 @@ public class DocumentUC {
 	            throw new Doc41BusinessException("Undefined DocumentType requested: " + type + "." + mType);
 	        }
 	        if (mDocType instanceof DownloadDocumentType) {
-	            if (usr.hasPermission( ((DownloadDocumentType)mDocType).getPermissionDownload() )) {
+	            if ( usr.hasPermission( ((DownloadDocumentType)mDocType).getPermissionDownload(), ((DownloadDocumentType)mDocType).getGroupPermissionDownload() ) ) {
 	                mDocTypes.add((DownloadDocumentType)mDocType);
 	            }
 	        }
@@ -813,14 +813,36 @@ public class DocumentUC {
 		return getDocType(type).hasVendorNumber();
 	}
 
+	/**
+	 * Get the permission code explicitly allow upload of a document type.
+	 * @param type
+	 * @return
+	 * @throws Doc41BusinessException
+	 */
 	public String getUploadPermission(String type) throws Doc41BusinessException {
 		return getDocTypeForUpload(type).getPermissionUpload();
 	}
 	
+    /**
+     * Get the permission code explicitly allow download of a document type.
+     * @param type
+     * @return
+     * @throws Doc41BusinessException
+     */
 	public String getDownloadPermission(String type) throws Doc41BusinessException {
 		return getDocTypeForDownload(type).getPermissionDownload();
 	}
 	
+    /**
+     * Get the permission code allow download of a document type by membership of a document group.
+     * @param type
+     * @return
+     * @throws Doc41BusinessException
+     */
+    public String getGroupDownloadPermission(String type) throws Doc41BusinessException {
+        return getDocTypeForDownload(type).getPermissionDownload();
+    }
+    
 	public String getDirectDownloadPermission(String type) throws Doc41BusinessException {
 		return getDocTypeForDirectDownload(type).getPermissionDirectDownload();
 	}
