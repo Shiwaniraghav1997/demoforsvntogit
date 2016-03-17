@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41ClientAbortException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
@@ -79,7 +81,11 @@ public class DirectDownloadController extends AbstractDoc41Controller {
 			String docId = newestDocument.getDocId();
 			String fileName =newestDocument.getFileName();
 			String sapObjectType = newestDocument.getObjectType();
-            documentUC.downloadDocument(response,type,docId,fileName,refId,sapObjectType);
+            try {
+                documentUC.downloadDocument(response,type,docId,fileName,refId,sapObjectType);
+            } catch (Doc41ClientAbortException e) {
+                Doc41Log.get().warning(this, null, "User aborted DirectDownload, filename: " + fileName + ", Doc41Id: " + docId + ", SapObjectId: " + refId );
+            }
 		}
 	}
 	

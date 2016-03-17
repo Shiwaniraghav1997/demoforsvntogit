@@ -4,7 +4,9 @@
  */
 package com.bayer.bhc.doc41webui.common.exception;
 
+import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.ecim.foundation.basic.NestingException;
+import com.bayer.ecim.foundation.basic.NestingExceptionsParameter;
 
 /**
  * Doc41ExceptionBase. Basic Doc41 exception.
@@ -18,14 +20,25 @@ public class Doc41ExceptionBase extends NestingException {
      * Constructor with message and cause.
      */
     public Doc41ExceptionBase(final String message, final Throwable cause) {
-        super(message, cause);
+        super(message, cause, null, UserInSession.getCwid(), null);
     }
 
     /**
      * Constructor with message.
      */
     public Doc41ExceptionBase(final String message) {
-        super(message,null);
+        super(message,null, null, UserInSession.getCwid(), null);
     }
 
+    /**
+     * Constructor with message, cause and trace controll.
+     * @param pTitle
+     * @param pInternalException
+     * @param pAutoTrace
+     * @param pNoStacktrace
+     */
+    public Doc41ExceptionBase( String pTitle, Throwable pInternalException, boolean pAutoTrace, boolean pNoStacktrace ) {
+        super(pTitle, pInternalException, null, UserInSession.getCwid(), null, pAutoTrace, pNoStacktrace);
+    }
+    
 }

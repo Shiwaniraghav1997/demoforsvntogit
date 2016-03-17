@@ -15,7 +15,6 @@ import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41ClientAbortException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41DocServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
@@ -454,8 +454,8 @@ public class SearchController extends AbstractDoc41Controller {
             if (mDoThrowEx) {
                 throw ie;
             }
-        } catch (ClientAbortException mCAEx) {
-            Doc41Log.get().warning(this, null, "User aborted Download: " + StringTool.nvl(generateFileName, "n/a (early abort)"));
+        } catch (Doc41ClientAbortException mCAEx) {
+            Doc41Log.get().warning(this, null, "User aborted ZIP MultiDownload: " + StringTool.nvl(generateFileName, "n/a (early abort)"));
         } catch (Exception e) {
             Doc41BusinessException mEx = new Doc41BusinessException("unexpected download zip failure", e);
             if (mDoThrowEx) {
@@ -484,7 +484,12 @@ public class SearchController extends AbstractDoc41Controller {
 		if(cwid==null || !cwid.equalsIgnoreCase(UserInSession.getCwid())){
 			throw new Doc41BusinessException("download link for different user");
 		}
-		documentUC.downloadDocument(response,type,docId,filename,sapObjId,sapObjType);
+		try {
+		    documentUC.downloadDocument(response,type,docId,filename,sapObjId,sapObjType);
+		} catch (Doc41ClientAbortException e) {
+            Doc41Log.get().warning(this, null, "User aborted Download, filename: " + filename + ", Doc41Id: " + docId + ", SapObjectId: " + sapObjId );
+		}
+		    
 	}
 	
 	private void checkPartnerNumbers(BindingResult errors, boolean hasCustomerNumber, boolean hasVendorNumber,

@@ -22,7 +22,6 @@ import java.util.zip.ZipOutputStream;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -30,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41ClientAbortException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
@@ -669,16 +669,13 @@ public class DocumentUC {
 	 * @param pFileName
 	 * @return
 	 * @throws Doc41BusinessException
-	 * @throws ClientAbortException 
+	 * @throws Doc41ClientAbortException 
 	 */
-	public ZipOutputStream createZipResponse(HttpServletResponse targetResponse, String pFileName) throws Doc41BusinessException, ClientAbortException {
+	public ZipOutputStream createZipResponse(HttpServletResponse targetResponse, String pFileName) throws Doc41BusinessException, Doc41ClientAbortException {
 	    try {
 	        return httpClientService.createZipResponse(targetResponse, pFileName);
         } catch (Exception e) {
-            Throwable mCause = e.getCause();
-            if ((mCause != null) && (mCause instanceof ClientAbortException)) {
-                throw (ClientAbortException)mCause;
-            }
+            Doc41ClientAbortException.inspectForClientAbortException(e.getCause(), "Client aborted download: " + pFileName, false);
             throw new Doc41BusinessException("io failure on creating zip",e);
         }
 	}
@@ -693,10 +690,10 @@ public class DocumentUC {
 	 * @param sapObjType
 	 * @param pComments for collecting zip comments, currently failed files and their response.
 	 * @return the Status responded by the SAP Stream
-	 * @throws ClientAbortException
+	 * @throws Doc41ClientAbortException 
 	 */
     public String addDownloadDocumentToZip(ZipOutputStream pZOs, String type,
-            String docId,String fileName, String sapObjId, String sapObjType, StringBuffer pComments /*, HashMap<String, Integer> pAddedFiles*/) throws ClientAbortException {
+            String docId,String fileName, String sapObjId, String sapObjType, StringBuffer pComments /*, HashMap<String, Integer> pAddedFiles*/) throws Doc41ClientAbortException {
         try {
             DocMetadata metadata = getMetadata(type);
             ContentRepositoryInfo crepInfo = metadata.getContentRepository();
@@ -718,10 +715,7 @@ public class DocumentUC {
             }
             return statusText;
         } catch (Exception e) {
-            Throwable mCause = e.getCause();
-            if ((mCause != null) && (mCause instanceof ClientAbortException)) {
-                throw (ClientAbortException)mCause;
-            }
+            Doc41ClientAbortException.inspectForClientAbortException(e.getCause(), "Client aborted download: " + fileName, false);
             pComments.append("\n\n*** FAILED: " + fileName + " (" + docId + ") ***");
             new Doc41BusinessException("downloadDocumentMulti failed: " + fileName + " (" + docId + ")",e); // consume
             return "FAILED";
@@ -737,24 +731,21 @@ public class DocumentUC {
      * @param pComment
      * @return
      * @throws Doc41BusinessException 
-     * @throws ClientAbortException 
+     * @throws Doc41ClientAbortException 
      */
-    public void closeZipDownload(HttpServletResponse pTargetResponse, ZipOutputStream pZOs, String pFileName, String pComment) throws Doc41BusinessException, ClientAbortException {
+    public void closeZipDownload(HttpServletResponse pTargetResponse, ZipOutputStream pZOs, String pFileName, String pComment) throws Doc41BusinessException, Doc41ClientAbortException {
         logWebMetrix("DOC_DOWNLOADED", null, "ZIP",null, null, pFileName);
         try{
             httpClientService.closeZipDownload(pTargetResponse, pZOs, pComment);
         } catch (Exception e) {
-            Throwable mCause = e.getCause();
-            if ((mCause != null) && (mCause instanceof ClientAbortException)) {
-                throw (ClientAbortException)mCause;
-            }
+            Doc41ClientAbortException.inspectForClientAbortException(e.getCause(), "Client aborted download: " + pFileName, false);
             throw new Doc41BusinessException("io failure on creating zip",e);
         }
     }
 
     
 	public String downloadDocument(HttpServletResponse targetResponse, String type,
-			String docId,String fileName, String sapObjId, String sapObjType) throws Doc41BusinessException {
+			String docId,String fileName, String sapObjId, String sapObjType) throws Doc41BusinessException, Doc41ClientAbortException {
 		try{
 			DocMetadata metadata = getMetadata(type);
 			ContentRepositoryInfo crepInfo = metadata.getContentRepository();
@@ -773,6 +764,7 @@ public class DocumentUC {
 			logWebMetrix("DOC_DOWNLOADED",docId,type,sapObjId,sapObjType,fileName);
 			return statusText;
 		} catch (Doc41ServiceException e) {
+            Doc41ClientAbortException.inspectForClientAbortException(e.getCause(), "Client aborted download: " + fileName, false);
             throw new Doc41BusinessException("downloadDocument failed: " + fileName + " (" + docId + ")",e);
 		}
 	}
