@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 
 @Component
@@ -49,6 +50,8 @@ public class BwRFCService extends AbstractSAPJCOService {
 	public List<HitListEntry> findDocs(List<String> d41id,String sapObj,List<String> objectIds,Map<String, String> attributeValues,int maxResults,boolean maxVersionOnly, Map<Integer, String> seqToKey)
 	  throws Doc41ServiceException{
 		List<Object> params = new ArrayList<Object>();
+		Doc41Log.get().debug(this, null, "FindDocsMulti - d41id=" + d41id + ", sapObj=" + sapObj + ", objectIds=" + objectIds +
+		        ", maxResult=" +maxResults + ", maxVersionOnly=" + maxVersionOnly + ", attributeValues=" + attributeValues + ", seqToKey = " + seqToKey);
 		params.add(d41id);
 		params.add(sapObj); // no more used on findocs multi, expected null!!!
 		params.add(objectIds);

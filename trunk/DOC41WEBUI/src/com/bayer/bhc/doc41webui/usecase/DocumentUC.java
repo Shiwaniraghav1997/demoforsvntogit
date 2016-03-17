@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 import java.util.zip.ZipOutputStream;
@@ -85,8 +86,11 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.ShippersDeclDocumentTyp
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.WaybillDocumentType;
 import com.bayer.ecim.foundation.basic.ConfigMap;
 import com.bayer.ecim.foundation.basic.DateTool;
+import com.bayer.ecim.foundation.basic.Dbg;
 import com.bayer.ecim.foundation.basic.InitException;
+import com.bayer.ecim.foundation.basic.NumberTool;
 import com.bayer.ecim.foundation.basic.SendMail;
+import com.bayer.ecim.foundation.basic.SimpleLRUCache;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.basic.Template;
 
@@ -117,14 +121,26 @@ public class DocumentUC {
 	@Autowired
 	private HttpClientService httpClientService;
 	
-	private Map<String, DocMetadata> docMetadataContainer;
+	//moved to LRU cache... private Map<String, DocMetadata> docMetadataContainer;
+	
+	private final SimpleLRUCache cCache;
+	private long cMaxAgeMillis = 300000; // default 5 minutes (5*60*1000)
+	private int cMaxSize = 10; // currently not required to be bigger - but remember to increase, if using for more objects.
+	private final String CONFIG_CACHE_DOMAIN = "documents.cache";
+	private final String METADATA_CACHE_KEY = "SAPMETA";
 	
 	private final Map<String,DocumentType> documentTypes;
     private final Map<String,DocumentType> documentTypesBySapId;
 	private Map<String,ArrayList<String>> documentTypesByDownloadPermissionType = null;
 
 	public DocumentUC() {
-		documentTypes = new HashMap<String, DocumentType>();
+	    Properties mCacheConfig = ConfigMap.get().getSubCfg(CONFIG_CACHE_DOMAIN);
+	    cMaxAgeMillis  = NumberTool.parseLongFromCfgNoParseEx("documents.cache", "MaxAgeMillis", mCacheConfig, cMaxAgeMillis); // automatic fallback to default with WARNING on parse exception
+        cMaxSize       = NumberTool.parseIntFromCfgNoParseEx("documents.cache", "MaxSize", mCacheConfig, cMaxSize); // automatic fallback to default with WARNING on parse exception
+	    cCache = new SimpleLRUCache(cMaxAgeMillis, cMaxSize, cMaxSize, "LRUCacheDocumentUC-", Dbg.INFO);
+	    Doc41Log.get().debug(this, null, "DocumentUC-Cache, maxTime = " + (cMaxAgeMillis/1000/60) + " minutes, maxSize = " + cMaxSize );
+	    
+	    documentTypes = new HashMap<String, DocumentType>();
         documentTypesBySapId = new HashMap<String, DocumentType>();
 		
 		addDocumentType(new AWBDocumentType());
@@ -241,10 +257,14 @@ public class DocumentUC {
 	
 	private synchronized Map<String, DocMetadata> getDocMetadataContainer() throws Doc41BusinessException {
 		try{
-			if(docMetadataContainer==null){
+		    @SuppressWarnings("unchecked")
+            Map<String, DocMetadata> docMetadataContainer = (Map<String, DocMetadata>) cCache.getSync(METADATA_CACHE_KEY);
+			if(docMetadataContainer == null) {
 				Set<String> languageCodes = translationsRepository.getLanguageCodes().keySet();
 				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes, getAllDocTypesBySapTypeIdMap() /*getSupportedSapDocTypes()*/);
+				cCache.putSync(METADATA_CACHE_KEY, docMetadataContainer);
 			}
+			Doc41Log.get().debug(this, null, cCache.toString());
 			return docMetadataContainer;
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("getMetadata",e);
