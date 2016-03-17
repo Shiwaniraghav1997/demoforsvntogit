@@ -448,6 +448,7 @@ public class SearchController extends AbstractDoc41Controller {
             }
             // if this fails, we can not report to user, only to log... (add comment to ZIP & close ZIP).
             if (mOut != null) {
+                mComments.append("\n");
                 documentUC.closeZipDownload(response, mOut, generateFileName, mComments.toString());
             }
         } catch (Doc41BusinessException ie) {
@@ -462,7 +463,7 @@ public class SearchController extends AbstractDoc41Controller {
                 throw mEx;
             }
         }
-        Doc41Log.get().debug(this, null, "*** DOWNLOAD SUCC ***");
+        Doc41Log.get().debug(this, null, "*** MULTIDOWNLOAD SUCC ***");
     }
     
     
@@ -485,7 +486,8 @@ public class SearchController extends AbstractDoc41Controller {
 			throw new Doc41BusinessException("download link for different user");
 		}
 		try {
-		    documentUC.downloadDocument(response,type,docId,filename,sapObjId,sapObjType);
+		    String mRes = documentUC.downloadDocument(response,type,docId,filename,sapObjId,sapObjType);
+	        Doc41Log.get().debug(this, null, "*** DOWNLOAD " + mRes + " ***");
 		} catch (Doc41ClientAbortException e) {
             Doc41Log.get().warning(this, null, "User aborted Download, filename: " + filename + ", Doc41Id: " + docId + ", SapObjectId: " + sapObjId );
 		}

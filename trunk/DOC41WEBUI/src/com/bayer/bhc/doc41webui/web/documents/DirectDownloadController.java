@@ -82,7 +82,8 @@ public class DirectDownloadController extends AbstractDoc41Controller {
 			String fileName =newestDocument.getFileName();
 			String sapObjectType = newestDocument.getObjectType();
             try {
-                documentUC.downloadDocument(response,type,docId,fileName,refId,sapObjectType);
+                String mRes = documentUC.downloadDocument(response,type,docId,fileName,refId,sapObjectType);
+                Doc41Log.get().debug(this, null, "*** DIRECTDOWNLOAD " + mRes + " ***");
             } catch (Doc41ClientAbortException e) {
                 Doc41Log.get().warning(this, null, "User aborted DirectDownload, filename: " + fileName + ", Doc41Id: " + docId + ", SapObjectId: " + refId );
             }
