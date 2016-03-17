@@ -17,10 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.zip.ZipOutputStream;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -597,7 +599,9 @@ public class DocumentUC {
                 DocMetadata metadata = getMetadata(mType);
                 DocTypeDef docDef = metadata.getDocDef();
                 d41idList.add( docDef.getD41id() );
-                checkAttribsWithCustomizing(attributeValues,mType);
+                if (pTypes.size() == 1) { // not check on multi document type (groups), because there are always extra attributes...
+                    checkAttribsWithCustomizing(attributeValues,mType);
+                }
                 getSeqToKeyFromDefinitions(mType, seqToKey, seqToKeyGlo, mKnownKeys);
                 seqToKeyAllTypes.put(mType, seqToKey);
             }
@@ -658,6 +662,97 @@ public class DocumentUC {
 		return attributeSeqToKey;
 	}
 
+	
+	/**
+	 * Create and initialize an ZIP output stream to return a zip archive of files.
+	 * @param targetResponse
+	 * @param pFileName
+	 * @return
+	 * @throws Doc41BusinessException
+	 * @throws ClientAbortException 
+	 */
+	public ZipOutputStream createZipResponse(HttpServletResponse targetResponse, String pFileName) throws Doc41BusinessException, ClientAbortException {
+	    try {
+	        return httpClientService.createZipResponse(targetResponse, pFileName);
+        } catch (Exception e) {
+            Throwable mCause = e.getCause();
+            if ((mCause != null) && (mCause instanceof ClientAbortException)) {
+                throw (ClientAbortException)mCause;
+            }
+            throw new Doc41BusinessException("io failure on creating zip",e);
+        }
+	}
+	
+	/**
+	 * Add a download Document to a prepared Download ZIP, gaining access to the document via SAP.
+	 * @param pZOs the prepared ZIP OutputStream
+	 * @param type
+	 * @param docId
+	 * @param fileName
+	 * @param sapObjId
+	 * @param sapObjType
+	 * @param pComments for collecting zip comments, currently failed files and their response.
+	 * @return the Status responded by the SAP Stream
+	 * @throws ClientAbortException
+	 */
+    public String addDownloadDocumentToZip(ZipOutputStream pZOs, String type,
+            String docId,String fileName, String sapObjId, String sapObjType, StringBuffer pComments /*, HashMap<String, Integer> pAddedFiles*/) throws ClientAbortException {
+        try {
+            DocMetadata metadata = getMetadata(type);
+            ContentRepositoryInfo crepInfo = metadata.getContentRepository();
+            // FIXME: DIRS support needed
+            String crepId = crepInfo.getContentRepository();
+            DocTypeDef docDef = metadata.getDocDef();
+            String compId = null;
+            if(docDef.isDvs()){
+                DocInfoComponent comp = kgsRFCService.getDocInfo(crepId,docId);
+                compId = comp.getCompId();
+            }
+        
+            URI docURL = kgsRFCService.getDocURL(crepId, docId,compId);
+        
+            String statusText = httpClientService.addFileToZipDownload(docURL, pZOs ,docId, fileName /*, pAddedFiles*/);
+            logWebMetrix("DOC_DOWNLOADED",docId,type,sapObjId,sapObjType,"*"+fileName);
+            if (!"OK".equalsIgnoreCase(statusText)) {
+                pComments.append("\n\n*** " + statusText + ": " + fileName + " (" + docId + ") ***");
+            }
+            return statusText;
+        } catch (Exception e) {
+            Throwable mCause = e.getCause();
+            if ((mCause != null) && (mCause instanceof ClientAbortException)) {
+                throw (ClientAbortException)mCause;
+            }
+            pComments.append("\n\n*** FAILED: " + fileName + " (" + docId + ") ***");
+            new Doc41BusinessException("downloadDocumentMulti failed: " + fileName + " (" + docId + ")",e); // consume
+            return "FAILED";
+        }
+    }
+
+    
+    /**
+     * Close the ZIP for Download. This may be extended by a comment for the ZIP.
+     * @param pTargetResponse
+     * @param pZOs
+     * @param pFileName
+     * @param pComment
+     * @return
+     * @throws Doc41BusinessException 
+     * @throws ClientAbortException 
+     */
+    public void closeZipDownload(HttpServletResponse pTargetResponse, ZipOutputStream pZOs, String pFileName, String pComment) throws Doc41BusinessException, ClientAbortException {
+        logWebMetrix("DOC_DOWNLOADED", null, "ZIP",null, null, pFileName);
+        try{
+            httpClientService.closeZipDownload(pTargetResponse, pZOs, pComment);
+        } catch (Exception e) {
+            Throwable mCause = e.getCause();
+            if ((mCause != null) && (mCause instanceof ClientAbortException)) {
+                throw (ClientAbortException)mCause;
+            }
+            throw new Doc41BusinessException("io failure on creating zip",e);
+        }
+    }
+
+    
 	public String downloadDocument(HttpServletResponse targetResponse, String type,
 			String docId,String fileName, String sapObjId, String sapObjType) throws Doc41BusinessException {
 		try{
@@ -678,7 +773,7 @@ public class DocumentUC {
 			logWebMetrix("DOC_DOWNLOADED",docId,type,sapObjId,sapObjType,fileName);
 			return statusText;
 		} catch (Doc41ServiceException e) {
-			throw new Doc41BusinessException("downloadDocument",e);
+            throw new Doc41BusinessException("downloadDocument failed: " + fileName + " (" + docId + ")",e);
 		}
 	}
 	
@@ -950,6 +1045,12 @@ public class DocumentUC {
 		
 	}
 	
+	/**
+	 * Check for attributes no longer in customizing - works only, if running for one DocumentType (not for Groups, because there are always attributes of other groups).
+	 * @param attributeValues
+	 * @param type
+	 * @throws Doc41BusinessException
+	 */
 	public void checkAttribsWithCustomizing(Map<String, String> attributeValues,String type) throws Doc41BusinessException {
 		List<Attribute> attributeDefinitions = getMetadata(type).getAttributes();
 		
@@ -970,7 +1071,7 @@ public class DocumentUC {
 			}
 		}
 		if(missingAttrKeysInCustomizing.length()>0){
-			Doc41Log.get().debug(getClass(), UserInSession.getCwid(), "CustomizingMissmatch: attributes "+missingAttrKeysInCustomizing+" no longer in customizing");
+			Doc41Log.get().warnMessageOnce(getClass(), UserInSession.getCwid(), "CustomizingMissmatch: attributes "+missingAttrKeysInCustomizing+" no longer in customizing");
 		}
 		
 	}

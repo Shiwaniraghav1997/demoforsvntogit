@@ -140,12 +140,14 @@
 		<doc41:error path="objectId" />
 		<div class="section-separator"><doc41:translate label="results" /></div>
 		<doc41:pager />
-		<table class="tablesorter" id="doc41table">
+        <form:form commandName="downloadMulti" action="downloadMulti" method="post">
+    	  <table class="tablesorter" id="doc41table">
 			<thead >
 				<tr>
 
 					<!-- thead text will be updated from the JSON; make sure the number of columns matches the JSON data -->
 					<!-- header update currently disabled to put names in the jsp instead of in java  -->
+                    <th>&nbsp;</th>
                     <th><doc41:translate label="DocumentType" /></th>
 					<c:if test="${empty showTableObjectId or showTableObjectId}">
 						<th><doc41:translate label="ObjectId${searchForm.type}" /></th>
@@ -162,6 +164,7 @@
 					
 				</tr>
 			<colgroup>
+                <col width="2%" />
                 <col width="10%" />
 				<c:if test="${empty showTableObjectId or showTableObjectId}">
 					<col width="15%" />
@@ -182,32 +185,36 @@
 			</thead>
 
 			<tbody >
+                <c:set var="idx" value="-1" scope="page" />
 				<c:forEach items="${searchForm.documents}" var="document"
-					varStatus="status">
-					<tr style="cursor: pointer;"
-						onclick="openDocument('${document.key}','${searchForm.type}')">
-                        <td><doc41:spaceToNbsp><doc41:translate label="${document.type}"/><!-- c:out value="${document.type}" / --></doc41:spaceToNbsp></td>
+					varStatus="status"><c:set var="idx" value="${idx + 1}" scope="page"/>
+					<tr style="cursor: pointer;">
+                        <td><input id="docSel" name="docSel" type="checkbox" value="${document.key}|${searchForm.type}"/><input id="docAll" name="docAll" type="hidden" value="${document.key}|${searchForm.type}"/></td>
+                        <td onclick="openDocument('${document.key}','${searchForm.type}')"><doc41:spaceToNbsp><doc41:translate label="${document.type}"/><!-- c:out value="${document.type}" / --></doc41:spaceToNbsp></td>
 						<c:if test="${empty showTableObjectId or showTableObjectId}">
-							<td><doc41:spaceToNbsp><c:out value="${document.objectId}" /></doc41:spaceToNbsp></td>
+							<td onclick="openDocument('${document.key}','${searchForm.type}')"><doc41:spaceToNbsp><c:out value="${document.objectId}" /></doc41:spaceToNbsp></td>
 						</c:if>
 						<%-- <td>
 							<doc41:formatDate date="${document.storageDate}" zone="${user.timeZone}"></doc41:formatDate>
 						</td> --%>
-						<td>
+						<td onclick="openDocument('${document.key}','${searchForm.type}')">
 							<doc41:formatDate date="${document.archiveLinkDate}" zone="${user.timeZone}"></doc41:formatDate>&nbsp;<doc41:formatTime date="${document.archiveLinkDate}" zone="${user.timeZone}"></doc41:formatTime>
 						</td>
 						<c:if test="${empty showTableDocumentClass or showTableDocumentClass}">
-							<td><c:out value="${document.documentClass}" /></td>
+							<td onclick="openDocument('${document.key}','${searchForm.type}')"><c:out value="${document.documentClass}" /></td>
 						</c:if>
 						<c:forEach items="${searchForm.attributeLabels}"
 							var="attribLabel" varStatus="status">
-						<td><c:out value="${document.customizedValuesByKey[attribLabel.key]}" /></td>
+						<td onclick="openDocument('${document.key}','${searchForm.type}')"><c:out value="${document.customizedValuesByKey[attribLabel.key]}" /></td>
 						</c:forEach>
 					</tr>
 				</c:forEach>
 			</tbody>
-		</table>
-		<doc41:pager />
+          </table>
+		  <doc41:pager />
+          <!--  input id="download" name="download" type="button" --> 
+          <input type="submit" class="portlet-form-button" value="Download All" name="ButtonDownload"/>
+        </form:form>
 		
 	</div>
 	<%--<div id="div-body" class="portlet-body">

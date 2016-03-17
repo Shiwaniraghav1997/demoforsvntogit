@@ -1,17 +1,21 @@
 package com.bayer.bhc.doc41webui.web.documents;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Set;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -31,6 +35,7 @@ import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UrlParamCrypt;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
+import com.bayer.bhc.doc41webui.container.MultiDownloadForm;
 import com.bayer.bhc.doc41webui.container.SearchForm;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
 import com.bayer.bhc.doc41webui.domain.Attribute;
@@ -45,6 +50,8 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PMSupplierDownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.AbstractDeliveryCertDocumentType;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
+import com.bayer.ecim.foundation.basic.BooleanTool;
+import com.bayer.ecim.foundation.basic.ConfigMap;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 @Controller
@@ -79,8 +86,6 @@ public class SearchController extends AbstractDoc41Controller {
 			throw new Doc41BusinessException("typeIsMissing");
 		}
 		
-        // TODO: IMPLEMENTED, first tests passed: support of permission types as type representing a group of document types (for implementation of global searches)
-		// TODO: IMPLEMENTED, first tests passed: foreach documentType...
 		List<DownloadDocumentType> mDocTypes = documentUC.getFilteredDocTypesForDownload(mFormType, usr);
 		Doc41Log.get().debug(this, null, "Search for download for " + mDocTypes.size() + " document types by '" + mFormType );
 		searchForm.setDocumentTypes(mDocTypes);
@@ -89,6 +94,8 @@ public class SearchController extends AbstractDoc41Controller {
 		int objectIdFillLength = -1;
 		boolean isFirst = true;
 		boolean isKgs = false;
+		Properties mMaxVer = ConfigMap.get().getSubCfg("documents", "getOnlyMaxVer"); // Properties with TypeConst, e.g. AWB or GROUP, e.g. DOC_PM (see DocumentType.GROUP_*)
+		boolean mOnlyMaxVer = true; // gets false, if at least one of the types not wants only MaxVer
 		for (DownloadDocumentType mDocType : mDocTypes) {
 		    if (isFirst) {
 		        isFirst = false;
@@ -98,6 +105,7 @@ public class SearchController extends AbstractDoc41Controller {
 	                throw new Doc41BusinessException("Mixed kind of DocumentType storage technology - KGS & DIRS - not supported!");
 		        }
 		    }
+		    mOnlyMaxVer &= BooleanTool.getBoolean(mMaxVer.getProperty(mDocType.getTypeConst()), BooleanTool.getBoolean(mMaxVer.getProperty(mDocType.getGroup()), false));
 		    int objectIdFillLengthLocal = mDocType.getObjectIdFillLength();
 		    if (objectIdFillLength == -1) {
 		        objectIdFillLength = objectIdFillLengthLocal;
@@ -193,7 +201,7 @@ public class SearchController extends AbstractDoc41Controller {
 							//for (String mType : searchingTargetTypes) {
 							//  documents.addAll( documentUC.searchDocuments(mType, objectIds, allAttributeValues, maxResults+1, false) );
 							//}
-							List<HitListEntry> documents = documentUC.searchDocuments(searchingTargetTypes, objectIds, allAttributeValues, maxResults, false);
+							List<HitListEntry> documents = documentUC.searchDocuments(searchingTargetTypes, objectIds, allAttributeValues, maxResults, mOnlyMaxVer);
 							if(documents.isEmpty()){
 							    if(errorOnNoDocuments){
 							        result.reject("NoDocumentsFound");
@@ -204,6 +212,8 @@ public class SearchController extends AbstractDoc41Controller {
 							} else {
 								searchForm.setDocuments(documents);
 							}
+							// such things should be send to the webmetrix...
+							Doc41Log.get().debug(this, null, "Searched Documents of Types: '" + StringTool.list(searchingTargetTypes, ", ", false) +"' (for " + mFormType + "), object_Id(s): " + StringTool.list(objectIds, ", ", false) + ", onlyMaxVers: " + mOnlyMaxVer + " finding results: " + documents.size());
 					    }
 					}
 				}
@@ -357,7 +367,7 @@ public class SearchController extends AbstractDoc41Controller {
         
         return map;
     }
-    
+
     /**
      * Map the searchDocument request, adding extra attributes for SDSupplierDownload (global)
      * @param searchForm
@@ -383,6 +393,77 @@ public class SearchController extends AbstractDoc41Controller {
         return map;
     }
     
+    @RequestMapping(value="/documents/downloadMulti",method = RequestMethod.POST)
+    public void downloadMulti(@ModelAttribute MultiDownloadForm values,HttpServletResponse response) throws Doc41BusinessException {
+        boolean mDoThrowEx = true;
+        StringBuffer mComments = new StringBuffer();
+        ZipOutputStream mOut = null;
+        String generateFileName = null;
+
+        try {
+            List<String> mSelected = values.getDocSel();
+            if ((mSelected == null) || mSelected.isEmpty()) {
+                mSelected = values.getDocAll();
+                Doc41Log.get().debug(this, null, "No explicitly selected Items, assuming user want to download all documents: " + ((mSelected == null) ? "n/a" : "" + mSelected.size()) );
+            } else {
+                Doc41Log.get().debug(this, null, "User selected Items for download:" + mSelected.size() );
+            }
+            if (mSelected == null) {
+                throw new Doc41BusinessException("no result to download");
+            }
+            //alternate possibility to handle duplicates, but not perfect...
+            //HashMap<String, Integer> mAddedFiles = new HashMap<String, Integer>();
+            for (String mParm : mSelected) {
+                Doc41Log.get().debug(this, null, "Download DOC: " + mParm);
+                String[] mParmArr = StringTool.split(mParm,'|');  
+                String key = mParmArr[0];
+                @SuppressWarnings("unused") // currently not used (on original download even completely ignored by download servlet
+                String formType = mParmArr[0]; 
+                Map<String, String> decryptParameters = UrlParamCrypt.decryptParameters(key);
+                String type = decryptParameters.get(Doc41Constants.URL_PARAM_TYPE);
+                String docId = decryptParameters.get(Doc41Constants.URL_PARAM_DOC_ID);
+                String cwid = decryptParameters.get(Doc41Constants.URL_PARAM_CWID);
+                String sapObjId = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_ID);
+                String sapObjType = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE);
+                String filename = StringTool.emptyToNull(StringTool.decodeURLWithDefaultFileEnc(decryptParameters.get(Doc41Constants.URL_PARAM_FILENAME)));
+                Doc41Log.get().debug(this, null, "Download DOC FILE: " + filename);
+                if (StringTool.isTrimmedEmptyOrNull(docId)) {
+                    new Doc41BusinessException("docId is missing in download link");
+                    mComments.append("\n\n*** FAILED (docId): " + StringTool.nvl(filename,"n/a") + " ***");
+                } else if (StringTool.isTrimmedEmptyOrNull(type)) {
+                    new Doc41BusinessException("type is missing in download link");
+                    mComments.append("\n\n*** FAILED (type): " + StringTool.nvl(filename,"n/a") + " (" + docId + ") ***");
+                } else if (cwid==null || !cwid.equalsIgnoreCase(UserInSession.getCwid())) {
+                    new Doc41BusinessException("download link for different user");
+                    mComments.append("\n\n*** FAILED (cwid): " + StringTool.nvl(filename,"n/a") + " (" + docId + ") ***");
+                } else {
+                    if (mOut == null) {
+                        generateFileName = "BDS_" + cwid + "_" + sapObjId + "__" + (new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss").format(new Date(System.currentTimeMillis())) +".zip");
+                        mDoThrowEx = false; // OutputStream in USE, redirection no more possible...
+                        mOut = documentUC.createZipResponse(response, generateFileName);
+                    }
+                    // all exceptions catched internal, status added to comment, if not ok...
+                    documentUC.addDownloadDocumentToZip(mOut, type, docId, filename, sapObjId, sapObjType, mComments /*, mAddedFiles*/);
+                }
+            }
+            // if this fails, we can not report to user, only to log... (add comment to ZIP & close ZIP).
+            if (mOut != null) {
+                documentUC.closeZipDownload(response, mOut, generateFileName, mComments.toString());
+            }
+        } catch (Doc41BusinessException ie) {
+            if (mDoThrowEx) {
+                throw ie;
+            }
+        } catch (ClientAbortException mCAEx) {
+            Doc41Log.get().warning(this, null, "User aborted Download: " + StringTool.nvl(generateFileName, "n/a (early abort)"));
+        } catch (Exception e) {
+            Doc41BusinessException mEx = new Doc41BusinessException("unexpected download zip failure", e);
+            if (mDoThrowEx) {
+                throw mEx;
+            }
+        }
+        Doc41Log.get().debug(this, null, "*** DOWNLOAD SUCC ***");
+    }
     
     
 	@RequestMapping(value={"/documents/download","/docservice/download"},method = RequestMethod.GET)

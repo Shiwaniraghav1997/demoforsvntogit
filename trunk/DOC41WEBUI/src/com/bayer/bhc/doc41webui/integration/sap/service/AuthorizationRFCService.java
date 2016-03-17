@@ -21,7 +21,7 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_GET_DELIVERIES_WITHOUT_DOC						="GetDeliveriesWithoutDocument";
 	private static final String RFC_NAME_CHECK_ARTWORK_LAYOUT_FOR_VENDOR				="CheckArtworkLayoutForVendor";
 	private static final String RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR				="CheckPOAndMaterialForVendor";
-    private static final String RFC_NAME_CHECK_MATERIAL_FOR_VENDOR                      ="CheckMaterialForVendor";
+    //private static final String RFC_NAME_CHECK_MATERIAL_FOR_VENDOR                      ="CheckMaterialForVendor";
 	private static final String RFC_NAME_GET_INSPECTION_LOTS_FOR_VENDOR_BATCH			="GetInspectionLotsForVendorBatch";
 	private static final String RFC_NAME_GET_BATCH_OBJECTS_FOR_SUPPLIER					="GetBatchObjectsForSupplier";
 	private static final String RFC_NAME_GET_BATCH_OBJECTS_FOR_CUSTOMER					="GetBatchObjectsForCustomer";
