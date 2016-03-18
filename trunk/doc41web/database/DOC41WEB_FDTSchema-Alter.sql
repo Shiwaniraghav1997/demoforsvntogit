@@ -249,6 +249,8 @@ WHERE
 ;
 COMMIT;
 
+UPDATE um_Permissions SET is_Deleted = 1 WHERE (is_Deleted = 0) AND (code IN ('DOC_LAYOUT_DOWN_PM','DOC_ACS_DOWN_PM','NAV_LAYOUT_DOWN_PM','NAV_ACS_DOWN_PM'));
+COMMIT;
 
 
 UPDATE Versions SET subVersion = 4 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 3 );
