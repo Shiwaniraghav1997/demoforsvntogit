@@ -34,23 +34,23 @@ title="My Profile">
 				<tr>
 					<th style="width: 15%"><doc41:translate label="Surname"/></th> 
 					<td style="width: 35%">
-						<c:if test="${user.type eq 'external' && !user.readOnly}">
-							<form:input path="surname" cssClass="portlet-form-input-field"/>
-						</c:if>
-						<c:if test="${user.type eq 'internal' || user.readOnly}">
+						<!-- c:if test="${user.type eq 'external' && !user.readOnly}" -->
+							<!-- form:input path="surname" cssClass="portlet-form-input-field"/ -->
+						<!-- /c:if -->
+						<!-- c:if test="${user.type eq 'internal' || user.readOnly}" -->
 							<c:out value="${user.surname}"/>
 							<form:hidden path="surname"/>
-						</c:if>
+						<!-- /c:if -->
 					</td>
 					<th><doc41:translate label="Firstname"/></th>
 					<td>
-						<c:if test="${user.type eq 'external' && !user.readOnly}">
-							<form:input path="firstname" cssClass="portlet-form-input-field"   maxlength="30"/>
-						</c:if>
-						<c:if test="${user.type eq 'internal' || user.readOnly}">
+						<!-- c:if test="${user.type eq 'external' && !user.readOnly}" -->
+							<!-- form:input path="firstname" cssClass="portlet-form-input-field"   maxlength="30"/ -->
+						<!-- /c:if -->
+						<!-- c:if test="${user.type eq 'internal' || user.readOnly}" -->
 							<c:out value="${user.firstname}"/>
 							<form:hidden path="firstname"/>
-						</c:if>
+						<!-- /c:if -->
 					</td>
 				</tr>
 				
@@ -61,13 +61,13 @@ title="My Profile">
 					</td>
 					<th><doc41:translate label="Email"/></th>
 					<td>
-						<c:if test="${user.type eq 'external' && !user.readOnly}">
-							<form:input path="email" cssClass="portlet-form-input-field"  maxlength="70"/>
-						</c:if>
-						<c:if test="${user.type eq 'internal' || user.readOnly}">
+						<!-- c:if test="${user.type eq 'external' && !user.readOnly}" -->
+							<!-- form:input path="email" cssClass="portlet-form-input-field"  maxlength="70"/ -->
+						<!-- /c:if -->
+						<!-- c:if test="${user.type eq 'internal' || user.readOnly}" -->
 							<c:out value="${user.email}"/>
 							<form:hidden path="email"/>
-						</c:if>
+						<!-- /c:if -->
 					</td>
 				</tr>
 				

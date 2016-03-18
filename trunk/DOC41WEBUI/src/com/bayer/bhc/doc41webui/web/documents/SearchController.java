@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -43,6 +44,7 @@ import com.bayer.bhc.doc41webui.domain.BdsServiceDocumentEntry;
 import com.bayer.bhc.doc41webui.domain.BdsServiceSearchDocumentsResult;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.bhc.doc41webui.domain.User;
+import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
@@ -50,9 +52,12 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PMSupplierDownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.AbstractDeliveryCertDocumentType;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
+import com.bayer.bhc.doc41webui.web.Doc41Tags;
 import com.bayer.ecim.foundation.basic.BooleanTool;
 import com.bayer.ecim.foundation.basic.ConfigMap;
 import com.bayer.ecim.foundation.basic.StringTool;
+import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
+import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
 @Controller
 public class SearchController extends AbstractDoc41Controller {
@@ -78,7 +83,7 @@ public class SearchController extends AbstractDoc41Controller {
     }
 	
 	@RequestMapping(value="/documents/documentsearch",method = RequestMethod.GET)
-	public SearchForm get(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch,@RequestParam(required=false,defaultValue="true") boolean errorOnNoDocuments) throws Doc41BusinessException{
+	public SearchForm get(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch,@RequestParam(required=false,defaultValue="true") boolean errorOnNoDocuments) throws Doc41BusinessException, BATranslationsException{
 	    User usr = UserInSession.get();
 		String language = LocaleInSession.get().getLanguage();
 		String mFormType = searchForm.getType();
@@ -86,6 +91,7 @@ public class SearchController extends AbstractDoc41Controller {
 			throw new Doc41BusinessException("typeIsMissing");
 		}
 		
+		String mSelectedDocType = StringTool.emptyToNull(searchForm.getDocType());
 		List<DownloadDocumentType> mDocTypes = documentUC.getFilteredDocTypesForDownload(mFormType, usr);
 		Doc41Log.get().debug(this, null, "Search for download for " + mDocTypes.size() + " document types by '" + mFormType );
 		searchForm.setDocumentTypes(mDocTypes);
@@ -96,7 +102,12 @@ public class SearchController extends AbstractDoc41Controller {
 		boolean isKgs = false;
 		Properties mMaxVer = ConfigMap.get().getSubCfg("documents", "getOnlyMaxVer"); // Properties with TypeConst, e.g. AWB or GROUP, e.g. DOC_PM (see DocumentType.GROUP_*)
 		boolean mOnlyMaxVer = true; // gets false, if at least one of the types not wants only MaxVer
+        Locale locale = LocaleInSession.get();
+        Tags tags = new Doc41Tags(TranslationsDAO.SYSTEM_ID, "documents", "*", (locale == null) ? Locale.US : locale);
+		ArrayList<SelectionItem> mAllowedDocTypes = new ArrayList<SelectionItem>();
+        mAllowedDocTypes.add( new SelectionItem( "", tags.getOptTagNoEsc("allDocTypes") ) );
 		for (DownloadDocumentType mDocType : mDocTypes) {
+		    mAllowedDocTypes.add( new SelectionItem( mDocType.getTypeConst(), tags.getTagNoEsc(mDocType.getTypeConst()) ) );
 		    if (isFirst) {
 		        isFirst = false;
 		        isKgs = mDocType.isKgs();
@@ -124,6 +135,7 @@ public class SearchController extends AbstractDoc41Controller {
 		        }
 		    }
 		}
+		searchForm.setAllowedDocTypes(mAllowedDocTypes);
 		searchForm.setKgs(isKgs);
 		searchForm.initAttributes(attributeDefinitions,language);
 		
@@ -161,7 +173,9 @@ public class SearchController extends AbstractDoc41Controller {
 						    results.add(mTmp);
 						    CheckForDownloadResult checkResult = documentUC.checkForDownload(mTmp, mDocType.getTypeConst(), searchFormCustomerNumber,searchFormVendorNumber, singleObjectId, attributeValues, viewAttributes);
 						    if (!mTmp.hasErrors()) {
-						        searchingTargetTypes.add(mDocType.getTypeConst());
+						        if ( (mSelectedDocType == null) || mSelectedDocType.equals(mDocType.getTypeConst()) ) {
+						            searchingTargetTypes.add(mDocType.getTypeConst());
+						        }
 						        // FIXME: We should report the types possible to search for to the mask... (in case of GroupSearch, see DocumentType.GROUP*)
 						        allAttributeValues.putAll(attributeValues);
 						        Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
@@ -286,7 +300,7 @@ public class SearchController extends AbstractDoc41Controller {
 	}
 
 	@RequestMapping(value="/documents/searchdelcertcountry",method = RequestMethod.GET)
-	public ModelMap getDelCertCountry(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
+	public ModelMap getDelCertCountry(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
 		ModelMap map = new ModelMap();
 		SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
 		map.addAttribute(searchForm2);
@@ -301,7 +315,7 @@ public class SearchController extends AbstractDoc41Controller {
 	}
 	
 	@RequestMapping(value="/documents/searchdelcertcustomer",method = RequestMethod.GET)
-	public ModelMap getDelCertCustomer(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
+	public ModelMap getDelCertCustomer(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
 		ModelMap map = new ModelMap();
 		SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
 		map.addAttribute(searchForm2);
@@ -323,9 +337,10 @@ public class SearchController extends AbstractDoc41Controller {
 	 * @param ButtonSearch
 	 * @return
 	 * @throws Doc41BusinessException
+	 * @throws BATranslationsException 
 	 */
 	@RequestMapping(value="/documents/searchpmsupplier",method = RequestMethod.GET)
-	public ModelMap getPMSupplier(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
+	public ModelMap getPMSupplier(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
 		ModelMap map = new ModelMap();
         String type = searchForm.getType();
         DocumentType docType = documentUC.getDocType(type);
@@ -350,12 +365,16 @@ public class SearchController extends AbstractDoc41Controller {
      * @param ButtonSearch
      * @return
      * @throws Doc41BusinessException
+     * @throws BATranslationsException 
      */
     @RequestMapping(value="/documents/searchpmsupplierGlobal",method = RequestMethod.GET)
-    public ModelMap getPMSupplierGlobal(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
+    public ModelMap getPMSupplierGlobal(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
         ModelMap map = new ModelMap();
 //      String type = searchForm.getType(); // DOC_PM
 //      DocumentType docType = documentUC.getDocType(type);
+
+//      map.addAttribute("docType",PMSupplierDownloadDocumentType.VIEW_ATTRIB_DOC_TYPE);
+        
         SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
         map.addAttribute(searchForm2);
 
@@ -375,12 +394,16 @@ public class SearchController extends AbstractDoc41Controller {
      * @param ButtonSearch
      * @return
      * @throws Doc41BusinessException
+     * @throws BATranslationsException 
      */
     @RequestMapping(value="/documents/searchsdsupplierGlobal",method = RequestMethod.GET)
-    public ModelMap getSDSupplierGlobal(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException{
+    public ModelMap getSDSupplierGlobal(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
         ModelMap map = new ModelMap();
 //      String type = searchForm.getType(); // DOC_SD
 //      DocumentType docType = documentUC.getDocType(type);
+
+//      map.addAttribute("docType",PMSupplierDownloadDocumentType.VIEW_ATTRIB_DOC_TYPE);
+
         SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
         map.addAttribute(searchForm2);
 

@@ -21,6 +21,14 @@
 				</td>
 			</tr>
           </c:if>
+          <tr class="portlet-table">
+            <th><label for="docType"><doc41:translate label="DocumentType" /></label></th>
+            <td><form:select path="docType"
+                items="${searchForm.allowedDocTypes}" cssClass="portlet-form-input-field portlet-big"
+                itemLabel="label"
+                itemValue="value" />
+            <doc41:error path="docType" /></td>
+          </tr>
         </jsp:attribute>
 	</doc41:searchtemplate>
 

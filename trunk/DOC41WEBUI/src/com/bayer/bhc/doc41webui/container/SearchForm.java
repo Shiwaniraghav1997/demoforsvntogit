@@ -14,6 +14,10 @@ public class SearchForm extends CustomizedDocumentForm {
     private static final int MAX_MAX_RESULTS = 5000;
 	
 	private List<HitListEntry> documents;
+	
+	private List<SelectionItem> allowedDocTypes;
+	private String docType;
+	
 	private int maxResults = MAX_RESULTS;
 	
 	
@@ -32,6 +36,22 @@ public class SearchForm extends CustomizedDocumentForm {
 		this.documents = documents;
 	}
 
+    public List<SelectionItem> getAllowedDocTypes() {
+        return this.allowedDocTypes;
+    }
+    
+	public void setAllowedDocTypes(List<SelectionItem> allowedDocTypes) {
+	    this.allowedDocTypes = allowedDocTypes;
+	}
+	
+    public String getDocType() {
+        return this.docType;
+    }
+    
+    public void setDocType(String docType) {
+        this.docType = docType;
+    }
+    
 	public boolean isSearchFilled() {
 		if(!StringTool.isTrimmedEmptyOrNull(getObjectId())){
 			return true;

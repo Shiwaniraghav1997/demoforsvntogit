@@ -18,6 +18,9 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 // kgs-mode:
 	public static final String VIEW_ATTRIB_PO_NUMBER = "poNumber";
 
+// global:	
+    public static final String VIEW_ATTRIB_DOC_TYPE = "docType";
+	
 // dirs-mode only:
     public static final String VIEW_ATTRIB_FILENAME = "FILENAME";
 

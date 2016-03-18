@@ -20,6 +20,9 @@ public abstract class SDDocumentType implements DocumentType {
 	protected static final String SAP_OBJECT_DELIVERY = "LIKP";
 	protected static final String SAP_OBJECT_SHIPPING_UNIT = "YTMSA";
 
+	// global:  
+    public static final String VIEW_ATTRIB_DOC_TYPE = "docType";
+
 	@Override
 	public boolean hasCustomerNumber() {
 		return false;
