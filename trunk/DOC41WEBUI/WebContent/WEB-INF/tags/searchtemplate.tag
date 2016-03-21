@@ -19,8 +19,9 @@
 	<script type="text/javascript">
 		tswidgets = [ 'zebra' ];
 		
-		tssorting = [[1,1]];
+		tssorting = [[1,1],[3,1]];
 		/* tssorting = [[2,1]]; */
+		
 		
 		function openDocument(key,type){
 			window.location ="download?type="+type+"&key="+key;
@@ -147,7 +148,7 @@
 
 					<!-- thead text will be updated from the JSON; make sure the number of columns matches the JSON data -->
 					<!-- header update currently disabled to put names in the jsp instead of in java  -->
-                    <th>&nbsp;</th>
+                    <th data-sorter="false">&nbsp;</th>
                     <th><doc41:translate label="DocumentType" /></th>
 					<c:if test="${empty showTableObjectId or showTableObjectId}">
 						<th><doc41:translate label="ObjectId${searchForm.type}" /></th>

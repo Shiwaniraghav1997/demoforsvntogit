@@ -127,7 +127,11 @@ table.tablesorter tr:hover
     background-image: url("data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7");
 }
 
-
+.tablesorter-blue thead .sorter-false {
+    background-image: none;
+    cursor: default;
+    padding: 4px;
+}
 
 
 .pagedisplay {
