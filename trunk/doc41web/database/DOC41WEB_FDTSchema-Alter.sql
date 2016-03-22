@@ -252,6 +252,64 @@ COMMIT;
 UPDATE um_Permissions SET is_Deleted = 1 WHERE (is_Deleted = 0) AND (code IN ('DOC_LAYOUT_DOWN_PM','DOC_ACS_DOWN_PM','NAV_LAYOUT_DOWN_PM','NAV_ACS_DOWN_PM'));
 COMMIT;
 
+CREATE OR REPLACE VIEW PROFILE_PERMISSION_STAT AS
+SELECT
+  'PF: ' || pf.type || '--' || pf.profilename || ', PE: ' || pe.type || '--' || pe.code || ', DEL: '||pf.is_Deleted||pgup.is_Deleted||pe.is_Deleted AS Prof_Perm
+FROM
+  UM_Profiles pf
+  INNER JOIN UM_PGU_Permissions pgup    ON ( pf.object_Id   = pgup.profile_Id   )
+  INNER JOIN UM_Permissions pe      ON ( pgup.permission_Id = pe.object_Id      )
+ORDER BY
+  1
+;
+GRANT SELECT ON PROFILE_PERMISSION_STAT TO MXDOC41WEB;
+
+UPDATE UM_Permissions SET is_Deleted = 1 WHERE is_Deleted = 0 AND type = 'DOC_LS';
+COMMIT;
+UPDATE UM_Permissions SET is_Deleted = 1 WHERE is_Deleted = 0 AND type = 'NAV_DOC_LS';
+COMMIT;
+UPDATE UM_Profiles SET is_Deleted = 1 WHERE is_Deleted = 0 AND profilename = 'doc41_laysup';
+COMMIT;
+UPDATE UM_Profiles SET is_Deleted = 1 WHERE is_Deleted = 0 AND profilename = 'doc41_pmsup';
+COMMIT;
 
 UPDATE Versions SET subVersion = 4 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 3 );
+COMMIT WORK;
+
+-- prod
+
+------------------------------------
+-- Alter-Script: CVS v1.4 -> v1.5 --
+------------------------------------
+
+UPDATE UM_PGU_Permissions SET is_deleted = 0 WHERE (is_Deleted = 1) AND (profile_Id IS NOT NULL) AND (profile_Id IN (
+  SELECT object_Id FROM UM_Permissions WHERE (code LIKE 'NAV_GLO%')
+));
+-- should activate 3 assignments, LS perm is deleted so is ok, done on dev & qa
+COMMIT;
+
+UPDATE UM_Permissions SET is_Deleted = 0 WHERE (is_Deleted = 1) AND ((code LIKE 'NAV%PM') OR (code LIKE 'DOC%PM')) AND (code NOT LIKE '%LAYOUT%PM') AND (code NOT LIKE '%ACS%PM');
+-- should hit 8 permissions (DOC/NAV*ACS/LAYOUT excluded), done on dev & qa
+COMMIT;
+
+UPDATE UM_Profiles SET is_Deleted = 0 WHERE is_Deleted = 1 AND profilename = 'doc41_pmsup';
+-- hit 1, done on DEV & QA
+COMMIT;
+
+UPDATE Versions SET subVersion = 5 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 4 );
+COMMIT WORK;
+
+-- qa
+
+------------------------------------
+-- Alter-Script: CVS v1.5 -> v1.6 --
+------------------------------------
+
+UPDATE UM_PGU_Permissions SET is_deleted = 1 WHERE (is_Deleted = 0) AND (permission_Id IS NOT NULL) AND (permission_Id IN (
+  SELECT object_Id FROM UM_Permissions WHERE (type IN ('NAV_DOC_PM', 'NAV_DOC_SD')) AND (code <> 'NAV_GLO_PM') AND (code <> 'NAV_GLO_SD') AND (code not LIKE '%UP')
+));
+-- should deactivate 12 single down assignments, LS perm is deleted so is ok, done on dev ONLY
+COMMIT;
+
+UPDATE Versions SET subVersion = 6 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 5 );
 COMMIT WORK;
