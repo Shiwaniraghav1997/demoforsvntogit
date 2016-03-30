@@ -111,7 +111,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 		table.appendRow();
 		table.setValue(IN_SIGN, "I");
 		table.setValue(IN_OPTION, "EQ");
-		table.setValue(IN_LOW,value.toUpperCase());
+		table.setValue(IN_LOW,value /**.toUpperCase() */ ); // removed (IMWIF, caused Test failure, SAP searches case sensitive)
 	}
 	
 	private void setEmptyParam(String key, int paramNumber,
