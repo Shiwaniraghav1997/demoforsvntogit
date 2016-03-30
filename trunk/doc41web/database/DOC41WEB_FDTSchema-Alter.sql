@@ -311,5 +311,9 @@ UPDATE UM_PGU_Permissions SET is_deleted = 1 WHERE (is_Deleted = 0) AND (permiss
 -- should deactivate 12 single down assignments, LS perm is deleted so is ok, done on dev ONLY
 COMMIT;
 
+UPDATE um_Permissions SET is_Deleted = 0 WHERE (is_Deleted = 1) AND (code IN ('DOC_LAYOUT_DOWN_PM','DOC_ACS_DOWN_PM','NAV_LAYOUT_DOWN_PM','NAV_ACS_DOWN_PM'));
+COMMIT;
+
+
 UPDATE Versions SET subVersion = 6 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 5 );
 COMMIT WORK;
