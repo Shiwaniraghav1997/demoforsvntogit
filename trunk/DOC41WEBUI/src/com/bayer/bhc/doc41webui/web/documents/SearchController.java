@@ -166,7 +166,13 @@ public class SearchController extends AbstractDoc41Controller {
                         ArrayList<BeanPropertyBindingResult>results = new ArrayList<BeanPropertyBindingResult>();
                         Map<String, String> allAttributeValues = new HashMap<String, String>();
                         List<String> objectIds = new ArrayList<String>();
+                        if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)) {
+                            objectIds.add(singleObjectId);
+                        }
+                        int i = 0;
 						for (DocumentType mDocType: mDocTypes) {
+						    i++;
+						    Doc41Log.get().debug(this,  null,  "Check permission for DocType " + i + "/" + mDocTypes.size() + " : " + mDocType.getTypeConst() + " (" + mDocType.getSapTypeId() +")");
 						    // We need to create separate BindingResults per DocType, then see which work fine and choose them, otherwise merge all to show all errors.
 						    // hope this way is fine to create local, temporary result...
 						    BeanPropertyBindingResult mTmp = new BeanPropertyBindingResult(result.getTarget(), result.getObjectName() );
@@ -182,16 +188,17 @@ public class SearchController extends AbstractDoc41Controller {
 						        if(additionalAttributes!=null){
 						            allAttributeValues.putAll(additionalAttributes);
 						        }
-						        if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)) {
-						            objectIds.add(singleObjectId);
-						        }
 						        List<String> additionalObjectIds = checkResult.getAdditionalObjectIds();
 						        if(additionalObjectIds!=null && !additionalObjectIds.isEmpty()) {
-						            // FIXME: Will we hava a Duplicates Problem???
+						            // FIXME: Will we have a Duplicates Problem???
 						            objectIds.addAll(additionalObjectIds);
 						        }
+						    } else {
+						        Doc41Log.get().debug(this,  null, "==>>> DocType ignored, user has no permission: " + mDocType.getTypeConst() + "(" + mDocType.getSapTypeId() +")" );
+						        Doc41Log.get().debug(this, null, StringTool.list(mTmp.getAllErrors(), " // ", false));
 						    }
 						}
+                        Doc41Log.get().debug(this,  null, "SearchingTargetTypes allowed to search: " + searchingTargetTypes.size() + " (" + StringTool.list(searchingTargetTypes, ", ", false) + ")");
 					    if (searchingTargetTypes.isEmpty()) {
 					        boolean allHaveFieldErrors = true;
 					        HashSet<ObjectError> mKnown = new HashSet<ObjectError>();

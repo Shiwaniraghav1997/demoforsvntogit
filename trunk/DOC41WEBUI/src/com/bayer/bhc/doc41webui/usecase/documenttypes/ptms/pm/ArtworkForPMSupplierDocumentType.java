@@ -55,7 +55,13 @@ public class ArtworkForPMSupplierDocumentType extends PMSupplierDownloadDocument
     public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
             String customerNumber, String vendorNumber, String objectId,
             Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
-        
+
+        CheckForDownloadResult result = super.checkForDownload(errors, documentUC, customerNumber, vendorNumber,
+                objectId, attributeValues, viewAttributes);
+        return result;
+
+/* no more extra check required anymore...
+
         Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
         
         String deliveryCheck = documentUC.checkArtworkLayoutForVendor(vendorNumber, objectId, getSapTypeId());
@@ -66,6 +72,7 @@ public class ArtworkForPMSupplierDocumentType extends PMSupplierDownloadDocument
         additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
         
         return new CheckForDownloadResult(additionalAttributes,null);
+*/
     }
     
 	//TODO downloadcheck wie pm

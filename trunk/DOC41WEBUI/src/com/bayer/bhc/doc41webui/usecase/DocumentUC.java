@@ -124,21 +124,30 @@ public class DocumentUC {
 	//moved to LRU cache... private Map<String, DocMetadata> docMetadataContainer;
 	
 	private final SimpleLRUCache cCache;
-	private long cMaxAgeMillis = 300000; // default 5 minutes (5*60*1000)
-	private int cMaxSize = 10; // currently not required to be bigger - but remember to increase, if using for more objects.
+    private long cMaxAgeMillis = 300000; // default 5 minutes (5*60*1000)
+    private int cMaxSize = 3; // currently not required to be bigger - but remember to increase, if using for more objects.
+    private final SimpleLRUCache cShortCache;
+    private long cMaxAgeMillisShort = 60000; // default 1 minutes (1*60*1000)
+    private int cMaxSizeShort = 3; // currently not required to be bigger - but remember to increase, if using for more objects.
 	private final String CONFIG_CACHE_DOMAIN = "documents.cache";
-	private final String METADATA_CACHE_KEY = "SAPMETA";
+	private final String SAPMETADATA_CACHE_KEY = "SAPMETA";
+    private final String PERMMETADATA_CACHE_KEY = "PERMMETA";
 	
 	private final Map<String,DocumentType> documentTypes;
     private final Map<String,DocumentType> documentTypesBySapId;
-	private Map<String,ArrayList<String>> documentTypesByDownloadPermissionType = null;
 
 	public DocumentUC() {
 	    Properties mCacheConfig = ConfigMap.get().getSubCfg(CONFIG_CACHE_DOMAIN);
+	    
 	    cMaxAgeMillis  = NumberTool.parseLongFromCfgNoParseEx("documents.cache", "MaxAgeMillis", mCacheConfig, cMaxAgeMillis); // automatic fallback to default with WARNING on parse exception
         cMaxSize       = NumberTool.parseIntFromCfgNoParseEx("documents.cache", "MaxSize", mCacheConfig, cMaxSize); // automatic fallback to default with WARNING on parse exception
 	    cCache = new SimpleLRUCache(cMaxAgeMillis, cMaxSize, cMaxSize, "LRUCacheDocumentUC-", Dbg.INFO);
 	    Doc41Log.get().debug(this, null, "DocumentUC-Cache, maxTime = " + (cMaxAgeMillis/1000/60) + " minutes, maxSize = " + cMaxSize );
+
+        cMaxAgeMillisShort  = NumberTool.parseLongFromCfgNoParseEx("documents.cache", "MaxAgeMillisShort", mCacheConfig, cMaxAgeMillisShort); // automatic fallback to default with WARNING on parse exception
+        cMaxSizeShort       = NumberTool.parseIntFromCfgNoParseEx("documents.cache", "MaxSizeShort", mCacheConfig, cMaxSizeShort); // automatic fallback to default with WARNING on parse exception
+        cShortCache = new SimpleLRUCache(cMaxAgeMillisShort, cMaxSizeShort, cMaxSizeShort, "LRUCacheDocumentUCShort-", Dbg.INFO);
+        Doc41Log.get().debug(this, null, "DocumentUC-ShortCache, maxTime = " + (cMaxAgeMillisShort/1000/60) + " minutes, maxSize = " + cMaxSizeShort );
 	    
 	    documentTypes = new HashMap<String, DocumentType>();
         documentTypesBySapId = new HashMap<String, DocumentType>();
@@ -183,8 +192,11 @@ public class DocumentUC {
 	 * @return
 	 */
 	public ArrayList<String> getAllDownloadDocumentTypesOfSamePermissionType(String mPermissionType) throws Doc41TechnicalException {
-	    if (documentTypesByDownloadPermissionType == null) {
-	        Map<String,ArrayList<String>> mDocumentTypesByDownloadPermissionType = new HashMap<String, ArrayList<String>>();
+	    @SuppressWarnings("unchecked")
+	    Map<String,ArrayList<String>> mDocumentTypesByDownloadPermissionType = (Map<String, ArrayList<String>>) cShortCache.getSync(PERMMETADATA_CACHE_KEY);
+	    if (mDocumentTypesByDownloadPermissionType == null) {
+	        long t = System.currentTimeMillis();
+	        mDocumentTypesByDownloadPermissionType = new HashMap<String, ArrayList<String>>();
 	        HashMap<String,PermissionProfiles>mProfileByCode = new HashMap<String, PermissionProfiles>();
 	        List <PermissionProfiles> mPermList = userManagementRepository.getAllPermissions();
 	        for (PermissionProfiles mPP : mPermList) {
@@ -211,9 +223,11 @@ public class DocumentUC {
 	                }
 	            }
 	        }
-	        documentTypesByDownloadPermissionType = mDocumentTypesByDownloadPermissionType;
-	    }
-	    return documentTypesByDownloadPermissionType.get(mPermissionType);
+            cShortCache.putSync(PERMMETADATA_CACHE_KEY, mDocumentTypesByDownloadPermissionType);
+            Doc41Log.get().debug(this, null, "Perm-Meta added to Cache, calculation: " + (System.currentTimeMillis() - t) + "ms" );
+        }
+        Doc41Log.get().debug(this, null, cShortCache.toString());
+	    return mDocumentTypesByDownloadPermissionType.get(mPermissionType);
 	}
 	
 	public DocMetadata getMetadata(String type) throws Doc41BusinessException{
@@ -258,11 +272,13 @@ public class DocumentUC {
 	private synchronized Map<String, DocMetadata> getDocMetadataContainer() throws Doc41BusinessException {
 		try{
 		    @SuppressWarnings("unchecked")
-            Map<String, DocMetadata> docMetadataContainer = (Map<String, DocMetadata>) cCache.getSync(METADATA_CACHE_KEY);
+            Map<String, DocMetadata> docMetadataContainer = (Map<String, DocMetadata>) cCache.getSync(SAPMETADATA_CACHE_KEY);
 			if(docMetadataContainer == null) {
-				Set<String> languageCodes = translationsRepository.getLanguageCodes().keySet();
+			    long t = System.currentTimeMillis();
+			    Set<String> languageCodes = translationsRepository.getLanguageCodes().keySet();
 				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes, getAllDocTypesBySapTypeIdMap() /*getSupportedSapDocTypes()*/);
-				cCache.putSync(METADATA_CACHE_KEY, docMetadataContainer);
+	            Doc41Log.get().debug(this, null, "Sap-Meta added to Cache, calculation: " + (System.currentTimeMillis() - t) + "ms" );
+				cCache.putSync(SAPMETADATA_CACHE_KEY, docMetadataContainer);
 			}
 			Doc41Log.get().debug(this, null, cCache.toString());
 			return docMetadataContainer;
@@ -675,9 +691,9 @@ public class DocumentUC {
 			if (!mKnownKeys.contains(key)) {
 			    mKnownKeys.add(key);
 			    attributeSeqToKeyGlo.put(Integer.valueOf(mKnownKeys.size()), key);
-			    Doc41Log.get().debug(this, null, "**********************************************  SEQ2KEY new: " + key + ": " + mKnownKeys.size() );
+			    Doc41Log.get().debug(this, null, "*  SEQ2KEY new: " + key + ": " + mKnownKeys.size() );
 			}
-			Doc41Log.get().debug(this, null, "**********************************************  SEQ2KEY - " + type + " - " + key + ": " + seq );
+			Doc41Log.get().debug(this, null, "*  SEQ2KEY - " + type + " - " + key + ": " + seq );
 		}
 		return attributeSeqToKey;
 	}
