@@ -120,7 +120,7 @@
 										</c:when>
 										<c:otherwise>
 											<input id="${attributeValue.key}"
-												class="portlet-form-input-field portlet-big" maxlength="70"
+												class="portlet-form-input-field portlet-big" maxlength="255"
 												name="attributeValues['${attributeValue.key}']"
 												value="${attributeValue.value}" />
 										</c:otherwise>
