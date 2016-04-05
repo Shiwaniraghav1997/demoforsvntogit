@@ -70,6 +70,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
                 }
 
 				sapInput.setValue(IN_MAXHIT,maxResults);
+// TODO: Here you can temporary disable LAST_VER_SEARCH
 				sapInput.setValue(IN_MAX_VER_ONLY,sapBooleanToChar(maxVersionOnly));
 				if(objectIds!=null && !objectIds.isEmpty()){
 					setParamObjectIDs(objectIds,sapObj,1,sapInput,tableParameterList);
