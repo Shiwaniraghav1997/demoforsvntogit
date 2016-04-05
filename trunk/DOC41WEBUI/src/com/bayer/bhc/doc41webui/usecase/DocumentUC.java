@@ -795,6 +795,7 @@ public class DocumentUC {
 			}
 		
 			URI docURL = kgsRFCService.getDocURL(crepId, docId,compId);
+	        Doc41Log.get().debug(this, null, "Download DOC URI: " + docURL);
 		
 			String statusText = httpClientService.downloadDocumentToResponse(docURL,targetResponse,docId,fileName);
 			logWebMetrix("DOC_DOWNLOADED",docId,type,sapObjId,sapObjType,fileName);

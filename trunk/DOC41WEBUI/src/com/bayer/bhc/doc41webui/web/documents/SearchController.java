@@ -456,6 +456,7 @@ public class SearchController extends AbstractDoc41Controller {
                 String sapObjId = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_ID);
                 String sapObjType = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE);
                 String filename = StringTool.emptyToNull(StringTool.decodeURLWithDefaultFileEnc(decryptParameters.get(Doc41Constants.URL_PARAM_FILENAME)));
+                Doc41Log.get().debug(this, null, "Download DOC KEY: " + key);
                 Doc41Log.get().debug(this, null, "Download DOC FILE: " + filename);
                 if (StringTool.isTrimmedEmptyOrNull(docId)) {
                     new Doc41BusinessException("docId is missing in download link");
@@ -506,6 +507,8 @@ public class SearchController extends AbstractDoc41Controller {
 		String sapObjId = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_ID);
 		String sapObjType = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE);
 		String filename = StringTool.emptyToNull(StringTool.decodeURLWithDefaultFileEnc(decryptParameters.get(Doc41Constants.URL_PARAM_FILENAME)));
+        Doc41Log.get().debug(this, null, "Download DOC KEY: " + key);
+        Doc41Log.get().debug(this, null, "Download DOC FILE: " + filename);
 		if(StringTool.isTrimmedEmptyOrNull(type)){
 			throw new Doc41BusinessException("type is missing in download link");
 		}
