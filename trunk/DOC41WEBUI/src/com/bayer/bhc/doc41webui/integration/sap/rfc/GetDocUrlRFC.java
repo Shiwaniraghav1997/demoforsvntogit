@@ -36,6 +36,9 @@ public class GetDocUrlRFC extends AbstractDoc41RFC<URI>{
 				if(!StringTool.isTrimmedEmptyOrNull(compId)){
 					sapInput.setValue(IN_COMP_ID,compId);
 				}
+                if (Doc41Log.get().isDebugActive()) {
+                    Doc41Log.get().debug(this, null, RFCFunctionDumper.dumpFunction(pFunction));
+                }
             } else {
                 throw new SAPException(
                         "GetDocUrlRFC pInputParms list is null", null);
@@ -54,6 +57,7 @@ public class GetDocUrlRFC extends AbstractDoc41RFC<URI>{
 			Doc41Log.get().debug(GetDocUrlRFC.class, null, "processResult():ENTRY");
 			ArrayList<URI> mResult = new ArrayList<URI>();
 			if (pFunction != null) {
+	            Doc41Log.get().debug(getClass(), null, RFCFunctionDumper.dumpFunction(pFunction));
 				processReturnTable(pFunction);
 				JCoParameterList exportParameterList = pFunction.getExportParameterList();
 				mResult.add(new URI(exportParameterList.getString(OUT_URL)));
