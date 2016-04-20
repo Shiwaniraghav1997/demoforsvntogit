@@ -235,7 +235,10 @@
     </target>
 
 	<target name="deploy.to.one.tomcat">
-		<!-- copy war file to temp -->
+		<!-- create dir on temp -->
+        <sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="mkdir -p ${tomcat.dir.tmp}/${linux-user}"
+                    failonerror="false"/>
+        <!-- copy war file to temp -->
 		<scp file="${war.file}" todir="${linux-user}:${linux-password}@${server}:${tomcat.dir.tmp}/${linux-user}" trust="true">
 		</scp>
 		<!-- stop server -->
