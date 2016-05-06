@@ -454,17 +454,19 @@ public class UserEditForm implements Serializable{
 	public void setCustomerStrings(List<String> customerStrings){
 		List<SapCustomer> customerList = new ArrayList<SapCustomer>();
 		for (String customerString : customerStrings) {
-			String[] split = customerString.split("###");
-			SapCustomer up = new SapCustomer();
-			up.setNumber(split[0]);
-			if(split.length>1){
-				up.setName1(split[1]);
-				if(split.length>2){
-					up.setName2(split[2]);
-				}
-			}
-			
-			customerList.add(up);
+		    if(!StringTool.isTrimmedEmptyOrNull(customerString)){
+    			String[] split = customerString.split("###");
+    			SapCustomer up = new SapCustomer();
+    			up.setNumber(split[0]);
+    			if(split.length>1){
+    				up.setName1(split[1]);
+    				if(split.length>2){
+    					up.setName2(split[2]);
+    				}
+    			}
+    			
+    			customerList.add(up);
+		    }
 		}
 		setCustomers(customerList );
 	}
@@ -472,17 +474,19 @@ public class UserEditForm implements Serializable{
 	public void setVendorStrings(List<String> vendorStrings){
 		List<SapVendor> vendorList = new ArrayList<SapVendor>();
 		for (String vendorString : vendorStrings) {
-			String[] split = vendorString.split("###");
-			SapVendor up = new SapVendor();
-			up.setNumber(split[0]);
-			if(split.length>1){
-				up.setName1(split[1]);
-				if(split.length>2){
-					up.setName2(split[2]);
-				}
-			}
-			
-			vendorList.add(up);
+		    if(!StringTool.isTrimmedEmptyOrNull(vendorString)){
+    			String[] split = vendorString.split("###");
+    			SapVendor up = new SapVendor();
+    			up.setNumber(split[0]);
+    			if(split.length>1){
+    				up.setName1(split[1]);
+    				if(split.length>2){
+    					up.setName2(split[2]);
+    				}
+    			}
+    			
+    			vendorList.add(up);
+		    }
 		}
 		setVendors(vendorList );
 	}
@@ -497,10 +501,12 @@ public class UserEditForm implements Serializable{
 	public void setCountryStrings(List<String> countryStrings){
 		List<String> countryList = new ArrayList<String>();
 		for (String countryString : countryStrings) {
-			String[] split = countryString.split("###");
-			String country = split[0];
-			
-			countryList.add(country);
+		    if(!StringTool.isTrimmedEmptyOrNull(countryString)){
+    			String[] split = countryString.split("###");
+    			String country = split[0];
+    			
+    			countryList.add(country);
+		    }
 		}
 		setCountries(countryList );
 	}
@@ -516,10 +522,12 @@ public class UserEditForm implements Serializable{
 	public void setPlantStrings(List<String> plantStrings){
 		List<String> plantList = new ArrayList<String>();
 		for (String plantString : plantStrings) {
-			String[] split = plantString.split("###");
-			String plant = split[0];
-			
-			plantList.add(plant);
+		    if(!StringTool.isTrimmedEmptyOrNull(plantString)){
+    			String[] split = plantString.split("###");
+    			String plant = split[0];
+    			
+    			plantList.add(plant);
+		    }
 		}
 		setPlants(plantList );
 	}

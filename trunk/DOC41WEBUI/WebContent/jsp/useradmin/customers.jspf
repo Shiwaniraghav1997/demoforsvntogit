@@ -47,6 +47,7 @@ $(function() {
 
 </script>
 <div class="portlet-section-body">
+    <input name="customerStrings" type="hidden" value="">
 	<table cellpadding="4" cellspacing="0" class="nohover">
 		<thead class="portlet-table-header">
 			<tr>
