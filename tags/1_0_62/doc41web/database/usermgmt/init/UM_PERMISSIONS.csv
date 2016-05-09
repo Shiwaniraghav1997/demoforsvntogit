@@ -1,0 +1,3 @@
+"PERMISSIONNAME","PERMISSIONDESCRIPTION","CODE","ASSIGN_USER","ASSIGN_GROUP","ASSIGN_PROFILE","TYPE","ORDERBY"
+"CreateUser","Create an external user.","CREATE_USER","0","0","1","PROF_RIGHT","<NULL>"
+"CreateAdmin","Create an administrator.","CREATE_ADMIN","0","0","1","PROF_RIGHT","<NULL>"
