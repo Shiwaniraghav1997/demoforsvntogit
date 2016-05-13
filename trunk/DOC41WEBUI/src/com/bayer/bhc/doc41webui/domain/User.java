@@ -451,11 +451,20 @@ public class User extends DomainObject {
 	public void setSkipCustomerCheck(boolean skipCustomerCheck) {
         this.skipCustomerCheck = skipCustomerCheck;
     }
+    public boolean getSkipCustomerCheck() {
+        return skipCustomerCheck;
+    }
 	public void setSkipVendorCheck(boolean skipVendorCheck) {
         this.skipVendorCheck = skipVendorCheck;
     }
+    public boolean getSkipVendorCheck() {
+        return skipVendorCheck;
+    }
 	public void setSkipCountryCheck(boolean skipCountryCheck) {
         this.skipCountryCheck = skipCountryCheck;
+    }
+    public boolean getSkipCountryCheck() {
+        return skipCountryCheck;
     }
 
 }
