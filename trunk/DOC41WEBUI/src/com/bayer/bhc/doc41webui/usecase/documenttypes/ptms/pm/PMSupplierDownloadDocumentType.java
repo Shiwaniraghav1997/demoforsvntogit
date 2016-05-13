@@ -8,6 +8,7 @@ import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
@@ -57,6 +58,7 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 //			String deliveryCheck = documentUC.checkPOAndMaterialForVendor(vendorNumber, poNumber, objectId);
             String deliveryCheck = documentUC.checkMaterialForVendor(vendorNumber, objectId);
 			if(deliveryCheck != null){
+	            Doc41Log.get().warning(this, null, "Material: " + objectId + " not allowed for Partner: " + vendorNumber + ", Download " + getTypeConst() + "/" + getSapTypeId() + " denied!");
 				errors.reject(""+deliveryCheck);
 			}
 		}

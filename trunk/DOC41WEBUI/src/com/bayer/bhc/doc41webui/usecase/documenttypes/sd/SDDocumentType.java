@@ -8,6 +8,7 @@ import org.springframework.validation.Errors;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.domain.SDReferenceCheckResult;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
@@ -54,6 +55,7 @@ public abstract class SDDocumentType implements DocumentType {
 		
 		SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(vendorNumber, objectId);
 		if(!deliveryCheck.isOk()){
+		    Doc41Log.get().warning(this, null, "Delivery: " + objectId + " not allowed for Partner: " + vendorNumber + ", Upload " + getTypeConst() + "/" + getSapTypeId() + " denied!");
 			errors.rejectValue("objectId",""+deliveryCheck.getError());
 		} 
 		
@@ -90,6 +92,7 @@ public abstract class SDDocumentType implements DocumentType {
 		} else {
 			SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(vendorNumber, objectId);
 			if(!deliveryCheck.isOk()){
+	            Doc41Log.get().warning(this, null, "Delivery: " + objectId + " not allowed for Partner: " + vendorNumber + ", Download " + getTypeConst() + "/" + getSapTypeId() + " denied!");
 				errors.rejectValue("objectId",""+deliveryCheck.getError());
 			} 
 		}
@@ -102,6 +105,7 @@ public abstract class SDDocumentType implements DocumentType {
 		}
 		SDReferenceCheckResult deliveryCheck = documentUC.checkDeliveryForPartner(null, objectId);
 		if(!deliveryCheck.isOk(true)){
+            Doc41Log.get().warning(this, null, "Delivery: " + objectId + " not allowed for Partner: null, DirectDownload " + getTypeConst() + "/" + getSapTypeId() + " aborted!");
 			throw new Doc41BusinessException(""+deliveryCheck.getError());
 		}
 		return new CheckForDownloadResult(null,null);
