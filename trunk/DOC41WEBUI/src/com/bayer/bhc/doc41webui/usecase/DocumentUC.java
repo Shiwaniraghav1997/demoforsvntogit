@@ -629,11 +629,12 @@ public class DocumentUC {
             Map<Integer, String> seqToKeyGlo = new HashMap<Integer, String>();
             Map<String, Map<Integer, String>> seqToKeyAllTypes = new HashMap<String, Map<Integer,String>>();
             HashSet<String>mKnownKeys = new HashSet<String>();
+            DocTypeDef docDef = null;
             for (String mType : pTypes) {
                 Map<Integer, String> seqToKey = new HashMap<Integer, String>();
                 //DocumentType docType = getDocType(mType);
                 DocMetadata metadata = getMetadata(mType);
-                DocTypeDef docDef = metadata.getDocDef();
+                docDef = metadata.getDocDef();
                 d41idList.add( docDef.getD41id() );
                 if (pTypes.size() == 1) { // not check on multi document type (groups), because there are always extra attributes...
                     checkAttribsWithCustomizing(attributeValues,mType);
@@ -648,7 +649,23 @@ public class DocumentUC {
                 objectIds = null;
             }
 		        //if(objectIds == null){
+            
+            // OLD: SD
+            boolean useOldCall = false;
+            if (pTypes.size() == 1) {
+                DocumentType docType = getDocType(pTypes.get(0));
+                useOldCall = (DocumentType.GROUP_SD.equals(docType.getGroup()));
+            }
+            if (useOldCall) {
+                Doc41Log.get().warning(this,  null, "Using old RFC: FindDocs2 for single SD search...");
+                List<String> sapObjList = docDef.getSapObjList();
+                for (String sapObj : sapObjList) {
+                    List<HitListEntry> oneResult = bwRFCService.findDocsOld(docDef.getD41id(), sapObj, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
+                    allResults.addAll(oneResult);
+                }
+            } else {
 		        allResults = bwRFCService.findDocs(d41idList, null, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
+		    }
 		        /* NO MORE USED, FindDocsMulti no takes care itself for al sapObj (types of objectIds = numbers, e.g. material number, po number, delivery number, ...)
 		          } else {
 		            for (String sapObj : sapObjList) {

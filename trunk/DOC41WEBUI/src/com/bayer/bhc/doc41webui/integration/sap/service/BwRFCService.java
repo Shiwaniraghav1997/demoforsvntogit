@@ -14,6 +14,7 @@ import com.bayer.bhc.doc41webui.domain.HitListEntry;
 public class BwRFCService extends AbstractSAPJCOService {
 	
 	private static final String RFC_NAME_FIND_DOCS = "FindDocs";
+    private static final String RFC_NAME_FIND_DOCS_OLD = "FindDocsOld";
 
 	/**
 	 * Serach for Documents, FindDocs2, new: FindDocsMulti
@@ -63,5 +64,36 @@ public class BwRFCService extends AbstractSAPJCOService {
 		List<HitListEntry> result = performRFC(params, RFC_NAME_FIND_DOCS);
 		return result;
 	}
+	
+	
+	/**
+	 * Serach for Documents, FindDocs2
+	 * @param d41id SAP RFC-ID for Doc41, see Types, getSapTypeId
+	 * @param sapObj list of the different objectId types for one document type in Doc41, e.g. delivery number, material number... (each of them is searched for the object_Id)
+	 * @param objectIds list pf material numbers (specify null - not empty - if no numbers available)
+	 * @param attributeValues (additional attributes list - custom attributes)
+	 * @param maxResults
+	 * @param maxVersionOnly
+	 * @param seqToKey (mapping sap keys to attribute names, custom attributes)
+	 * @return
+	 * @throws Doc41ServiceException
+	 * @Deprecated
+	 */
+	@Deprecated
+	    public List<HitListEntry> findDocsOld(String d41id,String sapObj,List<String> objectIds,Map<String, String> attributeValues,int maxResults,boolean maxVersionOnly, Map<Integer, String> seqToKey)
+	     throws Doc41ServiceException{
+	        List<Object> params = new ArrayList<Object>();
+	        params.add(d41id);
+	        params.add(sapObj);
+	        params.add(objectIds);
+	        params.add(maxResults);
+	        params.add(maxVersionOnly);
+	        params.add(attributeValues);
+	        params.add(seqToKey);
+	        
+	        List<HitListEntry> result = performRFC(params, RFC_NAME_FIND_DOCS_OLD);
+	        return result;
+	    }
+
 	
 }
