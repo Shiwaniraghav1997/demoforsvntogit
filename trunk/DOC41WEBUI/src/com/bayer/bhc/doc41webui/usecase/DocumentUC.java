@@ -650,6 +650,11 @@ public class DocumentUC {
             }
 		        //if(objectIds == null){
             
+            /***
+
+              FOR TESTING SINGLE SD WITH OLD FindDocs2 enable here...
+            * /
+            
             // OLD: SD
             boolean useOldCall = false;
             if (pTypes.size() == 1) {
@@ -663,9 +668,10 @@ public class DocumentUC {
                     List<HitListEntry> oneResult = bwRFCService.findDocsOld(docDef.getD41id(), sapObj, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
                     allResults.addAll(oneResult);
                 }
-            } else {
-		        allResults = bwRFCService.findDocs(d41idList, null, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
+            } else /**/ {
+              allResults = bwRFCService.findDocs(d41idList, null, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
 		    }
+		        
 		        /* NO MORE USED, FindDocsMulti no takes care itself for al sapObj (types of objectIds = numbers, e.g. material number, po number, delivery number, ...)
 		          } else {
 		            for (String sapObj : sapObjList) {
