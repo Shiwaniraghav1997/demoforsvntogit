@@ -19,7 +19,7 @@
 	<script type="text/javascript">
 		tswidgets = [ 'zebra' ];
 		
-		tssorting = [[1,1],[3,1]];
+		tssorting = [[1,0],[3,1]];
 		/* tssorting = [[2,1]]; */
 		
 		

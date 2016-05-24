@@ -87,11 +87,11 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 					return false;
 				}
 	
-				String tmpLanguage = usr.getLocale().getLanguage();
-				if (tmpLanguage == null) {
-					tmpLanguage = request.getLocale().getLanguage();
+				Locale tmp = usr.getLocale(); //.getLanguage();
+				if (tmp == null) {
+					tmp = request.getLocale(); //.getLanguage();
 				}
-				LocaleInSession.put(new Locale(tmpLanguage));
+				LocaleInSession.put(tmp); // danger, determnUser does also, but without fallback!!!
 				/* Add user to request */
 				request.setAttribute(USER, usr);
 			}
