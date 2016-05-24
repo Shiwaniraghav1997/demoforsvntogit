@@ -317,3 +317,22 @@ COMMIT;
 
 UPDATE Versions SET subVersion = 6 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 5 );
 COMMIT WORK;
+
+------------------------------------
+-- Alter-Script: CVS v1.6 -> v1.7 --
+------------------------------------
+
+UPDATE UM_PGU_Permissions SET is_Deleted = 0 WHERE (is_Deleted = 1) AND (permission_Id IN ( 
+SELECT object_Id FROM UM_Permissions WHERE (is_Deleted = 0) AND (type = 'NAV_DOC_SD') AND (permissionname NOT LIKE '%Direct%') AND (permissionname NOT LIKE '%GlobalSD') AND (permissionname NOT LIKE '%Upload%')
+))
+;
+
+UPDATE UM_PGU_Permissions SET is_Deleted = 1 WHERE (is_Deleted = 0) AND (permission_Id IN ( 
+SELECT object_Id from UM_Permissions WHERE (is_Deleted = 0) AND (type = 'NAV_DOC_SD') AND (permissionname LIKE '%GlobalSD')
+)) AND (profile_Id IN(
+SELECT object_Id FROM UM_Profiles WHERE profilename NOT LIKE '%glo'
+))
+;
+
+UPDATE Versions SET subVersion = 7 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 6 );
+COMMIT WORK;
