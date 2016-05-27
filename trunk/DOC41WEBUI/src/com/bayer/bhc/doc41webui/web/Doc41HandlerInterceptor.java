@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -273,14 +274,10 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
             
             if (!StringTool.isTrimmedEmptyOrNull(tmpCwid)){
                 Doc41Log.get().debug(this.getClass(), tmpCwid, "DocService user request from: ["+tmpHost+"] "+tmpAddr+" for uri: "+request.getRequestURI()+" / url: "+request.getRequestURL());
-                @SuppressWarnings("unchecked")
-                Map<String,String> subConfig = ConfigMap.get().getSubConfig("doc41controller", "docservicecheck");
-                String allowedIPs = subConfig.get("allowedIPs");
-                if(allowedIPs!=null && allowedIPs.contains(tmpAddr)){
-                    String password = subConfig.get("pwd_"+tmpRole);
-                    if(password!=null && password.startsWith("*")){
-                        password = StringTool.code(password.substring(1));
-                    }
+                Properties subConfig = ConfigMap.get().getSubCfg("doc41controller", "docservicecheck");
+                String allowedIPs = StringTool.emptyToNull(subConfig.getProperty("allowedIPs"));
+                if((allowedIPs == null) || allowedIPs.contains("," + tmpAddr + ",")) {
+                    String password = StringTool.decodePassword(subConfig.getProperty("pwd_"+tmpRole));
                     if(!StringTool.isTrimmedEmptyOrNull(tmpPwd) && !StringTool.isTrimmedEmptyOrNull(password)
                             && StringTool.equals(tmpPwd, password)){
                         // TODO: if introduce further remote roles, introduce a external service function TO service user MAPPING. currently only SD_CARR allowed
@@ -315,9 +312,8 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 		
 		if (tmpCwid !=null){
 			Doc41Log.get().debug(this.getClass(), tmpCwid, "WEBSEAL user request from: ["+tmpHost+"] "+tmpAddr+" for uri: "+request.getRequestURI()+" / url: "+request.getRequestURL());
-			@SuppressWarnings("unchecked")
-			Map<String,String> subConfig = ConfigMap.get().getSubConfig("doc41controller", "websealcheck");
-			String allowedIPs = subConfig.get("allowedIPs");
+			Properties subConfig = ConfigMap.get().getSubCfg("doc41controller", "websealcheck");
+			String allowedIPs = subConfig.getProperty("allowedIPs");
 			if(allowedIPs!=null && allowedIPs.contains(tmpAddr)){
 				return tmpCwid;
 			}

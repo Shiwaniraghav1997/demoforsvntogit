@@ -16,6 +16,7 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.service.Doc41MonitorService;
 import com.bayer.ecim.foundation.basic.ConfigMap;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 /**
  * LDAP DAO implementation.
@@ -99,18 +100,8 @@ public class LdapDAO {
 	}
 
     private boolean isDevTestUserCwid(String cwid) {
-        return "DDEMO".equals(cwid)
-                ||"IMWIF".equalsIgnoreCase(cwid)
-                ||"SDGLO".equalsIgnoreCase(cwid)
-                ||"PTGLO".equalsIgnoreCase(cwid)
-                ||"CARRIER".equalsIgnoreCase(cwid)
-                ||"CUSTBROK".equalsIgnoreCase(cwid)
-                ||"MATSUP".equalsIgnoreCase(cwid)
-                ||"PRODSUP".equalsIgnoreCase(cwid)
-                ||"DCCOUNTRY".equalsIgnoreCase(cwid)
-                ||"DCCUSTOMER".equalsIgnoreCase(cwid)
-                ||"LAYOUTSUP".equalsIgnoreCase(cwid)
-                ||"PMSUP".equalsIgnoreCase(cwid);
+        String mUsers = StringTool.nullToEmpty(ConfigMap.get().getSubCfg("ldap").getProperty("users"));
+        return mUsers.indexOf("|"+StringTool.nullToEmpty(cwid).toUpperCase()+"|") > -1;
     }
 	
     public AILAPerson lookupUser(String cwid) throws Doc41TechnicalException  {
