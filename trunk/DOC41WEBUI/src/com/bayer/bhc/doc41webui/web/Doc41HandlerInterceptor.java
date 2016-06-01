@@ -57,7 +57,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 	private static final String DB_SESSION_DC_REQ_ATTR ="DB_SESSION_DC_REQ_ATTR";
 	
 	private static final String CWID_PREFIX_DOC_SERVICE = "DS_";
-    private static final String CWID_DOC_SERVICE_CARR = "DS_CARR";
+    public static final String CWID_DOC_SERVICE_CARR = "DS_CARR";
 	
 	@Autowired
 	protected UserManagementUC userManagementUC;
@@ -183,6 +183,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 		User user = (User) request.getSession().getAttribute(DOC41_USER);
 		String webSealCwid = getWebSealUser(request);
 		User docServiceUser = getDocServiceUser(request);
+		Doc41Log.get().debug(this, null, "ReqSessionUser=" + ((user== null) ? "null" : user.getCwid())+"/websealUser="+webSealCwid+"/docServiceUser="+ ((docServiceUser== null) ? "null" : docServiceUser.getCwid()));
 		
 		//kill session if webseal user differs from session user
 		if(webSealCwid!=null && user !=null && user.getCwid()!=null
@@ -200,9 +201,11 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 		}
 
 		if (user != null && (webSealCwid==null || webSealCwid.equalsIgnoreCase(user.getCwid()) )) {
-			cwid = user.getCwid();
+		    Doc41Log.get().debug(this, null, "SELECT ReqSessionUser=" + ((user== null) ? "null" : user.getCwid()));
+		    cwid = user.getCwid();
 		} else if(docServiceUser!=null){
 		    if(user==null || !StringTool.equals(user.getCwid(), docServiceUser.getCwid())){
+	            Doc41Log.get().debug(this, null, "SELECT docServiceUser=" + ((docServiceUser== null) ? "null" : docServiceUser.getCwid()));
 		        user=docServiceUser;
 		    }
 		} else {
