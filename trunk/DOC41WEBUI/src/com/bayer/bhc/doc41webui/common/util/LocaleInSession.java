@@ -45,4 +45,8 @@ public final class LocaleInSession {
     		sessionLocaleFallback.set(loc);
     	}
     }
+    
+    public static void cleanUp() {
+        sessionLocaleFallback.remove();
+    }
 }

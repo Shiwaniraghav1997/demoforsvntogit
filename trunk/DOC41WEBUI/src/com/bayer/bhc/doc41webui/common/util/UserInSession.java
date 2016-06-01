@@ -65,4 +65,9 @@ public final class UserInSession {
     		sessionUserFallback.set(user);
     	}
     }
+
+    public static void cleanUp() {
+        sessionUserFallback.remove();
+    }
+
 }
