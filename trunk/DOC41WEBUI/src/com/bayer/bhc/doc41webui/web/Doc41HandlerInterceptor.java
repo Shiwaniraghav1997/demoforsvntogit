@@ -276,7 +276,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
             // if not host in list return null
             
             if (!StringTool.isTrimmedEmptyOrNull(tmpCwid)){
-                Doc41Log.get().debug(this.getClass(), tmpCwid, "DocService user request from: ["+tmpHost+"] "+tmpAddr+" for uri: "+request.getRequestURI()+" / url: "+request.getRequestURL());
+                Doc41Log.get().debug(this, tmpCwid, "DocService user request from: ["+tmpHost+"] "+tmpAddr+" for uri: "+request.getRequestURI()+" / url: "+request.getRequestURL());
                 Properties subConfig = ConfigMap.get().getSubCfg("doc41controller", "docservicecheck");
                 String allowedIPs = StringTool.emptyToNull(subConfig.getProperty("allowedIPs"));
                 if((allowedIPs == null) || allowedIPs.contains("," + tmpAddr + ",")) {
@@ -292,7 +292,11 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
                         tmpUser.setSkipVendorCheck(true);
                         tmpUser.setSkipCountryCheck(true);
                         return tmpUser;
+                    } else {
+                        Doc41Log.get().warning(this, tmpCwid, "Bad password: " + tmpPwd );
                     }
+                } else {
+                    Doc41Log.get().warning(this, tmpCwid, "IP not allowed: " + tmpAddr );
                 }
             }
         } catch (Doc41BusinessException e) {
