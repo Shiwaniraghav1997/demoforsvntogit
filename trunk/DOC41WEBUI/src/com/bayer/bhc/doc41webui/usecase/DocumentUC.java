@@ -180,7 +180,12 @@ public class DocumentUC {
 	
 	private void addDocumentType(DocumentType documentType) {
 		documentTypes.put(documentType.getTypeConst(), documentType);
-        documentTypesBySapId.put(documentType.getSapTypeId() + ((documentType instanceof UploadDocumentType) ? "_U" : ""), documentType);
+		if (documentType instanceof DownloadDocumentType) {
+	        documentTypesBySapId.put(documentType.getSapTypeId(), documentType);
+		}
+        if (documentType instanceof UploadDocumentType) {
+            documentTypesBySapId.put(documentType.getSapTypeId() + "_U", documentType);
+        }
 	}
 
 	/**
