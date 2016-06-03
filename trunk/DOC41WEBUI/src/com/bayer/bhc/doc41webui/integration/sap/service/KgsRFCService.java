@@ -47,7 +47,10 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		for (DocTypeDef docTypeDef : docTypeDefs) {
         	String d41id = docTypeDef.getD41id();
 
-        	DocumentType docType = supportedSapDocTypes.get(d41id); 
+        	DocumentType docType = supportedSapDocTypes.get(d41id);
+        	if (docType == null) {
+        	    docType = supportedSapDocTypes.get(d41id+"_U");
+        	}
         	if( (docType != null) && docType.isKgs() ){
 /*
             if(supportedSapDocTypes.contains(d41id)){

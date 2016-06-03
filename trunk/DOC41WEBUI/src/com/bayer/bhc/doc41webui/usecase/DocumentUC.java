@@ -180,7 +180,7 @@ public class DocumentUC {
 	
 	private void addDocumentType(DocumentType documentType) {
 		documentTypes.put(documentType.getTypeConst(), documentType);
-        documentTypesBySapId.put(documentType.getSapTypeId(), documentType);
+        documentTypesBySapId.put(documentType.getSapTypeId() + ((documentType instanceof UploadDocumentType) ? "_U" : ""), documentType);
 	}
 
 	/**
@@ -308,15 +308,6 @@ public class DocumentUC {
 		return getDocMetadataContainer().keySet();
 	}
 	
-	/**
-	 * Get a list of all DocumentType Doc41Ids/SapTypeIds by defined DocumentTypes (including not only DocTypes with Custumizing RFCs - KGS but also those without - DIRS).
-	 * @return
-	 */
-    @SuppressWarnings("unused")
-    private Set<String> getSapDocTypesList() {
-        return getAllDocTypesBySapTypeIdMap().keySet();
-    }
-    
     /**
      * Create a selection list for KGS Customizing Metadata (not including Types having no Customizing Metadata, e.g. DIRS)
      * @return
@@ -329,7 +320,10 @@ public class DocumentUC {
 			DocMetadata docMetadata = getDocMetadataBySapDocType(sapDocType);
 			DocTypeDef docDef = docMetadata.getDocDef();
 			String description = docDef.getDescription();
-			DocumentType dt = getDocTypeBySapId(sapDocType);
+			DocumentType dt = getDocTypeBySapId(sapDocType, false);
+			if (dt == null) {
+			    dt = getDocTypeBySapId(sapDocType, true); // try via UploadDocument, if now corresponding DownloadDocument
+			}
 			String group = (dt == null) ? "???" : dt.getGroup(); 
 			
 			SelectionItem item = new SelectionItem(sapDocType, "" + group + " - " + sapDocType + ": " + description);
@@ -362,12 +356,19 @@ public class DocumentUC {
     }
     
 	/**
-	 * Get a Set of all document types sapIds.
+	 * Get a Set of all document types sapIds (Doc41Ids/SapTypeIds by defined DocumentTypes, upload sap id keys mapped back to original sapid).
 	 * @return
 	 */
 	@SuppressWarnings("unused")
     private Set<String> getSupportedSapDocTypes() {
-	    return documentTypesBySapId.keySet();
+	    HashSet<String> mRes = new HashSet<String>();
+	    for (String key : documentTypesBySapId.keySet()) {
+	        if (key.endsWith("_U")) {
+	            key = key.substring(0, key.length()-2);
+	        }
+	        mRes.add(key);
+	    }
+	    return mRes;
 /*	    
         Set<String> supportedSapTypes = new HashSet<String>();
         for (DocumentType docType : documentTypes.values()) {
@@ -681,10 +682,15 @@ public class DocumentUC {
 		        }*/
 		        for (HitListEntry hitListEntry : allResults) {
 		            String mDoc41Id = hitListEntry.getDoc41Id();
-		            DocumentType dt = getDocTypeBySapId(mDoc41Id);
+		            DocumentType dt = getDocTypeBySapId(mDoc41Id, false);
                     hitListEntry.setType(dt.getTypeConst());
 // TODO: Bug on switch of DocType, prev. DocTypes Cust-Attr still filled (const, stay last value)
-		            hitListEntry.initCustValuesMap(/*/seqToKeyGlo/*/ seqToKeyAllTypes.get(dt.getTypeConst()) /**/ );
+                    Map<Integer,String> mSeqToKey = seqToKeyAllTypes.get(dt.getTypeConst());
+                    if (mSeqToKey == null) {
+                        Doc41Log.get().warning(this,  null, "unexpected DocType, not prepared: '" + dt.getTypeConst()+"', try workaround empty dummy map...");
+                        mSeqToKey = new HashMap<Integer, String>();
+                    }
+		            hitListEntry.initCustValuesMap(/*/seqToKeyGlo/*/ mSeqToKey /**/ );
 				
 		            Map<String,String> params = new LinkedHashMap<String, String>();
 		            params.put(Doc41Constants.URL_PARAM_TYPE,hitListEntry.getType());
@@ -944,8 +950,8 @@ public class DocumentUC {
 	 * @return
 	 * @throws Doc41BusinessException thrown, if not available
 	 */
-    public DocumentType getDocTypeBySapId(String sapTypeId) throws Doc41BusinessException {
-        DocumentType documentType = documentTypesBySapId.get(sapTypeId);
+    public DocumentType getDocTypeBySapId(String sapTypeId, boolean isUpload) throws Doc41BusinessException {
+        DocumentType documentType = documentTypesBySapId.get(sapTypeId + (isUpload ? "_U" : ""));
         if(documentType==null){
             throw new Doc41BusinessException("unknown doctype, sapTypeId: "+sapTypeId);
         }
