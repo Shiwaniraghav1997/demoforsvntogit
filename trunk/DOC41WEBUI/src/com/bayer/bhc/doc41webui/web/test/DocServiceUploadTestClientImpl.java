@@ -19,7 +19,9 @@ import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.ecim.foundation.basic.ConfigMap;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 public class DocServiceUploadTestClientImpl {
     
@@ -89,8 +91,10 @@ public class DocServiceUploadTestClientImpl {
 
             httpPost.setEntity(entity);
             HttpResponse response = httpclient.execute(httpPost);
+
             StatusLine statusLine = response.getStatusLine();
             if (statusLine.getStatusCode() >= 300) {
+                Doc41Log.get().error(this, null, "UploadTest failed, response: " + statusLine.getReasonPhrase() + " (" + statusLine.getStatusCode() + ")  -  " + statusLine.getProtocolVersion() + "\n" + StringTool.list(response.getAllHeaders(), "\n", false) );
                 throw new HttpResponseException(
                         statusLine.getStatusCode(),
                         statusLine.getReasonPhrase());
@@ -106,8 +110,10 @@ public class DocServiceUploadTestClientImpl {
 
 
     private void addUser(HttpRequestBase request) {
+        String role = "doc41_carr";
         request.setHeader("docservice-user", "ABCDE");
-        request.setHeader("docservice-role", "doc41_carr");
+        request.setHeader("docservice-password", StringTool.decodePassword(ConfigMap.get().getSubCfg("doc41controller", "docservicecheck").getProperty("pwd_"+role)));
+        request.setHeader("docservice-role", role);
     }
 
 

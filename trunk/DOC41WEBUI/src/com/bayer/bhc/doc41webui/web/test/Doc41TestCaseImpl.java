@@ -15,7 +15,7 @@ public class Doc41TestCaseImpl {
 //		RequestContextHolder.setRequestAttributes(attributes);
 		User tmpUser	= new User();
 		tmpUser.setReadOnly(Boolean.FALSE);
-		tmpUser.setCwid(Doc41Constants.USERNAME_TEST);
+		tmpUser.setCwid(Doc41Constants.USERNAME_TEST /*Doc41HandlerInterceptor.CWID_DOC_SERVICE_CARR*/ );
 		UserInSession.put(tmpUser);
 		Locale tmpLocale= new Locale("en", "US");
 		LocaleInSession.put(tmpLocale);
