@@ -21,7 +21,6 @@ import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.DateRenderer;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.TimeRenderer;
-import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.ecim.foundation.basic.ConfigMap;
 
 
@@ -86,14 +85,15 @@ public class Doc41ControllerAdvice {
 	public String processHandlerException(HttpServletRequest request, HttpServletResponse response, Exception ex) throws Exception {
 	    if(ex instanceof Doc41DocServiceException){
 	        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getLocalizedMessage());
+            Doc41Log.get().debug(ex, null, ex.getMessage());
 	        return "exception";
 	    }
 		if (ex instanceof MaxUploadSizeExceededException){
-			ex = new Doc41ExceptionBase("File is to big for upload!",ex);
+            Doc41Log.get().debug(ex, null, ex.getMessage());
+//			ex = new Doc41ExceptionBase("File is to big for upload!",ex);
 		}
 
 		if (!(ex instanceof Doc41ExceptionBase)) {
-			Doc41Log.get().error(getClass(),UserInSession.getCwid(),ex);
 			ex = new Doc41TechnicalException(this.getClass(), "fatal error: "+ex.getStackTrace()[0], ex);
 		}
 
@@ -105,13 +105,14 @@ public class Doc41ControllerAdvice {
 
 			if (ex instanceof Doc41OptimisticLockingException) {
 				relevantException = ex;
+				Doc41Log.get().debug(relevantException, null, relevantException.getMessage());
 			}
 			if (ex instanceof Doc41AccessDeniedException) {
 				relevantException = ex;
+                Doc41Log.get().debug(relevantException, null, relevantException.getMessage());
 			}
 		}
 		request.setAttribute(DOC41_EXCEPTION, relevantException);
-		Doc41Log.get().error(getClass(), UserInSession.getCwid(), relevantException);
 		return "exception";
 	}
 	

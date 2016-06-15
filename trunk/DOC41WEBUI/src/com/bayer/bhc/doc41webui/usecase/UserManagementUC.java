@@ -83,7 +83,7 @@ public class UserManagementUC {
     }
 
     /**
-	 * find user by cwid in Usermanagement DB
+	 * find user by cwid in Usermanagement DB, finds also deactivated or deleted users
 	 * 
 	 * @param cwid
 	 * @return User found
@@ -101,6 +101,7 @@ public class UserManagementUC {
         }
     }
 
+    
     /**
      * Get All Profile(Beans).
      * @return

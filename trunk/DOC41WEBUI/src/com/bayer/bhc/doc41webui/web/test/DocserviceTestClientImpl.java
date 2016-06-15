@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.web.test;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class DocserviceTestClientImpl {
     public String VENDOR = "0007150493";
     public String REF_NO = "0060006010";
     public String DOWNL_PATH = "C:\\eclipse\\BOEAH\\wasproj\\doc41webui\\temp\\";
+    public String CWID = "ABCDE";
 
     private StringBuffer out = new StringBuffer();
    
@@ -59,7 +61,7 @@ public class DocserviceTestClientImpl {
         System.out.println(mStr);
     }
     
-    public String run(String pUrlPrefix, String pVendor, String pRefNo, String pDownloadPath) throws ClientProtocolException, IOException {
+    public String run(String pUrlPrefix, String pVendor, String pRefNo, String pDownloadPath, String pCwid) throws ClientProtocolException, IOException {
 
         Properties mTestPr = ConfigMap.get().getSubCfg("test","docservice");
         URL_PREFIX  = mTestPr.getProperty("urlprefix"   , URL_PREFIX);
@@ -67,7 +69,7 @@ public class DocserviceTestClientImpl {
         REF_NO      = mTestPr.getProperty("refno"       , REF_NO    );
         DOWNL_PATH  = mTestPr.getProperty("path"        , DOWNL_PATH);
         
-        List<BdsServiceDocumentEntry> documents = testSearch(pUrlPrefix,pVendor ,pRefNo);
+        List<BdsServiceDocumentEntry> documents = testSearch(pUrlPrefix,pVendor ,pRefNo, pCwid);
         
         int i=0;
         if (documents != null) {
@@ -82,7 +84,7 @@ public class DocserviceTestClientImpl {
                 try{
                     String pName = pDownloadPath+i+"_"+filename;
                     outputStream = new FileOutputStream(pName);
-                    testDownload(URL_PREFIX,doc,outputStream, pName);
+                    testDownload(URL_PREFIX,doc,outputStream, pName, pCwid);
                 } finally {
                     if(outputStream!=null){
                         outputStream.close();
@@ -94,12 +96,12 @@ public class DocserviceTestClientImpl {
         return out.toString();
     }
 
-    private List<BdsServiceDocumentEntry> testSearch(String urlPrefix,String vendor, String refnumber) throws ClientProtocolException, IOException {
+    private List<BdsServiceDocumentEntry> testSearch(String urlPrefix,String vendor, String refnumber, String pCwid) throws ClientProtocolException, IOException {
         String url=getSearchUrl(urlPrefix, vendor, refnumber);
 
         HttpGet httpget = new HttpGet(url);
         httpget.setHeader("Accept", "application/json");
-        addUser(httpget);
+        addUser(httpget, pCwid);
 
         println("Executing request " + httpget.getRequestLine());
 
@@ -133,6 +135,7 @@ public class DocserviceTestClientImpl {
                     ContentType contentType = ContentType.getOrDefault(entity);
                     Charset charset = contentType.getCharset();
                     Reader reader = new InputStreamReader(entity.getContent(), charset);
+
                     return gson.fromJson(reader, /*listType*/ objType);
                 }
             };
@@ -159,18 +162,18 @@ public class DocserviceTestClientImpl {
         }
     }
 
-    private void addUser(HttpRequestBase request) {
+    private void addUser(HttpRequestBase request, String pCwid) {
         String role = "doc41_carr";
-        request.setHeader("docservice-user", "ABCDE");
+        request.setHeader("docservice-user", pCwid);
         request.setHeader("docservice-password", StringTool.decodePassword(ConfigMap.get().getSubCfg("doc41controller", "docservicecheck").getProperty("pwd_"+role)));
         request.setHeader("docservice-role", role);
     }
     
-    private void testDownload(String urlPrefix,BdsServiceDocumentEntry doc, FileOutputStream target, String pName) throws ClientProtocolException, IOException {
+    private void testDownload(String urlPrefix,BdsServiceDocumentEntry doc, FileOutputStream target, String pName, String pCwid) throws ClientProtocolException, IOException {
         String url=getDownloadUrl(urlPrefix, doc.getKey());
 
         HttpGet httpget = new HttpGet(url);
-        addUser(httpget);
+        addUser(httpget, pCwid);
 
         println("Executing request " + httpget.getRequestLine());
 

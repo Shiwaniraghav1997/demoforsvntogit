@@ -31,6 +31,7 @@ public class DocServiceUploadTestClientImpl {
     public String UPL_PATH = "C:\\eclipse\\BOEAH\\workspace\\DOC41WEBUI\\docs\\";
     public String UPL_FILE = "rfcReport.pdf";
     public String TYPE = "AWB";
+    public String CWID = "ABCDE";
 
     private StringBuffer out = new StringBuffer();
    
@@ -42,6 +43,7 @@ public class DocServiceUploadTestClientImpl {
         UPL_PATH    = mTestPr.getProperty("path"        , UPL_PATH  );
         UPL_FILE    = mTestPr.getProperty("file"        , UPL_FILE  );
         TYPE        = mTestPr.getProperty("type"        , TYPE      );
+        CWID        = mTestPr.getProperty("type"        , CWID      );
     }
     
     public void println(String mStr) {
@@ -49,13 +51,13 @@ public class DocServiceUploadTestClientImpl {
         System.out.println(mStr);
     }
 
-    public String run(String pUrlPrefix, String pVendor, String pRefNo, String pUploadPath, String pUploadFile, String pType) throws ClientProtocolException, IOException {
+    public String run(String pUrlPrefix, String pVendor, String pRefNo, String pUploadPath, String pUploadFile, String pType, String pCwid) throws ClientProtocolException, IOException {
 
         InputStream fileInputStream = null;
         try{
         fileInputStream = new FileInputStream(pUploadPath+pUploadFile);
         
-        HttpEntity result = testUpload(pUrlPrefix,fileInputStream,pUploadFile,pType,pVendor,pRefNo);
+        HttpEntity result = testUpload(pUrlPrefix,fileInputStream,pUploadFile,pType,pVendor,pRefNo, pCwid);
         char[] mBuf = new char[20000];
         new InputStreamReader(result.getContent()).read(mBuf);
         println(""+ new String(mBuf));
@@ -69,11 +71,11 @@ public class DocServiceUploadTestClientImpl {
     
     private HttpEntity testUpload(String urlPrefix, InputStream fileInputStream,
             String fileName, String type, String vendorNumber,
-            String refnumber) throws ClientProtocolException, IOException {
+            String refnumber, String pCwid) throws ClientProtocolException, IOException {
 
         String url=getUploadUrl(urlPrefix);
         HttpPost httpPost = new HttpPost(url);
-        addUser(httpPost);
+        addUser(httpPost, pCwid);
         println("Executing request " + httpPost.getRequestLine());
         
         DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -109,9 +111,9 @@ public class DocServiceUploadTestClientImpl {
     }
 
 
-    private void addUser(HttpRequestBase request) {
+    private void addUser(HttpRequestBase request, String pCwid) {
         String role = "doc41_carr";
-        request.setHeader("docservice-user", "ABCDE");
+        request.setHeader("docservice-user", pCwid);
         request.setHeader("docservice-password", StringTool.decodePassword(ConfigMap.get().getSubCfg("doc41controller", "docservicecheck").getProperty("pwd_"+role)));
         request.setHeader("docservice-role", role);
     }

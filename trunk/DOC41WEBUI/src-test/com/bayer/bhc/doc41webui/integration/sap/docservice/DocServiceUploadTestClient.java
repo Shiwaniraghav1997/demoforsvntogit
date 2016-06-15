@@ -10,7 +10,7 @@ public class DocServiceUploadTestClient {
     
     public static void main(String[] args) throws ClientProtocolException, IOException {
         DocServiceUploadTestClientImpl dsuci = new DocServiceUploadTestClientImpl();
-        new DocServiceUploadTestClientImpl().run(dsuci.URL_PREFIX, dsuci.VENDOR, dsuci.REF_NO, dsuci.UPL_PATH, dsuci.UPL_FILE, dsuci.TYPE);
+        new DocServiceUploadTestClientImpl().run(dsuci.URL_PREFIX, dsuci.VENDOR, dsuci.REF_NO, dsuci.UPL_PATH, dsuci.UPL_FILE, dsuci.TYPE, dsuci.CWID);
     }
     
 }

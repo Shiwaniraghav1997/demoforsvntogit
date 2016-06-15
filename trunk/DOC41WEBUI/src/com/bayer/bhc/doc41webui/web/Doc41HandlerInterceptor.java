@@ -12,7 +12,6 @@ import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.zip.GZIPInputStream;
@@ -79,7 +78,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			request.setAttribute(DB_SESSION_DC_REQ_ATTR, dbSessionDC);
 			
 			if (usr == null) {
-				response.sendRedirect(request.getContextPath() +URI_LOGIN);
+			    response.sendRedirect(request.getContextPath() +URI_LOGIN);
 				return false;
 	
 			} else {
@@ -287,10 +286,15 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
                         if(LocaleInSession.get()==null){
                             LocaleInSession.put(Locale.US);
                         }
-                        User tmpUser = userManagementUC.findUser(CWID_DOC_SERVICE_CARR);
-                        tmpUser.setSkipCustomerCheck(true);
-                        tmpUser.setSkipVendorCheck(true);
-                        tmpUser.setSkipCountryCheck(true);
+                        User tmpUser = userManagementUC.findUser(tmpCwid);
+                        if (tmpUser == null) {
+                            tmpUser = userManagementUC.findUser(CWID_DOC_SERVICE_CARR);
+                            if (tmpUser != null) { // prepared to be able to deactivate user without causing NPE
+                                tmpUser.setSkipCustomerCheck(true);
+                                tmpUser.setSkipVendorCheck(true);
+                                tmpUser.setSkipCountryCheck(true);
+                            }
+                        }
                         return tmpUser;
                     } else {
                         Doc41Log.get().warning(this, tmpCwid, "Bad password: " + tmpPwd );

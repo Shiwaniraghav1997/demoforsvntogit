@@ -31,17 +31,18 @@ public class BDSSupportConsoleTestPageRendererHTML
             String pPath = StringTool.nvl( StringTool.trimEmptyToNull((String)((FdtSupportConsoleRequestBean)cRequestBean).getAttribute("PATH")), dsci.DOWNL_PATH);
             String pFile = StringTool.nvl( StringTool.trimEmptyToNull((String)((FdtSupportConsoleRequestBean)cRequestBean).getAttribute("FILE")), dsuci.UPL_FILE);
             String pType = StringTool.nvl( StringTool.trimEmptyToNull((String)((FdtSupportConsoleRequestBean)cRequestBean).getAttribute("TYPE")), dsuci.TYPE);
+            String pCwid = StringTool.nvl( StringTool.trimEmptyToNull((String)((FdtSupportConsoleRequestBean)cRequestBean).getAttribute("CWID")), dsci.CWID);
             
             Doc41Log.get().debug(this,cExecUser, "Start... Namespace=" + pNamespace + ", ClientVariantId=" + pClientVariantId );
             println(out, "<H2>" + FdtSupportConsoleStartPageRendererHTML.getSupportConsoleReturnToMenuLink() + " BDS Docservice Test</H2>", escJS);
             println(out, "<P/><P>Press buttons to start test. This is a very simple first version.</P>", escJS);
-//            println(out, "<INPUT name=\"TEST_DETAILS\" type=\"submit\" value=\"Test w/ DC dumps.\">", escJS);
             println(out, "<P>Url: <input type=\"text\" name=\"URL\" SIZE=\"100\" value=\"" + pUrl + "\"></P>" , escJS);
             println(out, "<P>Local Path: <input type=\"text\" name=\"PATH\" SIZE=\"100\" value=\"" + pPath + "\"></P>" , escJS);
             println(out, "<P>Vendor: <input type=\"text\" name=\"VEN\" SIZE=\"15\" value=\"" + pVendor + "\">" , escJS);
             println(out, " RefNo: <input type=\"text\" name=\"REF\" SIZE=\"15\" value=\"" + pRefNo + "\">" , escJS);
             println(out, " Upl.File: <input type=\"text\" name=\"FILE\" SIZE=\"30\" value=\"" + pFile + "\">" , escJS);
-            println(out, " Upl.Type: <input type=\"text\" name=\"TYPE\" SIZE=\"10\" value=\"" + pType + "\"></P>" , escJS);
+            println(out, " Upl.Type: <input type=\"text\" name=\"TYPE\" SIZE=\"10\" value=\"" + pType + "\">" , escJS);
+            println(out, " Interface-CWID: <input type=\"text\" name=\"CWID\" SIZE=\"10\" value=\"" + pCwid + "\"></P>" , escJS);
             println(out, "<INPUT name=\"TEST_DOWN\" type=\"submit\" value=\"Test Download Interface...\">", escJS);
             println(out, " <INPUT name=\"TEST_UP\" type=\"submit\" value=\"Test Upload Interface...\">", escJS);
             println(out, " <INPUT name=\"REFRESH\" type=\"submit\" value=\"Reload empty fields...\">", escJS);
@@ -61,13 +62,13 @@ public class BDSSupportConsoleTestPageRendererHTML
 
                 if (FdtRequestUtils.getParameter(cRequestBean.getExternalRequest(),"TEST_DOWN", false) != null) {
                     println(out, "Run DocServiceTestClient...<BR>", escJS);
-                    println(out, "<PRE>" +StringTool.escapeHTMLPre(dsci.run(pUrl, pVendor, pRefNo, pPath))+"</PRE>" , escJS);
+                    println(out, "<PRE>" +StringTool.escapeHTMLPre(dsci.run(pUrl, pVendor, pRefNo, pPath, pCwid))+"</PRE>" , escJS);
                     println(out, "DocServiceTestClient done<BR>", escJS);
                 }
                 
                 if (FdtRequestUtils.getParameter(cRequestBean.getExternalRequest(),"TEST_UP", false) != null) {
                     println(out, "Run DocServiceUploadTestClient...<BR>", escJS);
-                    println(out, "<PRE>" +StringTool.escapeHTMLPre(dsuci.run(pUrl, pVendor, pRefNo, pPath, pFile, pType))+"</PRE>" , escJS);
+                    println(out, "<PRE>" +StringTool.escapeHTMLPre(dsuci.run(pUrl, pVendor, pRefNo, pPath, pFile, pType, pCwid))+"</PRE>" , escJS);
                     println(out, "DocServiceUploadTestClient done<BR>", escJS);
                 }
                 
