@@ -276,7 +276,6 @@ COMMIT;
 UPDATE Versions SET subVersion = 4 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 3 );
 COMMIT WORK;
 
--- prod
 
 ------------------------------------
 -- Alter-Script: CVS v1.4 -> v1.5 --
@@ -299,7 +298,6 @@ COMMIT;
 UPDATE Versions SET subVersion = 5 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 4 );
 COMMIT WORK;
 
--- qa
 
 ------------------------------------
 -- Alter-Script: CVS v1.5 -> v1.6 --
