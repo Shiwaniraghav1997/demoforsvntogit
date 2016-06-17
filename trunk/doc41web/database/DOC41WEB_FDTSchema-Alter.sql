@@ -281,7 +281,7 @@ COMMIT WORK;
 -- Alter-Script: CVS v1.4 -> v1.5 --
 ------------------------------------
 
-UPDATE UM_PGU_Permissions SET is_deleted = 0 WHERE (is_Deleted = 1) AND (profile_Id IS NOT NULL) AND (profile_Id IN (
+UPDATE UM_PGU_Permissions SET is_deleted = 0 WHERE (is_Deleted = 1) AND (permission_Id IS NOT NULL) AND (permission_Id IN (
   SELECT object_Id FROM UM_Permissions WHERE (code LIKE 'NAV_GLO%')
 ));
 -- should activate 3 assignments, LS perm is deleted so is ok, done on dev & qa
@@ -331,6 +331,11 @@ SELECT object_Id from UM_Permissions WHERE (is_Deleted = 0) AND (type = 'NAV_DOC
 SELECT object_Id FROM UM_Profiles WHERE profilename NOT LIKE '%glo'
 ))
 ;
+
+UPDATE UM_PGU_Permissions SET is_deleted = 0 WHERE (is_Deleted = 1) AND (permission_Id IS NOT NULL) AND (permission_Id IN (
+  SELECT object_Id FROM UM_Permissions WHERE (code LIKE 'NAV_GLO_PM')
+));
+
 
 UPDATE Versions SET subVersion = 7 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 6 );
 COMMIT WORK;
