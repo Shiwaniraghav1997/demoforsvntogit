@@ -1,11 +1,16 @@
 package com.bayer.bhc.doc41webui.web.supportconsole;
 
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Properties;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.web.test.Doc41TestCaseImpl;
 import com.bayer.bhc.doc41webui.web.test.DocServiceUploadTestClientImpl;
 import com.bayer.bhc.doc41webui.web.test.DocserviceTestClientImpl;
+import com.bayer.ecim.foundation.basic.ArrayTool;
+import com.bayer.ecim.foundation.basic.ConfigMap;
+import com.bayer.ecim.foundation.basic.Sorter;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.web.pagerenderer.FdtPageRendererException;
 import com.bayer.ecim.foundation.web.pagerenderer.FdtPageRendererWriterImpl;
@@ -43,15 +48,18 @@ public class BDSSupportConsoleTestPageRendererHTML
             println(out, " Upl.File: <input type=\"text\" name=\"FILE\" SIZE=\"30\" value=\"" + pFile + "\">" , escJS);
             println(out, " Upl.Type: <input type=\"text\" name=\"TYPE\" SIZE=\"10\" value=\"" + pType + "\">" , escJS);
             println(out, " Interface-CWID: <input type=\"text\" name=\"CWID\" SIZE=\"10\" value=\"" + pCwid + "\"></P>" , escJS);
-            println(out, "<INPUT name=\"TEST_DOWN\" type=\"submit\" value=\"Test Download Interface...\">", escJS);
-            println(out, " <INPUT name=\"TEST_UP\" type=\"submit\" value=\"Test Upload Interface...\">", escJS);
+            println(out, "<INPUT name=\"TEST_SEARCH\" type=\"submit\" value=\"Test Download Search...\">", escJS);
+            println(out, " <INPUT name=\"TEST_DOWN\" type=\"submit\" value=\"Test Download All...\">", escJS);
+            println(out, " <INPUT name=\"TEST_UP\" type=\"submit\" value=\"Test Upload...\">", escJS);
             println(out, " <INPUT name=\"REFRESH\" type=\"submit\" value=\"Reload empty fields...\">", escJS);
             println(out, "</p>", escJS);
             /*if (FdtRequestUtils.getParameter(cRequestBean.getExternalRequest(),"TEST_DETAILS", false) != null) {
                 println(out, "<p><PRE>\n" + StringTool.replace(StringTool.replace(StringTool.escapeHTMLNotLF(OTUserManagementN.get().test( new String[] { "testUsr", "testGrp", "testPro", "testPer", "testOTP", "999", "testOPe", "IMWIF" }, true, true, true)), ST_OK, ST_OK_DISP), ST_FAIL, ST_FAIL_DISP) +  "</PRE></p>", escJS);
             } else*/
-            if ((FdtRequestUtils.getParameter(cRequestBean.getExternalRequest(),"TEST_DOWN", false) != null) ||
-                (FdtRequestUtils.getParameter(cRequestBean.getExternalRequest(),"TEST_UP", false) != null)) {
+            boolean isSearch = (FdtRequestUtils.getParameter(cRequestBean.getExternalRequest(),"TEST_SEARCH", false) != null); 
+            boolean isDown   = (FdtRequestUtils.getParameter(cRequestBean.getExternalRequest(),"TEST_DOWN"  , false) != null); 
+            boolean isUp     = (FdtRequestUtils.getParameter(cRequestBean.getExternalRequest(),"TEST_UP"    , false) != null); 
+            if ( isSearch || isDown || isUp ) {
                 println(out, "<p>", escJS);
 
                 println(out, "Prepare User...<BR>", escJS);
@@ -60,13 +68,13 @@ public class BDSSupportConsoleTestPageRendererHTML
 
                 println(out, "</p><p>", escJS);
 
-                if (FdtRequestUtils.getParameter(cRequestBean.getExternalRequest(),"TEST_DOWN", false) != null) {
+                if ( isSearch || isDown ) {
                     println(out, "Run DocServiceTestClient...<BR>", escJS);
-                    println(out, "<PRE>" +StringTool.escapeHTMLPre(dsci.run(pUrl, pVendor, pRefNo, pPath, pCwid))+"</PRE>" , escJS);
+                    println(out, "<PRE>" +StringTool.escapeHTMLPre(dsci.run(pUrl, pVendor, pRefNo, pPath, pCwid, isDown))+"</PRE>" , escJS);
                     println(out, "DocServiceTestClient done<BR>", escJS);
                 }
                 
-                if (FdtRequestUtils.getParameter(cRequestBean.getExternalRequest(),"TEST_UP", false) != null) {
+                if ( isUp ) {
                     println(out, "Run DocServiceUploadTestClient...<BR>", escJS);
                     println(out, "<PRE>" +StringTool.escapeHTMLPre(dsuci.run(pUrl, pVendor, pRefNo, pPath, pFile, pType, pCwid))+"</PRE>" , escJS);
                     println(out, "DocServiceUploadTestClient done<BR>", escJS);
@@ -74,6 +82,22 @@ public class BDSSupportConsoleTestPageRendererHTML
                 
                 println(out, "</p>", escJS);
             }
+            Properties p = ConfigMap.get().getSubCfg("test","docservice", false);
+            println(out, "<PRE>" +
+                    StringTool.escapeHTMLPre(
+                            StringTool.list(
+                                    Sorter.quickSort(
+                                            new ArrayList<Object>(ArrayTool.toList(
+                                                    StringTool.splitString(
+                                                            StringTool.list(
+                                                                    p.entrySet(), "~",  false
+                                                            ), '~'
+                                                    ))
+                                            ), Sorter.ASCENDING
+                                    ), "\n", false
+                             )
+                    ) + "</PRE>", escJS
+            );
         } catch (Exception e) {
             renderExceptionTrace(e, out, escJS);
         }

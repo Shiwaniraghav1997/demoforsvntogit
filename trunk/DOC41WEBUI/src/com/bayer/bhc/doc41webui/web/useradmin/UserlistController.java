@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
+import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41RuntimeExceptionBase;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
@@ -41,9 +42,17 @@ public class UserlistController extends AbstractDoc41Controller {
 
 	private static final String[] DB_COL_NAMES = {"objectState_Id","lastName","firstName","cwid","email","phone1","ISEXTERNAL"};
 
-	@Override
-	protected boolean hasPermission(User usr, HttpServletRequest request) {
-		return usr.hasPermission(Doc41Constants.PERMISSION_USER_LIST);
+    /**
+     * Get a reqired permission to perform a certain operation, can be overwritten to enforce specific permission
+     * @param usr
+     * @param request 
+     * @return null, if no specific permission required.
+     * @throws Doc41BusinessException 
+     */
+    @Override
+    protected String[] getReqPermission(User usr, HttpServletRequest request) throws Doc41BusinessException {
+        return new String[] {Doc41Constants.PERMISSION_USER_LIST};
+//		return usr.hasPermission(Doc41Constants.PERMISSION_USER_LIST);
     }
 	
 	@ModelAttribute("allRoles")

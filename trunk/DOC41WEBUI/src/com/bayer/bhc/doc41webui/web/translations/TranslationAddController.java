@@ -48,9 +48,17 @@ public class TranslationAddController extends AbstractDoc41Controller {
 		return translationsUC.getCountryCodes();
 	}
     
+    /**
+     * Get a reqired permission to perform a certain operation, can be overwritten to enforce specific permission
+     * @param usr
+     * @param request 
+     * @return null, if no specific permission required.
+     * @throws Doc41BusinessException 
+     */
     @Override
-    protected boolean hasPermission(User usr, HttpServletRequest request) {
-    	return usr.hasPermission(Doc41Constants.PERMISSION_TRANSLATION);
+    protected String[] getReqPermission(User usr, HttpServletRequest request) throws Doc41BusinessException {
+        return new String [] {Doc41Constants.PERMISSION_TRANSLATION};
+//    	return usr.hasPermission(Doc41Constants.PERMISSION_TRANSLATION);
     }
     
     @RequestMapping(value="/translations/translationAdd",method = RequestMethod.GET)

@@ -61,7 +61,7 @@ public class DocserviceTestClientImpl {
         System.out.println(mStr);
     }
     
-    public String run(String pUrlPrefix, String pVendor, String pRefNo, String pDownloadPath, String pCwid) throws ClientProtocolException, IOException {
+    public String run(String pUrlPrefix, String pVendor, String pRefNo, String pDownloadPath, String pCwid, boolean pWithDownload) throws ClientProtocolException, IOException {
 
         Properties mTestPr = ConfigMap.get().getSubCfg("test","docservice");
         URL_PREFIX  = mTestPr.getProperty("urlprefix"   , URL_PREFIX);
@@ -83,8 +83,10 @@ public class DocserviceTestClientImpl {
                 FileOutputStream outputStream = null;
                 try{
                     String pName = pDownloadPath+i+"_"+filename;
-                    outputStream = new FileOutputStream(pName);
-                    testDownload(URL_PREFIX,doc,outputStream, pName, pCwid);
+                    if (pWithDownload) {
+                        outputStream = new FileOutputStream(pName);
+                        testDownload(URL_PREFIX,doc,outputStream, pName, pCwid);
+                    }
                 } finally {
                     if(outputStream!=null){
                         outputStream.close();

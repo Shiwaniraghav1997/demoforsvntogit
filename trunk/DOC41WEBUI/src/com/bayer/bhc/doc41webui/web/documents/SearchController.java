@@ -65,21 +65,32 @@ public class SearchController extends AbstractDoc41Controller {
 	@Autowired
 	private DocumentUC documentUC;
 	
-	@Override
-	protected boolean hasPermission(User usr, HttpServletRequest request) throws Doc41BusinessException{
+    /**
+     * Get a reqired permission to perform a certain operation, can be overwritten to enforce specific permission
+     * @param usr
+     * @param request 
+     * @return null, if no specific permission required.
+     * @throws Doc41BusinessException 
+     */
+    @Override
+    protected String[] getReqPermission(User usr, HttpServletRequest request) throws Doc41BusinessException{
 		String type = request.getParameter("type");
 		if(StringTool.isTrimmedEmptyOrNull(type)){
-		    return true;
+		    return null;
+		    //return true;
 //			throw new IllegalArgumentException("type is missing");
 		}
-		return hasPermission(usr, type);
+		return getReqPermission(usr, type);
     }
 
-    private boolean hasPermission(User usr, String type)
+    private String[] getReqPermission(User usr, String type)
             throws Doc41BusinessException {
-		return
-		        !documentUC.getFilteredDocTypesForDownload(type, usr).isEmpty() || // 1. user has a permission on at least one type of a DownloadGroup (includes also check for single DownloadType)
-		        usr.hasPermission(documentUC.getDownloadPermission(type), documentUC.getGroupDownloadPermission(type)); // 2. or user has permission on a single DocumentType (single Download alread checked on 1.)
+        return
+                documentUC.getFilteredDocTypesForDownload(type, usr).isEmpty() ? null : // 1. user has a permission on at least one type of a DownloadGroup (includes also check for single DownloadType)
+                new String[] {documentUC.getDownloadPermission(type), documentUC.getGroupDownloadPermission(type)}; // 2. or user has permission on a single DocumentType (single Download alread checked on 1.)
+//		return
+//		        !documentUC.getFilteredDocTypesForDownload(type, usr).isEmpty() || // 1. user has a permission on at least one type of a DownloadGroup (includes also check for single DownloadType)
+//		        usr.hasPermission(documentUC.getDownloadPermission(type), documentUC.getGroupDownloadPermission(type)); // 2. or user has permission on a single DocumentType (single Download alread checked on 1.)
     }
 	
 	@RequestMapping(value="/documents/documentsearch",method = RequestMethod.GET)
@@ -253,7 +264,8 @@ public class SearchController extends AbstractDoc41Controller {
             List<String> types = documentUC.getAvailableSDDownloadDocumentTypes();
             for (String type : types) {
                 
-                if(hasPermission(UserInSession.get(), type)){
+                String[] mPerm = getReqPermission(UserInSession.get(), type); 
+                if((mPerm == null) || UserInSession.get().hasPermission(mPerm)) {
                     SearchForm searchForm = new SearchForm();
                     searchForm.setType(type);
                     searchForm.setVendorNumber(vendor);

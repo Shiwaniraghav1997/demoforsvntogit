@@ -37,6 +37,7 @@ import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.db.SessionDataDAO;
 import com.bayer.bhc.doc41webui.usecase.SystemParameterUC;
 import com.bayer.bhc.doc41webui.usecase.UserManagementUC;
+import com.bayer.ecim.foundation.basic.BooleanTool;
 import com.bayer.ecim.foundation.basic.ConfigMap;
 import com.bayer.ecim.foundation.basic.NestingException;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -78,11 +79,13 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			request.setAttribute(DB_SESSION_DC_REQ_ATTR, dbSessionDC);
 			
 			if (usr == null) {
+                Doc41Log.get().warning(this, "<NULL>", "User empty/unknown, current URI: " + request.getRequestURI() + ", redirecting to: " + request.getContextPath() +URI_LOGIN);
 			    response.sendRedirect(request.getContextPath() +URI_LOGIN);
 				return false;
 	
 			} else {
 				if(!usr.getActive() || !hasRolePermission(usr,handler,request)){
+				    Doc41Log.get().warning(this, usr.getCwid(), "User inactive or has no permission, current URI: " + request.getRequestURI() + ", redirecting to: " + request.getContextPath() +URI_FORBIDDEN);
 					response.sendRedirect(request.getContextPath() +URI_FORBIDDEN);
 					return false;
 				}
@@ -286,7 +289,9 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
                         if(LocaleInSession.get()==null){
                             LocaleInSession.put(Locale.US);
                         }
-                        User tmpUser = userManagementUC.findUser(tmpCwid);
+                        boolean mActivateRealCwids = BooleanTool.getBoolean(subConfig.getProperty("ActivateRealCwids"), false);
+                        User tmpUser = mActivateRealCwids ? userManagementUC.findUser(tmpCwid) : null;
+                        Doc41Log.get().debug(this, null, "DocService for cwid: " + tmpCwid + ", realCwids " + (mActivateRealCwids ? "enabled" : "disabled") + ", located: " + ((tmpUser == null) ? "n/a" : tmpUser.getCwid()) );
                         if (tmpUser == null) {
                             tmpUser = userManagementUC.findUser(CWID_DOC_SERVICE_CARR);
                             if (tmpUser != null) { // prepared to be able to deactivate user without causing NPE

@@ -32,14 +32,21 @@ public class OpenDeliveriesController extends AbstractDoc41Controller {
 	@Autowired
 	private DocumentUC documentUC;
 	
-	@Override
-	protected boolean hasPermission(User usr, HttpServletRequest request) throws Doc41BusinessException{
+    /**
+     * Get a reqired permission to perform a certain operation, can be overwritten to enforce specific permission
+     * @param usr
+     * @param request 
+     * @return null, if no specific permission required.
+     * @throws Doc41BusinessException 
+     */
+    @Override
+    protected String[] getReqPermission(User usr, HttpServletRequest request) throws Doc41BusinessException {
 		String type = request.getParameter("type");
 		if(StringTool.isTrimmedEmptyOrNull(type)){
 			throw new IllegalArgumentException("type is missing");
 		}
-		String permission = documentUC.getUploadPermission(type);
-		return usr.hasPermission(permission);
+		return new String[] {documentUC.getUploadPermission(type)};
+		//return usr.hasPermission(permission);
     }
 	
 	@RequestMapping(value="/documents/opendeliveries",method = RequestMethod.GET)

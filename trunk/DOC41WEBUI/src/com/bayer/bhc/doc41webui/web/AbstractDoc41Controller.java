@@ -14,6 +14,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.bayer.bhc.doc41webui.common.Doc41SessionKeys;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.domain.BdsServiceError;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.DisplaytextUC;
@@ -35,7 +36,18 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
 	protected UserManagementUC userManagementUC;
 	
 
-	/**
+    /**
+     * Get a reqired permission to perform a certain operation, can be overwritten to enforce specific permission
+     * @param usr
+     * @param request 
+     * @return null, if no specific permission required - or a list of permissions of which one is required
+     * @throws Doc41BusinessException 
+     */
+    protected String[] getReqPermission(User usr, HttpServletRequest request) throws Doc41BusinessException {
+        return null; // no specific
+    }
+
+    /**
 	 * can be overwritten to enforce specific permission
 	 * @param usr
 	 * @param request 
@@ -43,7 +55,16 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
 	 * @throws Doc41BusinessException 
 	 */
 	protected boolean hasPermission(User usr, HttpServletRequest request) throws Doc41BusinessException {
-    	return true;
+	    String[] mPerm = getReqPermission(usr, request);
+	    boolean mRes = (mPerm == null) || usr.hasPermission(mPerm);
+	    if (mPerm != null) {
+	        if (mRes) {
+	            Doc41Log.get().debug(this, usr.getCwid(), "CheckPerm " + StringTool.list(mPerm, ",", false) + ": " + (mRes ? "ok" : "FAIL"));
+	        } else {
+                Doc41Log.get().warning(this, usr.getCwid(), "CheckPerm " + StringTool.list(mPerm, ",", false) + ": " + (mRes ? "ok" : "FAIL"));
+	        }
+	    }
+    	return mRes;
     }
 
 

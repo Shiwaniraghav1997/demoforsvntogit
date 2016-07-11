@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
+import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.paging.TableSorterParams;
@@ -80,9 +81,17 @@ public class TranslationsListController extends AbstractDoc41Controller {
     	return this.translationsUC.getPageList(null);
     }
     
+    /**
+     * Get a reqired permission to perform a certain operation, can be overwritten to enforce specific permission
+     * @param usr
+     * @param request 
+     * @return null, if no specific permission required.
+     * @throws Doc41BusinessException 
+     */
     @Override
-	protected boolean hasPermission(User usr, HttpServletRequest request) {
-    	return usr.hasPermission(Doc41Constants.PERMISSION_TRANSLATION);
+    protected String[] getReqPermission(User usr, HttpServletRequest request) throws Doc41BusinessException {
+        return new String[] {Doc41Constants.PERMISSION_TRANSLATION};
+//    	return usr.hasPermission(Doc41Constants.PERMISSION_TRANSLATION);
     }
 	
 	@RequestMapping(value="/translations/translationOverview",method=RequestMethod.GET)
