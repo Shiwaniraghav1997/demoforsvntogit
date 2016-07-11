@@ -910,6 +910,7 @@ public class DocumentUC {
 	        mTypeNames = new ArrayList<String>();
 	        mTypeNames.add( type );
 	    }
+	    boolean mDocTypesNotAllowed = false;
 	    for (String mType: mTypeNames) {
 	        DocumentType mDocType = getDocType(mType);
 	        if (mDocType == null) {
@@ -918,10 +919,12 @@ public class DocumentUC {
 	        if (mDocType instanceof DownloadDocumentType) {
 	            if ( usr.hasPermission( ((DownloadDocumentType)mDocType).getPermissionDownload(), ((DownloadDocumentType)mDocType).getGroupPermissionDownload() ) ) {
 	                mDocTypes.add((DownloadDocumentType)mDocType);
+	            } else {
+	                mDocTypesNotAllowed = true;
 	            }
 	        }
 	    }
-		if( mDocTypes.isEmpty() ) {
+		if( mDocTypes.isEmpty() && !mDocTypesNotAllowed ) {
 			Doc41Log.get().warnMessageOnce(this, null, "Requested DocumentType(Group) is/has no DownloadDocumentType(s), List is empty: " + type);
 		}
 		return mDocTypes;
