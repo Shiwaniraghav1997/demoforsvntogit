@@ -134,6 +134,10 @@ public abstract class CustomizedDocumentForm {
 		return vendorNumber;
 	}
 	public void setVendorNumber(String vendorNumber) {
+	    vendorNumber = StringTool.trim(vendorNumber);
+	    if ( (StringTool.emptyToNull(vendorNumber) != null) && (vendorNumber.length() != 10) ) {
+	        vendorNumber = StringTool.normLString(vendorNumber, 10, '0');
+	    }
 		this.vendorNumber = vendorNumber;
 	}
 	public boolean isVendorNumberUsed() {
