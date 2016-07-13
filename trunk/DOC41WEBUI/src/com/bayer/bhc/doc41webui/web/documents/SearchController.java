@@ -59,6 +59,10 @@ import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
+/**
+ * Search- & Download-Controller.
+ * This Controler implements Search and Download functions.
+ */
 @Controller
 public class SearchController extends AbstractDoc41Controller {
 	
@@ -256,6 +260,13 @@ public class SearchController extends AbstractDoc41Controller {
 		return searchForm;
 	}
 	
+	/**
+	 * Serch Documents Webservice, used for Spepor  (Spepor entry point).
+	 * @param vendor
+	 * @param refnumber
+	 * @return
+	 * @throws Doc41DocServiceException
+	 */
 	@RequestMapping(value="/docservice/sdsearch",method = RequestMethod.GET,produces={"application/json; charset=utf-8"})
     public @ResponseBody BdsServiceSearchDocumentsResult getSDListForService( @RequestParam(required=true) String vendor,@RequestParam String refnumber) throws Doc41DocServiceException{
 	    try {
@@ -298,6 +309,7 @@ public class SearchController extends AbstractDoc41Controller {
             }
             return new BdsServiceSearchDocumentsResult(documents);
         } catch (Exception e) {
+// FIXME: Webservice???
             throw new Doc41DocServiceException("getSDListForService", e);
         }
     }
@@ -510,7 +522,13 @@ public class SearchController extends AbstractDoc41Controller {
     }
     
     
-	@RequestMapping(value={"/documents/download","/docservice/download"},method = RequestMethod.GET)
+    /**
+     * Implements Download for WebUI and WebService for Spepor  (Spepor entry point).
+     * @param key
+     * @param response
+     * @throws Doc41BusinessException
+     */
+    @RequestMapping(value={"/documents/download","/docservice/download"},method = RequestMethod.GET)
 	public void download(@RequestParam String key,HttpServletResponse response) throws Doc41BusinessException{
 		Map<String, String> decryptParameters = UrlParamCrypt.decryptParameters(key);
 		String type = decryptParameters.get(Doc41Constants.URL_PARAM_TYPE);
@@ -536,7 +554,7 @@ public class SearchController extends AbstractDoc41Controller {
 		} catch (Doc41ClientAbortException e) {
             Doc41Log.get().warning(this, null, "User aborted Download, filename: " + filename + ", Doc41Id: " + docId + ", SapObjectId: " + sapObjId );
 		}
-		    
+// FIXME: throws Doc41BusinessException, Webservice???
 	}
 	
 	private void checkPartnerNumbers(BindingResult errors, boolean hasCustomerNumber, boolean hasVendorNumber,

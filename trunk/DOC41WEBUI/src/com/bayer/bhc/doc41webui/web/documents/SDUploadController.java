@@ -27,6 +27,13 @@ public class SDUploadController extends UploadController {
 	    return super.postUpload(uploadForm, result);
 	}
 	
+	/**
+	 * Upload Document Webservice, used for Spepor (Spepor entry point).
+	 * @param uploadForm
+	 * @param result
+	 * @return
+	 * @throws Doc41DocServiceException
+	 */
 	@RequestMapping(value="/docservice/sdupload",method = RequestMethod.POST,produces={"application/json; charset=utf-8"})
     public @ResponseBody BdsServiceUploadDocumentResult postUploadService(@ModelAttribute UploadForm uploadForm,BindingResult result) throws Doc41DocServiceException { //ggf. kein modelattribute wegen sessionattribute
         try {
@@ -36,6 +43,7 @@ public class SDUploadController extends UploadController {
             }
             return new BdsServiceUploadDocumentResult();
         } catch (Doc41BusinessException e) {
+// FIXME: Webservice???
             throw new Doc41DocServiceException("postUploadService", e);
         }
     }
