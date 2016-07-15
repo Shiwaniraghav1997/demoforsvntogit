@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -17,6 +18,7 @@ import java.util.StringTokenizer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -39,6 +41,7 @@ import com.bayer.bhc.doc41webui.usecase.SystemParameterUC;
 import com.bayer.bhc.doc41webui.usecase.UserManagementUC;
 import com.bayer.ecim.foundation.basic.BooleanTool;
 import com.bayer.ecim.foundation.basic.ConfigMap;
+import com.bayer.ecim.foundation.basic.IOTools;
 import com.bayer.ecim.foundation.basic.NestingException;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.business.sbcommon.SessionDataDC;
@@ -65,7 +68,174 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 	protected SystemParameterUC systemParameterUC;
 	@Autowired
 	protected SessionDataDAO sessionDataDAO;
+
+    /**
+     * Create a toString() dump of a HTTPServletRequest.
+     * @param pRequest
+     * @return
+     */
+    public String toString(HttpServletRequest pRequest) {
+        return toString(pRequest, -1);
+    }
+
+    /**
+     * Create a toString() dump of a HTTPServletRequest.
+     * @param pRequest
+     * @param pDetailLevel level of details:
+     *  0 only dump general informations
+     *  1 add headers
+     *  2 add parameters
+     *  3 add attributes
+     *  4 dump also included session
+     *  5.. reserved (future extensions adding more informations, e.g. cookies, user principals, request dispatcher and servlet context.
+     *  -1 dump full, all (now) available information
+     * @return
+     */
+	public String toString(HttpServletRequest pRequest, int pDetailLevel) {
+        StringBuffer sb = new StringBuffer(20000);
+        
+        sb.append("\n" +
+                "REQUEST:\n" +
+                "========\n\n" +
+                " getAuthType...................: " + pRequest.getAuthType()                         + "\n" +
+                " getCharacterEncoding..........: " + pRequest.getCharacterEncoding()                + "\n" +
+                " getContentLength..............: " + pRequest.getContentLength()                    + "\n" +
+                " getContentType................: " + pRequest.getContentType()                      + "\n" +
+                " getContextPath................: " + pRequest.getContextPath()                      + "\n" +
+                " getLocalAddr..................: " + pRequest.getLocalAddr()                        + "\n" +
+                " getLocalName..................: " + pRequest.getLocalName()                        + "\n" +
+                " getLocalPort..................: " + pRequest.getLocalPort()                        + "\n" +
+                " getLocale.....................: " + pRequest.getLocale()                           + "\n" +
+                " getLocales....................: " + StringTool.list((Enumeration<?>)pRequest.getLocales(), ",", false) + "\n" +
+                " getMethod.....................: " + pRequest.getMethod()                           + "\n" +
+                " getPathInfo...................: " + pRequest.getPathInfo()                         + "\n" +
+                " getPathTranslated.............: " + pRequest.getPathTranslated()                   + "\n" +
+                " getProtocol...................: " + pRequest.getProtocol()                         + "\n" +
+                " getQueryString................: " + pRequest.getQueryString()                      + "\n" +
+                " getRemoteAddr.................: " + pRequest.getRemoteAddr()                       + "\n" +
+                " getRemoteHost.................: " + pRequest.getRemoteHost()                       + "\n" +
+                " getRemotePort.................: " + pRequest.getRemotePort()                       + "\n" +
+                " getRemoteUser.................: " + pRequest.getRemoteUser()                       + "\n" +
+                " getRequestURI.................: " + pRequest.getRequestURI()                       + "\n" +
+                " getRequestURL.................: " + pRequest.getRequestURL()                       + "\n" +
+                " getRequestedSessionId.........: " + pRequest.getRequestedSessionId()               + "\n" +
+                " getScheme.....................: " + pRequest.getScheme()                           + "\n" +
+                " getServerName.................: " + pRequest.getServerName()                       + "\n" +
+                " getServerPort.................: " + pRequest.getServerPort()                       + "\n" +
+                " getServletPath................: " + pRequest.getServletPath()                      + "\n" +
+                " isRequestedSessionIdFromCookie: " + pRequest.isRequestedSessionIdFromCookie()      + "\n" +
+                " isRequestedSessionIdFromURL...: " + pRequest.isRequestedSessionIdFromURL()         + "\n" +
+//              " isRequestedSessionIdFromUrl...: " + pRequest.isRequestedSessionIdFromUrl()         + "\n" +
+                " isRequestedSessionIdValid.....: " + pRequest.isRequestedSessionIdValid()           + "\n" +
+                " isSecure......................: " + pRequest.isSecure()                            + "\n" +
+                " class.........................: " + pRequest.getClass().getName()                  + "\n"
+        );
+        
+        if ((pDetailLevel >= 1) || (pDetailLevel == -1)) {
+            sb.append("\n\nHeaders:\n-----------\n\n");
+            @SuppressWarnings("unchecked")
+            Enumeration<String> mHeadList = pRequest.getHeaderNames();
+            while (mHeadList.hasMoreElements()) {
+                String mHead = mHeadList.nextElement();
+                sb.append(" " + StringTool.minRString(mHead, 30, '.') + ": " + /*pRequest.getHeader(mHead) + " / " +*/ StringTool.list((Enumeration<?>)pRequest.getHeaders(mHead), ",", false) + "\n");
+            }
+        }
+        
+        if ((pDetailLevel >= 2) || (pDetailLevel == -1)) {
+            sb.append("\n\nParameters:\n-----------\n\n");
+            @SuppressWarnings("unchecked")
+            Enumeration<String> mParmList = pRequest.getParameterNames();
+            while (mParmList.hasMoreElements()) {
+                String mParm = mParmList.nextElement();
+                sb.append(" " + StringTool.minRString(mParm, 30, '.') + ": " + /*pRequest.getParameter(mParm) + " / " +*/ StringTool.list(pRequest.getParameterValues(mParm), ",", false) + "\n");
+            }
+        }
+        
+        if ((pDetailLevel >= 3) || (pDetailLevel == -1)) {
+            sb.append("\n\nAttributes:\n-----------\n\n");
+            @SuppressWarnings("unchecked")
+            Enumeration<String> mAttrList = pRequest.getAttributeNames();
+            while (mAttrList.hasMoreElements()) {
+                String mAttr = mAttrList.nextElement();
+                sb.append(" " + StringTool.minRString(mAttr, 30, '.') + ": " + pRequest.getAttribute(mAttr) + "\n");
+            }
+        }
+        
+        /*
+         *  currently not traced - but may be interesting:
+         * 
+         *   javax.servlet.http.Cookie[] getCookies();
+         *   java.security.Principal getUserPrincipal();
+         *   javax.servlet.RequestDispatcher getRequestDispatcher(java.lang.String arg0);
+         *   java.lang.String getRealPath(java.lang.String arg0);
+         *   javax.servlet.http.HttpSession getSession(boolean arg0);
+         *   boolean isUserInRole(java.lang.String arg0);
+         *   
+         */
+        
+        if ((pDetailLevel >= 4) || (pDetailLevel == -1)) {
+            HttpSession mSess = pRequest.getSession();
+            sb.append("\n\nSession:" + mSess.getId() + "\n\nSession Attributes:\n-------------------\n\n");
+            @SuppressWarnings("unchecked")
+            Enumeration<String> mSAttrList = mSess.getAttributeNames();
+            while (mSAttrList.hasMoreElements()) {
+                String mSAttr = mSAttrList.nextElement();
+                sb.append(" " + StringTool.minRString(mSAttr, 30, '.') + ": " + mSess.getAttribute(mSAttr) + "\n");
+            }
+        }
+        
+        /* deprecated, same like Attributes
+        sb.append("\n\nSession Values:\n---------------\n\n");
+        @SuppressWarnings("unchecked")
+        String[] mSValList = mSess.getValueNames();
+        for (int i = 0; i < mSValList.length; i++) {
+            String mSVal = mSValList[i];
+            sb.append(" " + StringTool.minRString(mSVal, 30, '.') + ": " + mSess.getValue(mSVal) + "\n");
+        }
+         */
+        
+        /*
+         * not yet traced:
+         *   mSess.getServletContext();
+         *
+         */
+        
+        return sb.toString();
+	}
 	
+	/**
+	 * Dump a Request.
+	 * @param pRequest
+	 */
+	public void dumpRequest(HttpServletRequest pRequest) {
+	    if (Doc41Log.get().isDumpActive()) { 
+            Doc41Log.get().dump(this, null, toString(pRequest));
+	    }
+	}
+
+	/**
+	 * Create a toString() dump of a HTTPResponse.
+	 * @param pResponse
+	 */
+	public String toString(HttpServletResponse pResponse) {
+	    return "\n" +
+	            "RESPONSE:\n" +
+                "=========\n\n" +
+                " getCharacterEncoding..: " + pResponse.getCharacterEncoding()        + "\n" +
+                " getgetContentType.....: " + pResponse.getContentType()              + "\n" +
+                " getLocale.............: " + pResponse.getLocale()                   + "\n" +
+                " class.................: " + pResponse.getClass().getName()          + "\n";
+	}
+
+	
+	/**
+     * Dump a Response.
+     * @param pResponse
+     */
+    public void dumpResponse(HttpServletResponse pResponse) {
+        Doc41Log.get().dump(this, null, toString(pResponse));
+    }
+    
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
@@ -73,6 +243,12 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 		HttpSession session= request.getSession();
 		try{
 			Doc41Log.get().debug(this.getClass(), "current URI: ", request.getRequestURI());
+            boolean mServletIsWebService = request.getServletPath().startsWith("/docservice/");
+            boolean mTypeIsJson = request.getServletPath().endsWith(".json");
+            Doc41Log.get().debug(this.getClass(), "current Servl: ", request.getServletPath() + (mServletIsWebService ? "(isWebService) " : "") + (mTypeIsJson ? "(isJson)" : "") );
+            // FIXME: change kind of rejection depending on servlet:webservice and type:json
+            dumpRequest(request);
+            dumpResponse(response);
 			
 			// load persisted session data into HTTPSession:
 			SessionDataDC dbSessionDC = retrieveSessionData(usr, session);
