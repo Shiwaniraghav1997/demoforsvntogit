@@ -45,6 +45,7 @@ import com.bayer.bhc.doc41webui.integration.db.dc.UserCustomerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserPlantDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.UserVendorDC;
 import com.bayer.bhc.doc41webui.service.mapping.UserMapper;
+import com.bayer.ecim.foundation.basic.BasicDataCarrier;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.SendMail;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -940,10 +941,10 @@ public class UserManagementRepository extends AbstractRepository {
 			domainUser.setPlants(copyDcToDomainPlants(plantsInDB));
 			
 			pUserDC.loadResolvedUserPermissions(LocaleInSession.get());
-			List<UMPermissionNDC> permissionDCs = pUserDC.getResolvedUserPermissions();
-			List<String> permissions = new ArrayList<String>();
+			ArrayList<UMPermissionNDC> permissionDCs = pUserDC.getResolvedUserPermissions();
+			ArrayList<String> permissions = new ArrayList<String>();
+            Doc41Log.get().debug(this.getClass(), pUserDC.getCwid(), "permissions: " + StringTool.list(BasicDataCarrier.getFieldsAsStringArray(permissionDCs, UMPermissionNDC.FIELD_CODE), ", ", false));
 			for (UMPermissionNDC permissionDC : permissionDCs) {                    
-	            Doc41Log.get().debug(this.getClass(), "System", "getPermission Code: " + permissionDC.getCode());
 	            permissions.add(permissionDC.getCode());
 	        }
 			domainUser.setPermissions(permissions);
