@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.container.BatchObjectForm;
 import com.bayer.bhc.doc41webui.container.SelectionItem;
@@ -104,6 +105,7 @@ public class DelCertUploadController extends UploadController {
 	@RequestMapping(value="/documents/delcertupload",method = RequestMethod.GET)
 	public ModelMap getUpload(@RequestParam() String type,QMBatchObject batchObject,String supplier) throws Doc41BusinessException{
 		UploadForm uploadForm =  super.get(type);
+        Doc41Log.get().debug(this, null, "Initialize UploadForm (delcertupload, type: " + type + ", vendor: " + supplier + ", objectId: " + batchObject.getObjectId() +", plant: " + batchObject.getPlant() + ", batch: " + batchObject.getBatch() + ", matnr: " + batchObject.getMaterialNumber() + ", mattxt: " + batchObject.getMaterialText() + ")");
 		uploadForm.setObjectId(batchObject.getObjectId());
 		uploadForm.setVendorNumber(supplier);
 		Map<String, String> avalues = new HashMap<String, String>();

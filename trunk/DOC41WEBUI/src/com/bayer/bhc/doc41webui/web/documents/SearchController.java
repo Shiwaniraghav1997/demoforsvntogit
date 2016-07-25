@@ -278,6 +278,7 @@ public class SearchController extends AbstractDoc41Controller {
                 String[] mPerm = getReqPermission(UserInSession.get(), type); 
                 if((mPerm == null) || UserInSession.get().hasPermission(mPerm)) {
                     SearchForm searchForm = new SearchForm();
+                    Doc41Log.get().debug(this, null, "Initialize SearchForm for WebService (type: " + type + ", vendor: " + vendor + ", refnumber: " + refnumber +")");
                     searchForm.setType(type);
                     searchForm.setVendorNumber(vendor);
                     searchForm.setObjectId(refnumber);

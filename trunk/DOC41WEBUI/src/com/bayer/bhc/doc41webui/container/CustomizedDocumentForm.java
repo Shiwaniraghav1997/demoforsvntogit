@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.SapCustomer;
@@ -122,6 +123,7 @@ public abstract class CustomizedDocumentForm {
 				
 			if(StringTool.isTrimmedEmptyOrNull(getCustomerNumber())
 			        && !StringTool.isTrimmedEmptyOrNull(lastCustomerNumberFromSession)){
+                Doc41Log.get().debug(this, null, "Initialize Form form Session (customer: " + lastCustomerNumberFromSession + ")");
 			    setCustomerNumber(lastCustomerNumberFromSession);
 			}
 		}
@@ -150,6 +152,7 @@ public abstract class CustomizedDocumentForm {
 				
 			if(StringTool.isTrimmedEmptyOrNull(getVendorNumber()) 
 			        && !StringTool.isTrimmedEmptyOrNull(lastVendorNumberFromSession)){
+		        Doc41Log.get().debug(this, null, "Initialize Form form Session (vendor: " + lastVendorNumberFromSession + ")");
 			    setVendorNumber(lastVendorNumberFromSession);
 			}
 		}

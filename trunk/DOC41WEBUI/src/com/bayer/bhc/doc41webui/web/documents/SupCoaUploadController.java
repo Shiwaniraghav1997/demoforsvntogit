@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.container.VendorBatchForm;
@@ -94,6 +95,7 @@ public class SupCoaUploadController extends UploadController {
 	@RequestMapping(value="/documents/supcoaupload",method = RequestMethod.GET)
 	public ModelMap getUpload(@RequestParam() String type,InspectionLot inspectionLot) throws Doc41BusinessException{
 		UploadForm uploadForm =  super.get(type);
+        Doc41Log.get().debug(this, null, "Initialize UploadForm (supcoaupload, type: " + type + ", vendor: " + inspectionLot.getVendor() + ", objectId: " + inspectionLot.getNumber() +", vendorbatch: " + inspectionLot.getVendorBatch() + ", plant: " + inspectionLot.getPlant() + ", batch: " + inspectionLot.getBatch() + ", matnr: " + inspectionLot.getMaterialNumber() + ", mattxt: " + inspectionLot.getMaterialText() + ")");
 		uploadForm.setObjectId(inspectionLot.getNumber());
 		uploadForm.setVendorNumber(inspectionLot.getVendor());
 		Map<String, String> avalues = new HashMap<String, String>();
