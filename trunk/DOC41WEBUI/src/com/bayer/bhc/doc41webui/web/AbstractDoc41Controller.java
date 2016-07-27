@@ -66,7 +66,7 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
                 Doc41Log.get().warning(this, usr.getCwid(), pClass + " - CheckPerm " + type + " " + StringTool.list(mPerm, ",", false) + ": " + (mRes ? "ok" : "FAIL"));
 	        }
 	    } else {
-            Doc41Log.get().debug(this, usr.getCwid(), pClass + " - CheckPerm " + StringTool.nvl(StringTool.emptyToNull(StringTool.embed(type, "on Group ", " ")),"in general") + " ok");
+            Doc41Log.get().debug(this, usr.getCwid(), pClass + " - CheckPerm " + StringTool.nvl(StringTool.emptyToNull(StringTool.embed(type, "(on Group) ", " ")),"in general") + " ok");
 	    }
     	return mRes;
     }
