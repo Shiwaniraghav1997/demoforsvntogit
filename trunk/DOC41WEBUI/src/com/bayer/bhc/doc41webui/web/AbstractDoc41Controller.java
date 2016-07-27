@@ -58,14 +58,15 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
 	    String type = request.getParameter("type");
 	    String[] mPerm = getReqPermission(usr, request);
 	    boolean mRes = (mPerm == null) || usr.hasPermission(mPerm);
+	    String pClass = getClass().getSimpleName();
 	    if (mPerm != null) {
 	        if (mRes) {
-	            Doc41Log.get().debug(this, usr.getCwid(), "CheckPerm " + type + " " + StringTool.list(mPerm, ",", false) + ": " + (mRes ? "ok" : "FAIL"));
+	            Doc41Log.get().debug(this, usr.getCwid(), pClass + " - CheckPerm " + type + " " + StringTool.list(mPerm, ",", false) + ": " + (mRes ? "ok" : "FAIL"));
 	        } else {
-                Doc41Log.get().warning(this, usr.getCwid(), "CheckPerm " + type + " " + StringTool.list(mPerm, ",", false) + ": " + (mRes ? "ok" : "FAIL"));
+                Doc41Log.get().warning(this, usr.getCwid(), pClass + " - CheckPerm " + type + " " + StringTool.list(mPerm, ",", false) + ": " + (mRes ? "ok" : "FAIL"));
 	        }
 	    } else {
-            Doc41Log.get().debug(this, usr.getCwid(), "CheckPerm " + StringTool.nvl(StringTool.emptyToNull(StringTool.embed(type, "on Group ", " ")),"in general") + " ok");
+            Doc41Log.get().debug(this, usr.getCwid(), pClass + " - CheckPerm " + StringTool.nvl(StringTool.emptyToNull(StringTool.embed(type, "on Group ", " ")),"in general") + " ok");
 	    }
     	return mRes;
     }
