@@ -55,14 +55,17 @@ public abstract class AbstractDoc41Controller implements Doc41SessionKeys {
 	 * @throws Doc41BusinessException 
 	 */
 	protected boolean hasPermission(User usr, HttpServletRequest request) throws Doc41BusinessException {
+	    String type = request.getParameter("type");
 	    String[] mPerm = getReqPermission(usr, request);
 	    boolean mRes = (mPerm == null) || usr.hasPermission(mPerm);
 	    if (mPerm != null) {
 	        if (mRes) {
-	            Doc41Log.get().debug(this, usr.getCwid(), "CheckPerm " + StringTool.list(mPerm, ",", false) + ": " + (mRes ? "ok" : "FAIL"));
+	            Doc41Log.get().debug(this, usr.getCwid(), "CheckPerm " + type + " " + StringTool.list(mPerm, ",", false) + ": " + (mRes ? "ok" : "FAIL"));
 	        } else {
-                Doc41Log.get().warning(this, usr.getCwid(), "CheckPerm " + StringTool.list(mPerm, ",", false) + ": " + (mRes ? "ok" : "FAIL"));
+                Doc41Log.get().warning(this, usr.getCwid(), "CheckPerm " + type + " " + StringTool.list(mPerm, ",", false) + ": " + (mRes ? "ok" : "FAIL"));
 	        }
+	    } else {
+            Doc41Log.get().debug(this, usr.getCwid(), "CheckPerm on Group " + type + " " + " ok");
 	    }
     	return mRes;
     }

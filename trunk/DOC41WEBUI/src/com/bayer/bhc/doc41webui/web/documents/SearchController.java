@@ -90,7 +90,7 @@ public class SearchController extends AbstractDoc41Controller {
     private String[] getReqPermission(User usr, String type)
             throws Doc41BusinessException {
         return
-                documentUC.getFilteredDocTypesForDownload(type, usr).isEmpty() ? null : // 1. user has a permission on at least one type of a DownloadGroup (includes also check for single DownloadType)
+                !documentUC.getFilteredDocTypesForDownload(type, usr).isEmpty() ? null : // 1. user has a permission on at least one type of a DownloadGroup (includes also check for single DownloadType)
                 new String[] {documentUC.getDownloadPermission(type), documentUC.getGroupDownloadPermission(type)}; // 2. or user has permission on a single DocumentType (single Download alread checked on 1.)
 //		return
 //		        !documentUC.getFilteredDocTypesForDownload(type, usr).isEmpty() || // 1. user has a permission on at least one type of a DownloadGroup (includes also check for single DownloadType)
