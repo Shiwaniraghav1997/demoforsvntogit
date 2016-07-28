@@ -66,6 +66,8 @@ public class UsercreateController extends AbstractDoc41Controller {
 	
 	@RequestMapping(value="/useradmin/createuser",method = RequestMethod.POST)
     public String save(HttpServletRequest request,@ModelAttribute UserEditForm userEditForm, BindingResult result) throws Doc41ExceptionBase{
+        userEditForm.setExistingRoles(getUserManagementUC().getAllProfiles());
+        userEditForm.setExistingRoleNames(getUserManagementUC().getAllProfileNamesList());
     	userEditForm.validate(request, result, getUserManagementUC());
     	if (result.hasErrors()) {
     		return "/useradmin/usercreate";
