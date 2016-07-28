@@ -1082,11 +1082,10 @@ public class DocumentUC {
 
 	public void sendUploadNotification(String notificationEMail, String typeName,  String fileName, String guid) {
 		try {
-			@SuppressWarnings("unchecked")
-			Map<String,String> subConfig = ConfigMap.get().getSubConfig("documents", "notifymail");
-			String sender = subConfig.get("sender");
-			String subjectTemplate = subConfig.get("subjectTemplate");
-			String bodyTemplate = subConfig.get("bodyTemplate");
+			Properties subConfig = ConfigMap.get().getSubCfg("documents", "notifymail");
+			String sender = subConfig.getProperty("sender");
+			String subjectTemplate = subConfig.getProperty("subjectTemplate");
+			String bodyTemplate = subConfig.getProperty("bodyTemplate");
 			
 			User user = UserInSession.get();
 			String replyTo = user.getEmail();
