@@ -249,7 +249,7 @@ public class UserManagementRepository extends AbstractRepository {
         if (pUser.isExternalUser() && StringUtils.isNotBlank(pUser.getPassword())) {
             String body = "The new Password for "+pUser.getCwid()+" is '"+pUser.getPassword()+"'";
             try {
-                SendMail.get().send("DOC41@bayer.com", pUser.getEmail(), "New Password", body);
+                SendMail.get().send("DOC41@bayer.com", "*"+pUser.getEmail(), "New Password", body);
             } catch (InitException e) {
                 Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), "no mail send: "+body);
                 Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), e);
@@ -515,7 +515,7 @@ public class UserManagementRepository extends AbstractRepository {
 	            // inform external user:
 	            String body = "The new Password for "+pUser.getCwid()+" is '"+pUser.getPassword()+"'";
 	            try {
-	                SendMail.get().send("DOC41@bayer.com", pUser.getEmail(), "New Password", body);
+	                SendMail.get().send("DOC41@bayer.com", "*"+pUser.getEmail(), "New Password", body);
 	            } catch (InitException e) {
 	                Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), "no mail send: "+body);
 	                Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), e);
