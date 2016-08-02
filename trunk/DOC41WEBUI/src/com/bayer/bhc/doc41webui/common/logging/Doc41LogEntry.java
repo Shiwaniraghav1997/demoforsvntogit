@@ -7,7 +7,7 @@ package com.bayer.bhc.doc41webui.common.logging;
 
 import java.util.Date;
 
-import com.bayer.ecim.foundation.basic.DebugLogEntry;
+import com.bayer.ecim.foundation.basic.DebugXLogEntry;
 
 /**
  * DOC41 specific version of the DebugLogEntry class for logging
@@ -15,44 +15,7 @@ import com.bayer.ecim.foundation.basic.DebugLogEntry;
  * requiring named data to store it column-wise.
  * @author ezzqc
  */
-public class Doc41LogEntry extends DebugLogEntry {
-	
-	/** the id of the executing user. */
-	private final String cExecUser;
-
-	/** the component. */
-    private final String cComponent;
-
-	/** the type of the action. */
-    private final String cActionType;
-
-	/** details about the action (1). */
-    private final String cData1;
-
-	/** details about the action (2). */
-    private final String cData2;
-
-	/** details about the action (3). */
-    private final String cData3;
-
-	/** details about the action (4). */
-    private final String cData4;
-
-	/** details about the action (5). */
-    private final String cData5;
-
-	/** special date details about the action. */
-    private final Date cDataDate;
-
-	/** special numerical details about the action (1). */
-    private final Number cDataNumber1;
-
-	/** special numerical details about the action (2). */
-    private final Number cDataNumber2;
-
-	/** special numerical details about the action (3). */
-    private final Number cDataNumber3;
-
+public class Doc41LogEntry extends DebugXLogEntry {
 	
 	/**
 	 * Constructor for Doc41LogEntry.
@@ -83,52 +46,18 @@ public class Doc41LogEntry extends DebugLogEntry {
         final Date   pDataDate,
         final Number pDataNumber1,
         final Number pDataNumber2,
-        final Number pDataNumber3 ) {
-    		super( pUser, null );
-    		cExecUser = pExecUser;
-    		cComponent = pComponent;
-    		cActionType = pActionType;
-    		cData1 = pData1;
-    		cData2 = pData2;
-    		cData3 = pData3;
-    		cData4 = pData4;
-    		cData5 = pData5;
-    		cDataDate = pDataDate;
-    		cDataNumber1 = pDataNumber1;
-    		cDataNumber2 = pDataNumber2;
-    		cDataNumber3 = pDataNumber3;
-	}
-
-	/**
-	 * Get more specific user informations for the prefix (null if n/a).
-	 * @return java.lang.String the string representing this user (null if n/a).
-	 */
-	public String getUser() {
-		return (cUser != null) ? cUser + "|" + ((cExecUser != null) ? cExecUser : cUser) : null;
+        final Number pDataNumber3 )
+	{
+	    super(pUser, pExecUser, pComponent, pActionType, pData1, pData2, pData3, pData4, pData5, pDataDate, pDataNumber1, pDataNumber2, pDataNumber3, /*pDataNumber4*/null, /*pDataNumber5*/null, /*pDataId1*/null, /*pDataId2*/null, /*pDataId3*/null, /*pDataDspTextCode*/null, /*pDataTextTypeId*/null, /*pMandant*/null, /*pRegion*/null, /*pClient*/null, /*pModel*/null, /*pComponent*/null);
 	}
 
 	/**
 	 * Get the unique shortname of this LogEntry object.
 	 * @return java.lang.String the unique shortname of this LogEntry object.
 	 */
+	@Override
 	public String getLogEntryShortName() {
 		return "DOC41_LE";
-	}
-
-	/**
-	 * Get the names of the columns for named data (null entries NOT allowed!!!).
-	 * @return java.lang.String[] a StringArray of the names of the columns.
-	 */
-	public String[] getColumnNames() {
-		return new String[] { "user", "execUser", "component", "actionType", "data1", "data2", "data3", "data4", "data5", "logChannelNo", "logChannel", "physChannelNo", "className", "thread", "vmTS", "dataDate", "dataNumber1", "dataNumber2", "dataNumber3", };
-	}
-
-	/**
-	 * Get the values of the columns for named data (same order AND length like the names!!!).
-	 * @return java.lang.Object[] a StringArray of the values of the columns.
-	 */
-	public Object[] getColumnValues() {
-		return new Object[] { cUser, cExecUser, cComponent, cActionType, cData1, cData2, cData3, cData4, cData5, cLogChannelNo, cLogChannel, cPhysChannelNo, cClassName, cThread, cTS, cDataDate, cDataNumber1, cDataNumber2, cDataNumber3 };
 	}
 
 }
