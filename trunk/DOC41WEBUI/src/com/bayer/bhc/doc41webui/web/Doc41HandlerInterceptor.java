@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -18,7 +17,6 @@ import java.util.StringTokenizer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,7 +39,6 @@ import com.bayer.bhc.doc41webui.usecase.SystemParameterUC;
 import com.bayer.bhc.doc41webui.usecase.UserManagementUC;
 import com.bayer.ecim.foundation.basic.BooleanTool;
 import com.bayer.ecim.foundation.basic.ConfigMap;
-import com.bayer.ecim.foundation.basic.IOTools;
 import com.bayer.ecim.foundation.basic.NestingException;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.business.sbcommon.SessionDataDC;
@@ -93,6 +90,10 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
      */
 	public String toString(HttpServletRequest pRequest, int pDetailLevel) {
         StringBuffer sb = new StringBuffer(20000);
+
+        if (pRequest == null) {
+            return "\nREQUEST: n/a\n\n";
+        }
         
         sb.append("\n" +
                 "REQUEST:\n" +
@@ -218,6 +219,10 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 	 * @param pResponse
 	 */
 	public String toString(HttpServletResponse pResponse) {
+	    if (pResponse == null) {
+	        return "\nRESPONSE: n/a\n\n";
+	    }
+
 	    return "\n" +
 	            "RESPONSE:\n" +
                 "=========\n\n" +
@@ -239,8 +244,11 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
-		User usr = determineUser(request);
+	    User usr = determineUser(request);
 		HttpSession session= request.getSession();
+// error sim 1
+//if (session != null) throw new Exception("TEST 1");
+// WS-> Expected BEGIN_OBJECT but was STRING at line 1 column 1 
 		try{
 			Doc41Log.get().debug(this.getClass(), "current URI: ", request.getRequestURI());
             boolean mServletIsWebService = request.getServletPath().startsWith("/docservice/");
@@ -253,15 +261,27 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			// load persisted session data into HTTPSession:
 			SessionDataDC dbSessionDC = retrieveSessionData(usr, session);
 			request.setAttribute(DB_SESSION_DC_REQ_ATTR, dbSessionDC);
-			
+
+// error sim 2
+// response.sendRedirect(request.getContextPath() +URI_LOGIN);
+// WS -> Expected BEGIN_OBJECT but was STRING at line 1 column 1
+
+// error sim 3
+// response.sendRedirect(request.getContextPath() +URI_FORBIDDEN);
+// WS -> Expected BEGIN_OBJECT but was STRING at line 1 column 1
+
 			if (usr == null) {
                 Doc41Log.get().warning(this, "<NULL>", "User empty/unknown, current URI: " + request.getRequestURI() + ", redirecting to: " + request.getContextPath() +URI_LOGIN);
+                Doc41Log.get().debug(this, null, toString(request));
+                Doc41Log.get().debug(this, null, toString(response));
 			    response.sendRedirect(request.getContextPath() +URI_LOGIN);
 				return false;
 	
 			} else {
 				if(!usr.getActive() || !hasRolePermission(usr,handler,request)){
 				    Doc41Log.get().warning(this, usr.getCwid(), "User inactive or has no permission, current URI: " + request.getRequestURI() + ", redirecting to: " + request.getContextPath() +URI_FORBIDDEN);
+	                Doc41Log.get().debug(this, null, toString(request));
+	                Doc41Log.get().debug(this, null, toString(response));
 					response.sendRedirect(request.getContextPath() +URI_FORBIDDEN);
 					return false;
 				}
@@ -276,12 +296,16 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			}
 			return true;
 		} catch (NestingException e1) {
+            Doc41Log.get().debug(this, null, toString(request));
+            Doc41Log.get().debug(this, null, toString(response));
 		    //no logging for NestingException to prevent duplicate logs as the NestingException constructor already logs
             throw e1;
 		} catch (Exception e1) {
             Doc41Log.get().error(
 		            this.getClass(),
 		            (usr!=null)?usr.getCwid():"",e1);
+            Doc41Log.get().debug(this, null, toString(request));
+            Doc41Log.get().debug(this, null, toString(response));
 			throw e1;
 		}
 	}
@@ -330,6 +354,10 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			throw e1;
 		}
 
+// error sim 5
+// throw new Exception("TEST 5");
+// WS -> success?!
+
 	}
 	
 	@Override
@@ -344,6 +372,11 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 			persistSessionData(usr,session,dbSessionDC);
 			Doc41Log.get().logWebMetrix(request, getRealHandler(handler), request.getRequestURI());
 		}
+
+// error sim 4
+// throw new Exception("TEST 4");
+// WS -> BDSObj, aber NPE (container null: errors) -> succ?!
+	
 	}
 
 	
