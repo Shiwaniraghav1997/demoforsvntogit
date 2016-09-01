@@ -325,7 +325,7 @@ public class DocumentUC {
 			DocMetadata docMetadata = getDocMetadataBySapDocType(sapDocType);
 			DocTypeDef docDef = docMetadata.getDocDef();
 			String description = docDef.getDescription();
-			DocumentType dt = getDocTypeBySapId(sapDocType, false);
+			DocumentType dt = getDocTypeBySapIdNoEx(sapDocType, false);
 			if (dt == null) {
 			    dt = getDocTypeBySapId(sapDocType, true); // try via UploadDocument, if now corresponding DownloadDocument
 			}
@@ -959,11 +959,20 @@ public class DocumentUC {
 	 * @throws Doc41BusinessException thrown, if not available
 	 */
     public DocumentType getDocTypeBySapId(String sapTypeId, boolean isUpload) throws Doc41BusinessException {
-        DocumentType documentType = documentTypesBySapId.get(sapTypeId + (isUpload ? "_U" : ""));
+        DocumentType documentType = getDocTypeBySapIdNoEx(sapTypeId,isUpload);
         if(documentType==null){
             throw new Doc41BusinessException("unknown doctype, sapTypeId: "+sapTypeId);
         }
         return documentType;
+    }
+
+    /**
+     * Get a DocumentType by its SapTypeId (no exception)
+     * @param sapTypeId
+     * @return null if not available
+     */
+    public DocumentType getDocTypeBySapIdNoEx(String sapTypeId, boolean isUpload) throws Doc41BusinessException {
+        return documentTypesBySapId.get(sapTypeId + (isUpload ? "_U" : ""));
     }
 
 	public boolean hasCustomerNumber(String type) throws Doc41BusinessException {
