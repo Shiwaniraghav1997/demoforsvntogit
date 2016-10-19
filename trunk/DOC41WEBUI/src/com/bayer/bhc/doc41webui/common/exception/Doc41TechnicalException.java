@@ -5,7 +5,6 @@
 package com.bayer.bhc.doc41webui.common.exception;
 
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
-import com.bayer.bhc.doc41webui.common.util.UserInSession;
 
 
 /**
@@ -17,7 +16,7 @@ public class Doc41TechnicalException extends Doc41ExceptionBase {
 
     private static final long serialVersionUID = -7060440654291109821L;
 
-    public Doc41TechnicalException(final Class<?> involvedClass, final String message) {
+    public Doc41TechnicalException(final Object involvedClass, final String message) {
         this(involvedClass, message, null);
     }
     
@@ -28,7 +27,7 @@ public class Doc41TechnicalException extends Doc41ExceptionBase {
      * @param cause
      * 
      */
-    public Doc41TechnicalException(final Class<?> involvedClass, final String message, final Throwable cause) {
+    public Doc41TechnicalException(final Object involvedClass, final String message, final Throwable cause) {
         super(message, cause);
         if(involvedClass != null){
             Doc41Log.get().error(involvedClass, null, "Doc41TechnicalException");

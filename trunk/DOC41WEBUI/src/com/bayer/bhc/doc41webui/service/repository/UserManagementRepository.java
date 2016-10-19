@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.mail.MessagingException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +22,7 @@ import com.bayer.bhc.doc41webui.common.Doc41ErrorMessageKeys;
 import com.bayer.bhc.doc41webui.common.exception.Doc41AccessDeniedException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41RepositoryVendorNotFoundException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.paging.PagingResult;
@@ -48,7 +47,6 @@ import com.bayer.bhc.doc41webui.integration.db.dc.UserVendorDC;
 import com.bayer.bhc.doc41webui.service.mapping.UserMapper;
 import com.bayer.ecim.foundation.basic.BasicDataCarrier;
 import com.bayer.ecim.foundation.basic.ConfigMap;
-import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.SendMail;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.dbx.QueryException;
@@ -828,7 +826,7 @@ public class UserManagementRepository extends AbstractRepository {
 		try{
 			SapVendorDC sapVendor = userManagementDAO.getSapVendorByNumber(vendor.getNumber());
 			if(sapVendor==null){
-				throw new Doc41RepositoryException("vendor "+vendor.getNumber()+" not found", null);
+				throw new Doc41RepositoryVendorNotFoundException(vendor.getNumber());
 			}
 			User usr = UserInSession.get();
             UserVendorDC newVendor = userManagementDAO.createUserVendor(locale);

@@ -31,7 +31,7 @@ public class Doc41ExceptionBase extends NestingException {
     }
 
     /**
-     * Constructor with message, cause and trace controll.
+     * Constructor with message, cause and trace control.
      * @param pTitle
      * @param pInternalException
      * @param pAutoTrace
@@ -39,6 +39,18 @@ public class Doc41ExceptionBase extends NestingException {
      */
     public Doc41ExceptionBase( String pTitle, Throwable pInternalException, boolean pAutoTrace, boolean pNoStacktrace ) {
         super(pTitle, pInternalException, null, UserInSession.getCwid(), null, pAutoTrace, pNoStacktrace);
+    }
+    
+    /**
+     * Constructor with message, cause, exception parameters and trace control.
+     * @param pTitle
+     * @param pInternalException
+     * @param pMsgParameters
+     * @param pAutoTrace
+     * @param pNoStacktrace
+     */
+    public Doc41ExceptionBase( String pTitle, Throwable pInternalException, NestingExceptionsParameter[] pMsgParameters, boolean pAutoTrace, boolean pNoStacktrace ) {
+        super(pTitle, pInternalException, null, UserInSession.getCwid(), pMsgParameters, pAutoTrace, pNoStacktrace);
     }
     
 }

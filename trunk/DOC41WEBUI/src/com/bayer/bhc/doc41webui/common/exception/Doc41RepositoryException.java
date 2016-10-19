@@ -4,6 +4,8 @@
  */
 package com.bayer.bhc.doc41webui.common.exception;
 
+import com.bayer.ecim.foundation.basic.NestingExceptionsParameter;
+
 /**
  * DOC41 Repository exception. Should re-throw exception from layer below.
  * 
@@ -20,5 +22,17 @@ public class Doc41RepositoryException extends Doc41ExceptionBase {
     public Doc41RepositoryException(final Throwable cause) {
         super(cause.getMessage(), cause);
     }
-
+    
+    /**
+     * Constructor with message, cause, exception parameters and trace control.
+     * @param pTitle
+     * @param pInternalException
+     * @param pMsgParameters
+     * @param pAutoTrace
+     * @param pNoStacktrace
+     */
+    public Doc41RepositoryException(String pTitle, Throwable pInternalException, NestingExceptionsParameter[] pMsgParameters, boolean pAutoTrace, boolean pNoStacktrace) {
+        super(pTitle, pInternalException, pMsgParameters, pAutoTrace, pNoStacktrace);
+    }
+    
 }

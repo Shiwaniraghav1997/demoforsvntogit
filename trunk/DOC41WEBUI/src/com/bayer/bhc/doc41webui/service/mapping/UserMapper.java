@@ -37,7 +37,7 @@ public class UserMapper extends AbstractMapper {
             	pDomainObject.setLocale(new Locale(pDataCarrier.getDisplayLanguageCode()));
             }
         } else {
-        	pDomainObject.setLocale(LocaleInSession.get() != null ? LocaleInSession.get() : Locale.ENGLISH);
+        	pDomainObject.setLocale(LocaleInSession.get() != null ? LocaleInSession.get() : Locale.US);
         }
 		
         if (pDataCarrier.getIsexternal() != null) {

@@ -333,6 +333,12 @@ public class UserManagementUC {
 		}
     }
     
+    /**
+     * Load a vendor by vendor number.
+     * @param vendorNumber
+     * @return SapVendor - load the specified vendor object, null if vendor not exists.
+     * @throws Doc41BusinessException
+     */
     public SapVendor checkVendor(String vendorNumber) throws Doc41BusinessException{
     	try {
     		SapVendor vendor = getUserManagementRepository().loadSAPVendor(vendorNumber);
