@@ -1,6 +1,5 @@
 package com.bayer.bhc.doc41webui.web.test;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

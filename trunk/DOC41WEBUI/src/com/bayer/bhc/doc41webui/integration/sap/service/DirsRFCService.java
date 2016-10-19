@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.integration.sap.service;
 
+/*
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,9 +8,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+*/
 import org.springframework.stereotype.Component;
-
+/*
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -21,15 +22,15 @@ import com.bayer.bhc.doc41webui.domain.DocTypeDef;
 import com.bayer.bhc.doc41webui.domain.DocumentStatus;
 import com.bayer.bhc.doc41webui.domain.KeyValue;
 import com.bayer.ecim.foundation.basic.StringTool;
-
+*/
 @Component
 public class DirsRFCService extends AbstractSAPJCOService {
 	
+/*  
 	private static final String RFC_NAME_GET_DOC_KEYS = "DIRSGetDocKeys";
 	private static final String RFC_NAME_GET_DOC_DETAILS = "DIRSGetDocDetails";
 	private static final String RFC_NAME_GET_DOC_VIA_RFC = "DIRSGetDocViaRfc";
 	private static final String RFC_NAME_GET_DOC_CONTENT = "DIRSGetDocContentViaRfc";
-/*	
 	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes,Set<String> supportedSapDocTypes)
 			throws Doc41ServiceException {
 		Map<String, DocMetadata> metadataMap = new HashMap<String, DocMetadata>();

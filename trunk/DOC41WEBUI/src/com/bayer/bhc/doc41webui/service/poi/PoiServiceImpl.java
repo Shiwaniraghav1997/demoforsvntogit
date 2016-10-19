@@ -1,10 +1,7 @@
 package com.bayer.bhc.doc41webui.service.poi;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -76,7 +73,6 @@ public class PoiServiceImpl implements PoiService {
 					rowsToSkip--;
 				} else {
 					if(row.getPhysicalNumberOfCells()>0){
-						@SuppressWarnings("unchecked")
 						T newInstance = ReflectTool.newInstance(dcClass);
 						for (int c=0;c<fields.length;c++) {
 							Cell cell = row.getCell(c);

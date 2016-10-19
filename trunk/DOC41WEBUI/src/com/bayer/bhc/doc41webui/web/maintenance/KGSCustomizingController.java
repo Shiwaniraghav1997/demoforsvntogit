@@ -195,6 +195,13 @@ public class KGSCustomizingController extends AbstractDoc41Controller {
 		}
 	}
 
+	/**
+	 * 
+	 * @param request
+	 * @param form
+	 * @param result
+	 * @return
+	 */
 	@RequestMapping(value="/maintenance/selectDocType", method=RequestMethod.POST)
 	public String select(HttpServletRequest request, @ModelAttribute Form form, BindingResult result) {
 		return "redirect:/maintenance/kgsCustomizing?sapDocType="+form.getSapDocType();

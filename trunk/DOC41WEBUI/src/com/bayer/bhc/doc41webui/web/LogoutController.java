@@ -26,6 +26,13 @@ public class LogoutController extends AbstractDoc41Controller {
 	@Autowired
 	private SessionDataDAO sessionDataDAO;
 	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value="/logout",method = RequestMethod.GET)
 	public String get(HttpServletRequest request, HttpServletResponse response/*HttpSession session*/) throws IOException {
 		User user = (User) request.getSession().getAttribute(Doc41SessionKeys.DOC41_USER);

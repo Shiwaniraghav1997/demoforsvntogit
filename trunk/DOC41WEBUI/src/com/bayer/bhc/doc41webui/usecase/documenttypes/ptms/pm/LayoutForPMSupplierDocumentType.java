@@ -1,7 +1,6 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 

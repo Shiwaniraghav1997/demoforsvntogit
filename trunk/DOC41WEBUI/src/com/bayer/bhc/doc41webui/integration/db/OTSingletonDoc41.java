@@ -72,7 +72,6 @@ public class OTSingletonDoc41 extends OTSingletonDB {
     	return (T) super.storeDC(pTxId, pDc);        
     }   
     
-	@SuppressWarnings("unchecked")
     public <T extends StorableDataCarrier> List<T> storeTransactional(int pTxId, ArrayList<T> pDcList) throws StoreException {
 		return (List<T>) super.storeDCs(pTxId, pDcList);        
     }
@@ -108,9 +107,8 @@ public class OTSingletonDoc41 extends OTSingletonDB {
         }
     }
     
-    @SuppressWarnings("unchecked")
     public <T extends StorableDataCarrier> T getDCByObjectID(final Class<T> pClazz, final Long pObjectId) throws QueryException {
-    	return (T) super.getDCByObjectId(pClazz, pObjectId, false);
+    	return super.getDCByObjectId(pClazz, pObjectId, false);
     }
     
     /**
@@ -121,14 +119,12 @@ public class OTSingletonDoc41 extends OTSingletonDB {
      * @return
      * @throws QueryException 
      */
-    @SuppressWarnings("unchecked")
     public <T extends StorableDataCarrier> T getDCByObjectID(final int pTxId, final Class<T> pClazz, final Long pObjectId) throws QueryException {
-    	return (T) super.getDCByObjectId(pTxId, pClazz, pObjectId, false);        
+    	return super.getDCByObjectId(pTxId, pClazz, pObjectId, false);        
     }
     
-    @SuppressWarnings("unchecked")
     public <T extends StorableDataCarrier> T getDCByObjectIDForUpdate(final int pTxId, final Class<T> pClazz, final Long pObjectId) throws QueryException {
-    	return (T) super.getDCByObjectId(pTxId, pClazz, pObjectId, true);        
+    	return super.getDCByObjectId(pTxId, pClazz, pObjectId, true);        
     }
     
     

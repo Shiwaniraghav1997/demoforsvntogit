@@ -41,6 +41,14 @@ public class UserlookupController extends AbstractDoc41Controller {
 		return new UserLookupForm();
     }
 	
+	/**
+	 * 
+	 * @param request
+	 * @param userLookupForm
+	 * @param result
+	 * @return
+	 * @throws Doc41ExceptionBase
+	 */
 	@RequestMapping(value="/useradmin/lookuppost",method = RequestMethod.POST)
     public String save(HttpServletRequest request,@ModelAttribute UserLookupForm userLookupForm, BindingResult result) throws Doc41ExceptionBase{
     	if (result.hasErrors()) {

@@ -13,7 +13,6 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.container.UserPagingRequest;
 import com.bayer.bhc.doc41webui.domain.Profile;
-import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.ProfilePermissionMapDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.SapCustomerDC;
 import com.bayer.bhc.doc41webui.integration.db.dc.SapVendorDC;
@@ -57,7 +56,7 @@ public class UserManagementDAO extends AbstractDAOImpl {
 	private static final String GET_USER_COUNTRY			= "getUserCountry";
 	private static final String GET_PLANTS_BY_USER			= "getPlantsByUser";
 	private static final String GET_USER_PLANT				= "getUserPlant";
-	private static final String GET_PROFILE_PERMISSIONS		= "getProfilePermissions";
+	//private static final String GET_PROFILE_PERMISSIONS		= "getProfilePermissions";
     private static final String GET_PROFILE_PERMISSIONMAP     = "getProfilePermissionMap";
 	
 	@Override

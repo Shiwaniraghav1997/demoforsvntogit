@@ -153,7 +153,6 @@ public abstract class AbstractDAOImpl {
         }
     }
     
-    @SuppressWarnings("unchecked")
 	public <T extends ChangeableDataCarrier> ArrayList<T> store(ArrayList<T> pDcList) throws Doc41TechnicalException {
         checkUser();
         try {

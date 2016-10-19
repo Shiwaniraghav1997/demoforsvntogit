@@ -99,6 +99,14 @@ public class TranslationsListController extends AbstractDoc41Controller {
 	  //no data necessary
     }
 	
+	/**
+	 * 
+	 * @param request
+	 * @param params
+	 * @return
+	 * @throws Doc41ExceptionBase
+	 * @throws BATranslationsException
+	 */
 	@RequestMapping(value="/translations/jsontable", method=RequestMethod.GET,produces="application/json") 
     @ResponseBody
     public Map<String, Object> getTable(HttpServletRequest request,TableSorterParams params) throws Doc41ExceptionBase, BATranslationsException {

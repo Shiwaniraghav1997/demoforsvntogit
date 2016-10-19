@@ -57,7 +57,6 @@ public class DisplaytextDAO {
         return DisplayTextTransformer.get().getByType(texttype, id, locale);
     }
 
-	@SuppressWarnings("unchecked")
 	public List<DisplayTextDC> getLanguageCountryCodes() {
 		return DisplayTextTransformer.get().getLimitedLanguageCountries(LocaleInSession.get(), false, false);
 	}

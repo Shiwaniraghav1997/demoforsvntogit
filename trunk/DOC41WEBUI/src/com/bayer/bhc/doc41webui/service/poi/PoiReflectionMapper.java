@@ -3,8 +3,6 @@
  */
 package com.bayer.bhc.doc41webui.service.poi;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,12 +23,12 @@ import com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier;
  */
 public class PoiReflectionMapper implements PoiMapper {
 	
-	private static final long OBJECTSTATE_DELETED = 0L;
+	//private static final long OBJECTSTATE_DELETED = 0L;
 	private Class<? extends UserChangeableDataCarrier> dcClass;
 	private Set<String> excludeColumns;
 	private Set<String> defaultExcludeColumns;
 	private List<String> keyColumns;
-	private String fixMethodName;
+	//private String fixMethodName;
 	
 	public PoiReflectionMapper(Class<? extends UserChangeableDataCarrier> dcClass,List<String> keyColumns) {
 		super();

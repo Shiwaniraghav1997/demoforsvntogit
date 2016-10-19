@@ -29,7 +29,19 @@ public abstract class LayoutSupplierDocumentType implements DocumentType{
 		return true;
 	}
 	
-//	@Override
+    /**
+     * 
+     * @param errors
+     * @param documentUC
+     * @param customerNumber
+     * @param vendorNumber
+     * @param objectId
+     * @param attributeValues
+     * @param viewAttributes
+     * @return
+     * @throws Doc41BusinessException
+     */
+//  @Override
 	public CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber,
 			String objectId, Map<String, String> attributeValues,Map<String,String> viewAttributes)

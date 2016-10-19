@@ -13,7 +13,12 @@ public class LoginController extends AbstractDoc41Controller {
 	    //no data necessary
 	}
 
-
+    /**
+     * 
+     * @param cwid
+     * @param password
+     * @return
+     */
 	@RequestMapping(value="/login/post",method = RequestMethod.POST)
 	public String post(@RequestParam String cwid, @RequestParam String password){
 		return "redirect:/userprofile/myprofile";

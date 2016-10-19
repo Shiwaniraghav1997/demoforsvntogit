@@ -73,7 +73,6 @@ public class RFCMetadataController extends AbstractDoc41Controller {
 		} catch (Exception e) {
 			rfcDump = "Exception:\n" + e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e);
 		}
-        @SuppressWarnings("unchecked")
         ArrayList<SelectionItem> quickSort = Sorter.quickSort(rfcNames, Sorter.ASCENDING);
         rfcNames = quickSort;
 		
