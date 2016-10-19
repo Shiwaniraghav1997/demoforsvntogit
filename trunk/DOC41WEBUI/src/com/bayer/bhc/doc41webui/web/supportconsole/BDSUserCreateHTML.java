@@ -155,10 +155,15 @@ public class BDSUserCreateHTML
                                     UserListFilter mUlf = new UserListFilter();
                                     mUlf.setEmail(mEmail);
                                     PagingResult<User> mRes = userMgmtUC.findUsers(mUlf, new PagingRequest(1));
-                                    if (mRes.getTotalSize() > 0) {
-                                        User mUser = mRes.getResult().get(0);
-                                        mProcessing.append(" - IGNORE, email exists: " + mUser.getSurname() + ", " + mUser.getFirstname() + ", " + mUser.getEmail() + "\n");
-                                        mRowResults.append("" + mD + mQ + StringTool.replace(" --- ", ""+mQ, ""+mQ+mQ) + mQ + mD + mQ + StringTool.replace("fail, email exists", ""+mQ, ""+mQ+mQ) + mQ + "\n");
+                                    if ((mRes.getTotalSize() > 0) || ((mRes.getResult() != null) && (mRes.getResult().size() > 0))) {
+                                        User mUser = ((mRes.getResult() != null) && (mRes.getResult().size() > 0)) ? mRes.getResult().get(0) : null;
+                                        if (mUser == null) {
+                                            mProcessing.append(" - IGNORE, email exists: ???, ???, " + mEmail + "\n");
+                                            mRowResults.append("" + mD + mQ + StringTool.replace(" --- ", ""+mQ, ""+mQ+mQ) + mQ + mD + mQ + StringTool.replace("fail, email exists", ""+mQ, ""+mQ+mQ) + mQ + "\n");
+                                        } else {
+                                            mProcessing.append(" - IGNORE, email exists: " + mUser.getSurname() + ", " + mUser.getFirstname() + ", " + mUser.getEmail() + "\n");
+                                            mRowResults.append("" + mD + mQ + StringTool.replace(" --- ", ""+mQ, ""+mQ+mQ) + mQ + mD + mQ + StringTool.replace("fail, email exists", ""+mQ, ""+mQ+mQ) + mQ + "\n");
+                                        }
                                     } else {
                                         SapVendor mSapVen = userMgmtUC.checkVendor(mVendor);
                                         if (mSapVen == null) {
