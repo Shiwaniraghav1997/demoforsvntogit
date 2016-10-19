@@ -339,3 +339,36 @@ UPDATE UM_PGU_Permissions SET is_deleted = 0 WHERE (is_Deleted = 1) AND (permiss
 
 UPDATE Versions SET subVersion = 7 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 6 );
 COMMIT WORK;
+
+------------------------------------
+-- Alter-Script: CVS v1.7 -> v1.8 --
+------------------------------------
+
+INSERT INTO UM_PGU_Permissions
+  (permission_Id, profile_Id, createdBy, changedBy, is_Deleted)
+SELECT
+  pe.object_Id AS permission_Id,
+  pr.object_Id AS profile_Id,
+  'IMWIF' AS createdBy,
+  'IMWIF' AS changedBy,
+  0 AS is_Deleted
+FROM
+  UM_Permissions pe
+  INNER JOIN UM_Profiles pr ON (pr.profilename = 'doc41_tadm') AND (pe.code = 'USER_IMPORT')
+  LEFT OUTER JOIN UM_PGU_Permissions pgup ON (pe.object_Id = pgup.permission_Id) AND (pr.object_Id = pgup.profile_Id)
+WHERE
+  (pgup.object_Id IS NULL)
+;
+
+UPDATE UM_PGU_Permissions SET is_Deleted = 0, changedBy = 'IMWIF', userchanged=TO_DATE('9999-12-31','YYYY-MM-DD') WHERE (is_Deleted = 1) AND
+ (profile_Id = (SELECT object_Id FROM UM_Profiles WHERE (profilename = 'doc41_tadm'))) AND
+ (permission_Id = (SELECT object_Id FROM UM_Permissions WHERE (code = 'USER_IMPORT')))
+;
+
+UPDATE UM_PGU_Permissions SET is_Deleted = 1, changedBy = 'IMWIF', userchanged=TO_DATE('9999-12-31','YYYY-MM-DD') WHERE (is_Deleted = 0) AND
+ (profile_Id = (SELECT object_Id FROM UM_Profiles WHERE (profilename = 'doc41_badm'))) AND
+ (permission_Id = (SELECT object_Id FROM UM_Permissions WHERE (code = 'USER_IMPORT')))
+;
+
+UPDATE Versions SET subVersion = 8 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 7 );
+COMMIT WORK;
