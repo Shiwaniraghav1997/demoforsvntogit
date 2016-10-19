@@ -1,7 +1,5 @@
 package com.bayer.bhc.doc41webui.common.config;
 
-import java.io.PrintStream;
-
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
