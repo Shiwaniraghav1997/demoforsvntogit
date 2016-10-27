@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.springframework.stereotype.Component;
@@ -21,6 +22,8 @@ import com.bayer.bhc.doc41webui.domain.DocTypeDef;
 import com.bayer.bhc.doc41webui.domain.DocumentStatus;
 import com.bayer.bhc.doc41webui.domain.KeyValue;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
+import com.bayer.ecim.foundation.basic.BooleanTool;
+import com.bayer.ecim.foundation.basic.ConfigMap;
 import com.bayer.ecim.foundation.basic.StringTool;
 
 @Component
@@ -37,6 +40,9 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_PROCESS_DR_REQ = "ProcessDrReq";
 	private static final String RFC_NAME_GET_DOC_URL = "GetDocUrl";
 	private static final String RFC_NAME_GET_DOC_INFO = "GetDocInfo";
+
+    private Properties cConfig = null;
+
 	
 	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes, Map<String, DocumentType> /*Set<String>*/ supportedSapDocTypes)
 			throws Doc41ServiceException {
@@ -67,6 +73,16 @@ public class KgsRFCService extends AbstractSAPJCOService {
 					Map<String,List<String>> attrValues = getAttrValues(d41id);
 					for (Attribute attribute : attributes) {
 						List<String> values = attrValues.get(attribute.getName());
+				        if (cConfig == null) {
+				            cConfig = ConfigMap.get().getSubCfg("documents");
+				        }
+				        boolean ensureEmpty = BooleanTool.parseBoolean(cConfig.getProperty("customDropDown.ensureEmptyEntry"), false);
+				        if(ensureEmpty && (values != null) && !values.isEmpty() && !values.contains("")) {
+				            ArrayList<String> al = new ArrayList<String>(values.size() + 1);
+						    al.add("");
+						    al.addAll(values);
+						    values = al;
+						}
 						attribute.setValues(values);
 					}
 

@@ -3,18 +3,23 @@ package com.bayer.bhc.doc41webui.integration.sap.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.springframework.stereotype.Component;
 
 import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
+import com.bayer.ecim.foundation.basic.ConfigMap;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 @Component
 public class BwRFCService extends AbstractSAPJCOService {
 	
 	private static final String RFC_NAME_FIND_DOCS = "FindDocs";
     private static final String RFC_NAME_FIND_DOCS_OLD = "FindDocsOld";
+    
+    private Properties cConfig = null;
 
 	/**
 	 * Serach for Documents, FindDocs2, new: FindDocsMulti
@@ -53,6 +58,14 @@ public class BwRFCService extends AbstractSAPJCOService {
 		List<Object> params = new ArrayList<Object>();
 		Doc41Log.get().debug(this, null, "FindDocsMulti - d41id=" + d41id + ", sapObj=" + sapObj + ", objectIds=" + objectIds +
 		        ", maxResult=" +maxResults + ", maxVersionOnly=" + maxVersionOnly + ", attributeValues=" + attributeValues + ", seqToKey = " + seqToKey);
+		if (cConfig == null) {
+		    cConfig = ConfigMap.get().getSubCfg("documents");
+		}
+		String mDisableMaxVersionSearchField = StringTool.emptyToNull(cConfig.getProperty("disableMaxVer.SearchField"));
+		if ( (mDisableMaxVersionSearchField != null) && (attributeValues.get(mDisableMaxVersionSearchField) != null) && maxVersionOnly) {
+		    maxVersionOnly = false;
+	        Doc41Log.get().debug(this, null, "FindDocsMulti - d41id=" + d41id + ", sapObj=" + sapObj + ": MAXVERSION disabled, explicite version specified: " + attributeValues.get(mDisableMaxVersionSearchField));
+		}
 		params.add(d41id);
 		params.add(sapObj); // no more used on findocs multi, expected null!!!
 		params.add(objectIds);
