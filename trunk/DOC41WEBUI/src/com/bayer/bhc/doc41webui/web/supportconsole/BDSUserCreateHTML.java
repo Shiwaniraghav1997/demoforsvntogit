@@ -138,13 +138,13 @@ public class BDSUserCreateHTML
                             while (mImp.hasMoreRows()) {
                                 i++;
                                 DBDataRow mRow = mImp.getRow();
-                                String mLastName = mRow.getValue(mColNamesH.get(CSV_LAST)).trim();
-                                String mFirstName = mRow.getValue(mColNamesH.get(CSV_FIRST)).trim();
-                                String mEmail = mRow.getValue(mColNamesH.get(CSV_EMAIL)).trim();
-                                String mVendor = mRow.getValue(mColNamesH.get(CSV_VENDOR)).trim();
+                                String mLastName    = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_LAST)));
+                                String mFirstName   = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_FIRST)));
+                                String mEmail       = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_EMAIL)));
+                                String mVendor      = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_VENDOR)));
                                 mProcessing.append("- row " + i + ", lastname: " + mLastName + ", firstname: " + mFirstName + ", email: " + mEmail + ", vendor: " + mVendor);
                                 mRowResults.append("" + mQ + StringTool.replace(mEmail, ""+mQ, ""+mQ+mQ) + mQ);
-                                if ((mFirstName.length() == 0) || (mLastName.length() == 0) || (mEmail.length() == 0) || (mVendor.length() == 0)) {
+                                if ((mFirstName == null) || (mLastName == null) || (mEmail == null) || (mVendor == null)) {
                                     mProcessing.append(" - FAIL, mandatory field empty!\n");
                                     mRowResults.append("" + mD + mQ + StringTool.replace(" --- ", ""+mQ, ""+mQ+mQ) + mQ + mD + mQ + StringTool.replace("fail, incomplete", ""+mQ, ""+mQ+mQ) + mQ + "\n");
                                 } else {
@@ -175,8 +175,8 @@ public class BDSUserCreateHTML
                                             mNew.setFirstname(mFirstName);
                                             mNew.setSurname(mLastName);
                                             mNew.setEmail(mEmail);
-                                            mNew.setChangedBy(pUser);
-                                            mNew.setCreatedBy(pUser);
+                                            mNew.setChangedBy(pUser.toUpperCase());
+                                            mNew.setCreatedBy(pUser.toUpperCase());
                                             mNew.setLocale(Locale.US);
                                             mNew.setVendors(Arrays.asList(mSapVen));
                                             mNew.setType(User.TYPE_EXTERNAL);
