@@ -110,11 +110,24 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 		sapInput.setValue(IN_ATT_NAME+paramNumber, key);
 		
 		JCoTable table = tableParameterList.getTable(IT_VALUE_RANGE+paramNumber);
-		table.appendRow();
+		if(value!=null && value.contains("###")){
+		    String[] singleValues = value.split("###");
+		    for (String oneValue : singleValues) {
+                if(!StringTool.isTrimmedEmptyOrNull(oneValue)){
+                    addOneValue(oneValue, table);
+                }
+            }
+		} else {
+		    addOneValue(value, table);
+		}
+	}
+
+    private void addOneValue(String value, JCoTable table) {
+        table.appendRow();
 		table.setValue(IN_SIGN, "I");
 		table.setValue(IN_OPTION, "EQ");
 		table.setValue(IN_LOW,value /**.toUpperCase() */ ); // removed (IMWIF, caused Test failure, SAP searches case sensitive)
-	}
+    }
 	
 	private void setEmptyParam(String key, int paramNumber,
 			JCoParameterList sapInput) {
@@ -137,10 +150,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 		
 		JCoTable table = tableParameterList.getTable(IT_OBJID_RANGE+paramNumber);
 		for (String objectId : objectIds) {
-			table.appendRow();
-			table.setValue(IN_SIGN, "I");
-			table.setValue(IN_OPTION, "EQ");
-			table.setValue(IN_LOW,objectId);
+			addOneValue(objectId, table);
 		}
 	}
 	

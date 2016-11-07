@@ -104,6 +104,9 @@
 											<select id="${attributeValue.key}"
 												class="portlet-form-input-field portlet-big"
 												name="attributeValues['${attributeValue.key}']">
+                                                <c:if test="${not empty searchForm.attributePredefValuesAsString[attributeValue.key]}">
+                                                    <option value="${searchForm.attributePredefValuesAsString[attributeValue.key]}"></option>
+                                                </c:if>
 												<c:forEach
 													items="${searchForm.attributePredefValues[attributeValue.key]}"
 													var="predefValue" varStatus="pdstatus">

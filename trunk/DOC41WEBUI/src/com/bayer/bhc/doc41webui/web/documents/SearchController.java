@@ -165,9 +165,12 @@ public class SearchController extends AbstractDoc41Controller {
 					
 					Map<String, String> attributeValues = searchForm.getAttributeValues();
 					Map<String, String> viewAttributes = searchForm.getViewAttributes();
+					Map<String, String> attributePredefValuesAsString = searchForm.getAttributePredefValuesAsString();
 					checkForbiddenWildcards(result,"objectId",singleObjectId);
 					checkForbiddenWildcards(result,"attributeValues['","']",attributeValues);
 					checkForbiddenWildcards(result,"viewAttributes['","']",viewAttributes);
+					checkAllOption(result,"attributeValues['","']",attributeValues,attributePredefValuesAsString);
+					checkAllOption(result,"viewAttributes['","']",viewAttributes,attributePredefValuesAsString);
 					if(!result.hasErrors()){
 						if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
 						    // int objectIdFillLength = documentUC.getDocumentFillLength(type);
@@ -260,7 +263,25 @@ public class SearchController extends AbstractDoc41Controller {
 		return searchForm;
 	}
 	
-	/**
+	private void checkAllOption(BindingResult result, String fieldNamePrefix,
+            String fieldNameSuffix, Map<String, String> attributeValues,
+            Map<String, String> attributePredefValuesAsString) {
+        Set<String> keySet = attributeValues.keySet();
+        if(keySet!=null){
+            for (String key : keySet) {
+                String value = attributeValues.get(key);
+                if(value!=null && value.contains("###")){
+                    String fieldName = fieldNamePrefix+key+fieldNameSuffix;
+                    String allString = attributePredefValuesAsString.get(key);
+                    if(!StringTool.equals(allString, value)){
+                        result.rejectValue(fieldName,"ForbiddenValue");
+                    }
+                }
+            }
+        }
+    }
+
+    /**
 	 * Serch Documents Webservice, used for Spepor  (Spepor entry point).
 	 * @param vendor
 	 * @param refnumber

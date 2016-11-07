@@ -25,6 +25,7 @@ public abstract class CustomizedDocumentForm {
 	private Map<String,String> attributeLabels;
 	private Map<String, String> attributeValues;
 	private Map<String, List<String>> attributePredefValues;
+	private Map<String, String> attributePredefValuesAsString;
 	private Map<String, Boolean> attributeMandatory;
 	
 	private Map<String, String> viewAttributes = new HashMap<String, String>();
@@ -86,6 +87,14 @@ public abstract class CustomizedDocumentForm {
 			Map<String, List<String>> attributePredefValues) {
 		this.attributePredefValues = attributePredefValues;
 	}
+	
+	public Map<String, String> getAttributePredefValuesAsString() {
+        return attributePredefValuesAsString;
+    }
+	public void setAttributePredefValuesAsString(
+            Map<String, String> attributePredefValuesAsString) {
+        this.attributePredefValuesAsString = attributePredefValuesAsString;
+    }
 	
 	public Map<String, Boolean> getAttributeMandatory() {
 		return attributeMandatory;
@@ -175,6 +184,7 @@ public abstract class CustomizedDocumentForm {
 		}
 		attributeValues = new LinkedHashMap<String, String>();
 		attributePredefValues = new HashMap<String, List<String>>();
+		attributePredefValuesAsString = new HashMap<String, String>();
 		attributeMandatory = new HashMap<String, Boolean>();
 		
 		for (Attribute attribute : attributeDefinitions) {
@@ -189,6 +199,19 @@ public abstract class CustomizedDocumentForm {
 			List<String> predefValues = attribute.getValues();
 			attributePredefValues.put(key,predefValues);
 			attributeMandatory.put(key, attribute.getMandatory());
+			
+			String predefValuesAsString = null;
+            if(predefValues!=null){
+                StringBuilder sb = new StringBuilder();
+                for (String oneValue : predefValues) {
+                    if(sb.length()>0){
+                        sb.append("###");
+                    }
+                    sb.append(oneValue);
+                }
+                predefValuesAsString = sb.toString();
+            }
+            attributePredefValuesAsString.put(key, predefValuesAsString);
 		}
 		if(oldAttributeValuesMap!=null && ! oldAttributeValuesMap.isEmpty()){
 			attributeValues.putAll(oldAttributeValuesMap);
