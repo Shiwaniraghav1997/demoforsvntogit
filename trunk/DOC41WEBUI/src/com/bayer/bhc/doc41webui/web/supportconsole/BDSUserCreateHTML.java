@@ -51,8 +51,12 @@ public class BDSUserCreateHTML
     static final String CSV_LAST = "LASTNAME";
     static final String CSV_EMAIL = "EMAIL";
     static final String CSV_VENDOR = "VENDOR";
+    static final String CSV_PHONE = "PHONE";
+    static final String CSV_COMPANY = "COMPANY";
+    
     static final String CSV_CWID = "CWID";
     static final String CSV_STATUS = "STATUS";
+    
     static final String UM_ROLE = "doc41_pmsup";
     
     @Override
@@ -142,7 +146,9 @@ public class BDSUserCreateHTML
                                 String mFirstName   = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_FIRST)));
                                 String mEmail       = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_EMAIL)));
                                 String mVendor      = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_VENDOR)));
-                                mProcessing.append("- row " + i + ", lastname: " + mLastName + ", firstname: " + mFirstName + ", email: " + mEmail + ", vendor: " + mVendor);
+                                String mPhone      = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_PHONE)));
+                                String mCompany      = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_COMPANY)));
+                                mProcessing.append("- row " + i + ", lastname: " + mLastName + ", firstname: " + mFirstName + ", email: " + mEmail + ", vendor: " + mVendor+ ", phone: " + mPhone+ ", company: " + mCompany);
                                 mRowResults.append("" + mQ + StringTool.replace(mEmail, ""+mQ, ""+mQ+mQ) + mQ);
                                 if ((mFirstName == null) || (mLastName == null) || (mEmail == null) || (mVendor == null)) {
                                     mProcessing.append(" - FAIL, mandatory field empty!\n");
@@ -175,6 +181,8 @@ public class BDSUserCreateHTML
                                             mNew.setFirstname(mFirstName);
                                             mNew.setSurname(mLastName);
                                             mNew.setEmail(mEmail);
+                                            mNew.setPhone(mPhone);
+                                            mNew.setCompany(mCompany);
                                             mNew.setChangedBy(pUser.toUpperCase());
                                             mNew.setCreatedBy(pUser.toUpperCase());
                                             mNew.setLocale(Locale.US);
