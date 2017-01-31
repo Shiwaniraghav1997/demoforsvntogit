@@ -1,0 +1,14 @@
+[System]
+Name=D2R
+Description=D2R
+Client=508
+[User]
+Name=EVAYD
+Language=EN
+[Function]
+Title=Data Browser: Table /BAY0/GZ_D41NEXU: Selection Screen
+Command=*SE16 DATABROWSE-TABLENAME=/BAY0/GZ_D41NEXU;
+[Configuration]
+WorkDir=%TEMP%
+[Options]
+Reuse=1
