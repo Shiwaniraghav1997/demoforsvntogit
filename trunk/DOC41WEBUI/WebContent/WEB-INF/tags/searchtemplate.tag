@@ -158,7 +158,7 @@
 					</c:if>
 					<%-- <th data-sorter="moment" data-date-format="${dateMomentPattern}"><doc41:translate label="StorageDate" /></th> --%>
 					<th data-sorter="moment" data-date-format="${dateTimeMomentPattern}"><doc41:translate label="ArchiveLinkDate" /></th>
-					<c:if test="${empty showTableDocumentClass or showTableDocumentClass}">
+					<c:if test="${showTableDocumentClass}"><!-- empty showTableDocumentClass or  -->
 						<th><doc41:translate label="DocumentClass" /></th>
 					</c:if>
 					<c:forEach items="${searchForm.customizedValuesLabels}"
@@ -174,7 +174,7 @@
 					<col width="15%" />
 				</c:if>
 				<col width="15%" />
-				<c:if test="${empty showTableDocumentClass or showTableDocumentClass}">
+				<c:if test="${showTableDocumentClass}"><!-- empty showTableDocumentClass or  -->
 					<col width="5%" />
 				</c:if>
 				<%-- <col width="10%" />
@@ -204,7 +204,7 @@
 						<td onclick="openDocument('${document.key}','${searchForm.type}')">
 							<doc41:formatDate date="${document.archiveLinkDate}" zone="${user.timeZone}"></doc41:formatDate>&nbsp;<doc41:formatTime date="${document.archiveLinkDate}" zone="${user.timeZone}"></doc41:formatTime>
 						</td>
-						<c:if test="${empty showTableDocumentClass or showTableDocumentClass}">
+						<c:if test="${showTableDocumentClass}"><!-- empty showTableDocumentClass or  -->
 							<td onclick="openDocument('${document.key}','${searchForm.type}')"><c:out value="${document.documentClass}" /></td>
 						</c:if>
 						<c:forEach items="${searchForm.attributeLabels}"
