@@ -273,6 +273,7 @@
 		</antcall>-->
 		<antcall target="check.tomcat">
             <param name="server" value="${server}"/>
+			<param name="checkport" value="${checkport}"/>
 		</antcall>
 	</target>
 	
@@ -280,6 +281,7 @@
 	<target name="deploy.to.dev.tomcat">
 		<antcall target="deploy.to.one.tomcat">
 			<param name="server" value="${server.dev1}" />
+			<param name="checkport" value="${checkport.dev1}" />
 			<param name="virtual.host" value="${vhname.dev}" />
 		</antcall>
 	</target>
@@ -287,12 +289,14 @@
 	<target name="deploy.to.qa.tomcats">
 		<antcall target="deploy.to.one.tomcat">
 			<param name="server" value="${server.qa1}" />
+			<param name="checkport" value="${checkport.qa1}" />
 			<param name="virtual.host" value="${vhname.qa}" />
 		</antcall>
 		<echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
 		<sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
 		<antcall target="deploy.to.one.tomcat">
 			<param name="server" value="${server.qa2}" />
+			<param name="checkport" value="${checkport.qa2}" />
 			<param name="virtual.host" value="${vhname.qa}" />
 		</antcall>
 	</target>
@@ -300,12 +304,14 @@
 	<target name="deploy.to.prod.tomcats">
 		<antcall target="deploy.to.one.tomcat">
 			<param name="server" value="${server.prod1}" />
+			<param name="checkport" value="${checkport.prod1}" />
 			<param name="virtual.host" value="${vhname.prod}" />
 		</antcall>
 		<echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
 		<sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
 		<antcall target="deploy.to.one.tomcat">
 			<param name="server" value="${server.prod2}" />
+			<param name="checkport" value="${checkport.prod2}" />
 			<param name="virtual.host" value="${vhname.prod}" />
 		</antcall>
 	</target>
