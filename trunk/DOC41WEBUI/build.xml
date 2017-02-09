@@ -32,7 +32,7 @@
 	<property name="server.qa2" value="BY09ZR" />
 	<property name="server.prod1" value="BY0B5G" />
 	<property name="server.prod2" value="BY0B5H" />
-	<property name="checkport.dev1" value="10080" />
+	<property name="checkport.dev1" value="8180" />
 	<property name="checkport.qa1" value="10080" />
     <property name="checkport.qa2" value="10080" />
     <property name="checkport.prod1" value="10080" />
