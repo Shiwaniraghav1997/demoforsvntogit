@@ -13,7 +13,7 @@
 	<property name="junit.output.dir" value="junit"/>
 	<property name="debuglevel" value="source,lines,vars"/>
 
-	<property name="war.name" value="doc41.war" />
+	<property name="war.name" value="bds.war" />
 	<property name="dir.distrib" value="${basedir}/distrib" />
 	<property name="war.file" value="${dir.distrib}/${war.name}" />
 	<property name="webapp" value="WebContent" />
