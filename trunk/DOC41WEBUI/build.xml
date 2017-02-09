@@ -20,17 +20,23 @@
 	<property name="dir.classes" value="${webapp}/WEB-INF/classes" />
 	<property name="dir.libs" value="${webapp}/WEB-INF/lib" />
 
-
 	<property name="tomcat.dir.tmp" value="/tmp"/>
-	<property name="tomcat.script.control" value="sudo /etc/init.d/tomcat-doc41" />
-	<property name="tomcat.script.deploy" value="sudo /app/jenkins/scripts/deploy_war_doc41.sh" />
+    <property name="tomcat.script.control.prefix" value="sudo systemctl" />
+	<property name="tomcat.script.control.suffix" value="tomcat-${proj.tcinstance}.service" />
+	<property name="tomcat.script.deploy" value="sudo /app/jenkins/scripts/deploy_war.sh" />
+	
 	<property name="apache.script.control" value="sudo /app/jenkins/scripts/start_stop_V_Hosts" />
-	<property name="server.dev1" value="byymss" />
+	<property name="server.dev1" value="BY0P5Q.bayer.cnb" />
 	<property name="server.dev2" value="" />
 	<property name="server.qa1" value="BY09GF" />
 	<property name="server.qa2" value="BY09ZR" />
 	<property name="server.prod1" value="BY0B5G" />
 	<property name="server.prod2" value="BY0B5H" />
+	<property name="checkport.dev1" value="10080" />
+	<property name="checkport.qa1" value="10080" />
+    <property name="checkport.qa2" value="10080" />
+    <property name="checkport.prod1" value="10080" />
+    <property name="checkport.prod2" value="10080" />
 	<property name="vhname.dev" value="doc41-dev.bayer-ag.com"/>
 	<property name="vhname.qa" value="doc41-qa.bayer-ag.com"/>
 	<property name="vhname.prod" value="doc41.bayer-ag.com"/>
@@ -40,7 +46,8 @@
 	<property name="proj.dir.net.share.prod" value="DOC41/Prod"/>
 	<property name="proj.versionfile" value="cfg/BaseProperties.ini"/>
 	<property name="proj.version.regexp.search" value="all\.common\.all\.version=.*"/>
-	<property name="proj.version.regexp.replace.prefix" value="all.common.all.version="/>	
+	<property name="proj.version.regexp.replace.prefix" value="all.common.all.version="/>
+	<property name="proj.tcinstance" value="bds-a"/>
 	
 	<!-- defaults -->
 	<property name="apache.failonerror" value="false"/>
@@ -216,19 +223,19 @@
 							failonerror="${apache.failonerror}"/>
 	</target>
 			
-	<target name="control.tomcat">
-		<echo message="server = ${server}"/>
-		<echo message="command = ${command}"/>
-		<echo message="line = ${tomcat.script.control} ${command}"/>
-		<echo message="linux-user = ${linux-user}"/>
-		<sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="${tomcat.script.control} ${command}" />
-	</target>
+    <target name="control.tomcat">
+        <echo message="server = ${server}"/>
+        <echo message="command = ${command}"/>
+        <echo message="line = ${tomcat.script.control.prefix} ${command} ${tomcat.script.control.suffix}"/>
+        <echo message="linux-user = ${linux-user}"/>
+        <sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="${tomcat.script.control.prefix} ${command} ${tomcat.script.control.suffix}" />
+    </target>
 
     <target name="check.tomcat">
         <echo message="server = ${server}"/>
     	<mkdir dir="${dir.distrib}" />
     	<retry retrycount="10">
-        	<get src="http://${server}:9080/userprofile.htm" dest="${dir.distrib}/test-${server}.html"
+        	<get src="http://${server}:${checkport}" dest="${dir.distrib}/test-${server}.html"
         	   maxtime="20" retries="1" httpusecaches="false"/>
 		</retry>
     	<echo message="check OK"/>
@@ -252,7 +259,7 @@
 			<param name="command" value="stop"/>
 		</antcall>
 		<!-- deploy script -->
-		<sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="${tomcat.script.deploy} ${tomcat.dir.tmp}/${linux-user}/${war.name}" />
+		<sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="${tomcat.script.deploy} ${tomcat.dir.tmp}/${linux-user}/${war.name} ${proj.tcinstance}" />
 		
 		<!-- start server -->
 		<antcall target="control.tomcat">
