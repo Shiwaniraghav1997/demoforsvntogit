@@ -82,7 +82,7 @@ public class BDSUserCreateHTML
             char mD = '\t';
             
             if (pInput.length() == 0) {
-                pInput = mQ + CSV_LAST + mQ + mD + mQ + CSV_FIRST + mQ + mD + mQ + CSV_EMAIL + mQ + mD + mQ + CSV_VENDOR + mQ;
+                pInput = mQ + CSV_LAST + mQ + mD + mQ + CSV_FIRST + mQ + mD + mQ + CSV_COMPANY + mQ + mD + mQ + CSV_PHONE + mQ + mD + mQ + CSV_EMAIL + mQ + mD + mQ + CSV_VENDOR + mQ;
             }
             if (pInitPw.length() == 0) {
                 pInitPw = StringTool.nvl(StringTool.trimEmptyToNull(cfg.getProperty("pw.template")), "[VENDOR]");
