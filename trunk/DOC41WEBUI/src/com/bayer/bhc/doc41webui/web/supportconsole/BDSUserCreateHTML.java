@@ -131,11 +131,12 @@ public class BDSUserCreateHTML
                         for (int i = 0; i < mColNames.length; i++) {
                             mColNamesH.put(mColNames[i].toUpperCase(), i);
                         }
-                        if (!mColNamesH.containsKey(CSV_FIRST) || !mColNamesH.containsKey(CSV_LAST) || !mColNamesH.containsKey(CSV_EMAIL) || !mColNamesH.containsKey(CSV_VENDOR)) {
+                        mQ = mImp.getStringDelimiter();
+                        mD = mImp.getValueDelimiter();
+                        if (!mColNamesH.containsKey(CSV_FIRST) || !mColNamesH.containsKey(CSV_LAST) || !mColNamesH.containsKey(CSV_EMAIL) || !mColNamesH.containsKey(CSV_VENDOR) || !mColNamesH.containsKey(CSV_PHONE) || !mColNamesH.containsKey(CSV_COMPANY)) {
                             mProcessing.append("CSV-Header missing or bad. Clear input field to receive propper headers.\n");
+                            mProcessing.append("Required: " + mQ + CSV_LAST + mQ + mD + mQ + CSV_FIRST + mQ + mD + mQ + CSV_EMAIL + mQ + mD + mQ + CSV_VENDOR + mQ + mD + mQ + CSV_PHONE + mQ + mD + mQ + CSV_COMPANY + mQ + "\n");
                         } else {
-                            mQ = mImp.getStringDelimiter();
-                            mD = mImp.getValueDelimiter();
                             mProcessing.append("CSV-Header ok, processing input rows...\n");
                             mRowResults.append(mQ + CSV_EMAIL + mQ + mD + mQ + CSV_CWID + mQ + mD + mQ + CSV_STATUS + mQ + "\n" );
                             int i = 0;
