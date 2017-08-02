@@ -347,11 +347,16 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 				}
 			}
 		} catch (Exception e1) {
-			User usr = determineUser(request);
-			Doc41Log.get().error(
-					this.getClass(),
-					usr.getCwid(),e1);
-			throw e1;
+		    new Doc41TechnicalException(this, "postHandle failed!", e1);
+		    try {
+		        User usr = determineUser(request);
+		        Doc41Log.get().error(
+		                this.getClass(),
+		                usr.getCwid(),e1);
+		    } catch (Exception e2) {
+	            new Doc41TechnicalException(this, "exception handling: looUp User failed!", e2);
+		    }
+		    throw e1;
 		}
 
 // error sim 5
