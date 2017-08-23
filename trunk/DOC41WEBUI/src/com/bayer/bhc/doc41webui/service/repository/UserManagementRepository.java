@@ -258,6 +258,7 @@ public class UserManagementRepository extends AbstractRepository {
         updateLdapGroup(pUser);
 
         // Password notification part for external user - inform user:
+        /*
         if (pUser.isExternalUser() && StringUtils.isNotBlank(pUser.getPassword())) {
             String body = "The new Password for "+pUser.getCwid()+" is '"+pUser.getPassword()+"'";
             try {
@@ -267,6 +268,7 @@ public class UserManagementRepository extends AbstractRepository {
                 Doc41Log.get().error(this.getClass(), UserInSession.getCwid(), e);
             }
         }
+        */
 	}
 
     /**
