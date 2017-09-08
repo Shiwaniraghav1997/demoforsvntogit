@@ -195,6 +195,7 @@ public class SearchController extends AbstractDoc41Controller {
 						    // hope this way is fine to create local, temporary result...
 						    BeanPropertyBindingResult mTmp = new BeanPropertyBindingResult(result.getTarget(), result.getObjectName() );
 						    results.add(mTmp);
+/** auth check (wer<-stücklisten) **/
 						    CheckForDownloadResult checkResult = documentUC.checkForDownload(mTmp, mDocType.getTypeConst(), searchFormCustomerNumber,searchFormVendorNumber, singleObjectId, attributeValues, viewAttributes);
 						    if (!mTmp.hasErrors()) {
 						        if ( (mSelectedDocType == null) || mSelectedDocType.equals(mDocType.getTypeConst()) ) {
@@ -240,6 +241,7 @@ public class SearchController extends AbstractDoc41Controller {
 							//for (String mType : searchingTargetTypes) {
 							//  documents.addAll( documentUC.searchDocuments(mType, objectIds, allAttributeValues, maxResults+1, false) );
 							//}
+/** search docs  (stücklisten->werk oder ->searchFormVendorNumber(umgmt)) **/
 							List<HitListEntry> documents = documentUC.searchDocuments(searchingTargetTypes, objectIds, allAttributeValues, maxResults, mOnlyMaxVer);
 							if(documents.isEmpty()){
 							    if(errorOnNoDocuments){

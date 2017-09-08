@@ -331,32 +331,48 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 	}
 
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, org.springframework.web.servlet.ModelAndView modelAndView) throws Exception {
-		try{
+	    String ctrl = null;
+        String viewName = null;
+	    try{
 			// do the postRender intercepter job:
-			String ctrl = getRealHandler(handler).getClass().getName();
+	        /*
+			ctrl = getRealHandler(handler).getClass().getName();
 			StringTokenizer st = new StringTokenizer(ctrl, ".");
 			while (st.hasMoreTokens()){
 			    ctrl = st.nextToken();
 			}
+			*/
+            ctrl = getRealHandler(handler).getClass().getSimpleName();
 
+            if(modelAndView!=null){
+                viewName = modelAndView.getViewName();
+            }
 			request.getSession().setAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL, ctrl.toLowerCase());
-			if(modelAndView!=null){
-				String viewName = modelAndView.getViewName();
-				if(viewName!=null){
-					request.getSession().setAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_VIEW, viewName);
-				}
+			if(viewName!=null){
+				request.getSession().setAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_VIEW, viewName);
 			}
-		} catch (Exception e1) {
-		    new Doc41TechnicalException(this, "postHandle failed!", e1);
+		} catch (java.lang.IllegalStateException ei) { // how to prevent autotrace by spring?
+            Exception ein = new Doc41TechnicalException(this, "Doc41HandlerInterceptor.postHandle failed, IllegalState! viewname: " + viewName + ", ctrl: " + ctrl, ei, true, true);
+            /*
+            try {
+                User usr = determineUser(request);
+                Doc41Log.get().error(this, usr.getCwid(), ei.getClass().getSimpleName() + ": " + ei.getMessage());
+            } catch (Exception e2) {
+                new Doc41TechnicalException(this, "exception handling: lookUp User failed!", e2, true, true);
+            }
+            */
+            throw ein;
+		} catch (Exception e1) { // this should autotrace by spring
+		    Exception e1n = new Doc41TechnicalException(this, "Doc41HandlerInterceptor.postHandle failed, other Ex! viewname: " + viewName + ", ctrl: " + ctrl, e1);
+		    /*
 		    try {
 		        User usr = determineUser(request);
-		        Doc41Log.get().error(
-		                this.getClass(),
-		                usr.getCwid(),e1);
+                Doc41Log.get().error(this, usr.getCwid(), e1.getClass().getSimpleName() + ": " + e1.getMessage());
 		    } catch (Exception e2) {
-	            new Doc41TechnicalException(this, "exception handling: looUp User failed!", e2);
+	            new Doc41TechnicalException(this, "exception handling: lookUp User failed!", e2);
 		    }
-		    throw e1;
+		    */
+		    throw e1n;
 		}
 
 // error sim 5
@@ -372,10 +388,19 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 		// persist HTTPSession into session data in DB:
 		User usr = UserInSession.get();
 		if(usr!=null){
-			HttpSession session= request.getSession();
-			SessionDataDC dbSessionDC = (SessionDataDC) request.getAttribute(DB_SESSION_DC_REQ_ATTR);
-			persistSessionData(usr,session,dbSessionDC);
-			Doc41Log.get().logWebMetrix(request, getRealHandler(handler), request.getRequestURI());
+            Doc41Log.get().logWebMetrix(request, getRealHandler(handler), request.getRequestURI());
+            try {
+                HttpSession session= request.getSession();
+                SessionDataDC dbSessionDC = (SessionDataDC) request.getAttribute(DB_SESSION_DC_REQ_ATTR);
+                persistSessionData(usr,session,dbSessionDC);
+            } catch (java.lang.IllegalStateException ei) { // how to prevent autotrace by spring?
+                NestingException.handlingCompleted("Doc41HandlerInterceptor.afterCompletion failed, IllegalStateException... " +getRealHandler(handler).getClass().getSimpleName() + ", " + request.getRequestURI(), ei, null, true, true);
+/* use springs autotracing (can not disable, otherwise would trace twice)
+            } catch (Exception e1) { // this should autotrace by spring
+                throw new Doc41TechnicalException(this, "Doc41HandlerInterceptor.postHandle failed, other Ex! viewname: " + viewName + ", ctrl: " + ctrl, e1);
+*/
+            }
+
 		}
 
 // error sim 4

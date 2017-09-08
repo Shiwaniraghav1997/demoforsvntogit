@@ -22,6 +22,7 @@ import com.bayer.bhc.doc41webui.common.util.DateRenderer;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.TimeRenderer;
 import com.bayer.ecim.foundation.basic.ConfigMap;
+import com.bayer.ecim.foundation.basic.NestingExceptions;
 
 
 /**
@@ -89,14 +90,17 @@ public class Doc41ControllerAdvice {
 	        return "exception";
 	    }
 		if (ex instanceof MaxUploadSizeExceededException){
-            Doc41Log.get().debug(ex, null, ex.getMessage());
-//			ex = new Doc41ExceptionBase("File is to big for upload!",ex);
+//            Doc41Log.get().debug(ex, null, ex.getMessage());
+			ex = new Doc41ExceptionBase("File is to big for upload!",ex, true, true); // create no trace, just report like warning...
 		}
 
 		if (!(ex instanceof Doc41ExceptionBase)) {
-			ex = new Doc41TechnicalException(this.getClass(), "fatal error: "+ex.getStackTrace()[0], ex);
+			ex = new Doc41TechnicalException(this.getClass(), "fatal error", ex);
 		}
 
+		Throwable relevantException = (ex instanceof NestingExceptions) ? ((NestingExceptions)ex).getBasicException() : ex;
+
+		/** not expect to work, because the mentioned exceptions are autotracing... Better make by default not tracing Stacktrace...
 		Exception relevantException = ex;
 		
 		// search for Doc41OptimisticLockingException or Doc41AccessDeniedException:
@@ -112,6 +116,7 @@ public class Doc41ControllerAdvice {
                 Doc41Log.get().debug(relevantException, null, relevantException.getMessage());
 			}
 		}
+		*/
 		request.setAttribute(DOC41_EXCEPTION, relevantException);
 		return "exception";
 	}

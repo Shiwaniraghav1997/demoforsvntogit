@@ -33,5 +33,22 @@ public class Doc41TechnicalException extends Doc41ExceptionBase {
             Doc41Log.get().error(involvedClass, null, "Doc41TechnicalException");
         }
     }
+
+    /**
+     * Enforce an error log when throwing a new Doc41TechnicalException, optionally make trace silent or w/o trace.
+     * @param involvedClass
+     * @param pTitle
+     * @param pInternalException
+     * @param pAutoTrace
+     * @param pNoStacktrace
+     */
+    public Doc41TechnicalException(final Object involvedClass, String pTitle, Throwable pInternalException,
+            boolean pAutoTrace, boolean pNoStacktrace) {
+        super(pTitle, pInternalException, pAutoTrace, pNoStacktrace);
+        if(involvedClass != null){
+            Doc41Log.get().error(involvedClass, null, "Doc41TechnicalException");
+        }
+        // TODO Auto-generated constructor stub
+    }
     
 }
