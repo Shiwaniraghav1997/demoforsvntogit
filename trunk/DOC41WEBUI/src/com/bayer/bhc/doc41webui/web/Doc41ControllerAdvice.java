@@ -94,6 +94,9 @@ public class Doc41ControllerAdvice {
 			ex = new Doc41ExceptionBase("File is to big for upload!",ex, true, true); // create no trace, just report like warning...
 		}
 
+		if (ex instanceof org.springframework.web.HttpRequestMethodNotSupportedException) {
+            ex = new Doc41TechnicalException(this.getClass(), "HttpRequestMethodNotSupportedException, GET not supported, possibly illegal bookmark usage...", ex, true, true);
+		}
 		if (!(ex instanceof Doc41ExceptionBase)) {
 			ex = new Doc41TechnicalException(this.getClass(), "fatal error", ex);
 		}
