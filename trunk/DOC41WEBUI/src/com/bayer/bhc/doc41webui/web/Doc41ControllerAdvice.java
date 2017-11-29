@@ -22,6 +22,7 @@ import com.bayer.bhc.doc41webui.common.util.DateRenderer;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.TimeRenderer;
 import com.bayer.ecim.foundation.basic.ConfigMap;
+import com.bayer.ecim.foundation.basic.NestingException;
 import com.bayer.ecim.foundation.basic.NestingExceptions;
 
 
@@ -98,7 +99,12 @@ public class Doc41ControllerAdvice {
             ex = new Doc41TechnicalException(this.getClass(), "HttpRequestMethodNotSupportedException, GET not supported, possibly illegal bookmark usage...", ex, true, true);
 		}
 		if (!(ex instanceof Doc41ExceptionBase)) {
-			ex = new Doc41TechnicalException(this.getClass(), "fatal error", ex);
+		    Throwable[] internalsTh = NestingException.getEncapsulatedThrowableList(ex);
+		    if ((internalsTh.length > 0) && (internalsTh[internalsTh.length-1] instanceof org.apache.catalina.connector.ClientAbortException)) {
+                ex = new Doc41TechnicalException(this.getClass(), "client/download abort", ex, true, true);
+		    } else {
+		        ex = new Doc41TechnicalException(this.getClass(), "fatal error", ex);
+		    }
 		}
 
 		Throwable relevantException = (ex instanceof NestingExceptions) ? ((NestingExceptions)ex).getBasicException() : ex;
