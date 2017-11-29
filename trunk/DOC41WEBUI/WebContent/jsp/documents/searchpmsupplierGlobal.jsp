@@ -6,7 +6,6 @@
 	<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 	<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 	<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-	
 	<doc41:searchtemplate action="searchpmsupplierGlobal">
 		<jsp:attribute name="fragmentCustomSearchFields">
           <c:if test="!${searchForm.kgs}">
@@ -28,7 +27,17 @@
                 itemLabel="label"
                 itemValue="value" />
             <doc41:error path="docType" /></td>
-          </tr>
+          </tr> 
+	         <c:if test="${searchForm.type eq docType_PPPI}">
+	         <th><label for="${searchForm.type}"><doc41:translate label="VersionIdBom" /></label></th>
+	            <td>
+	            	<input id="${keyFileName}"
+							class="portlet-form-input-field portlet-big" maxlength="70"
+							name="VersionIdBom"
+							value="" />
+							<doc41:error path="viewAttributes['${keyFileName}']" />
+	            <doc41:error path="docType" /></td>
+	         </c:if>
         </jsp:attribute>
 	</doc41:searchtemplate>
 

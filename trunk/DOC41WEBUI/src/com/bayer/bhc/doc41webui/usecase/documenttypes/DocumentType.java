@@ -9,6 +9,7 @@ public interface DocumentType {
     public static final String GROUP_SD = "DOC_SD";
     public static final String GROUP_QM = "DOC_QM";
     public static final String GROUP_PM = "DOC_PM";
+    public static final String GROUP_PPPI_PM = "DOC_PPPI_PM";
     public static final String GROUP_LS = "DOC_LS";
     
     public static final String GROUP_SD_PERM_DOWNL = "DOC_GLO_SD";

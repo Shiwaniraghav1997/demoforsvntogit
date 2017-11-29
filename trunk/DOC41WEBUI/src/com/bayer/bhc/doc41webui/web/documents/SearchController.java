@@ -33,6 +33,7 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ClientAbortException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41DocServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.common.util.Doc41Utils;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UrlParamCrypt;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -89,6 +90,11 @@ public class SearchController extends AbstractDoc41Controller {
 
     private String[] getReqPermission(User usr, String type)
             throws Doc41BusinessException {
+    	// Checking if User is accessing docs via the PI/PP Toller menu entry
+    	if(type.equals(DocumentType.GROUP_PPPI_PM)){
+    		type = DocumentType.GROUP_PM;
+    	}
+    	
         return
                 !documentUC.getFilteredDocTypesForDownload(type, usr).isEmpty() ? null : // 1. user has a permission on at least one type of a DownloadGroup (includes also check for single DownloadType)
                 new String[] {documentUC.getDownloadPermission(type), documentUC.getGroupDownloadPermission(type)}; // 2. or user has permission on a single DocumentType (single Download alread checked on 1.)
@@ -104,6 +110,11 @@ public class SearchController extends AbstractDoc41Controller {
 		String mFormType = searchForm.getType();
 		if(StringTool.isTrimmedEmptyOrNull(mFormType)){
 			throw new Doc41BusinessException("typeIsMissing");
+		}
+		
+		// Checking if User is accessing docs via the PI/PP Toller menu entry
+		if(mFormType.equals(DocumentType.GROUP_PPPI_PM)){
+			mFormType = DocumentType.GROUP_PM; // user accesses the docs from the PM Supplier (Global)
 		}
 		
 		String mSelectedDocType = StringTool.emptyToNull(searchForm.getDocType());
@@ -150,6 +161,7 @@ public class SearchController extends AbstractDoc41Controller {
 		        }
 		    }
 		}
+		//TODO: Attribute "VERSION" for PM subcontractor role
 		searchForm.setAllowedDocTypes(mAllowedDocTypes);
 		searchForm.setKgs(isKgs);
 		searchForm.initAttributes(attributeDefinitions,language);
@@ -431,6 +443,9 @@ public class SearchController extends AbstractDoc41Controller {
 //      map.addAttribute("docType",PMSupplierDownloadDocumentType.VIEW_ATTRIB_DOC_TYPE);
         
         SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
+        if(searchForm2.getType().equals(DocumentType.GROUP_PPPI_PM)){ // when searching documents as PP/PI Toller, additional search fields should be displayed in the jsp
+        	map.addAttribute("docType_PPPI", searchForm2.getType()); //switch for JSP
+        }
         map.addAttribute(searchForm2);
 
 // check-PO-mode:
