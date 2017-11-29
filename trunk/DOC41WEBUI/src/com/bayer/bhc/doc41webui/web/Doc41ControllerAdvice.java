@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
-import com.bayer.bhc.doc41webui.common.exception.Doc41AccessDeniedException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41DocServiceException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ExceptionBase;
-import com.bayer.bhc.doc41webui.common.exception.Doc41OptimisticLockingException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.DateRenderer;
@@ -100,7 +98,11 @@ public class Doc41ControllerAdvice {
 		}
 		if (!(ex instanceof Doc41ExceptionBase)) {
 		    Throwable[] internalsTh = NestingException.getEncapsulatedThrowableList(ex);
-		    if ((internalsTh.length > 0) && (internalsTh[internalsTh.length-1] instanceof org.apache.catalina.connector.ClientAbortException)) {
+		    boolean isClientAbort = false;
+		    for (int i = 0; (i < internalsTh.length) && !isClientAbort; i++) {
+		        isClientAbort = isClientAbort || "org.apache.catalina.connector.ClientAbortException".equals(internalsTh[i].getClass().getName()); 
+		    }
+		    if (isClientAbort) {
                 ex = new Doc41TechnicalException(this.getClass(), "client/download abort", ex, true, true);
 		    } else {
 		        ex = new Doc41TechnicalException(this.getClass(), "fatal error", ex);
