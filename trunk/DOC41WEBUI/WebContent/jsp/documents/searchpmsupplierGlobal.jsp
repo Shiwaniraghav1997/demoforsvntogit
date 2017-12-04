@@ -29,11 +29,11 @@
             <doc41:error path="docType" /></td>
           </tr> 
 	         <c:if test="${searchForm.type eq docType_PPPI}">
-	         <th><label for="${searchForm.type}"><doc41:translate label="VersionIdBom" /></label></th>
+	         <th><label for="${searchForm.type}"><doc41:translate label="versionIdBom" /></label></th>
 	            <td>
-	            	<input id="${keyFileName}"
+	            	<input id="versionIdBom"
 							class="portlet-form-input-field portlet-big" maxlength="70"
-							name="VersionIdBom"
+							name="versionIdBom"
 							value="" />
 							<doc41:error path="viewAttributes['${keyFileName}']" />
 	            <doc41:error path="docType" /></td>

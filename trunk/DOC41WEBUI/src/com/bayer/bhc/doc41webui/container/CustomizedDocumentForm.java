@@ -38,6 +38,8 @@ public abstract class CustomizedDocumentForm {
 	
 	private String vendorNumber;
 	
+	private String versionIdBom;
+	
 	private boolean isVendorNumberUsed = false;
 	
 	private List<SapVendor> vendors;	
@@ -245,6 +247,12 @@ public abstract class CustomizedDocumentForm {
 	
 	public Map<String, String> getViewAttributes(){
 		return viewAttributes;
+	}
+	public String getVersionIdBom() {
+		return versionIdBom;
+	}
+	public void setVersionIdBom(String versionIdBom) {
+		this.versionIdBom = versionIdBom;
 	}
 	
 }

@@ -25,6 +25,8 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	private static final String IN_SIGN = "SIGN";
 	private static final String IN_OPTION = "OPTION";
 	private static final String IN_LOW = "LOW";
+	//private static final String IN_VERID_BOM = "IV_VERID_BOM"; 
+	//private static final String IN_PLANT_BOM = "IV_PLANT_BOM";
 	private static final String IT_VALUE_RANGE = "IT_VALUE_RANGE";
     private static final String IT_D41ID = "IT_D41ID";
     private static final String D41ID = "D41ID";

@@ -217,7 +217,18 @@
           </table>
 		  <doc41:pager />
           <!--  input id="download" name="download" type="button" --> 
-          <input type="submit" class="portlet-form-button" value="Download All" name="ButtonDownload"/>
+          <% String downloadeable = "";%>
+          <c:choose>
+          <c:when test="${ empty searchForm.documents}">
+          	<% downloadeable = "disabled"; %>
+          </c:when>
+          <c:otherwise>
+          	<% downloadeable = ""; %>
+          </c:otherwise>
+          </c:choose>
+          
+          
+          <input type="submit" class="portlet-form-button" value="Download All" name="ButtonDownload" <c:out value="<%= downloadeable %>"/>/>
         </form:form>
 		
 	</div>

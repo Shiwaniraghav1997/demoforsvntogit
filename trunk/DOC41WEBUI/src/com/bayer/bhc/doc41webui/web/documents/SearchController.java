@@ -170,6 +170,7 @@ public class SearchController extends AbstractDoc41Controller {
 			if(searchForm.isSearchFilled()){
 				String searchFormCustomerNumber = searchForm.getCustomerNumber();
 				String searchFormVendorNumber = searchForm.getVendorNumber();
+				String searchFormCustomVersion = searchForm.getVersionIdBom();
 				checkPartnerNumbers(result,searchForm.isCustomerNumberUsed(), searchForm.isVendorNumberUsed(),searchFormCustomerNumber,searchFormVendorNumber);
 				
 				if(!result.hasErrors()){
@@ -208,7 +209,7 @@ public class SearchController extends AbstractDoc41Controller {
 						    BeanPropertyBindingResult mTmp = new BeanPropertyBindingResult(result.getTarget(), result.getObjectName() );
 						    results.add(mTmp);
 /** auth check (wer<-stücklisten) **/
-						    CheckForDownloadResult checkResult = documentUC.checkForDownload(mTmp, mDocType.getTypeConst(), searchFormCustomerNumber,searchFormVendorNumber, singleObjectId, attributeValues, viewAttributes);
+						    CheckForDownloadResult checkResult = documentUC.checkForDownload(mTmp, mDocType.getTypeConst(), searchFormCustomerNumber,searchFormVendorNumber, singleObjectId, searchFormCustomVersion, attributeValues, viewAttributes);
 						    if (!mTmp.hasErrors()) {
 						        if ( (mSelectedDocType == null) || mSelectedDocType.equals(mDocType.getTypeConst()) ) {
 						            searchingTargetTypes.add(mDocType.getTypeConst());

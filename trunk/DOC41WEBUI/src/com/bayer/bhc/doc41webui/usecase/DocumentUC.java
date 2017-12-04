@@ -867,8 +867,8 @@ public class DocumentUC {
 		return checkResult;
 	}
 	
-	public CheckForDownloadResult checkForDownload(Errors errors, String type, String customerNumber, String vendorNumber, String objectId, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException{
-		return getDocTypeForDownload(type).checkForDownload(errors, this, customerNumber, vendorNumber, objectId, attributeValues,viewAttributes);
+	public CheckForDownloadResult checkForDownload(Errors errors, String type, String customerNumber, String vendorNumber, String objectId, String customVersion, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException{
+		return getDocTypeForDownload(type).checkForDownload(errors, this, customerNumber, vendorNumber, objectId, customVersion, attributeValues,viewAttributes);
 	}
 	
 	public CheckForDownloadResult checkForDirectDownload(String type, String objectId) throws Doc41BusinessException{
@@ -1040,17 +1040,17 @@ public class DocumentUC {
 
 	
 	
-	public String checkPOAndMaterialForVendor(String vendorNumber, String poNumber, String materialNumber) throws Doc41BusinessException {
+	public List<String> checkPOAndMaterialForVendor(String vendorNumber, String poNumber, String materialNumber, String customVersion) throws Doc41BusinessException {
 		try {
-			return authorizationRFCService.checkPOAndMaterialForVendor(vendorNumber, poNumber, materialNumber);
+			return authorizationRFCService.checkPOAndMaterialForVendor(vendorNumber, poNumber, materialNumber, customVersion);
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("checkPOAndMaterialForVendor",e);
 		}
 	}
 	
-    public String checkMaterialForVendor(String vendorNumber, String materialNumber) throws Doc41BusinessException {
+    public List<String> checkMaterialForVendor(String vendorNumber, String materialNumber, String customVersion) throws Doc41BusinessException {
         try {
-            return authorizationRFCService.checkMaterialForVendor(vendorNumber, materialNumber);
+            return authorizationRFCService.checkMaterialForVendor(vendorNumber, materialNumber, customVersion);
         } catch (Doc41ServiceException e) {
             throw new Doc41BusinessException("checkPOAndMaterialForVendor",e);
         }

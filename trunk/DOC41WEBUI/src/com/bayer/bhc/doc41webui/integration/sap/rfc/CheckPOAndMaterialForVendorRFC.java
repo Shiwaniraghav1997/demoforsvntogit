@@ -13,8 +13,10 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 	private static final String IN_VENDOR = "IV_VENDOR";
 	private static final String IN_PO = "IV_PONUMBER";
 	private static final String IN_MATERIAL = "IV_MATNR";
+	private static final String IN_VERID = "IV_VERID";
 	
 	private static final String OUT_RETURNCODE = "EV_RETURN";
+	private static final String OUT_PLANT = "EV_PLANT";
 	
 	private static final String RETURNCODE_OK = "0";
 	private static final String RETURNCODE_NOT_FOUND = "4";
@@ -36,6 +38,7 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
             	String vendorNumber = (String) pInputParms.get(0);
                 String poNumber = (String) pInputParms.get(1);
                 String materialNumber = (String) pInputParms.get(2);
+                String customVersion = (String) pInputParms.get(3);
                 
                 JCoParameterList sapInput = pFunction.getImportParameterList();
 				
@@ -44,6 +47,10 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 				    sapInput.setValue(IN_PO,poNumber);
 				}
 				sapInput.setValue(IN_MATERIAL,materialNumber);
+				if(customVersion != null){
+					sapInput.setValue(IN_VERID, customVersion);
+				}
+					
             } else {
                 throw new SAPException(
                         "CheckPOAndMaterialForVendorRFC pInputParms list is null", null);
@@ -63,7 +70,11 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
         if (pFunction != null) {
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
+            String evPlant = exportParameterList.getString(OUT_PLANT);
             mResult.add(mapReturnCodeToTag(returnCode));
+            if(evPlant != null){
+            	mResult.add(evPlant);
+            }
         }
         Doc41Log.get().debug(this, null, "EXIT");
         return mResult;

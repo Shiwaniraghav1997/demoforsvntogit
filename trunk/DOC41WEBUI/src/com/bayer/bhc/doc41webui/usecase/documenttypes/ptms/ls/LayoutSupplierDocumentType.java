@@ -69,7 +69,7 @@ public abstract class LayoutSupplierDocumentType implements DocumentType{
 	 */
 //	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-			String customerNumber, String vendorNumber, String objectId,
+			String customerNumber, String vendorNumber, String objectId, String customVersion,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
 		Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);

@@ -67,5 +67,5 @@ public final class Doc41Utils {
     public static int getActualYear(final Locale locale){
         Calendar cal = new GregorianCalendar(locale);
         return cal.get(Calendar.YEAR);   
-    }  
+    } 
 }

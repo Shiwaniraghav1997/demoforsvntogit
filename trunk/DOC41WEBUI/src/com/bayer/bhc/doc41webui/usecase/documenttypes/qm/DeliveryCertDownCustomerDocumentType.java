@@ -41,7 +41,7 @@ public class DeliveryCertDownCustomerDocumentType extends
 	
 	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-			String customerNumber, String vendorNumber, String objectId,
+			String customerNumber, String vendorNumber, String objectId, String customVersion,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		//TODO Customer for user
 		String countryCode = attributeValues.get(ATTRIB_COUNTRY);

@@ -96,7 +96,7 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	 * @return
 	 * @throws Doc41ServiceException
 	 */
-	public String checkPOAndMaterialForVendor(String vendorNumber, String poNumber, String materialNumber) throws Doc41ServiceException{
+	public List<String> checkPOAndMaterialForVendor(String vendorNumber, String poNumber, String materialNumber, String customVersion) throws Doc41ServiceException{
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(),
         		"checkPOAndMaterialForVendor() - vendorNumber="+vendorNumber+".");
        
@@ -104,14 +104,11 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
         params.add(vendorNumber);
         params.add(poNumber);
         params.add(materialNumber);
+        params.add(customVersion);
         
         List<String> returnTexts = performRFC(params,RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR);
         
-        String errorMsg=null;
-        if(!returnTexts.isEmpty()){
-        	errorMsg = returnTexts.get(0);
-        }
-		return errorMsg ;
+		return returnTexts; 
 	}
 	
 	/**
@@ -121,11 +118,11 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	 * @return null if exist, else an error message.
 	 * @throws Doc41ServiceException in case of general RFC failure
 	 */
-    public String checkMaterialForVendor(String vendorNumber, String materialNumber) throws Doc41ServiceException{
+    public List<String> checkMaterialForVendor(String vendorNumber, String materialNumber, String customVersion) throws Doc41ServiceException{
         Doc41Log.get().debug(this, UserInSession.getCwid(),
                 "vendorNumber="+vendorNumber+", materialNumber="+materialNumber+".");
 /**/
-        return checkPOAndMaterialForVendor(vendorNumber, null, materialNumber);
+        return checkPOAndMaterialForVendor(vendorNumber, null, materialNumber, customVersion);
 /*/
         List<Object> params = new ArrayList<Object>();
         params.add(vendorNumber);

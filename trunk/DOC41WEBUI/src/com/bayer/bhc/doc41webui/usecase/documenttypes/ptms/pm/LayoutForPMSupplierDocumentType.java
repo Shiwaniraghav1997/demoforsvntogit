@@ -39,10 +39,10 @@ public class LayoutForPMSupplierDocumentType extends PMSupplierDownloadDocumentT
 	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors,
 			DocumentUC documentUC, String customerNumber, String vendorNumber,
-			String objectId, Map<String, String> attributeValues,
+			String objectId, String customVersion, Map<String, String> attributeValues,
 			Map<String, String> viewAttributes) throws Doc41BusinessException {
 		CheckForDownloadResult result = super.checkForDownload(errors, documentUC, customerNumber, vendorNumber,
-						objectId, attributeValues, viewAttributes);
+						objectId, customVersion, attributeValues, viewAttributes);
 /*		
 		Map<String, String> additionalAttributes = new HashMap<String, String>();
 		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);

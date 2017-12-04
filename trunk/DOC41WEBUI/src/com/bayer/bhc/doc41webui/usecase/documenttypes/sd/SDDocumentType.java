@@ -85,7 +85,7 @@ public abstract class SDDocumentType implements DocumentType {
 	 * @throws Doc41BusinessException
 	 */
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-			String customerNumber, String vendorNumber, String objectId,
+			String customerNumber, String vendorNumber, String objectId, String customVersion,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		if(StringTool.isTrimmedEmptyOrNull(objectId)){
 			errors.rejectValue("objectId","MandatoryField");

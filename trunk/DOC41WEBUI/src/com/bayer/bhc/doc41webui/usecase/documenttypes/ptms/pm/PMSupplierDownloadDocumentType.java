@@ -1,6 +1,8 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,9 +40,13 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 
 	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber,
-			String objectId, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
+			String objectId, String customVersion, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 
 		Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
+		
+		Map<String, String> additionalAttributes = new HashMap<String, String>();
+		
+		
 		
 // dirs-mode
 //		String fileName = viewAttributes.get(VIEW_ATTRIB_FILENAME);
@@ -53,16 +59,21 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 //			errors.rejectValue("viewAttributes['"+VIEW_ATTRIB_PO_NUMBER+"']","PONumberMissing");
 //		}
 		
-		if(!errors.hasErrors()){
+		if(!errors.hasErrors()){// Error Msg
 // check-PO-mode:
 //			String deliveryCheck = documentUC.checkPOAndMaterialForVendor(vendorNumber, poNumber, objectId);
-            String deliveryCheck = documentUC.checkMaterialForVendor(vendorNumber, objectId);
-			if(deliveryCheck != null){
+			List<String> deliveryCheck = documentUC.checkMaterialForVendor(vendorNumber, objectId, customVersion);
+			if(deliveryCheck.get(0) != null){
 	            Doc41Log.get().warning(this, null, "Material: " + objectId + " not allowed for Partner: " + vendorNumber + ", Download " + getTypeConst() + "/" + getSapTypeId() + " denied!");
 				errors.reject(""+deliveryCheck);
 			}
+			
+			if(deliveryCheck.size() >= 2){  // DW-11 PP/PI Toller is EV_PLANT a return value?
+				additionalAttributes.put("IV_PLANT_BOM", deliveryCheck.get(1)); //add EV_Plant to the CheckForDownloadResult Object
+				additionalAttributes.put("IV_VERID_BOM", customVersion);
+			}
 		}
-		return new CheckForDownloadResult(null,null);
+		return new CheckForDownloadResult(additionalAttributes,null);
 
 	}
 
