@@ -216,22 +216,30 @@
 			</tbody>
           </table>
 		  <doc41:pager />
-          <!--  input id="download" name="download" type="button" --> 
-          <% String downloadeable = "";%>
-          <c:choose>
-          <c:when test="${ empty searchForm.documents}">
-          	<% downloadeable = "disabled"; %>
-          </c:when>
-          <c:otherwise>
-          	<% downloadeable = ""; %>
-          </c:otherwise>
-          </c:choose>
+	          <!--  input id="download" name="download" type="button" --> 
+	          <% String downloadeable = "";%>
+	          <c:choose>
+	          <c:when test="${ empty searchForm.documents}">
+	          	<% downloadeable = "disabled"; %>
+	          </c:when>
+	          <c:otherwise>
+	          	<% downloadeable = ""; %>
+	          </c:otherwise>
+	          </c:choose>
+         
           
-          
-          <input type="submit" class="portlet-form-button" value="Download All" name="ButtonDownload" <c:out value="<%= downloadeable %>"/>/>
+          <input id="submitButton" type="submit" class="portlet-form-button" value="Download All" name="ButtonDownload" onclick="disableDownloadAll()" <c:out value="<%= downloadeable %>"/>/>
+          <script> <!-- Disable Downloadbutton when clicking on it -->
+				function disableDownloadAll(){
+					document.getElementById("submitButton").disabled = true;
+				}
+			</script> 
         </form:form>
+	
 		
 	</div>
+	
+	
 	<%--<div id="div-body" class="portlet-body">
 	<doc41:translate label="${stage}.searchSyncComment" />
 	</div>--%>

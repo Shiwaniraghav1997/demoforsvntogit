@@ -72,7 +72,7 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
             String evPlant = exportParameterList.getString(OUT_PLANT);
             mResult.add(mapReturnCodeToTag(returnCode));
-            if(evPlant != null){
+            if(evPlant != ""){
             	mResult.add(evPlant);
             }
         }
