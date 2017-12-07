@@ -25,8 +25,8 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	private static final String IN_SIGN = "SIGN";
 	private static final String IN_OPTION = "OPTION";
 	private static final String IN_LOW = "LOW";
-	//private static final String IN_VERID_BOM = "IV_VERID_BOM"; 
-	//private static final String IN_PLANT_BOM = "IV_PLANT_BOM";
+	private static final String IN_VERID_BOM = "IV_VERID_BOM"; 
+	private static final String IN_PLANT_BOM = "IV_PLANT_BOM";
 	private static final String IT_VALUE_RANGE = "IT_VALUE_RANGE";
     private static final String IT_D41ID = "IT_D41ID";
     private static final String D41ID = "D41ID";
@@ -75,6 +75,10 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 // TODO: Here you can temporary disable LAST_VER_SEARCH - new: YOU NEED TO EXPICITLY set FALSE (TRUE is new default!)
 //              sapInput.setValue(IN_MAX_VER_ONLY,sapBooleanToChar(Boolean.FALSE));
 				sapInput.setValue(IN_MAX_VER_ONLY,sapBooleanToChar(maxVersionOnly));
+				if(attribValues.get(IN_VERID_BOM) != null && attribValues.get(IN_PLANT_BOM) != null){
+					sapInput.setValue(IN_VERID_BOM, attribValues.get(IN_VERID_BOM));
+					sapInput.setValue(IN_PLANT_BOM, attribValues.get(IN_PLANT_BOM));
+				}
 				if(objectIds!=null && !objectIds.isEmpty()){
 					setParamObjectIDs(objectIds,sapObj,1,sapInput,tableParameterList);
 				}
