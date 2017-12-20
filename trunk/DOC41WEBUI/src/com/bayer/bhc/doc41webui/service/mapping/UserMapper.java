@@ -27,7 +27,6 @@ public class UserMapper extends AbstractMapper {
 		pDomainObject.setFirstname(pDataCarrier.getFirstname());
 		pDomainObject.setSurname(pDataCarrier.getLastname());
 		pDomainObject.setPhone(pDataCarrier.getPhone1());
-Doc41Log.get().debug(this, null, "Set UserFromDC company: " + pDataCarrier.getCompanyName());
 		pDomainObject.setCompany(pDataCarrier.getCompanyName());
 		if (pDataCarrier.getTimezoneId() != null) {
 		    pDomainObject.setTimeZone(pDataCarrier.getTimezoneId());
@@ -72,9 +71,7 @@ Doc41Log.get().debug(this, null, "Set UserFromDC company: " + pDataCarrier.getCo
 		pDataCarrier.setPhone1(pDomainObject.getPhone());
 		pDataCarrier.setLastname(pDomainObject.getSurname());
 		pDataCarrier.setIsexternal(Boolean.valueOf(pDomainObject.isExternalUser()));
-Doc41Log.get().debug(this, null, "Set DC company, ext?: " + pDomainObject.getCompany());
 		if (Boolean.valueOf(pDomainObject.isExternalUser())) {
-Doc41Log.get().debug(this, null, "is extern, done");
 		    pDataCarrier.setCompanyName(pDomainObject.getCompany());
 		}
 		
@@ -89,7 +86,6 @@ Doc41Log.get().debug(this, null, "is extern, done");
 			pDomainObject.setFirstname(pDataCarrier.getFirstName());
 			pDomainObject.setSurname(pDataCarrier.getLastName());
 			pDomainObject.setPhone(pDataCarrier.getPhone());
-Doc41Log.get().debug(this, null, "Set UserFromAILA company: " + pDataCarrier.getCompanyName());
 			pDomainObject.setCompany(pDataCarrier.getCompanyName());
 		}
 		return pDomainObject;
@@ -103,7 +99,6 @@ Doc41Log.get().debug(this, null, "Set UserFromAILA company: " + pDataCarrier.get
         	pDataCarrier.setMail(pDomainObject.getEmail());
         	pDataCarrier.setPhone(pDomainObject.getPhone());
             if (Boolean.valueOf(pDomainObject.isExternalUser())) {
-Doc41Log.get().debug(this, null, "Set AILA company: " + pDomainObject.getCompany());
                 pDataCarrier.setCompanyName(pDomainObject.getCompany());
             }
         }

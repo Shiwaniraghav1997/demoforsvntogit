@@ -337,7 +337,6 @@ public class User extends DomainObject {
 	}
 
 	public void setCompany(String company) {
-Doc41Log.get().debug(this, null, "User.SetCompany: " + company);
 		this.company = company;
 	}
 	
