@@ -25,7 +25,8 @@ public class UserMapper extends AbstractMapper {
 		pDomainObject.setEmail(pDataCarrier.getEmail());
 		pDomainObject.setFirstname(pDataCarrier.getFirstname());
 		pDomainObject.setSurname(pDataCarrier.getLastname());
-		pDomainObject.setPhone(pDataCarrier.getPhone1());		
+		pDomainObject.setPhone(pDataCarrier.getPhone1());
+		pDomainObject.setCompany(pDataCarrier.getCompanyName());
 		if (pDataCarrier.getTimezoneId() != null) {
 		    pDomainObject.setTimeZone(pDataCarrier.getTimezoneId());
 		}
@@ -69,9 +70,9 @@ public class UserMapper extends AbstractMapper {
 		pDataCarrier.setPhone1(pDomainObject.getPhone());
 		pDataCarrier.setLastname(pDomainObject.getSurname());
 		pDataCarrier.setIsexternal(Boolean.valueOf(pDomainObject.isExternalUser()));
-
-	
-		
+		if (Boolean.valueOf(pDomainObject.isExternalUser())) {
+		    pDataCarrier.setCompanyName(pDomainObject.getCompany());
+		}
 		
 		return pDataCarrier;
 	}
@@ -84,6 +85,7 @@ public class UserMapper extends AbstractMapper {
 			pDomainObject.setFirstname(pDataCarrier.getFirstName());
 			pDomainObject.setSurname(pDataCarrier.getLastName());
 			pDomainObject.setPhone(pDataCarrier.getPhone());
+			pDomainObject.setCompany(pDataCarrier.getCompanyName());
 		}
 		return pDomainObject;
 	}
@@ -95,6 +97,9 @@ public class UserMapper extends AbstractMapper {
         	pDataCarrier.setLastName(pDomainObject.getSurname());
         	pDataCarrier.setMail(pDomainObject.getEmail());
         	pDataCarrier.setPhone(pDomainObject.getPhone());
+            if (Boolean.valueOf(pDomainObject.isExternalUser())) {
+                pDataCarrier.setCompanyName(pDomainObject.getCompany());
+            }
         }
         return pDataCarrier;
 	}
