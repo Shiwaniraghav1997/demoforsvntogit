@@ -15,6 +15,7 @@ import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForDownloadResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
+import com.bayer.ecim.foundation.basic.StringTool;
 
 public abstract class PMSupplierDownloadDocumentType implements DownloadDocumentType{
 
@@ -64,7 +65,7 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 //			String deliveryCheck = documentUC.checkPOAndMaterialForVendor(vendorNumber, poNumber, objectId);
 			List<String> deliveryCheck = documentUC.checkMaterialForVendor(vendorNumber, objectId, customVersion);
 			if(deliveryCheck.get(0) != null){
-	            Doc41Log.get().warning(this, null, "Material: " + objectId + " not allowed for Partner: " + vendorNumber + ", Download " + getTypeConst() + "/" + getSapTypeId() + " denied!");
+	            Doc41Log.get().warning(this, null, "Material: " + objectId + " not allowed for Partner: " + vendorNumber + ", Download " + getTypeConst() + "/" + getSapTypeId() + " denied, result: " + StringTool.list(deliveryCheck,", ", false) + "!");
 				errors.reject(""+deliveryCheck);
 			}
 			

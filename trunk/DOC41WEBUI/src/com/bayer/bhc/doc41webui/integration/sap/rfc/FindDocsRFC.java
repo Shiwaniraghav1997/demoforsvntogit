@@ -44,7 +44,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	@Override
 	public void prepareCall(JCoFunction pFunction, List<?> pInputParms)
 			throws SAPException {
-		Doc41Log.get().debug(this, null, "prepareCall():ENTRY");
+		Doc41Log.get().debug(this, null, "ENTRY");
     	
         if (pFunction != null) {
             if (pInputParms != null) {
@@ -99,7 +99,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 				if (Doc41Log.get().isDebugActive()) {
 				    Doc41Log.get().debug(this, null, RFCFunctionDumper.dumpFunction(pFunction));
 				}
-				Doc41Log.get().debug(this, null, "prepareCall():attributs are set");
+				Doc41Log.get().debug(this, null, "attributs are set");
             } else {
                 throw new SAPException(
                         "FindDocsRFC pInputParms list is null", null);
@@ -108,7 +108,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
             throw new SAPException(
                     "FindDocsRFC pFunction list is null", null);
         }
-        Doc41Log.get().debug(FindDocsRFC.class, null, "prepareCall():EXIT");
+        Doc41Log.get().debug(FindDocsRFC.class, null, "EXIT");
 	}
 
 	private void setParamValue(String key, String value, int paramNumber,
@@ -163,12 +163,14 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	
 	@Override
 	public List<HitListEntry> processResult(JCoFunction pFunction) throws SAPException {
-		Doc41Log.get().debug(FindDocsRFC.class, null, "processResult():ENTRY");
+		Doc41Log.get().debug(FindDocsRFC.class, null, "ENTRY");
 		ArrayList<HitListEntry> mResult = new ArrayList<HitListEntry>();
         if (pFunction != null) {
+            if (Doc41Log.get().isDebugActive()) {
+                Doc41Log.get().debug(getClass(), null, RFCFunctionDumper.dumpFunction(pFunction));
+            }
             processReturnTable(pFunction,"OT_RETURN");
             JCoTable table = pFunction.getTableParameterList().getTable(OT_HITS);
-            Doc41Log.get().debug(getClass(), null, RFCFunctionDumper.dumpFunction(pFunction));
             if(table!=null){
             	for(int i=0;i<table.getNumRows();i++){
             		HitListEntry doc = new HitListEntry();
@@ -195,7 +197,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
             }
             
         }
-        Doc41Log.get().debug(FindDocsRFC.class, null, "processResult():EXIT");
+        Doc41Log.get().debug(FindDocsRFC.class, null, "EXIT");
         return mResult;
 	}
 }

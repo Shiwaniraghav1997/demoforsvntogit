@@ -51,6 +51,10 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 					sapInput.setValue(IN_VERID, customVersion);
 				}
 					
+                if (Doc41Log.get().isDebugActive()) {
+                    Doc41Log.get().debug(this, null, RFCFunctionDumper.dumpFunction(pFunction));
+                }
+                Doc41Log.get().debug(this, null, "attributs are set");
             } else {
                 throw new SAPException(
                         "CheckPOAndMaterialForVendorRFC pInputParms list is null", null);
@@ -68,6 +72,9 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 		Doc41Log.get().debug(this, null, "processResult():ENTRY");
 		ArrayList<String> mResult = new ArrayList<String>();
         if (pFunction != null) {
+            if (Doc41Log.get().isDebugActive()) {
+                Doc41Log.get().debug(getClass(), null, RFCFunctionDumper.dumpFunction(pFunction));
+            }
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
             String evPlant = exportParameterList.getString(OUT_PLANT);
