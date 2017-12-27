@@ -29,13 +29,11 @@
             <doc41:error path="docType" /></td>
           </tr> 
 	         <c:if test="${searchForm.type eq docType_PPPI}">
-	         <th><label for="${searchForm.type}"><doc41:translate label="versionIdBom" /></label></th>
+	         <th><label for="versionIdBom"><doc41:translate label="versionIdBom" /></label></th>
 	            <td>
-	            	<input id="versionIdBom"
-							class="portlet-form-input-field portlet-big" maxlength="70"
-							name="versionIdBom"
-							value="" />
-							<doc41:error path="viewAttributes['${keyFileName}']" />
+	            	<form:input path="versionIdBom"
+						cssClass="portlet-form-input-field portlet-mandatory portlet-big" maxlength="70" />
+							<doc41:error path="versionIdBom" />
 	            <doc41:error path="docType" /></td>
 	         </c:if>
         </jsp:attribute>

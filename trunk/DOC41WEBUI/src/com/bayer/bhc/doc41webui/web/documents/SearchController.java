@@ -161,7 +161,6 @@ public class SearchController extends AbstractDoc41Controller {
 		        }
 		    }
 		}
-		//TODO: Attribute "VERSION" for PM subcontractor role
 		searchForm.setAllowedDocTypes(mAllowedDocTypes);
 		searchForm.setKgs(isKgs);
 		searchForm.initAttributes(attributeDefinitions,language);
