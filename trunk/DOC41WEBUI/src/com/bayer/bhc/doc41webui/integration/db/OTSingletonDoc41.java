@@ -17,7 +17,6 @@ import com.bayer.ecim.foundation.dbx.OTSingletonDB;
 import com.bayer.ecim.foundation.dbx.QueryException;
 import com.bayer.ecim.foundation.dbx.StorableDataCarrier;
 import com.bayer.ecim.foundation.dbx.StoreException;
-import com.bayer.ecim.foundation.web.usermanagementN.OTUserManagementN;
 
 /**
  * OTSingletonDB for Doc41.
@@ -34,14 +33,16 @@ public class OTSingletonDoc41 extends OTSingletonDB {
     public OTSingletonDoc41(String pSingletonId) throws InitException {
         super(pSingletonId);
         try {
-            dbg0 = Dbg.get().getChannelByName("USRB_DBG0", "USRB_DBG0", "usr.sl.dbg0", true);
-            dbg1 = Dbg.get().getChannelByName("USRB_DBG1", "USRB_DBG1", "usr.sl.dbg1", false);
-            dbg2 = Dbg.get().getChannelByName("USRB_DBG2", "USRB_DBG2", "usr.sl.dbg2", false);
+            dbg0 = Dbg.get().getChannelByName("D41B_DBG0", "D41B_DBG0", "d41.sl.dbg0", true);
+            dbg1 = Dbg.get().getChannelByName("D41B_DBG1", "D41B_DBG1", "d41.sl.dbg1", false);
+            dbg2 = Dbg.get().getChannelByName("D41B_DBG2", "D41B_DBG2", "d41.sl.dbg2", false);
             cCache.setLogChannel( dbg1 );
-            DBObjectAccess.get().checkModuleRequiredVersion( "Foundation-UserMgmt", 1, 24 );
-            initSucceeded( OTUserManagementN.class );
+            DBObjectAccess.get().checkModuleRequiredVersion( "DOC41WEB", 1, 1 );
+            initSucceeded( OTSingletonDoc41.class );
         } catch (Exception mEx) {
             initFailed( new InitException( "Failed to initialize " + cClassName + "!", mEx) );
+        } catch (Error mErr) {
+            initFailed( mErr );
         }
     }
 
