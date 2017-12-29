@@ -170,7 +170,7 @@ public class SearchController extends AbstractDoc41Controller {
 				String searchFormCustomerNumber = searchForm.getCustomerNumber();
 				String searchFormVendorNumber = searchForm.getVendorNumber();
 				String searchFormCustomVersion = searchForm.getVersionIdBom();
-				checkPartnerNumbers(result,searchForm.isCustomerNumberUsed(), searchForm.isVendorNumberUsed(),searchFormCustomerNumber,searchFormVendorNumber);
+				checkPartnerNumbers(result,searchForm.isCustomerNumberUsed(), searchForm.isVendorNumberUsed(), searchForm.isVersionIdBomUsed(searchForm.getType()), searchFormCustomerNumber,searchFormVendorNumber,searchFormCustomVersion);
 				
 				if(!result.hasErrors()){
 					String singleObjectId = searchForm.getObjectId();
@@ -596,8 +596,8 @@ public class SearchController extends AbstractDoc41Controller {
 // FIXME: throws Doc41BusinessException, Webservice???
 	}
 	
-	private void checkPartnerNumbers(BindingResult errors, boolean hasCustomerNumber, boolean hasVendorNumber,
-			String customerNumber,String vendorNumber) throws Doc41BusinessException {
+	private void checkPartnerNumbers(BindingResult errors, boolean hasCustomerNumber, boolean hasVendorNumber, boolean hasVersionIdBom,
+			String customerNumber,String vendorNumber, String versionIdBom) throws Doc41BusinessException {
 		//customer
 		if(hasCustomerNumber){
 			if(StringTool.isTrimmedEmptyOrNull(customerNumber)){
@@ -621,6 +621,12 @@ public class SearchController extends AbstractDoc41Controller {
 				} else {
 					setLastVendorNumberFromSession(vendorNumber);
 				}
+			}
+		}
+		
+		if(hasVersionIdBom){
+			if(StringTool.isTrimmedEmptyOrNull(versionIdBom)){
+				errors.rejectValue("versionIdBom", "versionIdBomMissing");
 			}
 		}
 	}

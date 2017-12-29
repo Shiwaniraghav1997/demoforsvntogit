@@ -12,6 +12,7 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.SapCustomer;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -39,6 +40,8 @@ public abstract class CustomizedDocumentForm {
 	private String vendorNumber;
 	
 	private String versionIdBom;
+	
+	private boolean isVersionIdBomUsed = false;
 	
 	private boolean isVendorNumberUsed = false;
 	
@@ -254,5 +257,15 @@ public abstract class CustomizedDocumentForm {
 	public void setVersionIdBom(String versionIdBom) {
 		this.versionIdBom = versionIdBom;
 	}
+	
+	public boolean isVersionIdBomUsed(String docType){
+		if(docType.equals(DocumentType.GROUP_PPPI_PM)){
+			isVersionIdBomUsed = true;
+		}
+		
+		return isVersionIdBomUsed;
+	}
+	
+	
 	
 }
