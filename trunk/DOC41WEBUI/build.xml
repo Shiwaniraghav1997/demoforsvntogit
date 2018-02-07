@@ -26,17 +26,21 @@
 	<property name="tomcat.script.deploy" value="sudo /app/jenkins/scripts/deploy_war.sh" />
 	
 	<property name="apache.script.control" value="sudo /app/jenkins/scripts/start_stop_V_Hosts" />
-	<property name="server.dev1" value="BY0P5Q.bayer.cnb" />
-	<property name="server.dev2" value="" />
-	<property name="server.qa1" value="BY09GF" />
-	<property name="server.qa2" value="BY09ZR" />
-	<property name="server.prod1" value="BY0B5G" />
-	<property name="server.prod2" value="BY0B5H" />
-	<property name="checkport.dev1" value="8180" />
-	<property name="checkport.qa1" value="10080" />
-    <property name="checkport.qa2" value="10080" />
-    <property name="checkport.prod1" value="10080" />
-    <property name="checkport.prod2" value="10080" />
+    <property name="server.dev1" value="BY0P5Q.bayer.cnb" />
+    <property name="server.dev2" value="" />
+    <property name="server.qa1" value="BY0OW0.de.bayer.cnb" />
+    <property name="server.qa2" value="BY0OW1.bayer.cnb" />
+    <property name="server.prod1" value="BY0OM6.de.bayer.cnb" />
+    <property name="server.prod2" value="BY0P5M.de.bayer.cnb" />
+    <property name="checkport.dev1.bds-a" value="8180" />
+    <property name="checkport.dev1.bds-b" value="2180" />
+    <property name="checkport.dev1.bds-c" value="2280" />
+    <property name="checkport.qa1.bds-a" value="2080" />
+    <property name="checkport.qa1.bds-b" value="3080" />
+    <property name="checkport.qa2.bds-a" value="2080" />
+    <property name="checkport.qa2.bds-b" value="3080" />
+    <property name="checkport.prod1.bds" value="2080" />
+    <property name="checkport.prod2.bds" value="2080" />
 	<property name="vhname.dev" value="doc41-dev.bayer-ag.com"/>
 	<property name="vhname.qa" value="doc41-qa.bayer-ag.com"/>
 	<property name="vhname.prod" value="doc41.bayer-ag.com"/>
@@ -279,39 +283,44 @@
 	
 
 	<target name="deploy.to.dev.tomcat">
+		<propertycopy property="checkport" from="checkport.dev1.${proj.tcinstance}" />
 		<antcall target="deploy.to.one.tomcat">
 			<param name="server" value="${server.dev1}" />
-			<param name="checkport" value="${checkport.dev1}" />
+			<param name="checkport" value="${checkport}" />
 			<param name="virtual.host" value="${vhname.dev}" />
 		</antcall>
 	</target>
 
 	<target name="deploy.to.qa.tomcats">
+		<propertycopy property="checkport1" from="checkport.qa1.${proj.tcinstance}" />
 		<antcall target="deploy.to.one.tomcat">
 			<param name="server" value="${server.qa1}" />
-			<param name="checkport" value="${checkport.qa1}" />
+			<param name="checkport" value="${checkport1}" />
 			<param name="virtual.host" value="${vhname.qa}" />
 		</antcall>
 		<echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
 		<sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
+		<propertycopy property="checkport2" from="checkport.qa2.${proj.tcinstance}" />
 		<antcall target="deploy.to.one.tomcat">
 			<param name="server" value="${server.qa2}" />
-			<param name="checkport" value="${checkport.qa2}" />
+			<param name="checkport" value="${checkport2}" />
 			<param name="virtual.host" value="${vhname.qa}" />
 		</antcall>
 	</target>
 
 	<target name="deploy.to.prod.tomcats">
+		<propertycopy property="checkport1" from="checkport.prod1.${proj.tcinstance}" />
 		<antcall target="deploy.to.one.tomcat">
 			<param name="server" value="${server.prod1}" />
-			<param name="checkport" value="${checkport.prod1}" />
+			<param name="checkport" value="${checkport1}" />
 			<param name="virtual.host" value="${vhname.prod}" />
 		</antcall>
 		<echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
 		<sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
+		<propertycopy property="checkport2" from="checkport.prod2.${proj.tcinstance}" />
 		<antcall target="deploy.to.one.tomcat">
 			<param name="server" value="${server.prod2}" />
-			<param name="checkport" value="${checkport.prod2}" />
+			<param name="checkport" value="${checkport2}" />
 			<param name="virtual.host" value="${vhname.prod}" />
 		</antcall>
 	</target>
@@ -328,6 +337,7 @@
 		</antcall>-->
 		<antcall target="check.tomcat">
             <param name="server" value="${server1}"/>
+			<param name="checkport" value="${checkport1}"/>
 		</antcall>
 		<if>
 			<length string="${server2}" when="greater" length="0" />
@@ -338,6 +348,7 @@
 				</antcall>
 				<antcall target="check.tomcat">
 					<param name="server" value="${server2}"/>
+					<param name="checkport" value="${checkport2}"/>
 		        </antcall>
 				<!--<antcall target="control.apache.vh">
 					<param name="server" value="${server2}"/>
@@ -387,6 +398,7 @@
 		</antcall>
 		<antcall target="check.tomcat">
             <param name="server" value="${server1}"/>
+			<param name="checkport" value="${checkport1}"/>
         </antcall>
 		<!--<antcall target="control.apache.vh">
 			<param name="server" value="${server1}"/>
@@ -409,6 +421,7 @@
 				</antcall>
 				<antcall target="check.tomcat">
 		            <param name="server" value="${server2}"/>
+					<param name="checkport" value="${checkport2}"/>
 		        </antcall>
 				<!--<antcall target="control.apache.vh">
 					<param name="server" value="${server2}"/>
@@ -453,6 +466,8 @@
 		<propertycopy name="server1" from="server.${STAGE}1" />
 		<propertycopy name="server2" from="server.${STAGE}2" />
 		<propertycopy name="virtual.host" from="vhname.${STAGE}" />
+		<propertycopy name="checkport1" from="checkport.${STAGE}1.${proj.tcinstance}" />
+		<propertycopy name="checkport2" from="checkport.${STAGE}2.${proj.tcinstance}" silent="true"/>
 	</target>
 	
     <target name="copy.to.net.share.qa">
