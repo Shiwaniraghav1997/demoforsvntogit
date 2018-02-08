@@ -48,6 +48,7 @@
 	<property name="dir.net.share" value="//DE.BAYER.CNB/BBS/BBSGmbH/Group/IBS/IBS-eBC/90 Archive/30 Deployment"/>
 	<property name="proj.dir.net.share.qa" value="DOC41/QA"/>
 	<property name="proj.dir.net.share.prod" value="DOC41/Prod"/>
+	<property name="proj.dir.net.share.builds" value="DOC41/Builds"/>
 	<property name="proj.versionfile" value="cfg/BaseProperties.ini"/>
 	<property name="proj.version.regexp.search" value="all\.common\.all\.version=.*"/>
 	<property name="proj.version.regexp.replace.prefix" value="all.common.all.version="/>
@@ -489,6 +490,17 @@
 		<propertycopy name="checkport1" from="checkport.${STAGE}1.${proj.tcinstance}" />
 		<propertycopy name="checkport2" from="checkport.${STAGE}2.${proj.tcinstance}" silent="true"/>
 	</target>
+	
+    <target name="copy.to.net.share.builds">
+        <mkdir dir="${dir.net.share}/${proj.dir.net.share.builds}/${versionnumber}"/>
+        <copy file="${war.file}" todir="${dir.net.share}/${proj.dir.net.share.builds}/${versionnumber}" overwrite="false"/>
+    </target>
+    
+    <target name="copy.from.net.share.builds">
+        <delete dir="${dir.distrib}" failonerror="false"/>
+        <mkdir dir="${dir.distrib}"/>
+        <copy file="${dir.net.share}/${proj.dir.net.share.builds}/${versionnumber}/${war.name}" todir="${dir.distrib}" overwrite="true"/>
+    </target>
 	
     <target name="copy.to.net.share.qa">
         <mkdir dir="${dir.net.share}/${proj.dir.net.share.qa}/${versionnumber}"/>
