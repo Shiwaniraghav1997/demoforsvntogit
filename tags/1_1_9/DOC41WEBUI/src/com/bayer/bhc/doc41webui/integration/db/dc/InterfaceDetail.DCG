@@ -1,0 +1,31 @@
+#DEFINITION for InterfaceDetailDC:
+#--------------------------------
+
+Package=com.bayer.bhc.doc41webui.integration.db.dc
+DCClassName=InterfaceDetailDC
+Tablename=[DOC41WEB_MGR].IM_INTERFACE_DETAIL
+Superclass=com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
+ImplementedInterfaces=
+Imports=
+ClassComment=<my description of the dc>
+
+
+Column.1.Name=InterfaceName
+Column.1.Type=STRING
+Column.1.Comment=Maps DB-Column: interface_Name
+#Column.1.DBDefault="..."/new ...
+
+Column.2.Name=InterfaceDescription
+Column.2.Type=STRING
+Column.2.Comment=Maps DB-Column: interface_Description
+#Column.2.DBDefault="..."/new ...
+
+#Cols ignored, defined by super class:
+#-------------------------------------
+#CHANGED
+#CHANGEDBY
+#CHANGEDON
+#CREATED
+#CREATEDBY
+#CREATEDON
+#OBJECT_ID
