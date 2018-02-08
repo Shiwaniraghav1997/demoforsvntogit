@@ -180,6 +180,13 @@
 		<antcall target="junit" />
 	</target>
 	
+    <target name="jenkins-create-version" description="build in jenkins">
+        <antcall target="war" />
+        <antcall target="build-test" />
+        <antcall target="junit" />
+    	<antcall target="copy.to.net.share.builds" />
+    </target>
+	
 	<target name="jenkins-deploy-dev" description="build and deploy on dev server from jenkins">
 		<antcall target="war"/>
 		<antcall target="deploy.to.dev.tomcat"/>
