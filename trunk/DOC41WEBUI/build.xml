@@ -184,11 +184,23 @@
 		<antcall target="deploy.to.dev.tomcat"/>
 	</target>
 	
-	<target name="jenkins-deploy-qa" description="build and deploy on qa server from jenkins">
-		<antcall target="war"/>
-		<antcall target="copy.to.net.share.qa"/>	
-		<antcall target="deploy.to.qa.tomcats"/>
-	</target>
+    <target name="jenkins-deploy-qa" description="build and deploy on both qa servers from jenkins">
+        <antcall target="copy.from.net.share.builds"/>
+        <antcall target="copy.to.net.share.qa"/>    
+        <antcall target="deploy.to.qa.tomcats"/>
+    </target>
+    
+    <target name="jenkins-deploy-qa1" description="build and deploy on qa2 server from jenkins">
+        <antcall target="copy.from.net.share.builds"/>
+        <antcall target="copy.to.net.share.qa"/>    
+        <antcall target="deploy.to.qa1.tomcat"/>
+    </target>
+    
+    <target name="jenkins-deploy-qa2" description="build and deploy on qa1 server from jenkins">
+        <antcall target="copy.from.net.share.builds"/>
+        <antcall target="copy.to.net.share.qa"/>    
+        <antcall target="deploy.to.qa2.tomcat"/>
+    </target>
 	
 	<target name="jenkins-deploy-prod" description="deploy on prod server from jenkins">
 		<antcall target="copy.from.net.share.qa"/>
@@ -290,23 +302,31 @@
 			<param name="virtual.host" value="${vhname.dev}" />
 		</antcall>
 	</target>
+	
+    <target name="deploy.to.qa.tomcats">
+        <antcall target="deploy.to.qa1.tomcat"/>
+        <echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
+        <sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
+        <antcall target="deploy.to.qa2.tomcat"/>
+    </target>
 
-	<target name="deploy.to.qa.tomcats">
-		<propertycopy property="checkport1" from="checkport.qa1.${proj.tcinstance}" />
-		<antcall target="deploy.to.one.tomcat">
-			<param name="server" value="${server.qa1}" />
-			<param name="checkport" value="${checkport1}" />
-			<param name="virtual.host" value="${vhname.qa}" />
-		</antcall>
-		<echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
-		<sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
-		<propertycopy property="checkport2" from="checkport.qa2.${proj.tcinstance}" />
-		<antcall target="deploy.to.one.tomcat">
-			<param name="server" value="${server.qa2}" />
-			<param name="checkport" value="${checkport2}" />
-			<param name="virtual.host" value="${vhname.qa}" />
-		</antcall>
-	</target>
+    <target name="deploy.to.qa1.tomcat">
+        <propertycopy property="checkport" from="checkport.qa1.${proj.tcinstance}" />
+        <antcall target="deploy.to.one.tomcat">
+            <param name="server" value="${server.qa1}" />
+            <param name="checkport" value="${checkport}" />
+            <param name="virtual.host" value="${vhname.qa}" />
+        </antcall>
+    </target>
+    
+    <target name="deploy.to.qa2.tomcat">
+        <propertycopy property="checkport" from="checkport.qa2.${proj.tcinstance}" />
+        <antcall target="deploy.to.one.tomcat">
+            <param name="server" value="${server.qa2}" />
+            <param name="checkport" value="${checkport}" />
+            <param name="virtual.host" value="${vhname.qa}" />
+        </antcall>
+    </target>
 
 	<target name="deploy.to.prod.tomcats">
 		<propertycopy property="checkport1" from="checkport.prod1.${proj.tcinstance}" />
