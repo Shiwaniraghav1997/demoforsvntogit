@@ -1,0 +1,56 @@
+#DEFINITION for MonitoringHistoryDC:
+#--------------------------------
+
+Package=com.bayer.bhc.doc41webui.integration.db.dc
+DCClassName=MonitoringHistoryDC
+Tablename=[DOC41WEB_MGR].IM_MONITORING_HISTORY
+Superclass=com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
+ImplementedInterfaces=
+Imports=
+ClassComment=<my description of the dc>
+
+
+Column.1.Name=InterfaceName
+Column.1.Type=STRING
+Column.1.Comment=Maps DB-Column: interface_Name
+#Column.1.DBDefault="..."/new ...
+
+#Column.2.Name=LatestRequest
+#Column.2.Type=TIMESTAMP
+#Column.2.Comment=Maps DB-Column: latest_Request
+#Column.2.DBDefault="..."/new ...
+
+Column.3.Name=ActionType
+Column.3.Type=STRING
+Column.3.Comment=Maps DB-Column: action_Type
+#Column.3.DBDefault="..."/new ...
+
+Column.4.Name=ActionStatus
+Column.4.Type=STRING
+Column.4.Comment=Maps DB-Column: action_Status
+#Column.4.DBDefault="..."/new ...
+
+Column.5.Name=ActionRemarks
+Column.5.Type=STRING
+Column.5.Comment=Maps DB-Column: action_Remarks
+#Column.5.DBDefault="..."/new ...
+
+Column.6.Name=ActionDetails
+Column.6.Type=STRING
+Column.6.Comment=Maps DB-Column: action_Details
+#Column.6.DBDefault="..."/new ...
+
+Column.7.Name=ResponseTime
+Column.7.Type=ID
+Column.7.Comment=Maps DB-Column: response_Time
+#Column.7.DBDefault="..."/new ...
+
+#Cols ignored, defined by super class:
+#-------------------------------------
+#CHANGED
+#CHANGEDBY
+#CHANGEDON
+#CREATED
+#CREATEDBY
+#CREATEDON
+#OBJECT_ID
