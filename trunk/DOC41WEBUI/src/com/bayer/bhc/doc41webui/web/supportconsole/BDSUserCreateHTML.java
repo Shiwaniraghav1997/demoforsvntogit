@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -18,6 +19,7 @@ import com.bayer.bhc.doc41webui.common.paging.PagingResult;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UserListFilter;
+import com.bayer.bhc.doc41webui.domain.Profile;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.usecase.UserManagementUC;
@@ -42,6 +44,7 @@ public class BDSUserCreateHTML
 
     static final String USER_FIELD = "USR";
     static final String PASSW_FIELD = "UPW";
+    static final String ROLE_FIELD = "PROFILE";
     static final String INITPW_FIELD = "IPW";
     static final String IMP_AREA = "IMPORT";
     static final String RES_AREA = "RESULT";
@@ -57,7 +60,8 @@ public class BDSUserCreateHTML
     static final String CSV_CWID = "CWID";
     static final String CSV_STATUS = "STATUS";
     
-    static final String UM_ROLE = "doc41_pmsup";
+    static final String UM_DEFAULT_ROLE = "doc41_pmsup";
+    static final String UM_ROLE_TYPE = "PT";
     
     @Override
     public void renderPage(String pNamespace, String pClientVariantId, Long pReportId, String pBaseUrlAjax, String pBaseUrlImg, Writer out) throws FdtPageRendererException {
@@ -71,11 +75,13 @@ public class BDSUserCreateHTML
 
             ApplicationContext ctx = ApplicationContextProvider.getApplicationContext();
             userMgmtUC = ctx.getBean(UserManagementUC.class);
+            List<Profile> mProfiles = userMgmtUC.getAllProfiles();
             String pUser    = StringTool.nullToEmpty(((FdtSupportConsoleRequestBean)cRequestBean).getAttribute(USER_FIELD));
             String pPw      = StringTool.nullToEmpty(((FdtSupportConsoleRequestBean)cRequestBean).getAttribute(PASSW_FIELD));
             String pInitPw  = StringTool.nullToEmpty(((FdtSupportConsoleRequestBean)cRequestBean).getAttribute(INITPW_FIELD));
             String pInput   = StringTool.nullToEmpty(((FdtSupportConsoleRequestBean)cRequestBean).getAttribute(IMP_AREA));
             String pResult  = StringTool.nullToEmpty(((FdtSupportConsoleRequestBean)cRequestBean).getAttribute(RES_AREA));
+            String pProfSel = StringTool.nvl(StringTool.trimmedEmptyToNull(StringTool.toString(((FdtSupportConsoleRequestBean)cRequestBean).getAttribute(ROLE_FIELD))), UM_DEFAULT_ROLE);
 
             StringBuffer mRowResults = new StringBuffer(5000);
             char mQ = '"';
@@ -90,9 +96,17 @@ public class BDSUserCreateHTML
             
             println(out, "<P/><P>Paste User CSV List and press GO button.</P>", escJS);
 
-            println(out, "<P>User: <input type=\"text\" name=\"" + USER_FIELD + "\" SIZE=\"10\" value=\"" + StringTool.escapeHTMLNotLF(pUser) + "\">" , escJS);
+            println(out, "<P><TABLE><TR><TD>", escJS);
+            println(out, "User: <input type=\"text\" name=\"" + USER_FIELD + "\" SIZE=\"10\" value=\"" + StringTool.escapeHTMLNotLF(pUser) + "\">" , escJS);
             println(out, "  Password: <input type=\"password\" name=\"" + PASSW_FIELD + "\" SIZE=\"50\" value=\"" + StringTool.escapeHTMLNotLF(pPw) + "\"></P>" , escJS);
             println(out, "  Init Password: <input type=\"text\" name=\"" + INITPW_FIELD + "\" SIZE=\"50\" value=\"" + StringTool.escapeHTMLNotLF(pInitPw) + "\"></P>" , escJS);
+            println(out, "</TD><TD>&nbsp;</TD><TD>", escJS);
+            for (Profile mProf : mProfiles ) {
+                if ( ((mProf.getIsexternal() == null) || mProf.getIsexternal()) && (UM_ROLE_TYPE.equals(mProf.getType())) ) {
+                    println(out, "<input type=\"radio\" id=\"" + StringTool.escapeHTML(mProf.getProfilename()) + "\" name=\"" + ROLE_FIELD + "\" value=\"" + StringTool.escapeHTML(mProf.getProfilename())  + "\" " + (mProf.getProfilename().equals(pProfSel) ? "checked" : "") + " /><LABEL FOR=\"" + StringTool.escapeHTML(mProf.getProfilename()) + "\">" + StringTool.escapeHTML(mProf.getProfiledescription()) + "</LABEL><BR>", escJS);
+                }
+            }
+            println(out, "</TD></TR></TABLE>", escJS);
             println(out, "<textarea rows=10 cols=150 name=\"" + IMP_AREA  + "\">" + StringTool.escapeHTMLNotLF( StringTool.nullToEmpty(pInput) )  + "</textarea><BR>", escJS);
 
             println(out, "<INPUT name=\"" + GO_BUTTON + "\" type=\"submit\" value=\"GO\">", escJS);
@@ -147,8 +161,8 @@ public class BDSUserCreateHTML
                                 String mFirstName   = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_FIRST)));
                                 String mEmail       = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_EMAIL)));
                                 String mVendor      = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_VENDOR)));
-                                String mPhone      = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_PHONE)));
-                                String mCompany      = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_COMPANY)));
+                                String mPhone       = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_PHONE)));
+                                String mCompany     = StringTool.trimEmptyToNull(mRow.getValue(mColNamesH.get(CSV_COMPANY)));
                                 mProcessing.append("- row " + i + ", lastname: " + mLastName + ", firstname: " + mFirstName + ", email: " + mEmail + ", vendor: " + mVendor+ ", phone: " + mPhone+ ", company: " + mCompany);
                                 mRowResults.append("" + mQ + StringTool.replace(mEmail, ""+mQ, ""+mQ+mQ) + mQ);
                                 if ((mFirstName == null) || (mLastName == null) || (mEmail == null) || (mVendor == null)) {
@@ -190,7 +204,7 @@ public class BDSUserCreateHTML
                                             mNew.setVendors(Arrays.asList(mSapVen));
                                             mNew.setType(User.TYPE_EXTERNAL);
                                             mNew.setActive(true);
-                                            mNew.setRoles(Arrays.asList(UM_ROLE));
+                                            mNew.setRoles(Arrays.asList(pProfSel));
                                             String mExpPw = "";
                                             try {
                                                 mExpPw = Template.expand(pInitPw, new Object[] { mVendorOrg }, new String[] { "VENDOR" } );

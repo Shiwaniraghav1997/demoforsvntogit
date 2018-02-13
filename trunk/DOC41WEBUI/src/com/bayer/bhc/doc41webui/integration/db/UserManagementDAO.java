@@ -363,7 +363,8 @@ public class UserManagementDAO extends AbstractDAOImpl {
      */
 	protected ArrayList<UMProfileNDC> getAllProfileDCs() throws Doc41TechnicalException {
 	    try {
-            ArrayList<UMProfileNDC> result = (ArrayList<UMProfileNDC>)OTUserManagementN.get().getProfiles(null, null, null, -1, -1, null, null, "d41_Order_By", null, LocaleInSession.get()).getResult();
+	        Locale pLoc = LocaleInSession.get();
+            ArrayList<UMProfileNDC> result = (ArrayList<UMProfileNDC>)OTUserManagementN.get().getProfiles(null, null, null, -1, -1, null, null, "d41_Order_By", null, (pLoc == null) ? Locale.US : pLoc).getResult();
             return result;
         } catch (Exception e) {
             throw new Doc41TechnicalException(getClass(), "getAllProfiles", e);
