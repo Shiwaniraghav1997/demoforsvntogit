@@ -154,9 +154,14 @@ public class Doc41Log {
      */
 	public void logWebMetrix(HttpServletRequest pRequest, Object handler, String anURI) {
 		String usr = UserInSession.getCwid();
-		String action = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL);
-					
-		Doc41LogEntry pObj = new Doc41LogEntry(usr, usr, null, action, anURI, null, null, null, null, null, null, null, null);
+		String action = "n/a";
+		try {
+		    action = (String)pRequest.getSession().getAttribute(Doc41SessionKeys.DOC41_LAST_RENDERED_CTRL);
+		} catch (java.lang.IllegalStateException e) {
+		    action = "???";
+		    Doc41Log.get().debug(this, usr, "java.lang.IllegalStateException: "+e.getMessage());
+		}
+		Doc41LogEntry pObj = new Doc41LogEntry(usr, usr, "DOC41WEB", action, anURI, null, null, null, null, null, null, null, null);
 		Dbg.get().println(LOGGING, handler, pRequest.getRemoteUser(),pObj);
 	}
 
