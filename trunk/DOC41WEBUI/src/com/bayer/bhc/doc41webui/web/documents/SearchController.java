@@ -33,7 +33,6 @@ import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ClientAbortException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41DocServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
-import com.bayer.bhc.doc41webui.common.util.Doc41Utils;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UrlParamCrypt;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -200,6 +199,10 @@ public class SearchController extends AbstractDoc41Controller {
                             objectIds.add(singleObjectId);
                         }
                         int i = 0;
+                        HashSet<String> mChkErrs = new HashSet<String>();
+                        ArrayList<String> mChkErrTypes = new ArrayList<String>();
+                        boolean mIsMatNotFoundForVendor = false;
+
 						for (DocumentType mDocType: mDocTypes) {
 						    i++;
 						    Doc41Log.get().debug(this,  null,  "Check permission for DocType " + i + "/" + mDocTypes.size() + " : " + mDocType.getTypeConst() + " (" + mDocType.getSapTypeId() +")");
@@ -225,11 +228,21 @@ public class SearchController extends AbstractDoc41Controller {
 						            objectIds.addAll(additionalObjectIds);
 						        }
 						    } else {
+						        mChkErrTypes.add(""+mDocType.getTypeConst()+"/"+mDocType.getSapTypeId());
+						        for (ObjectError mObjErr : mTmp.getAllErrors()) {
+						            String mObjErrStr = ""+mObjErr;
+                                    mIsMatNotFoundForVendor |= "MatNotFoundForVendor".equals(mObjErrStr);
+						            mChkErrs.add(mObjErrStr);
+						        }
 						        Doc41Log.get().debug(this,  null, "==>>> DocType ignored, user has no permission: " + mDocType.getTypeConst() + "(" + mDocType.getSapTypeId() +")" );
 						        Doc41Log.get().debug(this, null, StringTool.list(mTmp.getAllErrors(), " // ", false));
 						    }
 						}
                         Doc41Log.get().debug(this,  null, "SearchingTargetTypes allowed to search: " + searchingTargetTypes.size() + " (" + StringTool.list(searchingTargetTypes, ", ", false) + ")");
+                        if (mIsMatNotFoundForVendor) {
+                            Doc41Log.get().warning(this, null, "not allowed, Material: " + singleObjectId + ", Partner: " + searchFormVendorNumber + ", Customer: " + searchFormCustomerNumber + ", Version: " + searchFormCustomVersion + " Download denied, " +
+                            (searchingTargetTypes.isEmpty() ? "all Types" : StringTool.list(mChkErrTypes, ", ", false)) + ", Results: " + StringTool.list(mChkErrs, ", ", false) + "!" );
+                        }
 					    if (searchingTargetTypes.isEmpty()) {
 					        boolean allHaveFieldErrors = true;
 					        HashSet<ObjectError> mKnown = new HashSet<ObjectError>();
