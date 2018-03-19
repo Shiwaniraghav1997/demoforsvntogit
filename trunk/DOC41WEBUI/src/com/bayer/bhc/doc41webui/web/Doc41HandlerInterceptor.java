@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.StringTokenizer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -271,7 +270,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 // WS -> Expected BEGIN_OBJECT but was STRING at line 1 column 1
 
 			if (usr == null) {
-                Doc41Log.get().warning(this, "<NULL>", "User empty/unknown, current URI: " + request.getRequestURI() + ", redirecting to: " + request.getContextPath() +URI_LOGIN);
+                Doc41Log.get().debug(this, "<NULL>", "User empty/unknown, current URI: " + request.getRequestURI() + ", redirecting to: " + request.getContextPath() +URI_LOGIN);
                 Doc41Log.get().debug(this, null, toString(request));
                 Doc41Log.get().debug(this, null, toString(response));
 			    response.sendRedirect(request.getContextPath() +URI_LOGIN);
@@ -596,7 +595,7 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
 		}
 		if (dbSessionDC == null) {
 			// session not in DB
-			dbSessionDC = new SessionDataDC();
+			dbSessionDC = SessionDataDC.newInstanceOfSessionDataDC();
 			dbSessionDC.setId(pUser.getCwid());
 		} else {
 			long readTime = System.currentTimeMillis();
