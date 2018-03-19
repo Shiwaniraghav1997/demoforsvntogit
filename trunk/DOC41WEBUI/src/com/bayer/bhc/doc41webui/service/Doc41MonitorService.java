@@ -32,8 +32,8 @@ public class Doc41MonitorService {
     /** the logging channel */
     private static final int INTERFACE_LOGGING=Dbg.get().getChannelByName(SHORT_NAME,NAME,PROPERTY_PREFIX,false);
 
-    /** a flag indicating whether logging is active */
-    private static final boolean INTERFACE_LOGGING_ACTIVE=Dbg.get().isLogicalChannelActive(INTERFACE_LOGGING);
+    /** a flag indicating whether logging is active / IMWIF: WARNING, THIS IS NOT STATIC!!! And it makes no sense to check on this level, Debug will already do for you just 2 commands later!!! */
+    //private static final boolean INTERFACE_LOGGING_ACTIVE=Dbg.get().isLogicalChannelActive(INTERFACE_LOGGING);
 
     /**
      * Monitors The each and every request processing of a specified back ground Interfaces(like RFC Services, LDAP)
@@ -47,14 +47,14 @@ public class Doc41MonitorService {
      * @param pResponseTime java.lang.Long response time of action .
      */
     public void monitor(String pInterfaceName, String pAction, Date pRequested, String pStatus, String pRemarks,String pDetails,long pResponseTime) {
-    	if (INTERFACE_LOGGING_ACTIVE) {
+    	//if (INTERFACE_LOGGING_ACTIVE) {
         	String usr = UserInSession.getCwid();
             Dbg.get().println(
                     INTERFACE_LOGGING,
                     this,
                     usr,
                     new Doc41InterfaceLogEntry(usr, pInterfaceName, pAction, pRequested,pStatus, pRemarks,pDetails,pResponseTime));
-    	}
+    	//}
     }
 
 }
