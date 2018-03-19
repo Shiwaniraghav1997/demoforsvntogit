@@ -168,7 +168,7 @@ public class MonitoringRepository extends AbstractRepository{
 	 */
 	public void addInterface(Monitor monitoring) throws Doc41RepositoryException {
 		try {
-		InterfaceDetailDC interfaceDetail = getMapper().mapToDc(monitoring, new InterfaceDetailDC());
+		InterfaceDetailDC interfaceDetail = getMapper().mapToDc(monitoring, InterfaceDetailDC.newInstanceOfInterfaceDetailDC());
 		String interfaceName = interfaceDetail.getInterfaceName();
 		if(findInterfaceDetailsByName(interfaceName).getName()!=null){
 			throw new Doc41RepositoryException(Doc41ErrorMessageKeys.MONITOR_INTERFACE_ALREADY_EXISTS,null);

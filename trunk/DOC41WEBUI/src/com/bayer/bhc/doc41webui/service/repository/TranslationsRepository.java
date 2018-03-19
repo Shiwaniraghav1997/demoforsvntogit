@@ -87,7 +87,7 @@ public  class TranslationsRepository extends AbstractRepository {
         }
         
         try {
-            this.translationsDAO.storeTag(getTranslationsMapper().mapToDC(translation, new TranslationsDC()));
+            this.translationsDAO.storeTag(getTranslationsMapper().mapToDC(translation, TranslationsDC.newInstanceOfTranslationsDC()));
         } catch (Doc41TechnicalException e) {
             throw new Doc41RepositoryException(Doc41ErrorMessageKeys.TRANSL_CREATE_TAG_FAILED,e);
         }
@@ -281,7 +281,7 @@ public  class TranslationsRepository extends AbstractRepository {
      */
     public int isTagExist(Translation pTranslation) throws Doc41RepositoryException {
         try {
-            return this.translationsDAO.isTagExist(getTranslationsMapper().mapToDC(pTranslation, new TranslationsDC()));
+            return this.translationsDAO.isTagExist(getTranslationsMapper().mapToDC(pTranslation, TranslationsDC.newInstanceOfTranslationsDC()));
         } catch (Doc41TechnicalException e) {
             throw new Doc41RepositoryException(Doc41ErrorMessageKeys.TRANSL_TAG_EXISTS_FAILED,e);
         }

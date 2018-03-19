@@ -113,7 +113,7 @@ public class MonitoringMapper extends AbstractMapper{
 	 * @see com.bayer.bms.ccp.service.mapping.MonitoringMapper#mapToDc(com.bayer.bms.ccp.domain.User)
 	 */
 	public MonitoringContactDC mapToDc(User user) {
-		MonitoringContactDC contactDC=new MonitoringContactDC();	
+		MonitoringContactDC contactDC=MonitoringContactDC.newInstanceOfMonitoringContactDC();	
 		if(user!=null){
 			super.mapToDataCarrier(user, contactDC);
 			contactDC.setInterfaceName(user.getCompany());

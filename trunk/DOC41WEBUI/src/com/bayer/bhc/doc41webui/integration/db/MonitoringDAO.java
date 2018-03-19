@@ -52,7 +52,7 @@ public class MonitoringDAO extends AbstractDAOImpl{
 	 */
 	public MonitoringContactDC findContactPersonByInterface(String interfaceName, String contactType)
 			throws Doc41TechnicalException {
-		MonitoringContactDC contactDC=new MonitoringContactDC();
+		MonitoringContactDC contactDC=MonitoringContactDC.newInstanceOfMonitoringContactDC();
 		String[] pParameterNames = { INTERFACE_NAME,CONTACT_TYPE};
 		Object[] pParameterValues = {interfaceName, contactType };
 		List<MonitoringContactDC> result = find(pParameterNames, pParameterValues,FIND_CANACT_PERSON, MonitoringContactDC.class);
@@ -89,7 +89,7 @@ public class MonitoringDAO extends AbstractDAOImpl{
 	 * @see com.bayer.bms.ccp.integration.db.MonitoringDAO#findInterfaceDetailsByName(java.lang.String)
 	 */
 	public InterfaceDetailDC findInterfaceDetailsByName(String pName) throws Doc41TechnicalException {
-		InterfaceDetailDC detailsDC=new InterfaceDetailDC();
+		InterfaceDetailDC detailsDC=InterfaceDetailDC.newInstanceOfInterfaceDetailDC();
 		String[] pParameterNames = { INTERFACE_NAME};
 		Object[] pParameterValues = {pName};
 		List<InterfaceDetailDC> result = find(pParameterNames, pParameterValues,FIND_INTERFACE_DETAILS, InterfaceDetailDC.class);
