@@ -230,8 +230,8 @@ public class SearchController extends AbstractDoc41Controller {
 						    } else {
 						        mChkErrTypes.add(""+mDocType.getTypeConst()+"/"+mDocType.getSapTypeId());
 						        for (ObjectError mObjErr : mTmp.getAllErrors()) {
-						            String mObjErrStr = ""+mObjErr;
-                                    mIsMatNotFoundForVendor |= "MatNotFoundForVendor".equals(mObjErrStr);
+						            String mObjErrStr = ""+mObjErr.getCode();
+                                    mIsMatNotFoundForVendor |= "[MatNotFoundForVendor]".equals(mObjErrStr);
 						            mChkErrs.add(mObjErrStr);
 						        }
 						        Doc41Log.get().debug(this,  null, "==>>> DocType ignored, user has no permission: " + mDocType.getTypeConst() + "(" + mDocType.getSapTypeId() +")" );
@@ -240,7 +240,7 @@ public class SearchController extends AbstractDoc41Controller {
 						}
                         Doc41Log.get().debug(this,  null, "SearchingTargetTypes allowed to search: " + searchingTargetTypes.size() + " (" + StringTool.list(searchingTargetTypes, ", ", false) + ")");
                         if (mIsMatNotFoundForVendor) {
-                            Doc41Log.get().warning(this, null, "not allowed, Material: " + singleObjectId + ", Partner: " + searchFormVendorNumber + ", Customer: " + searchFormCustomerNumber + ", Version: " + searchFormCustomVersion + " Download denied, " +
+                            Doc41Log.get().warning(this, null, "not allowed, Material: " + singleObjectId + ", Partner: " + searchFormVendorNumber + ", Customer: " + searchFormCustomerNumber + ", Version: " + searchFormCustomVersion + ", Download DENIED, " +
                             (searchingTargetTypes.isEmpty() ? "all Types" : StringTool.list(mChkErrTypes, ", ", false)) + ", Results: " + StringTool.list(mChkErrs, ", ", false) + "!" );
                         }
 					    if (searchingTargetTypes.isEmpty()) {
