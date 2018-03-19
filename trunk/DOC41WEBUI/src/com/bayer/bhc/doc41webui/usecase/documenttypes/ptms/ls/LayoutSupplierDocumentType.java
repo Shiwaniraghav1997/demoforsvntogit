@@ -62,6 +62,7 @@ public abstract class LayoutSupplierDocumentType implements DocumentType{
 	 * @param customerNumber
 	 * @param vendorNumber
 	 * @param objectId = materialNumber
+	 * @param customVersion 
 	 * @param attributeValues - what kind of magic attributes?
 	 * @param viewAttributes - what kind of magic attributes?
 	 * @return

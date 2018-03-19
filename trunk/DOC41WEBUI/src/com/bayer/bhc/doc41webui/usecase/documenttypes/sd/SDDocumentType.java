@@ -79,6 +79,7 @@ public abstract class SDDocumentType implements DocumentType {
 	 * @param customerNumber
 	 * @param vendorNumber
 	 * @param objectId
+	 * @param customVersion 
 	 * @param attributeValues
 	 * @param viewAttributes
 	 * @return

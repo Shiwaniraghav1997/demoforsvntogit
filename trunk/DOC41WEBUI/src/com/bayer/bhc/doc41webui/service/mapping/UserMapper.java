@@ -5,7 +5,6 @@ import java.util.Locale;
 import org.springframework.stereotype.Component;
 
 import com.bayer.bbs.aila.model.AILAPerson;
-import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.ecim.foundation.web.usermanagementN.UMUserNDC;
