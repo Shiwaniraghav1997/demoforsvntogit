@@ -1,7 +1,7 @@
 /*
  * (c)2007 Bayer AG Leverkusen, Bayer Business Solutions
  * All rights reserved.
- * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini 9611 2014-10-23 15:31:04Z imdis )
+ * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini 11016 2017-02-21 13:08:28Z ezfhl )
  *
  * $Id$
  */
@@ -19,9 +19,8 @@ import com.bayer.ecim.foundation.dbx.*;
 /**
  * <my description of the dc>
  */
-public class ProfilePermissionDC
-	extends com.bayer.ecim.foundation.dbx.DataCarrier
-{
+public class   ProfilePermissionDC
+       extends com.bayer.ecim.foundation.dbx.DataCarrier {
 
 	/** Maps DB-Column: permissionname */
 	String cPermissionname;
@@ -71,23 +70,26 @@ public class ProfilePermissionDC
 	Boolean cDoc41Delcertvcust;
 	public static final String FIELD_DOC41DELCERTVCUST = "Doc41Delcertvcust";
 
-	public Class<DataCarrier> c = null; // dummy variable to avoid warning
+	/** for compatibility: dummy variable to suppress import warning...*/
+	public static final Class<DataCarrier> _DBX_DC_CLASS_PROFILEPERMISSIONDC = DataCarrier.class;
 
 	/** The master Class of this class. */
-	public final Class<BasicDataCarrier> MASTER_CLASS = BasicDataCarrier.class;
+	public static final Class<BasicDataCarrier> MASTER_CLASS_PROFILEPERMISSIONDC = BasicDataCarrier.class;
 
 	/** Set the database table-name (null if unspecified) for this DC. */
 	static {
 		setDBTablename( ProfilePermissionDC.class, null );
 	}
 
-	private static final long serialVersionUID = 20150121032208462L;
+	private static final long serialVersionUID = 20180319062713766L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_PROFILEPERMISSIONDC = java.math.BigDecimal.class;
 
-	@SuppressWarnings("unchecked")
-    private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PERMISSIONNAME, FIELD_PERMISSIONDESCRIPTION, FIELD_DOC41CARR, FIELD_DOC41LAYSUP, FIELD_DOC41PMSUP, FIELD_DOC41BADM, FIELD_DOC41TADM, FIELD_DOC41OBSV, FIELD_DOC41MATSUP, FIELD_DOC41PRODSUP, FIELD_DOC41DELCERTVCOUNTRY, FIELD_DOC41DELCERTVCUST};
-	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
+	private static final HashMap<String,BasicDCFieldMeta> FIELD_META       = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldMetaMap() );
+	private static final String[]                         LOCAL_FIELD_LIST = new String[] {FIELD_PERMISSIONNAME, FIELD_PERMISSIONDESCRIPTION, FIELD_DOC41CARR, FIELD_DOC41LAYSUP, FIELD_DOC41PMSUP, FIELD_DOC41BADM, FIELD_DOC41TADM, FIELD_DOC41OBSV, FIELD_DOC41MATSUP, FIELD_DOC41PRODSUP, FIELD_DOC41DELCERTVCOUNTRY, FIELD_DOC41DELCERTVCUST};
+	private static final String[]                         FIELD_LIST       = StringTool.merge( com.bayer.ecim.foundation.dbx.DataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
+
+	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
+	public static final int CHECK_PROFILEPERMISSIONDC = com.bayer.ecim.foundation.dbx.DataCarrier.CHECK_DATACARRIER;
 
 	static {
 		try {
@@ -104,111 +106,94 @@ public class ProfilePermissionDC
 			FIELD_META.put( FIELD_DOC41DELCERTVCOUNTRY,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 			FIELD_META.put( FIELD_DOC41DELCERTVCUST,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 		} catch ( Exception e ) {
-			throw new InitException( "Failed to detect return types of the getter methods of ProfilePermissionDC!", null );
+			throw new InitException( "Failed to detect return types of the getter methods of ProfilePermissionDC!", e );
 		}
 	}
 
 	/**
-	 * The Constructor.
-	 * (a)deprecated Use: static ProfilePermissionDC newInstanceOfProfilePermissionDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * The standard Constructor (Framework internal: do not use in applications!).
+	 * @deprecated Use: static ProfilePermissionDC newInstanceOfProfilePermissionDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
+	@Deprecated
 	public ProfilePermissionDC() {
 		super( (Boolean)null );
 	}
 
 	/**
-	 * Temporary Constructor.
+	 * Constructor for class-hierarchy (Framework internal: do not use in applications!).
 	 */
 	protected ProfilePermissionDC( Boolean pVal ) {
 		super( pVal );
-		pVal = null;
 	}
 
 	/**
 	 * The Copy Constructor.
-	 * (a)deprecated Use: static ProfilePermissionDC newInstanceOfProfilePermissionDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * @deprecated Use: static ProfilePermissionDC newInstanceOfProfilePermissionDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
-	public ProfilePermissionDC( BasicDataCarrier pDC )
-		throws InitException
-	{
+	@Deprecated
+	public ProfilePermissionDC( BasicDataCarrier pDC ) {
 		super( (Boolean)null );
 		copyFrom( pDC );
 	}
-	
+
 
 	/**
 	 * Create a new instance, supports replacement by subclass!!!
-	 * @throws InitException if the instantiation fails.
+	 * throws an InitException if the instantiation fails.
 	 */
-	public static ProfilePermissionDC newInstanceOfProfilePermissionDC() throws InitException {
-		return (ProfilePermissionDC)newInstanceOf( ProfilePermissionDC.class );
+	public static ProfilePermissionDC newInstanceOfProfilePermissionDC() {
+		return newInstanceOf( ProfilePermissionDC.class );
 	}
 
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
+	 * throws an InitException if the instantiation fails.
 	 * @param pLoc java.util.Locale the Locale to localize the new instance to, automatically.
-	 * @throws InitException if the instantiation fails.
 	 */
-	public static ProfilePermissionDC newInstanceOfProfilePermissionDC( Locale pLoc ) throws InitException {
-		return (ProfilePermissionDC)localizeDC( newInstanceOfProfilePermissionDC(), pLoc );
+	public static ProfilePermissionDC newInstanceOfProfilePermissionDC( Locale pLoc ) {
+		return localizeDC( newInstanceOfProfilePermissionDC(), pLoc );
 	}
 
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
-	 * @param pDC dc to copy the attributes from.
-	 * @throws InitException if the instantiation fails.
+	 * throws an InitException if the instantiation fails.
+	 * @param pDC DC to copy the attributes from.
 	 */
-	public static ProfilePermissionDC newInstanceOfProfilePermissionDC( BasicDataCarrier pDC ) throws InitException {
+	public static ProfilePermissionDC newInstanceOfProfilePermissionDC( BasicDataCarrier pDC ) {
 		return (ProfilePermissionDC)newInstanceOfProfilePermissionDC().copyFrom( pDC );
 	}
-
-//	/**
-//	 * Copy the parameter DC pOther into this.
-//	 * THIS METHOD IS A TEMPORARY WORKAROUND.
-//	 * (a)deprecated
-//	 */
-//	public com.bayer.ecim.foundation.dbx.DataCarrier copyFrom(com.bayer.ecim.foundation.dbx.DataCarrier pOther) throws InitException {
-//		copyFrom((BasicDataCarrier)pOther);
-//		return (((Object)this) instanceof com.bayer.ecim.foundation.dbx.DataCarrier) ? (com.bayer.ecim.foundation.dbx.DataCarrier)(Object)this : null;
-//	}
-	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
-	public static final int CHECK_PROFILEPERMISSIONDC = com.bayer.ecim.foundation.dbx.DataCarrier.CHECK_DATACARRIER;
 
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
 	@Override
-	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
+	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) {
 		super.copyFrom(pOther);
 		if (ProfilePermissionDC.class.isAssignableFrom(pOther.getClass())) {
-			BasicDCColumnMetaData m = null;
-			for (int i = 0; i < LOCAL_FIELD_LIST.length; i++) {
-				m = pOther.getBasicDCColumnMetaData( LOCAL_FIELD_LIST[i] );
+			BasicDCColumnMetaData m;
+			for (String field : LOCAL_FIELD_LIST) {
+				m = pOther.getBasicDCColumnMetaData(field);
 				if ( m != null ) {
-					cColumnMetaData.put( LOCAL_FIELD_LIST[i], m );
+					cColumnMetaData.put( field, m );
 				}
 			}
-			for (int i = 0; i < LOCAL_FIELD_LIST.length; i++) {
-				String fn = LOCAL_FIELD_LIST[i];
+			for (String field : LOCAL_FIELD_LIST) {
 				try {
-					set(fn, pOther.get(fn));
-					if ( !pOther.isFieldTouched( fn ) ) {
-						untouchField( fn );
+					set(field, pOther.get(field));
+					if ( !pOther.isFieldTouched( field ) ) {
+						untouchField( field );
 					}
 				} catch (BasicDCReflectFailedException e) {
 					throw new InitException(
-						"BasicDataCarrier.copyFrom() cannot copy field '"
-							+ fn
-							+ "' from DC '"
-							+ pOther.getClass().getName()
-							+ "' to DC '"
-							+ this.getClass().getName()
-							+ "'.",
+						"BasicDataCarrier.copyFrom() cannot copy field '" + field
+							+ "' from DC '" + pOther.getClass().getName()
+							+ "' to DC '"   + this  .getClass().getName() + "'.",
 						e);
 				}
 			}
-		} else
+		} else {
 			cWasCastedUp = true;
+		}
 		return this;
 	}
 
@@ -220,14 +205,14 @@ public class ProfilePermissionDC
 			"com.bayer.bhc.doc41webui.integration.db.dc",
 			"ProfilePermissionDC",
 			"com.bayer.ecim.foundation.dbx.DataCarrier",
-			"Date: 2014-10-23 17:31:04 +0200 (Do, 23 Okt 2014) ",
-			"Revision: 9611 ",
-			"Author: imdis ",
+			"Date: 2017-02-21 14:08:28 +0100 (Di, 21 Feb 2017) ",
+			"Revision: 11016 ",
+			"Author: ezfhl ",
 			"Header",
 			"$Date$",
 			"$Revision$",
 			"$Author$",
-			"$Header$"
+			"$Header$/generics"
 		);
 	}
 
@@ -263,7 +248,7 @@ public class ProfilePermissionDC
 	 * Provides a field list of all fields that are supported by the DC.
 	 */
 	public static String[] localGetFieldList() {
-		return FIELD_LIST;
+		return FIELD_LIST.clone( );
 	}
 
 
@@ -307,9 +292,7 @@ public class ProfilePermissionDC
 	 * Maps DB-Column: permissionname
 	 * Logical type: STRING
 	 */
-	public void setFormattedPermissionname( String pPermissionname )
-		throws java.text.ParseException
-	{
+	public void setFormattedPermissionname( String pPermissionname ) throws java.text.ParseException {
 		setPermissionname( null );
 		memorizeOriginalValue( FIELD_PERMISSIONNAME, pPermissionname );
 		setPermissionname( getPool().parseString( pPermissionname ) );
@@ -401,9 +384,7 @@ public class ProfilePermissionDC
 	 * Maps DB-Column: permissiondescription
 	 * Logical type: STRING
 	 */
-	public void setFormattedPermissiondescription( String pPermissiondescription )
-		throws java.text.ParseException
-	{
+	public void setFormattedPermissiondescription( String pPermissiondescription ) throws java.text.ParseException {
 		setPermissiondescription( null );
 		memorizeOriginalValue( FIELD_PERMISSIONDESCRIPTION, pPermissiondescription );
 		setPermissiondescription( getPool().parseString( pPermissiondescription ) );
@@ -495,9 +476,7 @@ public class ProfilePermissionDC
 	 * Maps DB-Column: doc41_Carr
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedDoc41Carr( String pDoc41Carr )
-		throws java.text.ParseException
-	{
+	public void setFormattedDoc41Carr( String pDoc41Carr ) throws java.text.ParseException {
 		setDoc41Carr( null );
 		memorizeOriginalValue( FIELD_DOC41CARR, pDoc41Carr );
 		setDoc41Carr( getPool().parseBoolean( pDoc41Carr ) );
@@ -589,9 +568,7 @@ public class ProfilePermissionDC
 	 * Maps DB-Column: doc41_Laysup
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedDoc41Laysup( String pDoc41Laysup )
-		throws java.text.ParseException
-	{
+	public void setFormattedDoc41Laysup( String pDoc41Laysup ) throws java.text.ParseException {
 		setDoc41Laysup( null );
 		memorizeOriginalValue( FIELD_DOC41LAYSUP, pDoc41Laysup );
 		setDoc41Laysup( getPool().parseBoolean( pDoc41Laysup ) );
@@ -683,9 +660,7 @@ public class ProfilePermissionDC
 	 * Maps DB-Column: doc41_Pmsup
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedDoc41Pmsup( String pDoc41Pmsup )
-		throws java.text.ParseException
-	{
+	public void setFormattedDoc41Pmsup( String pDoc41Pmsup ) throws java.text.ParseException {
 		setDoc41Pmsup( null );
 		memorizeOriginalValue( FIELD_DOC41PMSUP, pDoc41Pmsup );
 		setDoc41Pmsup( getPool().parseBoolean( pDoc41Pmsup ) );
@@ -777,9 +752,7 @@ public class ProfilePermissionDC
 	 * Maps DB-Column: doc41_Badm
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedDoc41Badm( String pDoc41Badm )
-		throws java.text.ParseException
-	{
+	public void setFormattedDoc41Badm( String pDoc41Badm ) throws java.text.ParseException {
 		setDoc41Badm( null );
 		memorizeOriginalValue( FIELD_DOC41BADM, pDoc41Badm );
 		setDoc41Badm( getPool().parseBoolean( pDoc41Badm ) );
@@ -871,9 +844,7 @@ public class ProfilePermissionDC
 	 * Maps DB-Column: doc41_Tadm
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedDoc41Tadm( String pDoc41Tadm )
-		throws java.text.ParseException
-	{
+	public void setFormattedDoc41Tadm( String pDoc41Tadm ) throws java.text.ParseException {
 		setDoc41Tadm( null );
 		memorizeOriginalValue( FIELD_DOC41TADM, pDoc41Tadm );
 		setDoc41Tadm( getPool().parseBoolean( pDoc41Tadm ) );
@@ -965,9 +936,7 @@ public class ProfilePermissionDC
 	 * Maps DB-Column: doc41_Obsv
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedDoc41Obsv( String pDoc41Obsv )
-		throws java.text.ParseException
-	{
+	public void setFormattedDoc41Obsv( String pDoc41Obsv ) throws java.text.ParseException {
 		setDoc41Obsv( null );
 		memorizeOriginalValue( FIELD_DOC41OBSV, pDoc41Obsv );
 		setDoc41Obsv( getPool().parseBoolean( pDoc41Obsv ) );
@@ -1059,9 +1028,7 @@ public class ProfilePermissionDC
 	 * Maps DB-Column: doc41_matsup
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedDoc41Matsup( String pDoc41Matsup )
-		throws java.text.ParseException
-	{
+	public void setFormattedDoc41Matsup( String pDoc41Matsup ) throws java.text.ParseException {
 		setDoc41Matsup( null );
 		memorizeOriginalValue( FIELD_DOC41MATSUP, pDoc41Matsup );
 		setDoc41Matsup( getPool().parseBoolean( pDoc41Matsup ) );
@@ -1153,9 +1120,7 @@ public class ProfilePermissionDC
 	 * Maps DB-Column: doc41_prodsup
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedDoc41Prodsup( String pDoc41Prodsup )
-		throws java.text.ParseException
-	{
+	public void setFormattedDoc41Prodsup( String pDoc41Prodsup ) throws java.text.ParseException {
 		setDoc41Prodsup( null );
 		memorizeOriginalValue( FIELD_DOC41PRODSUP, pDoc41Prodsup );
 		setDoc41Prodsup( getPool().parseBoolean( pDoc41Prodsup ) );
@@ -1247,9 +1212,7 @@ public class ProfilePermissionDC
 	 * Maps DB-Column: doc41_delcertvcountry
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedDoc41Delcertvcountry( String pDoc41Delcertvcountry )
-		throws java.text.ParseException
-	{
+	public void setFormattedDoc41Delcertvcountry( String pDoc41Delcertvcountry ) throws java.text.ParseException {
 		setDoc41Delcertvcountry( null );
 		memorizeOriginalValue( FIELD_DOC41DELCERTVCOUNTRY, pDoc41Delcertvcountry );
 		setDoc41Delcertvcountry( getPool().parseBoolean( pDoc41Delcertvcountry ) );
@@ -1341,9 +1304,7 @@ public class ProfilePermissionDC
 	 * Maps DB-Column: doc41_delcertvcust
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedDoc41Delcertvcust( String pDoc41Delcertvcust )
-		throws java.text.ParseException
-	{
+	public void setFormattedDoc41Delcertvcust( String pDoc41Delcertvcust ) throws java.text.ParseException {
 		setDoc41Delcertvcust( null );
 		memorizeOriginalValue( FIELD_DOC41DELCERTVCUST, pDoc41Delcertvcust );
 		setDoc41Delcertvcust( getPool().parseBoolean( pDoc41Delcertvcust ) );

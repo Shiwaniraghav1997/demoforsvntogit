@@ -1,7 +1,7 @@
 /*
  * (c)2007 Bayer AG Leverkusen, Bayer Business Solutions
  * All rights reserved.
- * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini 10163 2015-10-28 17:47:12Z imwif )
+ * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini 11016 2017-02-21 13:08:28Z ezfhl )
  *
  * $Id$
  */
@@ -19,9 +19,8 @@ import com.bayer.ecim.foundation.dbx.*;
 /**
  * Extended Permission DC of Doc41 with fields marking required extra objects (Custmer, Country, Vendor, Plant)
  */
-public class UMDoc41PermissionNDC
-	extends com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC
-{
+public class   UMDoc41PermissionNDC
+       extends com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC {
 
 	/** Maps DB-Column: has_Customer */
 	Boolean cHasCustomer = Boolean.FALSE;
@@ -39,23 +38,26 @@ public class UMDoc41PermissionNDC
 	Boolean cHasPlant = Boolean.FALSE;
 	public static final String FIELD_HASPLANT = "HasPlant";
 
-	/** for compatibility, suppress import warning...*/
-	public static final Class<DataCarrier> _DBX_DC_CLASS_UMDOC41PERMISSIONNDC = DataCarrier.class; // dummy variable to avoid warning
+	/** for compatibility: dummy variable to suppress import warning...*/
+	public static final Class<DataCarrier> _DBX_DC_CLASS_UMDOC41PERMISSIONNDC = DataCarrier.class;
 
 	/** The master Class of this class. */
-	public final Class<BasicDataCarrier> MASTER_CLASS_UMDOC41PERMISSIONNDC = BasicDataCarrier.class;
+	public static final Class<BasicDataCarrier> MASTER_CLASS_UMDOC41PERMISSIONNDC = BasicDataCarrier.class;
 
 	/** Set the database table-name (null if unspecified) for this DC. */
 	static {
 		setDBTablename( UMDoc41PermissionNDC.class, "[UM].UM_Permissions" );
 	}
 
-	private static final long serialVersionUID = 20151110091259861L;
+	private static final long serialVersionUID = 20180319062714068L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_UMDOC41PERMISSIONNDC = java.math.BigDecimal.class;
 
-	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_HASCUSTOMER, FIELD_HASVENDOR, FIELD_HASCOUNTRY, FIELD_HASPLANT};
-	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC.localGetFieldList(), LOCAL_FIELD_LIST );
+	private static final HashMap<String,BasicDCFieldMeta> FIELD_META       = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC.localGetFieldMetaMap() );
+	private static final String[]                         LOCAL_FIELD_LIST = new String[] {FIELD_HASCUSTOMER, FIELD_HASVENDOR, FIELD_HASCOUNTRY, FIELD_HASPLANT};
+	private static final String[]                         FIELD_LIST       = StringTool.merge( com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC.localGetFieldList(), LOCAL_FIELD_LIST );
+
+	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
+	public static final int CHECK_UMDOC41PERMISSIONNDC = com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC.CHECK_UMPERMISSIONNDC;
 
 	static {
 		try {
@@ -64,111 +66,94 @@ public class UMDoc41PermissionNDC
 			FIELD_META.put( FIELD_HASCOUNTRY,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 			FIELD_META.put( FIELD_HASPLANT,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 		} catch ( Exception e ) {
-			throw new InitException( "Failed to detect return types of the getter methods of UMDoc41PermissionNDC!", null );
+			throw new InitException( "Failed to detect return types of the getter methods of UMDoc41PermissionNDC!", e );
 		}
 	}
 
 	/**
-	 * The Constructor.
-	 * (a)deprecated Use: static UMDoc41PermissionNDC newInstanceOfUMDoc41PermissionNDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * The standard Constructor (Framework internal: do not use in applications!).
+	 * @deprecated Use: static UMDoc41PermissionNDC newInstanceOfUMDoc41PermissionNDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
+	@Deprecated
 	public UMDoc41PermissionNDC() {
 		super( (Boolean)null );
 	}
 
 	/**
-	 * Temporary Constructor.
+	 * Constructor for class-hierarchy (Framework internal: do not use in applications!).
 	 */
 	protected UMDoc41PermissionNDC( Boolean pVal ) {
 		super( pVal );
-		pVal = null;
 	}
 
 	/**
 	 * The Copy Constructor.
-	 * (a)deprecated Use: static UMDoc41PermissionNDC newInstanceOfUMDoc41PermissionNDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * @deprecated Use: static UMDoc41PermissionNDC newInstanceOfUMDoc41PermissionNDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
-	public UMDoc41PermissionNDC( BasicDataCarrier pDC )
-		throws InitException
-	{
+	@Deprecated
+	public UMDoc41PermissionNDC( BasicDataCarrier pDC ) {
 		super( (Boolean)null );
 		copyFrom( pDC );
 	}
-	
+
 
 	/**
 	 * Create a new instance, supports replacement by subclass!!!
-	 * @throws InitException if the instantiation fails.
+	 * throws an InitException if the instantiation fails.
 	 */
-	public static UMDoc41PermissionNDC newInstanceOfUMDoc41PermissionNDC() throws InitException {
-		return (UMDoc41PermissionNDC)newInstanceOf( UMDoc41PermissionNDC.class );
+	public static UMDoc41PermissionNDC newInstanceOfUMDoc41PermissionNDC() {
+		return newInstanceOf( UMDoc41PermissionNDC.class );
 	}
 
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
+	 * throws an InitException if the instantiation fails.
 	 * @param pLoc java.util.Locale the Locale to localize the new instance to, automatically.
-	 * @throws InitException if the instantiation fails.
 	 */
-	public static UMDoc41PermissionNDC newInstanceOfUMDoc41PermissionNDC( Locale pLoc ) throws InitException {
-		return (UMDoc41PermissionNDC)localizeDC( newInstanceOfUMDoc41PermissionNDC(), pLoc );
+	public static UMDoc41PermissionNDC newInstanceOfUMDoc41PermissionNDC( Locale pLoc ) {
+		return localizeDC( newInstanceOfUMDoc41PermissionNDC(), pLoc );
 	}
 
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
-	 * @param pDC dc to copy the attributes from.
-	 * @throws InitException if the instantiation fails.
+	 * throws an InitException if the instantiation fails.
+	 * @param pDC DC to copy the attributes from.
 	 */
-	public static UMDoc41PermissionNDC newInstanceOfUMDoc41PermissionNDC( BasicDataCarrier pDC ) throws InitException {
+	public static UMDoc41PermissionNDC newInstanceOfUMDoc41PermissionNDC( BasicDataCarrier pDC ) {
 		return (UMDoc41PermissionNDC)newInstanceOfUMDoc41PermissionNDC().copyFrom( pDC );
 	}
-
-//	/**
-//	 * Copy the parameter DC pOther into this.
-//	 * THIS METHOD IS A TEMPORARY WORKAROUND.
-//	 * (a)deprecated
-//	 */
-//	public com.bayer.ecim.foundation.dbx.DataCarrier copyFrom(com.bayer.ecim.foundation.dbx.DataCarrier pOther) throws InitException {
-//		copyFrom((BasicDataCarrier)pOther);
-//		return (((Object)this) instanceof com.bayer.ecim.foundation.dbx.DataCarrier) ? (com.bayer.ecim.foundation.dbx.DataCarrier)(Object)this : null;
-//	}
-	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
-	public static final int CHECK_UMDOC41PERMISSIONNDC = com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC.CHECK_UMPERMISSIONNDC;
 
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
 	@Override
-	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
+	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) {
 		super.copyFrom(pOther);
 		if (UMDoc41PermissionNDC.class.isAssignableFrom(pOther.getClass())) {
-			BasicDCColumnMetaData m = null;
-			for (int i = 0; i < LOCAL_FIELD_LIST.length; i++) {
-				m = pOther.getBasicDCColumnMetaData( LOCAL_FIELD_LIST[i] );
+			BasicDCColumnMetaData m;
+			for (String field : LOCAL_FIELD_LIST) {
+				m = pOther.getBasicDCColumnMetaData(field);
 				if ( m != null ) {
-					cColumnMetaData.put( LOCAL_FIELD_LIST[i], m );
+					cColumnMetaData.put( field, m );
 				}
 			}
-			for (int i = 0; i < LOCAL_FIELD_LIST.length; i++) {
-				String fn = LOCAL_FIELD_LIST[i];
+			for (String field : LOCAL_FIELD_LIST) {
 				try {
-					set(fn, pOther.get(fn));
-					if ( !pOther.isFieldTouched( fn ) ) {
-						untouchField( fn );
+					set(field, pOther.get(field));
+					if ( !pOther.isFieldTouched( field ) ) {
+						untouchField( field );
 					}
 				} catch (BasicDCReflectFailedException e) {
 					throw new InitException(
-						"BasicDataCarrier.copyFrom() cannot copy field '"
-							+ fn
-							+ "' from DC '"
-							+ pOther.getClass().getName()
-							+ "' to DC '"
-							+ this.getClass().getName()
-							+ "'.",
+						"BasicDataCarrier.copyFrom() cannot copy field '" + field
+							+ "' from DC '" + pOther.getClass().getName()
+							+ "' to DC '"   + this  .getClass().getName() + "'.",
 						e);
 				}
 			}
-		} else
+		} else {
 			cWasCastedUp = true;
+		}
 		return this;
 	}
 
@@ -180,9 +165,9 @@ public class UMDoc41PermissionNDC
 			"com.bayer.bhc.doc41webui.integration.db.dc",
 			"UMDoc41PermissionNDC",
 			"com.bayer.ecim.foundation.web.usermanagementN.UMPermissionNDC",
-			"Date: 2015-10-28 18:47:12 +0100 (Wed, 28 Oct 2015) ",
-			"Revision: 10163 ",
-			"Author: imwif ",
+			"Date: 2017-02-21 14:08:28 +0100 (Di, 21 Feb 2017) ",
+			"Revision: 11016 ",
+			"Author: ezfhl ",
 			"Header",
 			"$Date$",
 			"$Revision$",
@@ -223,7 +208,7 @@ public class UMDoc41PermissionNDC
 	 * Provides a field list of all fields that are supported by the DC.
 	 */
 	public static String[] localGetFieldList() {
-		return FIELD_LIST;
+		return FIELD_LIST.clone( );
 	}
 
 
@@ -267,9 +252,7 @@ public class UMDoc41PermissionNDC
 	 * Maps DB-Column: has_Customer
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedHasCustomer( String pHasCustomer )
-		throws java.text.ParseException
-	{
+	public void setFormattedHasCustomer( String pHasCustomer ) throws java.text.ParseException {
 		setHasCustomer( null );
 		memorizeOriginalValue( FIELD_HASCUSTOMER, pHasCustomer );
 		setHasCustomer( getPool().parseBoolean( pHasCustomer ) );
@@ -361,9 +344,7 @@ public class UMDoc41PermissionNDC
 	 * Maps DB-Column: has_Vendor
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedHasVendor( String pHasVendor )
-		throws java.text.ParseException
-	{
+	public void setFormattedHasVendor( String pHasVendor ) throws java.text.ParseException {
 		setHasVendor( null );
 		memorizeOriginalValue( FIELD_HASVENDOR, pHasVendor );
 		setHasVendor( getPool().parseBoolean( pHasVendor ) );
@@ -455,9 +436,7 @@ public class UMDoc41PermissionNDC
 	 * Maps DB-Column: has_Country
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedHasCountry( String pHasCountry )
-		throws java.text.ParseException
-	{
+	public void setFormattedHasCountry( String pHasCountry ) throws java.text.ParseException {
 		setHasCountry( null );
 		memorizeOriginalValue( FIELD_HASCOUNTRY, pHasCountry );
 		setHasCountry( getPool().parseBoolean( pHasCountry ) );
@@ -549,9 +528,7 @@ public class UMDoc41PermissionNDC
 	 * Maps DB-Column: has_Plant
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedHasPlant( String pHasPlant )
-		throws java.text.ParseException
-	{
+	public void setFormattedHasPlant( String pHasPlant ) throws java.text.ParseException {
 		setHasPlant( null );
 		memorizeOriginalValue( FIELD_HASPLANT, pHasPlant );
 		setHasPlant( getPool().parseBoolean( pHasPlant ) );

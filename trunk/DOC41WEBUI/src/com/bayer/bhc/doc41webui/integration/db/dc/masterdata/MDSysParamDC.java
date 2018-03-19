@@ -1,7 +1,7 @@
 /*
  * (c)2007 Bayer AG Leverkusen, Bayer Business Solutions
  * All rights reserved.
- * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini,v 1.82 2012/10/05 12:22:39 evfpu Exp )
+ * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini 11016 2017-02-21 13:08:28Z ezfhl )
  *
  * $Id$
  */
@@ -19,9 +19,8 @@ import com.bayer.ecim.foundation.dbx.*;
 /**
  * DC for MD_SYSPARAM in DOC41WEB_MGR
  */
-public class MDSysParamDC
-	extends com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
-{
+public class   MDSysParamDC
+       extends com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier {
 
 	/** Maps DB-Column: param_Name */
 	String cParamName;
@@ -51,21 +50,26 @@ public class MDSysParamDC
 	Boolean cIsDeletable = Boolean.TRUE;
 	public static final String FIELD_ISDELETABLE = "IsDeletable";
 
-	/** The master Class of this class. */
-	public final Class<DataCarrier> MASTER_CLASS = DataCarrier.class;
+	/** for compatibility: dummy variable to suppress import warning...*/
+	public static final Class<DataCarrier> _DBX_DC_CLASS_MDSYSPARAMDC = DataCarrier.class;
 
-	/** Set the database tablename (null if unspecified) for this DC. */
+	/** The master Class of this class. */
+	public static final Class<BasicDataCarrier> MASTER_CLASS_MDSYSPARAMDC = BasicDataCarrier.class;
+
+	/** Set the database table-name (null if unspecified) for this DC. */
 	static {
 		setDBTablename( MDSysParamDC.class, "[DOC41WEB_MGR].MD_SYSPARAM" );
 	}
 
-	private static final long serialVersionUID = 20130712052749537L;
+	private static final long serialVersionUID = 20180319062713584L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_MDSYSPARAMDC = java.math.BigDecimal.class;
 
-	@SuppressWarnings("unchecked")
-	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PARAMNAME, FIELD_PARAMTYPE, FIELD_PARAMSTRINGVALUE, FIELD_PARAMNUMBERVALUE, FIELD_PARAMDECIMALVALUE, FIELD_PARAMBOOLEANVALUE, FIELD_ISDELETABLE};
-	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
+	private static final HashMap<String,BasicDCFieldMeta> FIELD_META       = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
+	private static final String[]                         LOCAL_FIELD_LIST = new String[] {FIELD_PARAMNAME, FIELD_PARAMTYPE, FIELD_PARAMSTRINGVALUE, FIELD_PARAMNUMBERVALUE, FIELD_PARAMDECIMALVALUE, FIELD_PARAMBOOLEANVALUE, FIELD_ISDELETABLE};
+	private static final String[]                         FIELD_LIST       = StringTool.merge( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
+
+	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
+	public static final int CHECK_MDSYSPARAMDC = com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.CHECK_USERCHANGEABLEDATACARRIER;
 
 	static {
 		try {
@@ -77,136 +81,121 @@ public class MDSysParamDC
 			FIELD_META.put( FIELD_PARAMBOOLEANVALUE,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 			FIELD_META.put( FIELD_ISDELETABLE,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 		} catch ( Exception e ) {
-			throw new InitException( "Failed to detect return types of the getter methods of MDSysParamDC!", null );
+			throw new InitException( "Failed to detect return types of the getter methods of MDSysParamDC!", e );
 		}
 	}
 
 	/**
-	 * The Constructor.
-	 * (a)deprecated Use: static MDSysParamDC newInstanceOfMDSysParamDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * The standard Constructor (Framework internal: do not use in applications!).
+	 * @deprecated Use: static MDSysParamDC newInstanceOfMDSysParamDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
+	@Deprecated
 	public MDSysParamDC() {
 		super( (Boolean)null );
 	}
 
 	/**
-	 * Temporary Constructor.
+	 * Constructor for class-hierarchy (Framework internal: do not use in applications!).
 	 */
 	protected MDSysParamDC( Boolean pVal ) {
 		super( pVal );
-		pVal = null;
 	}
 
 	/**
 	 * The Copy Constructor.
-	 * (a)deprecated Use: static MDSysParamDC newInstanceOfMDSysParamDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * @deprecated Use: static MDSysParamDC newInstanceOfMDSysParamDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
-	public MDSysParamDC( BasicDataCarrier pDC )
-		throws InitException
-	{
+	@Deprecated
+	public MDSysParamDC( BasicDataCarrier pDC ) {
 		super( (Boolean)null );
 		copyFrom( pDC );
 	}
-	
+
 
 	/**
 	 * Create a new instance, supports replacement by subclass!!!
-	 * @throws InitException if the instanciation failes.
+	 * throws an InitException if the instantiation fails.
 	 */
-	public static MDSysParamDC newInstanceOfMDSysParamDC() throws InitException {
-		return (MDSysParamDC)newInstanceOf( MDSysParamDC.class );
+	public static MDSysParamDC newInstanceOfMDSysParamDC() {
+		return newInstanceOf( MDSysParamDC.class );
 	}
 
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
+	 * throws an InitException if the instantiation fails.
 	 * @param pLoc java.util.Locale the Locale to localize the new instance to, automatically.
-	 * @throws InitException if the instanciation failes.
 	 */
-	public static MDSysParamDC newInstanceOfMDSysParamDC( Locale pLoc ) throws InitException {
-		return (MDSysParamDC)localizeDC( newInstanceOfMDSysParamDC(), pLoc );
+	public static MDSysParamDC newInstanceOfMDSysParamDC( Locale pLoc ) {
+		return localizeDC( newInstanceOfMDSysParamDC(), pLoc );
 	}
 
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
-	 * @param pDC dc to copy the attributes from.
-	 * @throws InitException if the instanciation failes.
+	 * throws an InitException if the instantiation fails.
+	 * @param pDC DC to copy the attributes from.
 	 */
-	public static MDSysParamDC newInstanceOfMDSysParamDC( BasicDataCarrier pDC ) throws InitException {
+	public static MDSysParamDC newInstanceOfMDSysParamDC( BasicDataCarrier pDC ) {
 		return (MDSysParamDC)newInstanceOfMDSysParamDC().copyFrom( pDC );
 	}
-
-//	/**
-//	 * Copy the parameter DC pOther into this.
-//	 * THIS METHOD IS A TEMPORARY WORKAROUND.
-//	 * (a)deprecated
-//	 */
-//	public com.bayer.ecim.foundation.dbx.DataCarrier copyFrom(com.bayer.ecim.foundation.dbx.DataCarrier pOther) throws InitException {
-//		copyFrom((BasicDataCarrier)pOther);
-//		return (((Object)this) instanceof com.bayer.ecim.foundation.dbx.DataCarrier) ? (com.bayer.ecim.foundation.dbx.DataCarrier)(Object)this : null;
-//	}
-	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
-	public static final int CHECK_MDSYSPARAMDC = com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.CHECK_USERCHANGEABLEDATACARRIER;
 
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
-	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
+	@Override
+	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) {
 		super.copyFrom(pOther);
 		if (MDSysParamDC.class.isAssignableFrom(pOther.getClass())) {
-			BasicDCColumnMetaData m = null;
-			for (int i = 0; i < LOCAL_FIELD_LIST.length; i++) {
-				m = pOther.getBasicDCColumnMetaData( LOCAL_FIELD_LIST[i] );
+			BasicDCColumnMetaData m;
+			for (String field : LOCAL_FIELD_LIST) {
+				m = pOther.getBasicDCColumnMetaData(field);
 				if ( m != null ) {
-					cColumnMetaData.put( LOCAL_FIELD_LIST[i], m );
+					cColumnMetaData.put( field, m );
 				}
 			}
-			for (int i = 0; i < LOCAL_FIELD_LIST.length; i++) {
-				String fn = LOCAL_FIELD_LIST[i];
+			for (String field : LOCAL_FIELD_LIST) {
 				try {
-					set(fn, pOther.get(fn));
-					if ( !pOther.isFieldTouched( fn ) ) {
-						untouchField( fn );
+					set(field, pOther.get(field));
+					if ( !pOther.isFieldTouched( field ) ) {
+						untouchField( field );
 					}
 				} catch (BasicDCReflectFailedException e) {
 					throw new InitException(
-						"BasicDataCarrier.copyFrom() cannot copy field '"
-							+ fn
-							+ "' from DC '"
-							+ pOther.getClass().getName()
-							+ "' to DC '"
-							+ this.getClass().getName()
-							+ "'.",
+						"BasicDataCarrier.copyFrom() cannot copy field '" + field
+							+ "' from DC '" + pOther.getClass().getName()
+							+ "' to DC '"   + this  .getClass().getName() + "'.",
 						e);
 				}
 			}
-		} else
+		} else {
 			cWasCastedUp = true;
+		}
 		return this;
 	}
 
 	/**
-	 * Get the CVS metadata of this DC and it's used generator.
+	 * Get the CVS meta-data of this DC and it's used generator.
 	 */
 	public static BasicDCGeneratorMeta localGetCVSMeta() {
 		return new BasicDCGeneratorMeta(
 			"com.bayer.bhc.doc41webui.integration.db.dc.masterdata",
 			"MDSysParamDC",
 			"com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier",
-			"Date: 2012/10/05 12:22:39 ",
-			"Revision: 1.82 ",
-			"Author: evfpu ",
-			"Header: /bo/foundation/resources/DCGenerator.ini,v 1.82 2012/10/05 12:22:39 evfpu Exp ",
+			"Date: 2017-02-21 14:08:28 +0100 (Di, 21 Feb 2017) ",
+			"Revision: 11016 ",
+			"Author: ezfhl ",
+			"Header",
 			"$Date$",
 			"$Revision$",
 			"$Author$",
-			"$Header$"
+			"$Header$/generics"
 		);
 	}
 
 
 	/**
-	 * Get the CVS metadata of this DC and it's used generator.
+	 * Get the CVS meta-data of this DC and it's used generator.
 	 */
+	@Override
 	public BasicDCGeneratorMeta getCVSMeta() {
 		return MDSysParamDC.localGetCVSMeta();
 	}
@@ -222,9 +211,10 @@ public class MDSysParamDC
 	 * Provides field meta information for a specific field.
 	 */
 	public static BasicDCFieldMeta localGetFieldMeta( String pFieldName ) {
-		return (BasicDCFieldMeta)FIELD_META.get( pFieldName );
+		return FIELD_META.get( pFieldName );
 	}
 
+	@Override
 	public BasicDCFieldMeta getFieldMeta( String pFieldName ) {
 		return MDSysParamDC.localGetFieldMeta( pFieldName );
 	}
@@ -233,7 +223,7 @@ public class MDSysParamDC
 	 * Provides a field list of all fields that are supported by the DC.
 	 */
 	public static String[] localGetFieldList() {
-		return FIELD_LIST;
+		return FIELD_LIST.clone( );
 	}
 
 
@@ -277,9 +267,7 @@ public class MDSysParamDC
 	 * Maps DB-Column: param_Name
 	 * Logical type: STRING
 	 */
-	public void setFormattedParamName( String pParamName )
-		throws java.text.ParseException
-	{
+	public void setFormattedParamName( String pParamName ) throws java.text.ParseException {
 		setParamName( null );
 		memorizeOriginalValue( FIELD_PARAMNAME, pParamName );
 		setParamName( getPool().parseString( pParamName ) );
@@ -371,9 +359,7 @@ public class MDSysParamDC
 	 * Maps DB-Column: param_Type
 	 * Logical type: STRING
 	 */
-	public void setFormattedParamType( String pParamType )
-		throws java.text.ParseException
-	{
+	public void setFormattedParamType( String pParamType ) throws java.text.ParseException {
 		setParamType( null );
 		memorizeOriginalValue( FIELD_PARAMTYPE, pParamType );
 		setParamType( getPool().parseString( pParamType ) );
@@ -465,9 +451,7 @@ public class MDSysParamDC
 	 * Maps DB-Column: param_Stringvalue
 	 * Logical type: STRING
 	 */
-	public void setFormattedParamStringvalue( String pParamStringvalue )
-		throws java.text.ParseException
-	{
+	public void setFormattedParamStringvalue( String pParamStringvalue ) throws java.text.ParseException {
 		setParamStringvalue( null );
 		memorizeOriginalValue( FIELD_PARAMSTRINGVALUE, pParamStringvalue );
 		setParamStringvalue( getPool().parseString( pParamStringvalue ) );
@@ -559,9 +543,7 @@ public class MDSysParamDC
 	 * Maps DB-Column: param_Numbervalue
 	 * Logical type: Id
 	 */
-	public void setFormattedParamNumbervalue( String pParamNumbervalue )
-		throws java.text.ParseException
-	{
+	public void setFormattedParamNumbervalue( String pParamNumbervalue ) throws java.text.ParseException {
 		setParamNumbervalue( null );
 		memorizeOriginalValue( FIELD_PARAMNUMBERVALUE, pParamNumbervalue );
 		setParamNumbervalue( getPool().parseId( "Id", "#", pParamNumbervalue ) );
@@ -653,9 +635,7 @@ public class MDSysParamDC
 	 * Maps DB-Column: param_Decimalvalue
 	 * Logical type: Quantity
 	 */
-	public void setFormattedParamDecimalvalue( String pParamDecimalvalue )
-		throws java.text.ParseException
-	{
+	public void setFormattedParamDecimalvalue( String pParamDecimalvalue ) throws java.text.ParseException {
 		setParamDecimalvalue( null );
 		memorizeOriginalValue( FIELD_PARAMDECIMALVALUE, pParamDecimalvalue );
 		setParamDecimalvalue( getPool().parseDecimal( "Quantity", ",##0.000", pParamDecimalvalue ) );
@@ -747,9 +727,7 @@ public class MDSysParamDC
 	 * Maps DB-Column: param_Booleanvalue
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedParamBooleanvalue( String pParamBooleanvalue )
-		throws java.text.ParseException
-	{
+	public void setFormattedParamBooleanvalue( String pParamBooleanvalue ) throws java.text.ParseException {
 		setParamBooleanvalue( null );
 		memorizeOriginalValue( FIELD_PARAMBOOLEANVALUE, pParamBooleanvalue );
 		setParamBooleanvalue( getPool().parseBoolean( pParamBooleanvalue ) );
@@ -841,9 +819,7 @@ public class MDSysParamDC
 	 * Maps DB-Column: is_Deletable
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedIsDeletable( String pIsDeletable )
-		throws java.text.ParseException
-	{
+	public void setFormattedIsDeletable( String pIsDeletable ) throws java.text.ParseException {
 		setIsDeletable( null );
 		memorizeOriginalValue( FIELD_ISDELETABLE, pIsDeletable );
 		setIsDeletable( getPool().parseBoolean( pIsDeletable ) );

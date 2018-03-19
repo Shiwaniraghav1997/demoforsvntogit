@@ -1,7 +1,7 @@
 /*
  * (c)2007 Bayer AG Leverkusen, Bayer Business Solutions
  * All rights reserved.
- * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini,v 1.82 2012/10/05 12:22:39 evfpu Exp )
+ * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini 11016 2017-02-21 13:08:28Z ezfhl )
  *
  * $Id$
  */
@@ -19,9 +19,8 @@ import com.bayer.ecim.foundation.dbx.*;
 /**
  * <my description of the dc>
  */
-public class MonitoringContactDC
-	extends com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
-{
+public class   MonitoringContactDC
+       extends com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier {
 
 	/** Maps DB-Column: interface_Name */
 	String cInterfaceName;
@@ -55,21 +54,26 @@ public class MonitoringContactDC
 	String cPhone2;
 	public static final String FIELD_PHONE2 = "Phone2";
 
-	/** The master Class of this class. */
-	public final Class<DataCarrier> MASTER_CLASS = DataCarrier.class;
+	/** for compatibility: dummy variable to suppress import warning...*/
+	public static final Class<DataCarrier> _DBX_DC_CLASS_MONITORINGCONTACTDC = DataCarrier.class;
 
-	/** Set the database tablename (null if unspecified) for this DC. */
+	/** The master Class of this class. */
+	public static final Class<BasicDataCarrier> MASTER_CLASS_MONITORINGCONTACTDC = BasicDataCarrier.class;
+
+	/** Set the database table-name (null if unspecified) for this DC. */
 	static {
 		setDBTablename( MonitoringContactDC.class, "[DOC41WEB_MGR].IM_MONITORING_CONTACT" );
 	}
 
-	private static final long serialVersionUID = 20130712052904081L;
+	private static final long serialVersionUID = 20180319062713664L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_MONITORINGCONTACTDC = java.math.BigDecimal.class;
 
-	@SuppressWarnings("unchecked")
-	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_INTERFACENAME, FIELD_CONTACTTYPE, FIELD_CWID, FIELD_FIRSTNAME, FIELD_LASTNAME, FIELD_EMAIL, FIELD_PHONE1, FIELD_PHONE2};
-	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
+	private static final HashMap<String,BasicDCFieldMeta> FIELD_META       = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
+	private static final String[]                         LOCAL_FIELD_LIST = new String[] {FIELD_INTERFACENAME, FIELD_CONTACTTYPE, FIELD_CWID, FIELD_FIRSTNAME, FIELD_LASTNAME, FIELD_EMAIL, FIELD_PHONE1, FIELD_PHONE2};
+	private static final String[]                         FIELD_LIST       = StringTool.merge( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
+
+	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
+	public static final int CHECK_MONITORINGCONTACTDC = com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.CHECK_USERCHANGEABLEDATACARRIER;
 
 	static {
 		try {
@@ -82,136 +86,121 @@ public class MonitoringContactDC
 			FIELD_META.put( FIELD_PHONE1,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 			FIELD_META.put( FIELD_PHONE2,	new BasicDCFieldMeta( "STRINGS",	"STRING",	String.class,	null ) );
 		} catch ( Exception e ) {
-			throw new InitException( "Failed to detect return types of the getter methods of MonitoringContactDC!", null );
+			throw new InitException( "Failed to detect return types of the getter methods of MonitoringContactDC!", e );
 		}
 	}
 
 	/**
-	 * The Constructor.
-	 * (a)deprecated Use: static MonitoringContactDC newInstanceOfMonitoringContactDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * The standard Constructor (Framework internal: do not use in applications!).
+	 * @deprecated Use: static MonitoringContactDC newInstanceOfMonitoringContactDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
+	@Deprecated
 	public MonitoringContactDC() {
 		super( (Boolean)null );
 	}
 
 	/**
-	 * Temporary Constructor.
+	 * Constructor for class-hierarchy (Framework internal: do not use in applications!).
 	 */
 	protected MonitoringContactDC( Boolean pVal ) {
 		super( pVal );
-		pVal = null;
 	}
 
 	/**
 	 * The Copy Constructor.
-	 * (a)deprecated Use: static MonitoringContactDC newInstanceOfMonitoringContactDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * @deprecated Use: static MonitoringContactDC newInstanceOfMonitoringContactDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
-	public MonitoringContactDC( BasicDataCarrier pDC )
-		throws InitException
-	{
+	@Deprecated
+	public MonitoringContactDC( BasicDataCarrier pDC ) {
 		super( (Boolean)null );
 		copyFrom( pDC );
 	}
-	
+
 
 	/**
 	 * Create a new instance, supports replacement by subclass!!!
-	 * @throws InitException if the instanciation failes.
+	 * throws an InitException if the instantiation fails.
 	 */
-	public static MonitoringContactDC newInstanceOfMonitoringContactDC() throws InitException {
-		return (MonitoringContactDC)newInstanceOf( MonitoringContactDC.class );
+	public static MonitoringContactDC newInstanceOfMonitoringContactDC() {
+		return newInstanceOf( MonitoringContactDC.class );
 	}
 
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
+	 * throws an InitException if the instantiation fails.
 	 * @param pLoc java.util.Locale the Locale to localize the new instance to, automatically.
-	 * @throws InitException if the instanciation failes.
 	 */
-	public static MonitoringContactDC newInstanceOfMonitoringContactDC( Locale pLoc ) throws InitException {
-		return (MonitoringContactDC)localizeDC( newInstanceOfMonitoringContactDC(), pLoc );
+	public static MonitoringContactDC newInstanceOfMonitoringContactDC( Locale pLoc ) {
+		return localizeDC( newInstanceOfMonitoringContactDC(), pLoc );
 	}
 
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
-	 * @param pDC dc to copy the attributes from.
-	 * @throws InitException if the instanciation failes.
+	 * throws an InitException if the instantiation fails.
+	 * @param pDC DC to copy the attributes from.
 	 */
-	public static MonitoringContactDC newInstanceOfMonitoringContactDC( BasicDataCarrier pDC ) throws InitException {
+	public static MonitoringContactDC newInstanceOfMonitoringContactDC( BasicDataCarrier pDC ) {
 		return (MonitoringContactDC)newInstanceOfMonitoringContactDC().copyFrom( pDC );
 	}
-
-//	/**
-//	 * Copy the parameter DC pOther into this.
-//	 * THIS METHOD IS A TEMPORARY WORKAROUND.
-//	 * (a)deprecated
-//	 */
-//	public com.bayer.ecim.foundation.dbx.DataCarrier copyFrom(com.bayer.ecim.foundation.dbx.DataCarrier pOther) throws InitException {
-//		copyFrom((BasicDataCarrier)pOther);
-//		return (((Object)this) instanceof com.bayer.ecim.foundation.dbx.DataCarrier) ? (com.bayer.ecim.foundation.dbx.DataCarrier)(Object)this : null;
-//	}
-	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
-	public static final int CHECK_MONITORINGCONTACTDC = com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.CHECK_USERCHANGEABLEDATACARRIER;
 
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
-	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
+	@Override
+	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) {
 		super.copyFrom(pOther);
 		if (MonitoringContactDC.class.isAssignableFrom(pOther.getClass())) {
-			BasicDCColumnMetaData m = null;
-			for (int i = 0; i < LOCAL_FIELD_LIST.length; i++) {
-				m = pOther.getBasicDCColumnMetaData( LOCAL_FIELD_LIST[i] );
+			BasicDCColumnMetaData m;
+			for (String field : LOCAL_FIELD_LIST) {
+				m = pOther.getBasicDCColumnMetaData(field);
 				if ( m != null ) {
-					cColumnMetaData.put( LOCAL_FIELD_LIST[i], m );
+					cColumnMetaData.put( field, m );
 				}
 			}
-			for (int i = 0; i < LOCAL_FIELD_LIST.length; i++) {
-				String fn = LOCAL_FIELD_LIST[i];
+			for (String field : LOCAL_FIELD_LIST) {
 				try {
-					set(fn, pOther.get(fn));
-					if ( !pOther.isFieldTouched( fn ) ) {
-						untouchField( fn );
+					set(field, pOther.get(field));
+					if ( !pOther.isFieldTouched( field ) ) {
+						untouchField( field );
 					}
 				} catch (BasicDCReflectFailedException e) {
 					throw new InitException(
-						"BasicDataCarrier.copyFrom() cannot copy field '"
-							+ fn
-							+ "' from DC '"
-							+ pOther.getClass().getName()
-							+ "' to DC '"
-							+ this.getClass().getName()
-							+ "'.",
+						"BasicDataCarrier.copyFrom() cannot copy field '" + field
+							+ "' from DC '" + pOther.getClass().getName()
+							+ "' to DC '"   + this  .getClass().getName() + "'.",
 						e);
 				}
 			}
-		} else
+		} else {
 			cWasCastedUp = true;
+		}
 		return this;
 	}
 
 	/**
-	 * Get the CVS metadata of this DC and it's used generator.
+	 * Get the CVS meta-data of this DC and it's used generator.
 	 */
 	public static BasicDCGeneratorMeta localGetCVSMeta() {
 		return new BasicDCGeneratorMeta(
 			"com.bayer.bhc.doc41webui.integration.db.dc",
 			"MonitoringContactDC",
 			"com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier",
-			"Date: 2012/10/05 12:22:39 ",
-			"Revision: 1.82 ",
-			"Author: evfpu ",
-			"Header: /bo/foundation/resources/DCGenerator.ini,v 1.82 2012/10/05 12:22:39 evfpu Exp ",
+			"Date: 2017-02-21 14:08:28 +0100 (Di, 21 Feb 2017) ",
+			"Revision: 11016 ",
+			"Author: ezfhl ",
+			"Header",
 			"$Date$",
 			"$Revision$",
 			"$Author$",
-			"$Header$"
+			"$Header$/generics"
 		);
 	}
 
 
 	/**
-	 * Get the CVS metadata of this DC and it's used generator.
+	 * Get the CVS meta-data of this DC and it's used generator.
 	 */
+	@Override
 	public BasicDCGeneratorMeta getCVSMeta() {
 		return MonitoringContactDC.localGetCVSMeta();
 	}
@@ -227,9 +216,10 @@ public class MonitoringContactDC
 	 * Provides field meta information for a specific field.
 	 */
 	public static BasicDCFieldMeta localGetFieldMeta( String pFieldName ) {
-		return (BasicDCFieldMeta)FIELD_META.get( pFieldName );
+		return FIELD_META.get( pFieldName );
 	}
 
+	@Override
 	public BasicDCFieldMeta getFieldMeta( String pFieldName ) {
 		return MonitoringContactDC.localGetFieldMeta( pFieldName );
 	}
@@ -238,7 +228,7 @@ public class MonitoringContactDC
 	 * Provides a field list of all fields that are supported by the DC.
 	 */
 	public static String[] localGetFieldList() {
-		return FIELD_LIST;
+		return FIELD_LIST.clone( );
 	}
 
 
@@ -282,9 +272,7 @@ public class MonitoringContactDC
 	 * Maps DB-Column: interface_Name
 	 * Logical type: STRING
 	 */
-	public void setFormattedInterfaceName( String pInterfaceName )
-		throws java.text.ParseException
-	{
+	public void setFormattedInterfaceName( String pInterfaceName ) throws java.text.ParseException {
 		setInterfaceName( null );
 		memorizeOriginalValue( FIELD_INTERFACENAME, pInterfaceName );
 		setInterfaceName( getPool().parseString( pInterfaceName ) );
@@ -376,9 +364,7 @@ public class MonitoringContactDC
 	 * Maps DB-Column: contact_Type
 	 * Logical type: STRING
 	 */
-	public void setFormattedContactType( String pContactType )
-		throws java.text.ParseException
-	{
+	public void setFormattedContactType( String pContactType ) throws java.text.ParseException {
 		setContactType( null );
 		memorizeOriginalValue( FIELD_CONTACTTYPE, pContactType );
 		setContactType( getPool().parseString( pContactType ) );
@@ -470,9 +456,7 @@ public class MonitoringContactDC
 	 * Maps DB-Column: cwid
 	 * Logical type: STRING
 	 */
-	public void setFormattedCwid( String pCwid )
-		throws java.text.ParseException
-	{
+	public void setFormattedCwid( String pCwid ) throws java.text.ParseException {
 		setCwid( null );
 		memorizeOriginalValue( FIELD_CWID, pCwid );
 		setCwid( getPool().parseString( pCwid ) );
@@ -564,9 +548,7 @@ public class MonitoringContactDC
 	 * Maps DB-Column: first_Name
 	 * Logical type: STRING
 	 */
-	public void setFormattedFirstName( String pFirstName )
-		throws java.text.ParseException
-	{
+	public void setFormattedFirstName( String pFirstName ) throws java.text.ParseException {
 		setFirstName( null );
 		memorizeOriginalValue( FIELD_FIRSTNAME, pFirstName );
 		setFirstName( getPool().parseString( pFirstName ) );
@@ -658,9 +640,7 @@ public class MonitoringContactDC
 	 * Maps DB-Column: last_Name
 	 * Logical type: STRING
 	 */
-	public void setFormattedLastName( String pLastName )
-		throws java.text.ParseException
-	{
+	public void setFormattedLastName( String pLastName ) throws java.text.ParseException {
 		setLastName( null );
 		memorizeOriginalValue( FIELD_LASTNAME, pLastName );
 		setLastName( getPool().parseString( pLastName ) );
@@ -752,9 +732,7 @@ public class MonitoringContactDC
 	 * Maps DB-Column: email
 	 * Logical type: STRING
 	 */
-	public void setFormattedEmail( String pEmail )
-		throws java.text.ParseException
-	{
+	public void setFormattedEmail( String pEmail ) throws java.text.ParseException {
 		setEmail( null );
 		memorizeOriginalValue( FIELD_EMAIL, pEmail );
 		setEmail( getPool().parseString( pEmail ) );
@@ -846,9 +824,7 @@ public class MonitoringContactDC
 	 * Maps DB-Column: phone1
 	 * Logical type: STRING
 	 */
-	public void setFormattedPhone1( String pPhone1 )
-		throws java.text.ParseException
-	{
+	public void setFormattedPhone1( String pPhone1 ) throws java.text.ParseException {
 		setPhone1( null );
 		memorizeOriginalValue( FIELD_PHONE1, pPhone1 );
 		setPhone1( getPool().parseString( pPhone1 ) );
@@ -940,9 +916,7 @@ public class MonitoringContactDC
 	 * Maps DB-Column: phone2
 	 * Logical type: STRING
 	 */
-	public void setFormattedPhone2( String pPhone2 )
-		throws java.text.ParseException
-	{
+	public void setFormattedPhone2( String pPhone2 ) throws java.text.ParseException {
 		setPhone2( null );
 		memorizeOriginalValue( FIELD_PHONE2, pPhone2 );
 		setPhone2( getPool().parseString( pPhone2 ) );

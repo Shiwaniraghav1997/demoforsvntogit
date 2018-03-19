@@ -1,7 +1,7 @@
 /*
  * (c)2007 Bayer AG Leverkusen, Bayer Business Solutions
  * All rights reserved.
- * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini 10163 2015-10-28 17:47:12Z imwif )
+ * (based on DCGenenerator DC-Definitions: Id: DCGenerator.ini 11016 2017-02-21 13:08:28Z ezfhl )
  *
  * $Id$
  */
@@ -19,9 +19,8 @@ import com.bayer.ecim.foundation.dbx.*;
 /**
  * <my description of the dc>
  */
-public class SapCustomerDC
-	extends com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier
-{
+public class   SapCustomerDC
+       extends com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier {
 
 	/** Maps DB-Column: partner_Number */
 	String cPartnerNumber;
@@ -59,23 +58,26 @@ public class SapCustomerDC
 	Date cSapChanged;
 	public static final String FIELD_SAPCHANGED = "SapChanged";
 
-	/** for compatibility, suppress import warning...*/
-	public static final Class<DataCarrier> _DBX_DC_CLASS_SAPCUSTOMERDC = DataCarrier.class; // dummy variable to avoid warning
+	/** for compatibility: dummy variable to suppress import warning...*/
+	public static final Class<DataCarrier> _DBX_DC_CLASS_SAPCUSTOMERDC = DataCarrier.class;
 
 	/** The master Class of this class. */
-	public final Class<BasicDataCarrier> MASTER_CLASS_SAPCUSTOMERDC = BasicDataCarrier.class;
+	public static final Class<BasicDataCarrier> MASTER_CLASS_SAPCUSTOMERDC = BasicDataCarrier.class;
 
 	/** Set the database table-name (null if unspecified) for this DC. */
 	static {
 		setDBTablename( SapCustomerDC.class, "[DOC41WEB_MGR].SAP_CUSTOMER" );
 	}
 
-	private static final long serialVersionUID = 20151102031952110L;
+	private static final long serialVersionUID = 20180319062713936L;
 	protected static final Class<java.math.BigDecimal> _BD_CLASS_SAPCUSTOMERDC = java.math.BigDecimal.class;
 
-	private static final HashMap<String,BasicDCFieldMeta> FIELD_META = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
-	private static final String[] LOCAL_FIELD_LIST = new String[] {FIELD_PARTNERNUMBER, FIELD_NAME1, FIELD_NAME2, FIELD_STREET, FIELD_POSTALCODE, FIELD_CITY, FIELD_COUNTRYISOCODE, FIELD_ISDELETED, FIELD_SAPCHANGED};
-	private static final String[] FIELD_LIST = StringTool.merge(  com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
+	private static final HashMap<String,BasicDCFieldMeta> FIELD_META       = new HashMap<String,BasicDCFieldMeta>( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldMetaMap() );
+	private static final String[]                         LOCAL_FIELD_LIST = new String[] {FIELD_PARTNERNUMBER, FIELD_NAME1, FIELD_NAME2, FIELD_STREET, FIELD_POSTALCODE, FIELD_CITY, FIELD_COUNTRYISOCODE, FIELD_ISDELETED, FIELD_SAPCHANGED};
+	private static final String[]                         FIELD_LIST       = StringTool.merge( com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.localGetFieldList(), LOCAL_FIELD_LIST );
+
+	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
+	public static final int CHECK_SAPCUSTOMERDC = com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.CHECK_USERCHANGEABLEDATACARRIER;
 
 	static {
 		try {
@@ -89,111 +91,94 @@ public class SapCustomerDC
 			FIELD_META.put( FIELD_ISDELETED,	new BasicDCFieldMeta( "BOOLEANS",	"BOOLEAN",	Boolean.class,	null ) );
 			FIELD_META.put( FIELD_SAPCHANGED,	new BasicDCFieldMeta( "DATETS",	"TIMESTAMP",	Date.class,	null ) );
 		} catch ( Exception e ) {
-			throw new InitException( "Failed to detect return types of the getter methods of SapCustomerDC!", null );
+			throw new InitException( "Failed to detect return types of the getter methods of SapCustomerDC!", e );
 		}
 	}
 
 	/**
-	 * The Constructor.
-	 * (a)deprecated Use: static SapCustomerDC newInstanceOfSapCustomerDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * The standard Constructor (Framework internal: do not use in applications!).
+	 * @deprecated Use: static SapCustomerDC newInstanceOfSapCustomerDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
+	@Deprecated
 	public SapCustomerDC() {
 		super( (Boolean)null );
 	}
 
 	/**
-	 * Temporary Constructor.
+	 * Constructor for class-hierarchy (Framework internal: do not use in applications!).
 	 */
 	protected SapCustomerDC( Boolean pVal ) {
 		super( pVal );
-		pVal = null;
 	}
 
 	/**
 	 * The Copy Constructor.
-	 * (a)deprecated Use: static SapCustomerDC newInstanceOfSapCustomerDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
+	 * @deprecated Use: static SapCustomerDC newInstanceOfSapCustomerDC()  instead, supports replacement by subclass!!! Constructor will once change from public to protected!!!
 	 */
-	public SapCustomerDC( BasicDataCarrier pDC )
-		throws InitException
-	{
+	@Deprecated
+	public SapCustomerDC( BasicDataCarrier pDC ) {
 		super( (Boolean)null );
 		copyFrom( pDC );
 	}
-	
+
 
 	/**
 	 * Create a new instance, supports replacement by subclass!!!
-	 * @throws InitException if the instantiation fails.
+	 * throws an InitException if the instantiation fails.
 	 */
-	public static SapCustomerDC newInstanceOfSapCustomerDC() throws InitException {
-		return (SapCustomerDC)newInstanceOf( SapCustomerDC.class );
+	public static SapCustomerDC newInstanceOfSapCustomerDC() {
+		return newInstanceOf( SapCustomerDC.class );
 	}
 
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
+	 * throws an InitException if the instantiation fails.
 	 * @param pLoc java.util.Locale the Locale to localize the new instance to, automatically.
-	 * @throws InitException if the instantiation fails.
 	 */
-	public static SapCustomerDC newInstanceOfSapCustomerDC( Locale pLoc ) throws InitException {
-		return (SapCustomerDC)localizeDC( newInstanceOfSapCustomerDC(), pLoc );
+	public static SapCustomerDC newInstanceOfSapCustomerDC( Locale pLoc ) {
+		return localizeDC( newInstanceOfSapCustomerDC(), pLoc );
 	}
 
 	/**
 	 * Create a new instance, supports replacement by subclass, with automatic localization!!!
-	 * @param pDC dc to copy the attributes from.
-	 * @throws InitException if the instantiation fails.
+	 * throws an InitException if the instantiation fails.
+	 * @param pDC DC to copy the attributes from.
 	 */
-	public static SapCustomerDC newInstanceOfSapCustomerDC( BasicDataCarrier pDC ) throws InitException {
+	public static SapCustomerDC newInstanceOfSapCustomerDC( BasicDataCarrier pDC ) {
 		return (SapCustomerDC)newInstanceOfSapCustomerDC().copyFrom( pDC );
 	}
-
-//	/**
-//	 * Copy the parameter DC pOther into this.
-//	 * THIS METHOD IS A TEMPORARY WORKAROUND.
-//	 * (a)deprecated
-//	 */
-//	public com.bayer.ecim.foundation.dbx.DataCarrier copyFrom(com.bayer.ecim.foundation.dbx.DataCarrier pOther) throws InitException {
-//		copyFrom((BasicDataCarrier)pOther);
-//		return (((Object)this) instanceof com.bayer.ecim.foundation.dbx.DataCarrier) ? (com.bayer.ecim.foundation.dbx.DataCarrier)(Object)this : null;
-//	}
-	/** Regeneration check for subclasses. If this line causes an error, you forgot to regenerate the direct superclass */
-	public static final int CHECK_SAPCUSTOMERDC = com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier.CHECK_USERCHANGEABLEDATACARRIER;
 
 	/**
 	 * Copy the parameter DC pOther into this.
 	 */
 	@Override
-	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) throws InitException {
+	public BasicDataCarrier copyFrom(BasicDataCarrier pOther) {
 		super.copyFrom(pOther);
 		if (SapCustomerDC.class.isAssignableFrom(pOther.getClass())) {
-			BasicDCColumnMetaData m = null;
-			for (int i = 0; i < LOCAL_FIELD_LIST.length; i++) {
-				m = pOther.getBasicDCColumnMetaData( LOCAL_FIELD_LIST[i] );
+			BasicDCColumnMetaData m;
+			for (String field : LOCAL_FIELD_LIST) {
+				m = pOther.getBasicDCColumnMetaData(field);
 				if ( m != null ) {
-					cColumnMetaData.put( LOCAL_FIELD_LIST[i], m );
+					cColumnMetaData.put( field, m );
 				}
 			}
-			for (int i = 0; i < LOCAL_FIELD_LIST.length; i++) {
-				String fn = LOCAL_FIELD_LIST[i];
+			for (String field : LOCAL_FIELD_LIST) {
 				try {
-					set(fn, pOther.get(fn));
-					if ( !pOther.isFieldTouched( fn ) ) {
-						untouchField( fn );
+					set(field, pOther.get(field));
+					if ( !pOther.isFieldTouched( field ) ) {
+						untouchField( field );
 					}
 				} catch (BasicDCReflectFailedException e) {
 					throw new InitException(
-						"BasicDataCarrier.copyFrom() cannot copy field '"
-							+ fn
-							+ "' from DC '"
-							+ pOther.getClass().getName()
-							+ "' to DC '"
-							+ this.getClass().getName()
-							+ "'.",
+						"BasicDataCarrier.copyFrom() cannot copy field '" + field
+							+ "' from DC '" + pOther.getClass().getName()
+							+ "' to DC '"   + this  .getClass().getName() + "'.",
 						e);
 				}
 			}
-		} else
+		} else {
 			cWasCastedUp = true;
+		}
 		return this;
 	}
 
@@ -205,9 +190,9 @@ public class SapCustomerDC
 			"com.bayer.bhc.doc41webui.integration.db.dc",
 			"SapCustomerDC",
 			"com.bayer.ecim.foundation.dbx.UserChangeableDataCarrier",
-			"Date: 2015-10-28 18:47:12 +0100 (Wed, 28 Oct 2015) ",
-			"Revision: 10163 ",
-			"Author: imwif ",
+			"Date: 2017-02-21 14:08:28 +0100 (Di, 21 Feb 2017) ",
+			"Revision: 11016 ",
+			"Author: ezfhl ",
 			"Header",
 			"$Date$",
 			"$Revision$",
@@ -248,7 +233,7 @@ public class SapCustomerDC
 	 * Provides a field list of all fields that are supported by the DC.
 	 */
 	public static String[] localGetFieldList() {
-		return FIELD_LIST;
+		return FIELD_LIST.clone( );
 	}
 
 
@@ -292,9 +277,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: partner_Number
 	 * Logical type: STRING
 	 */
-	public void setFormattedPartnerNumber( String pPartnerNumber )
-		throws java.text.ParseException
-	{
+	public void setFormattedPartnerNumber( String pPartnerNumber ) throws java.text.ParseException {
 		setPartnerNumber( null );
 		memorizeOriginalValue( FIELD_PARTNERNUMBER, pPartnerNumber );
 		setPartnerNumber( getPool().parseString( pPartnerNumber ) );
@@ -386,9 +369,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: name1
 	 * Logical type: STRING
 	 */
-	public void setFormattedName1( String pName1 )
-		throws java.text.ParseException
-	{
+	public void setFormattedName1( String pName1 ) throws java.text.ParseException {
 		setName1( null );
 		memorizeOriginalValue( FIELD_NAME1, pName1 );
 		setName1( getPool().parseString( pName1 ) );
@@ -480,9 +461,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: name2
 	 * Logical type: STRING
 	 */
-	public void setFormattedName2( String pName2 )
-		throws java.text.ParseException
-	{
+	public void setFormattedName2( String pName2 ) throws java.text.ParseException {
 		setName2( null );
 		memorizeOriginalValue( FIELD_NAME2, pName2 );
 		setName2( getPool().parseString( pName2 ) );
@@ -574,9 +553,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: street
 	 * Logical type: STRING
 	 */
-	public void setFormattedStreet( String pStreet )
-		throws java.text.ParseException
-	{
+	public void setFormattedStreet( String pStreet ) throws java.text.ParseException {
 		setStreet( null );
 		memorizeOriginalValue( FIELD_STREET, pStreet );
 		setStreet( getPool().parseString( pStreet ) );
@@ -668,9 +645,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: postal_Code
 	 * Logical type: STRING
 	 */
-	public void setFormattedPostalCode( String pPostalCode )
-		throws java.text.ParseException
-	{
+	public void setFormattedPostalCode( String pPostalCode ) throws java.text.ParseException {
 		setPostalCode( null );
 		memorizeOriginalValue( FIELD_POSTALCODE, pPostalCode );
 		setPostalCode( getPool().parseString( pPostalCode ) );
@@ -762,9 +737,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: city
 	 * Logical type: STRING
 	 */
-	public void setFormattedCity( String pCity )
-		throws java.text.ParseException
-	{
+	public void setFormattedCity( String pCity ) throws java.text.ParseException {
 		setCity( null );
 		memorizeOriginalValue( FIELD_CITY, pCity );
 		setCity( getPool().parseString( pCity ) );
@@ -856,9 +829,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: country_Iso_Code
 	 * Logical type: STRING
 	 */
-	public void setFormattedCountryIsoCode( String pCountryIsoCode )
-		throws java.text.ParseException
-	{
+	public void setFormattedCountryIsoCode( String pCountryIsoCode ) throws java.text.ParseException {
 		setCountryIsoCode( null );
 		memorizeOriginalValue( FIELD_COUNTRYISOCODE, pCountryIsoCode );
 		setCountryIsoCode( getPool().parseString( pCountryIsoCode ) );
@@ -950,9 +921,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: is_Deleted
 	 * Logical type: BOOLEAN
 	 */
-	public void setFormattedIsDeleted( String pIsDeleted )
-		throws java.text.ParseException
-	{
+	public void setFormattedIsDeleted( String pIsDeleted ) throws java.text.ParseException {
 		setIsDeleted( null );
 		memorizeOriginalValue( FIELD_ISDELETED, pIsDeleted );
 		setIsDeleted( getPool().parseBoolean( pIsDeleted ) );
@@ -1044,9 +1013,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: sap_Changed
 	 * Logical type: TimeStamp
 	 */
-	public void setFormattedSapChanged( String pSapChanged )
-		throws java.text.ParseException
-	{
+	public void setFormattedSapChanged( String pSapChanged ) throws java.text.ParseException {
 		setSapChanged( null );
 		memorizeOriginalValue( FIELD_SAPCHANGED, pSapChanged );
 		setSapChanged( getPool().parseDate( "TimeStamp", "T:TimeStampShort|Date|TimeStamp$|TimeStampShort$|Date$", pSapChanged ) );
@@ -1103,9 +1070,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: sap_Changed
 	 * Logical type: TimeStamp
 	 */
-	public Date getSapChanged( String pSrcTZ, String pDestTZ )
-		throws DateToolException
-	{
+	public Date getSapChanged( String pSrcTZ, String pDestTZ ) {
 		Date mRes = getSapChanged();
 		return (mRes == null) ? null : new Date( mRes.getTime() + DateTool.getTimeZoneOffsetForDateInMillis( mRes, pSrcTZ, pDestTZ, true ) );
 	}
@@ -1117,9 +1082,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: sap_Changed
 	 * Logical type: TimeStamp
 	 */
-	public void setSapChanged( Date pSapChanged, String pSrcTZ, String pDestTZ )
-		throws DateToolException
-	{
+	public void setSapChanged( Date pSapChanged, String pSrcTZ, String pDestTZ ) {
 		setSapChanged( (pSapChanged == null) ? null : new Date( pSapChanged.getTime() + DateTool.getTimeZoneOffsetForDateInMillis( pSapChanged, pSrcTZ, pDestTZ, true ) ) );
 	}
 	// END Method setTZSapChanged
@@ -1130,9 +1093,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: sap_Changed
 	 * Logical type: TimeStamp
 	 */
-	public String getFormattedSapChanged( String pSrcTZ, String pDestTZ )
-		throws DateToolException
-	{
+	public String getFormattedSapChanged( String pSrcTZ, String pDestTZ ) {
 		return hasInvalidValue( FIELD_SAPCHANGED ) ? getOriginalValue( FIELD_SAPCHANGED ) : getPool().formatDate( "TimeStamp", "T:TimeStampShort|Date|TimeStamp$|TimeStampShort$|Date$", getSapChanged( pSrcTZ, pDestTZ ) );
 	}
 	// END Method getFormattedTZSapChanged
@@ -1143,9 +1104,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: sap_Changed
 	 * Logical type: TimeStamp
 	 */
-	public void setFormattedSapChanged( String pSapChanged, String pSrcTZ, String pDestTZ )
-		throws DateToolException, java.text.ParseException
-	{
+	public void setFormattedSapChanged( String pSapChanged, String pSrcTZ, String pDestTZ ) throws java.text.ParseException {
 		setSapChanged( null );
 		memorizeOriginalValue( FIELD_SAPCHANGED, pSapChanged );
 		setSapChanged( getPool().parseDate( "TimeStamp", "T:TimeStampShort|Date|TimeStamp$|TimeStampShort$|Date$", pSapChanged ), pSrcTZ, pDestTZ );
@@ -1158,9 +1117,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: sap_Changed
 	 * Logical type: TimeStamp
 	 */
-	public String getFormattedHTMLSapChanged( String pSrcTZ, String pDestTZ )
-		throws DateToolException
-	{
+	public String getFormattedHTMLSapChanged( String pSrcTZ, String pDestTZ ) {
 		return StringTool.escapeHTML( getFormattedSapChanged( pSrcTZ, pDestTZ ) );
 	}
 	// END Method getFormattedHTMLTZSapChanged
@@ -1171,9 +1128,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: sap_Changed
 	 * Logical type: TimeStamp
 	 */
-	public String getSapChangedToString( String pSrcTZ, String pDestTZ )
-		throws DateToolException
-	{
+	public String getSapChangedToString( String pSrcTZ, String pDestTZ ) {
 		return StringTool.nullToEmpty( DateTool.convertSQLTimestamp( getSapChanged( pSrcTZ, pDestTZ ) ) );
 	}
 	// END Method getToStringTZSapChanged
@@ -1184,9 +1139,7 @@ public class SapCustomerDC
 	 * Maps DB-Column: sap_Changed
 	 * Logical type: TimeStamp
 	 */
-	public void setSapChangedFromString( String pSapChanged, String pSrcTZ, String pDestTZ )
-		throws DateToolException
-	{
+	public void setSapChangedFromString( String pSapChanged, String pSrcTZ, String pDestTZ ) {
 		setSapChanged( DateTool.convertDate( DateTool.parseSQLTimestamp( pSapChanged ) ), pSrcTZ, pDestTZ );
 	}
 	// END Method setFromStringTZSapChanged
