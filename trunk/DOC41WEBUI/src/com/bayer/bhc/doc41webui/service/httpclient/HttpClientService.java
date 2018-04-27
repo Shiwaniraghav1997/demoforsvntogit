@@ -143,14 +143,16 @@ public class HttpClientService {
 	
 	/**
 	 * Add a file to a prepared download outputstream.
+	 * see: Doc41ClientAbortException
      * @param pGetUrl The url to get the file from SAP (to be added to the zip).
 	 * @param pZOs the zip output stream
 	 * @param pDocId
 	 * @param pFileName
      * @return the Status responded by the SAP Stream
+     * @throws RuntimeException (e.g. ResourceAccessException encapsulation ClientAbortException = IOException)
 	 */
 	public String addFileToZipDownload(URI pGetUrl, final ZipOutputStream pZOs, final String pDocId, final String pFileName/*, HashMap<String, Integer> pAddedFiles*/) {
-        final ResponseExtractor<String> responseExtractor = new ResponseExtractor<String>() {
+       final ResponseExtractor<String> responseExtractor = new ResponseExtractor<String>() {
             @Override
             public String extractData(ClientHttpResponse response) throws IOException {
                 HttpHeaders headers = response.getHeaders();
@@ -177,8 +179,8 @@ public class HttpClientService {
                 inputStream.close();
                 return response.getStatusText();
             }
-        };
-        return restTemplate.execute(pGetUrl, HttpMethod.GET, null, responseExtractor);
+          };
+          return restTemplate.execute(pGetUrl, HttpMethod.GET, null, responseExtractor);
 	}
 	
 	
@@ -197,11 +199,21 @@ public class HttpClientService {
 	}
 
 	
-	
-	public String downloadDocumentToResponse(URI getUrl, final HttpServletResponse targetResponse,final String docId,final String fileName) throws Doc41ServiceException{
-		final ResponseExtractor<String> responseExtractor = new ResponseExtractor<String>() {
+	/**
+	 * Forward download to the browser client.
+	 * This may end up in a ResourceAccessException(ClientAbortException) due to expiry of the download link (expiry parameter part of the downloadlink).
+	 * see: Doc41ClientAbortException
+	 * @param getUrl
+	 * @param targetResponse
+	 * @param docId
+	 * @param fileName
+	 * @return the status text
+	 * @throws RuntimeException (e.g. ResourceAccessException encapsulation ClientAbortException = IOException)
+	 */
+	public String downloadDocumentToResponse(URI getUrl, final HttpServletResponse targetResponse,final String docId,final String fileName) throws Doc41ServiceException { // e.g. ResourceAccessException extends ... RuntimeException (details see below)
+	    final ResponseExtractor<String> responseExtractor = new ResponseExtractor<String>() {
 			@Override
-			public String extractData(ClientHttpResponse response) throws IOException {
+			public String extractData(ClientHttpResponse response) throws IOException { // e.g. ClientAbortException extends IOException
 				HttpHeaders headers = response.getHeaders();
 				MediaType contentType = headers.getContentType();
 				targetResponse.setContentType(""+contentType);
@@ -215,10 +227,10 @@ public class HttpClientService {
 				IOUtils.copy(inputStream,targetResponse.getOutputStream());
 				return response.getStatusText();
 			}
-		};
-		return restTemplate.execute(getUrl, HttpMethod.GET, null, responseExtractor);
+		  };
+		  return restTemplate.execute(getUrl, HttpMethod.GET, null, responseExtractor);
 	}
-
+	
 	
 	/**
 	 * Generate a filename.
