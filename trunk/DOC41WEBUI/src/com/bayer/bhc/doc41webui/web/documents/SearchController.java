@@ -573,6 +573,7 @@ public class SearchController extends AbstractDoc41Controller {
             if (mOut != null) {
                 mComments.append("\n");
                 documentUC.closeZipDownload(response, mOut, generateFileName, mComments.toString(), mZIPStartMs);
+                mZIPEndMs = System.currentTimeMillis();
                 Doc41Log.get().debug(this, null, "*** MULTIDOWNLOAD SUCC: " + generateFileName + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s ***");
             }
         } catch (Doc41BusinessException ie) {
