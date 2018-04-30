@@ -505,7 +505,18 @@ public class SearchController extends AbstractDoc41Controller {
         StringBuffer mComments = new StringBuffer();
         ZipOutputStream mOut = null;
         String generateFileName = null;
-
+        String type = null;
+        String docId = null;
+        String cwid = null;
+        String sapObjId = null;
+        String sapObjType = null;
+        String filename = null;
+        String res = null;
+        long mZIPStartMs = System.currentTimeMillis();
+        long mStartMs = System.currentTimeMillis();
+        long mEndMs = System.currentTimeMillis();
+        long mZIPEndMs = System.currentTimeMillis();
+        Doc41Log.get().debug(this, null, "*** DOWNLOAD ZIP... ***");
         try {
             List<String> mSelected = values.getDocSel();
             if ((mSelected == null) || mSelected.isEmpty()) {
@@ -526,12 +537,12 @@ public class SearchController extends AbstractDoc41Controller {
                 @SuppressWarnings("unused") // currently not used (on original download even completely ignored by download servlet
                 String formType = mParmArr[0]; 
                 Map<String, String> decryptParameters = UrlParamCrypt.decryptParameters(key);
-                String type = decryptParameters.get(Doc41Constants.URL_PARAM_TYPE);
-                String docId = decryptParameters.get(Doc41Constants.URL_PARAM_DOC_ID);
-                String cwid = decryptParameters.get(Doc41Constants.URL_PARAM_CWID);
-                String sapObjId = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_ID);
-                String sapObjType = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE);
-                String filename = StringTool.emptyToNull(StringTool.decodeURLWithDefaultFileEnc(decryptParameters.get(Doc41Constants.URL_PARAM_FILENAME)));
+                type = decryptParameters.get(Doc41Constants.URL_PARAM_TYPE);
+                docId = decryptParameters.get(Doc41Constants.URL_PARAM_DOC_ID);
+                cwid = decryptParameters.get(Doc41Constants.URL_PARAM_CWID);
+                sapObjId = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_ID);
+                sapObjType = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE);
+                filename = StringTool.emptyToNull(StringTool.decodeURLWithDefaultFileEnc(decryptParameters.get(Doc41Constants.URL_PARAM_FILENAME)));
                 Doc41Log.get().debug(this, null, "Download DOC KEY: " + key);
                 Doc41Log.get().debug(this, null, "Download DOC FILE: " + filename);
                 if (StringTool.isTrimmedEmptyOrNull(docId)) {
@@ -546,31 +557,43 @@ public class SearchController extends AbstractDoc41Controller {
                 } else {
                     if (mOut == null) {
                         generateFileName = "BDS_" + cwid + "_" + sapObjId + "__" + (new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss").format(new Date(System.currentTimeMillis())) +".zip");
+                        Doc41Log.get().debug(this, null, "...ZIP File: " + generateFileName);
                         mDoThrowEx = false; // OutputStream in USE, redirection no more possible...
-                        mOut = documentUC.createZipResponse(response, generateFileName);
+                        mOut = documentUC.createZipResponse(response, generateFileName, mZIPStartMs);
                     }
                     // all exceptions catched internal, status added to comment, if not ok...
-                    documentUC.addDownloadDocumentToZip(mOut, type, docId, filename, sapObjId, sapObjType, mComments /*, mAddedFiles*/);
+                    mStartMs = System.currentTimeMillis();
+                    Doc41Log.get().debug(this, null, "*** DOWNLOAD ZIP ADD File: " + filename + ", add to ZIP " + generateFileName + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + "... ***");
+                    res = documentUC.addDownloadDocumentToZip(mOut, type, docId, filename, sapObjId, sapObjType, mComments, generateFileName, mStartMs /*, mAddedFiles*/);
+                    mEndMs = System.currentTimeMillis();
+                    Doc41Log.get().debug(this, null, "*** DOWNLOAD ZIP ADD File: " + filename + ", add to ZIP " + generateFileName + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + " done, " + ((mEndMs - mStartMs) / 1000.0) + "s, response: " + res + " ***");
                 }
             }
             // if this fails, we can not report to user, only to log... (add comment to ZIP & close ZIP).
             if (mOut != null) {
                 mComments.append("\n");
-                documentUC.closeZipDownload(response, mOut, generateFileName, mComments.toString());
+                documentUC.closeZipDownload(response, mOut, generateFileName, mComments.toString(), mZIPStartMs);
+                Doc41Log.get().debug(this, null, "*** MULTIDOWNLOAD SUCC: " + generateFileName + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s ***");
             }
         } catch (Doc41BusinessException ie) {
+            mEndMs = System.currentTimeMillis();
+            mZIPEndMs = System.currentTimeMillis();
+            Doc41Log.get().error(this, null, "*** DOWNLOAD ZIP FAIL: " + generateFileName + ", last file: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s, last: " + ((mEndMs - mStartMs) / 1000.0) + "s, last response: " + res + " ***");
             if (mDoThrowEx) {
                 throw ie;
             }
         } catch (Doc41ClientAbortException mCAEx) {
-            Doc41Log.get().warning(this, null, "User aborted ZIP MultiDownload: " + StringTool.nvl(generateFileName, "n/a (early abort)"));
+            mEndMs = System.currentTimeMillis();
+            mZIPEndMs = System.currentTimeMillis();
+            Doc41Log.get().warning(this, null, "*** DOWNLOAD ZIP FAIL, ClientAbortedException: " + generateFileName + " failed, last file: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s, last: " + ((mEndMs - mStartMs) / 1000.0) + "s, last response: " + res + " ***");
         } catch (Exception e) {
-            Doc41BusinessException mEx = new Doc41BusinessException("unexpected download zip failure", e);
+            mEndMs = System.currentTimeMillis();
+            mZIPEndMs = System.currentTimeMillis();
+            Doc41BusinessException mEx = new Doc41BusinessException("*** DOWNLOAD ZIP FAIL: " + generateFileName + ", last file: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s, last: " + ((mEndMs - mStartMs) / 1000.0) + "s, last response: " + res + " ***", e);
             if (mDoThrowEx) {
                 throw mEx;
             }
         }
-        Doc41Log.get().debug(this, null, "*** MULTIDOWNLOAD SUCC ***");
     }
     
     
@@ -589,6 +612,9 @@ public class SearchController extends AbstractDoc41Controller {
 		String sapObjId = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_ID);
 		String sapObjType = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE);
 		String filename = StringTool.emptyToNull(StringTool.decodeURLWithDefaultFileEnc(decryptParameters.get(Doc41Constants.URL_PARAM_FILENAME)));
+		String mRes = null;
+        long mStartMs = System.currentTimeMillis();
+        long mEndMs = System.currentTimeMillis();
         Doc41Log.get().debug(this, null, "Download DOC KEY: " + key);
         Doc41Log.get().debug(this, null, "Download DOC FILE: " + filename);
 		if(StringTool.isTrimmedEmptyOrNull(type)){
@@ -601,11 +627,23 @@ public class SearchController extends AbstractDoc41Controller {
 			throw new Doc41BusinessException("download link for different user");
 		}
 		try {
-		    String mRes = documentUC.downloadDocument(response,type,docId,filename,sapObjId,sapObjType);
-	        Doc41Log.get().debug(this, null, "*** DOWNLOAD " + mRes + " ***");
+            mStartMs = System.currentTimeMillis();
+            Doc41Log.get().debug(this, null, "*** DOWNLOAD File: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + "... ***");
+            mRes = documentUC.downloadDocument(response,type,docId,filename,sapObjId,sapObjType);
+            mEndMs = System.currentTimeMillis();
+            Doc41Log.get().debug(this, null, "*** DOWNLOAD File: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + " done, " + ((mEndMs - mStartMs) / 1000.0) + "s, response: " + mRes + " ***");
+	    } catch (Doc41BusinessException ie) {
+            mEndMs = System.currentTimeMillis();
+            Doc41Log.get().error(this, null, "*** DOWNLOAD FAIL: " + filename + " failed, type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after: " + ((mEndMs - mStartMs) / 1000.0) + "s ***");
+            throw ie;
 		} catch (Doc41ClientAbortException e) {
-            Doc41Log.get().warning(this, null, "User aborted Download, filename: " + filename + ", Doc41Id: " + docId + ", SapObjectId: " + sapObjId );
+		    mEndMs = System.currentTimeMillis();
+	        Doc41Log.get().warning(this, null, "*** DOWNLOAD FAIL, ClientAbortedException: " + filename + " failed, type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after: " + ((mEndMs - mStartMs) / 1000.0) + "s ***");
+	    } catch (Exception e) {
+            mEndMs = System.currentTimeMillis();
+	        throw new Doc41BusinessException("*** DOWNLOAD FAIL: " + filename + " failed, type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after: " + ((mEndMs - mStartMs) / 1000.0) + "s ***", e);
 		}
+		
 // FIXME: throws Doc41BusinessException, Webservice???
 	}
 	

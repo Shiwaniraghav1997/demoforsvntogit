@@ -98,13 +98,15 @@ public class Doc41ControllerAdvice {
 		}
 		if (!(ex instanceof Doc41ExceptionBase)) {
 		    Throwable[] internalsTh = NestingException.getEncapsulatedThrowableList(ex);
+		    /* >>> this should not occure anymore!!! */
 		    boolean isClientAbort = false;
 		    for (int i = 0; (i < internalsTh.length) && !isClientAbort; i++) {
 		        isClientAbort = isClientAbort || "org.apache.catalina.connector.ClientAbortException".equals(internalsTh[i].getClass().getName()); 
 		    }
 		    if (isClientAbort) {
-                ex = new Doc41TechnicalException(this.getClass(), "client/download abort", ex, true, true);
+                ex = new Doc41TechnicalException(this.getClass(), "RECOVERY, bad Exception handling: client/download abort", ex, true, true);
 		    } else {
+		    /* <<< to be removed */
 		        ex = new Doc41TechnicalException(this.getClass(), "fatal error", ex);
 		    }
 		}
