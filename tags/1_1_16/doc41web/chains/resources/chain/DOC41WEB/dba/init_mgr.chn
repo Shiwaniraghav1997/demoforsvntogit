@@ -1,0 +1,28 @@
+# Initialize Schema
+#############################################################################
+# author:  Ingeborg Menge (KEI)
+# history: v1.1    12.06.2013  KEI: Initial version
+#          v1.2    ...         ...
+#          v1.3    ...         ...
+#############################################################################
+#
+##################################
+########### Process 1  ###########
+##################################
+#
+chainmanager.process-1.prefix=dbscr
+dbscr.chain.class=com.bayer.ecim.foundation.db.DBObjectSQLServerScript
+#
+# Scripts:
+dbscr.script1=../../../../../database/mgr/init/import.sql
+#
+# Script-Options:
+dbscr.sqlecho=RUN
+#dbscr.csvdelimiter=;
+#
+# include configuration:
+dbscr.chain.include=..\\inc\\ORA-GBO-DOC41WEB-Connect.inc
+#
+##########################
+###### End Of Chain ######
+##########################
