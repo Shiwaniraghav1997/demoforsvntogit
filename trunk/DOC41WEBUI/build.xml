@@ -42,8 +42,8 @@
     <property name="checkport.prod1.bds" value="2080" />
     <property name="checkport.prod2.bds" value="2080" />
 	<property name="vhname.dev" value="doc41-dev.bayer-ag.com"/>
-	<property name="vhname.qa" value="doc41-qa.bayer-ag.com"/>
-	<property name="vhname.prod" value="doc41.bayer-ag.com"/>
+	<property name="vhname.qa" value="bds-a"/>
+	<property name="vhname.prod" value="bds"/>
 	
 	<property name="dir.net.share" value="//DE.BAYER.CNB/BBS/BBSGmbH/Group/IBS/IBS-eBC/90 Archive/30 Deployment"/>
 	<property name="proj.dir.net.share.qa" value="DOC41/QA"/>
@@ -230,7 +230,7 @@
 		</war>
 	</target>
 	
-	<target name="control.apache.vh">
+	<!--<target name="control.apache.vh">
 		<echo message="server = ${server}"/>
 		<echo message="virtual.host = ${virtual.host}"/>
 		<echo message="command = ${command}"/>
@@ -238,7 +238,7 @@
 		<echo message="linux-user = ${linux-user}"/>
 		<sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="${apache.script.control} ${virtual.host} ${command}"
 			failonerror="${apache.failonerror}"/>
-	</target>	
+	</target>-->	
 	
 	<target name="status.apache.vh">
 		<sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="dir /etc/httpd/vh.d/${virtual.host}*"
@@ -272,12 +272,6 @@
         <!-- copy war file to temp -->
 		<scp file="${war.file}" todir="${linux-user}:${linux-password}@${server}:${tomcat.dir.tmp}/${linux-user}" trust="true">
 		</scp>
-		<!-- stop server -->
-		<!--<antcall target="control.apache.vh">
-			<param name="server" value="${server}"/>
-			<param name="virtual.host" value="${virtual.host}"/>
-			<param name="command" value="stop"/>
-		</antcall>-->
 		<antcall target="control.tomcat">
 			<param name="server" value="${server}"/>
 			<param name="command" value="stop"/>
@@ -290,11 +284,6 @@
 			<param name="server" value="${server}"/>
 			<param name="command" value="start"/>
 		</antcall>
-		<!--<antcall target="control.apache.vh">
-			<param name="server" value="${server}"/>
-			<param name="virtual.host" value="${virtual.host}"/>
-			<param name="command" value="start"/>
-		</antcall>-->
 		<antcall target="check.tomcat">
             <param name="server" value="${server}"/>
 			<param name="checkport" value="${checkport}"/>
@@ -358,11 +347,6 @@
 			<param name="server" value="${server1}"/>
 			<param name="command" value="start"/>
 		</antcall>
-		<!--<antcall target="control.apache.vh">
-			<param name="server" value="${server1}"/>
-			<param name="virtual.host" value="${virtual.host}"/>
-			<param name="command" value="start"/>
-		</antcall>-->
 		<antcall target="check.tomcat">
             <param name="server" value="${server1}"/>
 			<param name="checkport" value="${checkport1}"/>
@@ -378,21 +362,11 @@
 					<param name="server" value="${server2}"/>
 					<param name="checkport" value="${checkport2}"/>
 		        </antcall>
-				<!--<antcall target="control.apache.vh">
-					<param name="server" value="${server2}"/>
-					<param name="virtual.host" value="${virtual.host}"/>
-					<param name="command" value="start"/>
-				</antcall>-->
 			</then>
 		</if>
 	</target>
 	
 	<target name="servercontrol.stop" depends="servercontrol.servernames">
-		<!--<antcall target="control.apache.vh">
-			<param name="server" value="${server1}"/>
-			<param name="virtual.host" value="${virtual.host}"/>
-			<param name="command" value="stop"/>
-		</antcall>-->
 		<antcall target="control.tomcat">
 			<param name="server" value="${server1}"/>
 			<param name="command" value="stop"/>
@@ -401,11 +375,6 @@
 		<if>
 			<length string="${server2}" when="greater" length="0" />
 			<then>
-				<!--<antcall target="control.apache.vh">
-					<param name="server" value="${server2}"/>
-					<param name="virtual.host" value="${virtual.host}"/>
-					<param name="command" value="stop"/>
-				</antcall>-->
 				<antcall target="control.tomcat">
 					<param name="server" value="${server2}"/>
 					<param name="command" value="stop"/>
@@ -415,11 +384,6 @@
 	</target>
 	
 	<target name="servercontrol.restart" depends="servercontrol.servernames">
-		<!--<antcall target="control.apache.vh">
-			<param name="server" value="${server1}"/>
-			<param name="virtual.host" value="${virtual.host}"/>
-			<param name="command" value="stop"/>
-		</antcall>-->
 		<antcall target="control.tomcat">
 			<param name="server" value="${server1}"/>
 			<param name="command" value="restart"/>
@@ -428,21 +392,11 @@
             <param name="server" value="${server1}"/>
 			<param name="checkport" value="${checkport1}"/>
         </antcall>
-		<!--<antcall target="control.apache.vh">
-			<param name="server" value="${server1}"/>
-			<param name="virtual.host" value="${virtual.host}"/>
-			<param name="command" value="start"/>
-		</antcall>-->
 		<if>
 			<length string="${server2}" when="greater" length="0" />
 			<then>
 				<echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
 				<sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
-				<!--<antcall target="control.apache.vh">
-					<param name="server" value="${server2}"/>
-					<param name="virtual.host" value="${virtual.host}"/>
-					<param name="command" value="stop"/>
-				</antcall>-->
 				<antcall target="control.tomcat">
 					<param name="server" value="${server2}"/>
 					<param name="command" value="restart"/>
@@ -451,11 +405,6 @@
 		            <param name="server" value="${server2}"/>
 					<param name="checkport" value="${checkport2}"/>
 		        </antcall>
-				<!--<antcall target="control.apache.vh">
-					<param name="server" value="${server2}"/>
-					<param name="virtual.host" value="${virtual.host}"/>
-					<param name="command" value="start"/>
-				</antcall>-->
 			</then>
 		</if>
 	</target>
@@ -534,23 +483,13 @@
 		<propertycopy name="server" from="server.${STAGE}${SERVERNUMBER}" />
 		<propertycopy name="virtual.host" from="vhname.${STAGE}" />
 		<if>
-			<equals arg1="${SERVERTYPE}" arg2="apache-vh"/>
+			<equals arg1="${SERVERTYPE}" arg2="tomcat"/>
 			<then>
-				<antcall target="control.apache.vh">
+				<antcall target="control.tomcat">
 					<param name="server" value="${server}"/>
-					<param name="virtual.host" value="${virtual.host}"/>
 					<param name="command" value="${COMMAND}"/>
 				</antcall>
 			</then>
-			<elseif>
-				<equals arg1="${SERVERTYPE}" arg2="tomcat"/>
-				<then>
-					<antcall target="control.tomcat">
-						<param name="server" value="${server}"/>
-						<param name="command" value="${COMMAND}"/>
-					</antcall>
-				</then>
-			</elseif>
 		</if>
 	</target>
 </project>
