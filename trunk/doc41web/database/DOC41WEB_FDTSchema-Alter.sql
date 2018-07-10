@@ -372,3 +372,92 @@ UPDATE UM_PGU_Permissions SET is_Deleted = 1, changedBy = 'IMWIF', userchanged=T
 
 UPDATE Versions SET subVersion = 8 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 7 );
 COMMIT WORK;
+
+
+------------------------------------
+-- Alter-Script: CVS v1.8 -> v1.9 --
+------------------------------------
+
+INSERT INTO UM_Profiles(profileName, profileDescription, isExternal, type, d41_Order_By, createdBy, changedBy, is_Deleted)
+  VALUES('doc41_pmsubcon', 'pm subcontractor', 1, 'PT', 84, 'IMWIF', 'IMWIF', 0)
+;
+
+INSERT INTO UM_Permissions(permissionname, permissionDescription, code, type, assign_User, assign_Group, assign_Profile, has_Customer, has_Vendor, has_Country, has_Plant, createdBy, changedBy, is_Deleted)
+  VALUES('NavDocumentGlobalSubConPM', 'Navigation Doc PM Downl. Global Search Subcontractor', 'NAV_GLO_SC_PM', 'NAV_DOC_PM', 0, 0, 1, 0, 0, 0, 0, 'IMWIF', 'IMWIF', 0)
+;
+
+INSERT INTO UM_PGU_Permissions(permission_Id, profile_Id, createdBy, changedBy, is_Deleted)
+  SELECT
+    pgup.permission_Id, pr.object_Id AS profile_Id, 'IMWIF' AS createdBy, 'IMWIF' AS changedBy, pgup.is_Deleted
+  FROM
+    UM_PGU_Permissions pgup
+    INNER JOIN UM_Profiles pr ON (pr.profileName = 'doc41_pmsubcon')
+  WHERE
+    (pgup.profile_Id IN (SELECT object_Id FROM UM_Profiles WHERE profileName = 'doc41_pmsup')) AND
+    (pgup.permission_Id NOT IN (SELECT object_Id FROM UM_Permissions WHERE code = 'NAV_GLO_PM'))
+;
+INSERT INTO UM_PGU_Permissions(permission_Id, profile_Id, createdBy, changedBy, is_Deleted)
+  SELECT
+    pe.object_Id AS permission_Id, pr.object_Id AS profile_Id, 'IMWIF' AS createdBy, 'IMWIF' AS changedBy, 0 AS is_Deleted
+  FROM
+    UM_Permissions pe
+    INNER JOIN UM_Profiles pr ON (pr.profileName = 'doc41_pmsubcon') AND (pe.code = 'NAV_GLO_SC_PM')
+;
+
+UPDATE
+  Translations
+SET
+  tag_Name = 'doc41_pppi_pm'
+WHERE
+  (tag_Name = 'doc41_pmsubcon')
+;
+
+UPDATE
+  UM_Permissions
+SET
+  code = 'NAV_GLO_PPPI_PM',								-- NAV_GLO_SC_PM
+  permissionName = 'NavDocumentGlobalPPPITollerPM', 					-- NavDocumentGlobalSubConPM
+  permissionDescription = 'Navigation Doc PM Downl. Global Search PP/PI-Toller'		-- Navigation Doc PM Downl. Global Search Subcontractor
+WHERE
+  (code = 'NAV_GLO_SC_PM')
+;
+
+UPDATE
+  UM_Profiles
+SET
+  profileName = 'doc41_pppi_pm',		-- doc41_pmsubcon
+  profileDescription = 'pm pppi toller'		-- pm subcontractor 
+WHERE
+  (profileName = 'doc41_pmsubcon')
+;
+
+UPDATE
+  Translations
+SET
+  tag_Value = '(PTMS)PP/PI-Toller'
+WHERE
+  (tag_Name = 'doc41_pppi_pm') AND
+  (language_Code = 'en')
+;
+
+
+UPDATE Versions SET subVersion = 9 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 8 );
+COMMIT WORK;
+
+
+-------------------------------------
+-- Alter-Script: CVS v1.9 -> v1.10 --
+-------------------------------------
+
+/*
+select * from DOC41WEB_FDT.UM_PGU_PERMISSIONS where permission_id in (
+select object_id from DOC41WEB_FDT.UM_PERMISSIONS where code in ('DOC_BOL_DOWN','NAV_BOL_DOWN','DOC_AWB_DOWN','NAV_AWB_DOWN','DOC_FDACERT_DOWN','NAV_FDACERT_DOWN')
+)
+*/
+
+UPDATE DOC41WEB_FDT.UM_PGU_PERMISSIONS SET CHANGEDBY='BDS', userchanged='31.12.9999', is_deleted=1 where permission_id in (
+select object_id from DOC41WEB_FDT.UM_PERMISSIONS where code in ('DOC_BOL_DOWN','NAV_BOL_DOWN','DOC_AWB_DOWN','NAV_AWB_DOWN','DOC_FDACERT_DOWN','NAV_FDACERT_DOWN')
+) and is_deleted=0;
+
+UPDATE Versions SET subVersion = 10 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 9 );
+COMMIT WORK;
