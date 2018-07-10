@@ -80,7 +80,7 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
      * @return the permission code, may be null, if this document is not allowed to download by group membership.
      */
     public String getGroupPermissionDownload() {
-        return GROUP_PM_PERM_DOWNL;
+        return GROUP_QM_PERM_DOWNL;
     }
     
     /**

@@ -137,6 +137,7 @@ public class DocumentUC {
     private final Map<String,DocumentType> documentTypesBySapId;
 
 	public DocumentUC() {
+	    Doc41Log.get().debug(this, null, "Initializing...");
 	    Properties mCacheConfig = ConfigMap.get().getSubCfg(CONFIG_CACHE_DOMAIN);
 	    
 	    cMaxAgeMillis  = NumberTool.parseLongFromCfgNoParseEx("documents.cache", "MaxAgeMillis", mCacheConfig, cMaxAgeMillis); // automatic fallback to default with WARNING on parse exception
@@ -176,15 +177,22 @@ public class DocumentUC {
 		addDocumentType(new PZTecDrawingForPMSupplierDocumentType());
 		addDocumentType(new TecPackDelReqForPMSupplierDocumentType());
         addDocumentType(new AntiCounSpecForPMSupplierDocumentType());
+        Doc41Log.get().debug(this, null, "Init done, "+
+                "documentTypes("+documentTypes.size()+"): " + StringTool.list(documentTypes.keySet(), ",", false)+ ", " +
+                "documentTypesBySapId("+documentTypesBySapId.size()+"): " + StringTool.list(documentTypesBySapId.keySet(), ",", false)+ "."
+        );
 	}
 	
 	private void addDocumentType(DocumentType documentType) {
 		documentTypes.put(documentType.getTypeConst(), documentType);
+		Doc41Log.get().debug(this, null, "Init, added key '" + documentType.getTypeConst() + "' to documentTypes-Map("+documentType.getSapTypeId()+") -- " + documentType.getClass().getSimpleName());
 		if (documentType instanceof DownloadDocumentType) {
 	        documentTypesBySapId.put(documentType.getSapTypeId(), documentType);
+	        Doc41Log.get().debug(this, null, "Init, added key '" + documentType.getSapTypeId() + "' to documentTypesBySapId-Map("+documentType.getTypeConst()+") -- " + documentType.getClass().getSimpleName());
 		}
         if (documentType instanceof UploadDocumentType) {
             documentTypesBySapId.put(documentType.getSapTypeId() + "_U", documentType);
+            Doc41Log.get().debug(this, null, "Init, added key '" + documentType.getSapTypeId() + "_U' to documentTypesBySapId-Map("+documentType.getTypeConst()+") -- " + documentType.getClass().getSimpleName());
         }
 	}
 
@@ -282,7 +290,7 @@ public class DocumentUC {
 			    long t = System.currentTimeMillis();
 			    Set<String> languageCodes = translationsRepository.getLanguageCodes().keySet();
 				docMetadataContainer = kgsRFCService.getDocMetadata(languageCodes, getAllDocTypesBySapTypeIdMap() /*getSupportedSapDocTypes()*/);
-	            Doc41Log.get().debug(this, null, "Sap-Meta added to Cache, calculation: " + (System.currentTimeMillis() - t) + "ms" );
+	            Doc41Log.get().debug(this, null, "Sap-Meta added to Cache, calculation: " + (System.currentTimeMillis() - t) + "ms, number of type entries: " + docMetadataContainer.size() );
 				cCache.putSync(SAPMETADATA_CACHE_KEY, docMetadataContainer);
 			}
 			Doc41Log.get().debug(this, null, cCache.toString());

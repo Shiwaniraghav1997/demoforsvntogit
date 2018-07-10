@@ -138,6 +138,16 @@ public class SupplierCOADocumentType implements UploadDocumentType {
     String cDownloadPermType = null; 
 
     /**
+     * The permissions allowing download for all documents of the same document group (= permission type).
+     * Take care, permission type is DOC_xx, corresponding permission is DOC_GLO_xx...
+     * (currently set to null for QM)
+     * @return the permission code, may be null, if this document is not allowed to download by group membership.
+     */
+    public String getGroupPermissionDownload() {
+        return GROUP_QM_PERM_DOWNL;
+    }
+    
+    /**
      * Get the profile type for download permissions (DOC_SD/QM/LS/PM), see DocumentType.GROUP_* constants.
      * @return
      */

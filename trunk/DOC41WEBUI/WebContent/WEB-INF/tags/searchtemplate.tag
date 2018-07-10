@@ -193,7 +193,7 @@
 				<c:forEach items="${searchForm.documents}" var="document"
 					varStatus="status"><c:set var="idx" value="${idx + 1}" scope="page"/>
 					<tr style="cursor: pointer;">
-                        <td><input id="docSel" name="docSel" type="checkbox" value="${document.key}|${searchForm.type}"/><input id="docAll" name="docAll" type="hidden" value="${document.key}|${searchForm.type}"/></td>
+                        <td><input id="docSel" name="docSel" type="checkbox" onclick="enableDownloadAll()" value="${document.key}|${searchForm.type}"/><input id="docAll" name="docAll" type="hidden" value="${document.key}|${searchForm.type}"/></td>
                         <td onclick="openDocument('${document.key}','${searchForm.type}')"><doc41:spaceToNbsp><doc41:translate label="${document.type}"/><!-- c:out value="${document.type}" / --></doc41:spaceToNbsp></td>
 						<c:if test="${empty showTableObjectId or showTableObjectId}">
 							<td onclick="openDocument('${document.key}','${searchForm.type}')"><doc41:spaceToNbsp><c:out value="${document.objectId}" /></doc41:spaceToNbsp></td>
@@ -218,20 +218,26 @@
 		  <doc41:pager />
 	          <!--  input id="download" name="download" type="button" --> 
 	          <% String downloadeable = "";%>
+              <% String opacity = "1.0";%>
 	          <c:choose>
 	          <c:when test="${ empty searchForm.documents}">
-	          	<% downloadeable = "disabled"; %>
+	          	<% downloadeable = "disabled"; opacity = "0.5"; %>
 	          </c:when>
 	          <c:otherwise>
-	          	<% downloadeable = ""; %>
+	          	<% downloadeable = ""; opacity = "1.0"; %>
 	          </c:otherwise>
 	          </c:choose>
          
           
-          <input id="submitButton" type="submit" class="portlet-form-button" value="Download All" name="ButtonDownload" onclick="disableDownloadAll()" <c:out value="<%= downloadeable %>"/>/>
-          <script> <!-- Disable Downloadbutton when clicking on it -->
+          <input id="submitButton" type="submit" class="portlet-form-button" value="Download All" name="ButtonDownload" onclick="disableDownloadAll()" style="opacity: <c:out value="<%= opacity %>"/>;" <c:out value="<%= downloadeable %>"/>/>
+          <script> <!-- Enable/Disable Downloadbutton when clicking on it -->
+                function enableDownloadAll(){
+                    document.getElementById("submitButton").disabled = false;
+                    document.getElementById("submitButton").style.opacity= "1.0";
+                }
 				function disableDownloadAll(){
 					document.getElementById("submitButton").disabled = true;
+                    document.getElementById("submitButton").style.opacity= "0.5";
 				}
 			</script> 
         </form:form>

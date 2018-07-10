@@ -93,6 +93,8 @@ public class KgsRFCService extends AbstractSAPJCOService {
 					Doc41Log.get().error(getClass(), UserInSession.getCwid(), "error during metadata loading");
 					Doc41Log.get().error(getClass(), UserInSession.getCwid(), e);
 				}
+        	} else {
+        	    Doc41Log.get().warning(this, null, "Doctype not supported, loading Metadata: " + d41id + "(_U) supporting all types only KGS, TypeConst: " + ((docType == null) ? "n/a" : docType.getTypeConst()) + ", class: " + ((docType == null) ? "n/a" : docType.getClass().getSimpleName()) + ", isKgs(): " + ((docType == null) ? "n/a" : docType.isKgs()));
         	}
 		}
         //translations for doc type names
