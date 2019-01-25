@@ -28,7 +28,7 @@ import com.bayer.ecim.foundation.basic.StringTool;
 
 @Component
 public class KgsRFCService extends AbstractSAPJCOService {
-	
+
 	private static final String RFC_NAME_GET_DOC_DEF = "GetDocDef";
 	private static final String RFC_NAME_GET_CONTENT_REPO = "GetCrepInfo";
 	private static final String RFC_NAME_GET_ATTRIBUTES = "GetAttributes";
@@ -43,7 +43,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 
     private Properties cConfig = null;
 
-	
+
 	public Map<String, DocMetadata> getDocMetadata(Set<String> languageCodes, Map<String, DocumentType> /*Set<String>*/ supportedSapDocTypes)
 			throws Doc41ServiceException {
 		Map<String, DocMetadata> metadataMap = new HashMap<String, DocMetadata>();
@@ -93,8 +93,10 @@ public class KgsRFCService extends AbstractSAPJCOService {
 					Doc41Log.get().error(getClass(), UserInSession.getCwid(), "error during metadata loading");
 					Doc41Log.get().error(getClass(), UserInSession.getCwid(), e);
 				}
+        	} else if (docType == null) {
+        	    Doc41Log.get().debug(this, null, "Doctype not supported, not available loading Metadata: " + d41id + "(_U) supporting all types, TypeConst: " + ((docType == null) ? "n/a" : docType.getTypeConst()) + ", class: " + ((docType == null) ? "n/a" : docType.getClass().getSimpleName()) + ", isKgs(): " + ((docType == null) ? "n/a" : docType.isKgs()));
         	} else {
-        	    Doc41Log.get().warning(this, null, "Doctype not supported, loading Metadata: " + d41id + "(_U) supporting all types only KGS, TypeConst: " + ((docType == null) ? "n/a" : docType.getTypeConst()) + ", class: " + ((docType == null) ? "n/a" : docType.getClass().getSimpleName()) + ", isKgs(): " + ((docType == null) ? "n/a" : docType.isKgs()));
+        	    Doc41Log.get().warning(this, null, "Doctype not supported, type is not KGS, loading Metadata: " + d41id + "(_U) supporting all types, TypeConst: " + ((docType == null) ? "n/a" : docType.getTypeConst()) + ", class: " + ((docType == null) ? "n/a" : docType.getClass().getSimpleName()) + ", isKgs(): " + ((docType == null) ? "n/a" : docType.isKgs()));
         	}
 		}
         //translations for doc type names
@@ -105,7 +107,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 //			Map<String,String> translationForLanguages = translations.get(sapObj);
 //			metadata.getDocDef().setTranslations(translationForLanguages);
 //        }
-		
+
 		return metadataMap;
 	}
 
@@ -127,7 +129,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 //		}
 //		return map;
 //	}
-	
+
 //	private List<KeyValue> getDocTypeTranslations(Set<String> textKeysToTranslate,String language) throws Doc41ServiceException{
 //		List<Object> params = new ArrayList<Object>();
 //		params.add(textKeysToTranslate);
@@ -154,14 +156,14 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	}
 	private List<Attribute> getAttributes(String d41id, Set<String> languageCodes) throws Doc41ServiceException {
 		LinkedHashMap<String, Attribute> attribMap = new LinkedHashMap<String, Attribute>();
-		
+
 		for (String language : languageCodes) {
 			List<Attribute> attributesOneLanguage = getAttributes(d41id, language);
 			for (Attribute newAttrib : attributesOneLanguage) {
 				String key = newAttrib.getName();
 				String label = newAttrib.getTempLabel();
 				newAttrib.setTempLabel(null);
-				
+
 				Attribute oldAttrib = attribMap.get(key);
 				if(oldAttrib==null){
 					oldAttrib = newAttrib;
@@ -170,7 +172,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 				oldAttrib.addTranslation(label, language);
 			}
 		}
-		
+
 		return new ArrayList<Attribute>(attribMap.values());
 	}
 
@@ -188,7 +190,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		List<Object> params = new ArrayList<Object>();
 		params.add(d41id);
 		List<ContentRepositoryInfo> creps = performRFC(params,RFC_NAME_GET_CONTENT_REPO);
-		
+
 		if(creps==null || creps.isEmpty()){
 			return null;
 		} else if(creps.size()>1){
@@ -201,7 +203,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 	private List<DocTypeDef> getDocTypeDefs() throws Doc41ServiceException {
 		// /BAY0/GZ_D41_GET_DOC_DEF
         List<Object> params = new ArrayList<Object>();
-        
+
         List<DocTypeDef> docTypeDefs = performRFC(params,RFC_NAME_GET_DOC_DEF);
 		return docTypeDefs;
 	}
@@ -220,7 +222,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 			return result.get(0);
 		}
 	}
-	
+
 	public URI getDvsPutUrl(String guid, String contentRepository,String compId) throws Doc41ServiceException {
 		// /BAY0/GZ_D41_GET_DVS_PUTURL
 		List<Object> params = new ArrayList<Object>();
@@ -264,7 +266,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		params.add(objId);
 		params.add(sapObj);
 		params.add(attributeValues);
-		
+
 		List<Integer> result = performRFC(params, RFC_NAME_PROCESS_DR_REQ);
 		if(result ==null || result.isEmpty()){
 			throw new Doc41ServiceException("no return count for file "+fileId);
@@ -274,7 +276,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 			return result.get(0);
 		}
 	}
-	
+
 	public URI getDocURL(String contentRepository,String docId, String compId)
 			 throws Doc41ServiceException{
 		List<Object> params = new ArrayList<Object>();
@@ -289,7 +291,7 @@ public class KgsRFCService extends AbstractSAPJCOService {
 		} else {
 			return result.get(0);
 		}
-		
+
 	}
 
 	public DocInfoComponent getDocInfo(String crepId, String docId) throws Doc41ServiceException {
