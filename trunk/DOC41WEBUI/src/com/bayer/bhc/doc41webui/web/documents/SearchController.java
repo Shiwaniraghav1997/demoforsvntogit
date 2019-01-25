@@ -65,16 +65,16 @@ import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
  */
 @Controller
 public class SearchController extends AbstractDoc41Controller {
-	
+
 	@Autowired
 	private DocumentUC documentUC;
-	
+
     /**
      * Get a reqired permission to perform a certain operation, can be overwritten to enforce specific permission
      * @param usr
-     * @param request 
+     * @param request
      * @return null, if no specific permission required.
-     * @throws Doc41BusinessException 
+     * @throws Doc41BusinessException
      */
     @Override
     protected String[] getReqPermission(User usr, HttpServletRequest request) throws Doc41BusinessException{
@@ -93,7 +93,7 @@ public class SearchController extends AbstractDoc41Controller {
     	if(type.equals(DocumentType.GROUP_PPPI_PM)){
     		type = DocumentType.GROUP_PM;
     	}
-    	
+
         return
                 !documentUC.getFilteredDocTypesForDownload(type, usr).isEmpty() ? null : // 1. user has a permission on at least one type of a DownloadGroup (includes also check for single DownloadType)
                 new String[] {documentUC.getDownloadPermission(type), documentUC.getGroupDownloadPermission(type)}; // 2. or user has permission on a single DocumentType (single Download alread checked on 1.)
@@ -101,7 +101,7 @@ public class SearchController extends AbstractDoc41Controller {
 //		        !documentUC.getFilteredDocTypesForDownload(type, usr).isEmpty() || // 1. user has a permission on at least one type of a DownloadGroup (includes also check for single DownloadType)
 //		        usr.hasPermission(documentUC.getDownloadPermission(type), documentUC.getGroupDownloadPermission(type)); // 2. or user has permission on a single DocumentType (single Download alread checked on 1.)
     }
-	
+
 	@RequestMapping(value="/documents/documentsearch",method = RequestMethod.GET)
 	public SearchForm get(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch,@RequestParam(required=false,defaultValue="true") boolean errorOnNoDocuments) throws Doc41BusinessException, BATranslationsException{
 	    User usr = UserInSession.get();
@@ -110,12 +110,12 @@ public class SearchController extends AbstractDoc41Controller {
 		if(StringTool.isTrimmedEmptyOrNull(mFormType)){
 			throw new Doc41BusinessException("typeIsMissing");
 		}
-		
+
 		// Checking if User is accessing docs via the PI/PP Toller menu entry
 		if(mFormType.equals(DocumentType.GROUP_PPPI_PM)){
 			mFormType = DocumentType.GROUP_PM; // user accesses the docs from the PM Supplier (Global)
 		}
-		
+
 		String mSelectedDocType = StringTool.emptyToNull(searchForm.getDocType());
 		List<DownloadDocumentType> mDocTypes = documentUC.getFilteredDocTypesForDownload(mFormType, usr);
 		Doc41Log.get().debug(this, null, "Search for download for " + mDocTypes.size() + " document types by '" + mFormType );
@@ -163,17 +163,17 @@ public class SearchController extends AbstractDoc41Controller {
 		searchForm.setAllowedDocTypes(mAllowedDocTypes);
 		searchForm.setKgs(isKgs);
 		searchForm.initAttributes(attributeDefinitions,language);
-		
+
 		if(!StringTool.isTrimmedEmptyOrNull(ButtonSearch)){
 			if(searchForm.isSearchFilled()){
 				String searchFormCustomerNumber = searchForm.getCustomerNumber();
 				String searchFormVendorNumber = searchForm.getVendorNumber();
 				String searchFormCustomVersion = searchForm.getVersionIdBom();
 				checkPartnerNumbers(result,searchForm.isCustomerNumberUsed(), searchForm.isVendorNumberUsed(), searchForm.isVersionIdBomUsed(searchForm.getType()), searchFormCustomerNumber,searchFormVendorNumber,searchFormCustomVersion);
-				
+
 				if(!result.hasErrors()){
 					String singleObjectId = searchForm.getObjectId();
-					
+
 					Map<String, String> attributeValues = searchForm.getAttributeValues();
 					Map<String, String> viewAttributes = searchForm.getViewAttributes();
 					Map<String, String> attributePredefValuesAsString = searchForm.getAttributePredefValuesAsString();
@@ -190,7 +190,7 @@ public class SearchController extends AbstractDoc41Controller {
 								searchForm.setObjectId(singleObjectId);
 							}
 						}
-						
+
 						ArrayList<String>searchingTargetTypes = new ArrayList<String>();
                         ArrayList<BeanPropertyBindingResult>results = new ArrayList<BeanPropertyBindingResult>();
                         Map<String, String> allAttributeValues = new HashMap<String, String>();
@@ -289,7 +289,7 @@ public class SearchController extends AbstractDoc41Controller {
 		}
 		return searchForm;
 	}
-	
+
 	private void checkAllOption(BindingResult result, String fieldNamePrefix,
             String fieldNameSuffix, Map<String, String> attributeValues,
             Map<String, String> attributePredefValuesAsString) {
@@ -319,11 +319,11 @@ public class SearchController extends AbstractDoc41Controller {
     public @ResponseBody BdsServiceSearchDocumentsResult getSDListForService( @RequestParam(required=true) String vendor,@RequestParam String refnumber) throws Doc41DocServiceException{
 	    try {
             List<BdsServiceDocumentEntry> documents = new ArrayList<BdsServiceDocumentEntry>();
-            
+
             List<String> types = documentUC.getAvailableSDDownloadDocumentTypes();
             for (String type : types) {
-                
-                String[] mPerm = getReqPermission(UserInSession.get(), type); 
+
+                String[] mPerm = getReqPermission(UserInSession.get(), type);
                 if((mPerm == null) || UserInSession.get().hasPermission(mPerm)) {
                     SearchForm searchForm = new SearchForm();
                     Doc41Log.get().debug(this, null, "Initialize SearchForm for WebService (type: " + type + ", vendor: " + vendor + ", refnumber: " + refnumber +")");
@@ -331,7 +331,7 @@ public class SearchController extends AbstractDoc41Controller {
                     searchForm.setVendorNumber(vendor);
                     searchForm.setObjectId(refnumber);
                     searchForm.setMaxResults(2000);
-                    
+
                     BindingResult result = new BeanPropertyBindingResult(searchForm, "searchForm");
                     get(searchForm, result, "DocServiceSearch",false);
                     if(!result.hasErrors()){
@@ -362,13 +362,13 @@ public class SearchController extends AbstractDoc41Controller {
             throw new Doc41DocServiceException("getSDListForService", e);
         }
     }
-	
+
     private void checkForbiddenWildcards(BindingResult result, String fieldNamePrefix,
 			String fieldNameSuffix, Map<String, String> attributes) {
 		Set<Entry<String, String>> entrySet = attributes.entrySet();
 		for (Entry<String, String> entry : entrySet) {
 			String fieldName = fieldNamePrefix+entry.getKey()+fieldNameSuffix;
-			checkForbiddenWildcards(result, fieldName , entry.getValue());			
+			checkForbiddenWildcards(result, fieldName , entry.getValue());
 		}
 	}
 
@@ -384,27 +384,27 @@ public class SearchController extends AbstractDoc41Controller {
 		ModelMap map = new ModelMap();
 		SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
 		map.addAttribute(searchForm2);
-		
+
 		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
 		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
 		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
-		
+
 		List<SelectionItem> userCountries = displaytextUC.getCountrySIs(UserInSession.get().getCountries());
 		map.addAttribute("userCountrySIList",userCountries);
 		return map;
 	}
-	
+
 	@RequestMapping(value="/documents/searchdelcertcustomer",method = RequestMethod.GET)
 	public ModelMap getDelCertCustomer(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
 		ModelMap map = new ModelMap();
 		SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
 		map.addAttribute(searchForm2);
-		
+
 		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
 		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
 		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
 		map.addAttribute("keyDeliveryNumber",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_DELIVERY_NUMBER);
-		
+
 		List<SelectionItem> allCountries = getDisplaytextUC().getCountryCodes();
 		map.addAttribute("allCountryList",allCountries);
 		return map;
@@ -417,7 +417,7 @@ public class SearchController extends AbstractDoc41Controller {
 	 * @param ButtonSearch
 	 * @return
 	 * @throws Doc41BusinessException
-	 * @throws BATranslationsException 
+	 * @throws BATranslationsException
 	 */
 	@RequestMapping(value="/documents/searchpmsupplier",method = RequestMethod.GET)
 	public ModelMap getPMSupplier(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
@@ -432,12 +432,12 @@ public class SearchController extends AbstractDoc41Controller {
 		if (docType.isDirs()) {
 		    map.addAttribute("keyFileName",PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
 		}
-		
+
 		return map;
 	}
-	
-	
-	
+
+
+
     /**
      * Map the searchDocument request, adding extra attributes for PMSupplierDownload (global)
      * @param searchForm
@@ -445,7 +445,7 @@ public class SearchController extends AbstractDoc41Controller {
      * @param ButtonSearch
      * @return
      * @throws Doc41BusinessException
-     * @throws BATranslationsException 
+     * @throws BATranslationsException
      */
     @RequestMapping(value="/documents/searchpmsupplierGlobal",method = RequestMethod.GET)
     public ModelMap getPMSupplierGlobal(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
@@ -454,7 +454,7 @@ public class SearchController extends AbstractDoc41Controller {
 //      DocumentType docType = documentUC.getDocType(type);
 
 //      map.addAttribute("docType",PMSupplierDownloadDocumentType.VIEW_ATTRIB_DOC_TYPE);
-        
+
         SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
         if(searchForm2.getType().equals(DocumentType.GROUP_PPPI_PM)){ // when searching documents as PP/PI Toller, additional search fields should be displayed in the jsp
         	map.addAttribute("docType_PPPI", searchForm2.getType()); //switch for JSP
@@ -466,7 +466,7 @@ public class SearchController extends AbstractDoc41Controller {
 //      if (docType.isDirs()) {
 //          map.addAttribute("keyFileName",PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
 //      }
-        
+
         return map;
     }
 
@@ -477,7 +477,7 @@ public class SearchController extends AbstractDoc41Controller {
      * @param ButtonSearch
      * @return
      * @throws Doc41BusinessException
-     * @throws BATranslationsException 
+     * @throws BATranslationsException
      */
     @RequestMapping(value="/documents/searchsdsupplierGlobal",method = RequestMethod.GET)
     public ModelMap getSDSupplierGlobal(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
@@ -495,10 +495,10 @@ public class SearchController extends AbstractDoc41Controller {
 //      if (docType.isDirs()) {
 //          map.addAttribute("keyFileName",PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
 //      }
-        
+
         return map;
     }
-    
+
     @RequestMapping(value="/documents/downloadMulti",method = RequestMethod.POST)
     public void downloadMulti(@ModelAttribute MultiDownloadForm values,HttpServletResponse response) throws Doc41BusinessException {
         boolean mDoThrowEx = true;
@@ -532,10 +532,10 @@ public class SearchController extends AbstractDoc41Controller {
             //HashMap<String, Integer> mAddedFiles = new HashMap<String, Integer>();
             for (String mParm : mSelected) {
                 Doc41Log.get().debug(this, null, "Download DOC: " + mParm);
-                String[] mParmArr = StringTool.split(mParm,'|');  
+                String[] mParmArr = StringTool.split(mParm,'|');
                 String key = mParmArr[0];
                 @SuppressWarnings("unused") // currently not used (on original download even completely ignored by download servlet
-                String formType = mParmArr[0]; 
+                String formType = mParmArr[0];
                 Map<String, String> decryptParameters = UrlParamCrypt.decryptParameters(key);
                 type = decryptParameters.get(Doc41Constants.URL_PARAM_TYPE);
                 docId = decryptParameters.get(Doc41Constants.URL_PARAM_DOC_ID);
@@ -596,8 +596,8 @@ public class SearchController extends AbstractDoc41Controller {
             }
         }
     }
-    
-    
+
+
     /**
      * Implements Download for WebUI and WebService for Spepor  (Spepor entry point).
      * @param key
@@ -639,15 +639,15 @@ public class SearchController extends AbstractDoc41Controller {
             throw ie;
 		} catch (Doc41ClientAbortException e) {
 		    mEndMs = System.currentTimeMillis();
-	        Doc41Log.get().warning(this, null, "*** DOWNLOAD FAIL, ClientAbortedException: " + filename + " failed, type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after: " + ((mEndMs - mStartMs) / 1000.0) + "s ***");
+	        Doc41Log.get().debug(this, null, "*** DOWNLOAD FAIL, ClientAbortedException: " + filename + " failed, type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after: " + ((mEndMs - mStartMs) / 1000.0) + "s ***");
 	    } catch (Exception e) {
             mEndMs = System.currentTimeMillis();
 	        throw new Doc41BusinessException("*** DOWNLOAD FAIL: " + filename + " failed, type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after: " + ((mEndMs - mStartMs) / 1000.0) + "s ***", e);
 		}
-		
+
 // FIXME: throws Doc41BusinessException, Webservice???
 	}
-	
+
 	private void checkPartnerNumbers(BindingResult errors, boolean hasCustomerNumber, boolean hasVendorNumber, boolean hasVersionIdBom,
 			String customerNumber,String vendorNumber, String versionIdBom) throws Doc41BusinessException {
 		//customer
@@ -662,7 +662,7 @@ public class SearchController extends AbstractDoc41Controller {
 				}
 			}
 		}
-		
+
 		//vendor
 		if(hasVendorNumber){
 			if(StringTool.isTrimmedEmptyOrNull(vendorNumber)){
@@ -675,12 +675,12 @@ public class SearchController extends AbstractDoc41Controller {
 				}
 			}
 		}
-		
+
 		if(hasVersionIdBom){
 			if(StringTool.isTrimmedEmptyOrNull(versionIdBom)){
 				errors.rejectValue("versionIdBom", "versionIdBomMissing");
 			}
 		}
 	}
-	
+
 }
