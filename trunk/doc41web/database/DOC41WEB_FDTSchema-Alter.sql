@@ -466,6 +466,10 @@ COMMIT WORK;
 --------------------------------------
 -- Alter-Script: CVS v1.10 -> v1.11 --
 --------------------------------------
+-- implementation JIRA DW-11
+-- IMWIF
+-- open: deactivation of old QM Upload functions/profiles - not required because usage of separate Profiles
+-- Translation of Profile "QM supplier" maybe requested to be changed.
 
 INSERT INTO UM_Profiles(profileName, profileDescription, isExternal, type, d41_Order_By, createdBy, changedBy, is_Deleted)
   VALUES('doc41_qmsup', 'qm uploads', 1, 'QM', 68, 'IMWIF', 'IMWIF', 0)
