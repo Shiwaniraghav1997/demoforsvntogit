@@ -518,21 +518,21 @@ Insert into TEXTTYPE (TEXTTYPE, TEXTTYPE_ID, IS_MANAGED_BY_APPL, OWNER, IS_FULLY
 
 SET DEFINE OFF;
 Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
- Values (1, 20, 'de', 'COM (Cert. of Manufacturing)', 'COM (Cert. of Manufacturing)', 'COM (Cert. of Manufacturing)', 0, 0, 0);
+ Values (1, 20, 'de', 'COM (Cert. of Manufacturing)', 'COM (Cert. of Manufacturing)', 'COM (Cert. of Manufacturing)', 1, 0, 0);
 Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
- Values (1, 20, 'en', 'COM (Cert. of Manufacturing)', 'COM (Cert. of Manufacturing)', 'COM (Cert. of Manufacturing)', 0, 0, 0);
+ Values (1, 20, 'en', 'COM (Cert. of Manufacturing)', 'COM (Cert. of Manufacturing)', 'COM (Cert. of Manufacturing)', 1, 0, 0);
 Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
- Values (2, 20, 'de', 'Vendor Packing List', 'Vendor Packing List', 'Vendor Packing List', 0, 0, 0);
+ Values (2, 20, 'de', 'Vendor Packing List', 'Vendor Packing List', 'Vendor Packing List', 1, 0, 0);
 Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
- Values (2, 20, 'en', 'Vendor Packing List', 'Vendor Packing List', 'Vendor Packing List', 0, 0, 0);
+ Values (2, 20, 'en', 'Vendor Packing List', 'Vendor Packing List', 'Vendor Packing List', 1, 0, 0);
 Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
- Values (3, 20, 'de', 'Photo of Packaging', 'Photo of Packaging', 'Photo of Packaging', 0, 0, 0);
+ Values (3, 20, 'de', 'Photo of Packaging', 'Photo of Packaging', 'Photo of Packaging', 1, 0, 0);
 Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
- Values (3, 20, 'en', 'Photo of Packaging', 'Photo of Packaging', 'Photo of Packaging', 0, 0, 0);
+ Values (3, 20, 'en', 'Photo of Packaging', 'Photo of Packaging', 'Photo of Packaging', 1, 0, 0);
 Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
- Values (4, 20, 'de', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 0, 0, 0);
+ Values (4, 20, 'de', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 1, 0, 0);
 Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
- Values (4, 20, 'en', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 0, 0, 0);
+ Values (4, 20, 'en', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 1, 0, 0);
 
 
 UPDATE Versions SET subVersion = 11 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 10 );
