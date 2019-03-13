@@ -461,3 +461,76 @@ select object_id from DOC41WEB_FDT.UM_PERMISSIONS where code in ('DOC_BOL_DOWN',
 
 UPDATE Versions SET subVersion = 10 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 9 );
 COMMIT WORK;
+
+
+--------------------------------------
+-- Alter-Script: CVS v1.10 -> v1.11 --
+--------------------------------------
+
+INSERT INTO UM_Profiles(profileName, profileDescription, isExternal, type, d41_Order_By, createdBy, changedBy, is_Deleted)
+  VALUES('doc41_qmsup', 'qm uploads', 1, 'QM', 68, 'IMWIF', 'IMWIF', 0)
+;
+
+INSERT INTO UM_Permissions(permissionname, permissionDescription, code, type, assign_User, assign_Group, assign_Profile, has_Customer, has_Vendor, has_Country, has_Plant, createdBy, changedBy, is_Deleted)
+  VALUES('NavDocumentQMCoAUpload', 'Navigation Doc QM Upload QMCoA', 'NAV_QMCOA_UP', 'NAV_DOC_QM', 0, 0, 1, 0, 0, 0, 0, 'IMWIF', 'IMWIF', 0)
+;
+INSERT INTO UM_Permissions(permissionname, permissionDescription, code, type, assign_User, assign_Group, assign_Profile, has_Customer, has_Vendor, has_Country, has_Plant, createdBy, changedBy, is_Deleted)
+  VALUES('DocumentQMCoAUpload', 'Doc QM Upload QMCoA', 'DOC_QMCOA_UP', 'DOC_QM', 0, 0, 1, 0, 0, 0, 0, 'IMWIF', 'IMWIF', 0)
+;
+
+INSERT INTO UM_Permissions(permissionname, permissionDescription, code, type, assign_User, assign_Group, assign_Profile, has_Customer, has_Vendor, has_Country, has_Plant, createdBy, changedBy, is_Deleted)
+  VALUES('NavDocumentQMCoCUpload', 'Navigation Doc QM Upload QMCoC', 'NAV_QMCOC_UP', 'NAV_DOC_QM', 0, 0, 1, 0, 0, 0, 0, 'IMWIF', 'IMWIF', 0)
+;
+INSERT INTO UM_Permissions(permissionname, permissionDescription, code, type, assign_User, assign_Group, assign_Profile, has_Customer, has_Vendor, has_Country, has_Plant, createdBy, changedBy, is_Deleted)
+  VALUES('DocumentQMCoCUpload', 'Doc QM Upload QMCoC', 'DOC_QMCOC_UP', 'DOC_QM', 0, 0, 1, 0, 0, 0, 0, 'IMWIF', 'IMWIF', 0)
+;
+
+INSERT INTO UM_Permissions(permissionname, permissionDescription, code, type, assign_User, assign_Group, assign_Profile, has_Customer, has_Vendor, has_Country, has_Plant, createdBy, changedBy, is_Deleted)
+  VALUES('NavDocumentQMOthUpload', 'Navigation Doc QM Upload QMOth', 'NAV_QMOTH_UP', 'NAV_DOC_QM', 0, 0, 1, 0, 0, 0, 0, 'IMWIF', 'IMWIF', 0)
+;
+INSERT INTO UM_Permissions(permissionname, permissionDescription, code, type, assign_User, assign_Group, assign_Profile, has_Customer, has_Vendor, has_Country, has_Plant, createdBy, changedBy, is_Deleted)
+  VALUES('DocumentQMOthUpload', 'Doc QM Upload QMOth', 'DOC_QMOTH_UP', 'DOC_QM', 0, 0, 1, 0, 0, 0, 0, 'IMWIF', 'IMWIF', 0)
+;
+
+INSERT INTO UM_PGU_Permissions(permission_Id, profile_Id, createdBy, changedBy, is_Deleted)
+  SELECT
+    pe.object_Id AS permission_Id, pr.object_Id AS profile_Id, 'IMWIF' AS createdBy, 'IMWIF' AS changedBy, 0 AS is_Deleted
+  FROM
+    UM_Permissions pe
+    INNER JOIN UM_Profiles pr ON
+     (pr.profileName = 'doc41_qmsup') AND
+     (pe.code IN ('NAV_QMCOA_UP','DOC_QMCOA_UP','NAV_QMCOC_UP','DOC_QMCOC_UP','NAV_QMOTH_UP','DOC_QMOTH_UP'))
+;
+
+--SET DEFINE OFF;
+--Insert into TRANSLATIONS (MANDANT, COMPONENT, JSP_NAME, TAG_NAME, LANGUAGE_CODE, COUNTRY_CODE, TAG_VALUE, CREATEDBY, CHANGEDBY, IS_ACTIVE)
+-- Values ('DOC41', '*', '*', 'doc41_qmsup', 'de', '*', '(QM)QM Lieferant', 'IMWIF', 'IMWIF', 1);
+--Insert into TRANSLATIONS (MANDANT, COMPONENT, JSP_NAME, TAG_NAME, LANGUAGE_CODE, COUNTRY_CODE, TAG_VALUE, CREATEDBY, CHANGEDBY, IS_ACTIVE)
+-- Values ('DOC41', '*', '*', 'doc41_qmsup', 'en', '*', '(QM)QM Supplier', 'IMWIF', 'IMWIF', 1);
+
+SET DEFINE OFF;
+Insert into TEXTTYPE (TEXTTYPE, TEXTTYPE_ID, IS_MANAGED_BY_APPL, OWNER, IS_FULLY_DISTRIBUTED)
+ Values ('bds_qm_upl_doc_ident', 20, 1, 'BDS', 1);
+
+SET DEFINE OFF;
+Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
+ Values (1, 20, 'de', 'COM (Cert. of Manufacturing)', 'COM (Cert. of Manufacturing)', 'COM (Cert. of Manufacturing)', 0, 0, 0);
+Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
+ Values (1, 20, 'en', 'COM (Cert. of Manufacturing)', 'COM (Cert. of Manufacturing)', 'COM (Cert. of Manufacturing)', 0, 0, 0);
+Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
+ Values (2, 20, 'de', 'Vendor Packing List', 'Vendor Packing List', 'Vendor Packing List', 0, 0, 0);
+Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
+ Values (2, 20, 'en', 'Vendor Packing List', 'Vendor Packing List', 'Vendor Packing List', 0, 0, 0);
+Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
+ Values (3, 20, 'de', 'Photo of Packaging', 'Photo of Packaging', 'Photo of Packaging', 0, 0, 0);
+Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
+ Values (3, 20, 'en', 'Photo of Packaging', 'Photo of Packaging', 'Photo of Packaging', 0, 0, 0);
+Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
+ Values (4, 20, 'de', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 0, 0, 0);
+Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
+ Values (4, 20, 'en', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 0, 0, 0);
+
+
+UPDATE Versions SET subVersion = 11 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 10 );
+COMMIT WORK;
+
