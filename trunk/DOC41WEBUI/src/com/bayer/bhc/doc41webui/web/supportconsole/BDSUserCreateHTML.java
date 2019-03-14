@@ -56,13 +56,14 @@ public class BDSUserCreateHTML
     static final String CSV_VENDOR = "VENDOR";
     static final String CSV_PHONE = "PHONE";
     static final String CSV_COMPANY = "COMPANY";
-    
+
     static final String CSV_CWID = "CWID";
     static final String CSV_STATUS = "STATUS";
-    
+
     static final String UM_DEFAULT_ROLE = "doc41_pmsup";
     static final String UM_ROLE_TYPE = "PT";
-    
+    static final String UM_ROLE_NAME = "doc41_qmsup";
+
     @Override
     public void renderPage(String pNamespace, String pClientVariantId, Long pReportId, String pBaseUrlAjax, String pBaseUrlImg, Writer out) throws FdtPageRendererException {
         boolean escJS = false;
@@ -86,14 +87,14 @@ public class BDSUserCreateHTML
             StringBuffer mRowResults = new StringBuffer(5000);
             char mQ = '"';
             char mD = '\t';
-            
+
             if (pInput.length() == 0) {
                 pInput = mQ + CSV_LAST + mQ + mD + mQ + CSV_FIRST + mQ + mD + mQ + CSV_COMPANY + mQ + mD + mQ + CSV_PHONE + mQ + mD + mQ + CSV_EMAIL + mQ + mD + mQ + CSV_VENDOR + mQ;
             }
             if (pInitPw.length() == 0) {
                 pInitPw = StringTool.nvl(StringTool.trimEmptyToNull(cfg.getProperty("pw.template")), "[VENDOR]");
             }
-            
+
             println(out, "<P/><P>Paste User CSV List and press GO button.</P>", escJS);
 
             println(out, "<P><TABLE><TR><TD>", escJS);
@@ -102,7 +103,7 @@ public class BDSUserCreateHTML
             println(out, "  Init Password: <input type=\"text\" name=\"" + INITPW_FIELD + "\" SIZE=\"50\" value=\"" + StringTool.escapeHTMLNotLF(pInitPw) + "\"></P>" , escJS);
             println(out, "</TD><TD>&nbsp;</TD><TD>", escJS);
             for (Profile mProf : mProfiles ) {
-                if ( ((mProf.getIsexternal() == null) || mProf.getIsexternal()) && (UM_ROLE_TYPE.equals(mProf.getType())) ) {
+                if ( ((mProf.getIsexternal() == null) || mProf.getIsexternal()) && (UM_ROLE_TYPE.equals(mProf.getType())||UM_ROLE_NAME.equals(mProf.getProfilename())) ) {
                     println(out, "<input type=\"radio\" id=\"" + StringTool.escapeHTML(mProf.getProfilename()) + "\" name=\"" + ROLE_FIELD + "\" value=\"" + StringTool.escapeHTML(mProf.getProfilename())  + "\" " + (mProf.getProfilename().equals(pProfSel) ? "checked" : "") + " /><LABEL FOR=\"" + StringTool.escapeHTML(mProf.getProfilename()) + "\">" + StringTool.escapeHTML(mProf.getProfiledescription()) + "</LABEL><BR>", escJS);
                 }
             }
@@ -138,10 +139,10 @@ public class BDSUserCreateHTML
                         LocaleInSession.put(mUsr.getLocale());
                         mProcessing.append("User prepared\n");
                         mProcessing.append("Run Import...\n");
-                
+
                         CSVReader mImp = new CSVReader(new StringReader(pInput));
                         String[] mColNames = mImp.getColumnNames();
-                        HashMap<String, Integer> mColNamesH = new HashMap<String, Integer>(); 
+                        HashMap<String, Integer> mColNamesH = new HashMap<String, Integer>();
                         for (int i = 0; i < mColNames.length; i++) {
                             mColNamesH.put(mColNames[i].toUpperCase(), i);
                         }
@@ -243,6 +244,6 @@ public class BDSUserCreateHTML
         }
         Doc41TestCaseImpl.resetUserInSession();
         Doc41Log.get().debug(this,cExecUser, "End...");
-    }   
+    }
 
 }
