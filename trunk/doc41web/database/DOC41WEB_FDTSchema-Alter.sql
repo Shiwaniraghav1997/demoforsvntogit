@@ -534,6 +534,7 @@ Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPT
 Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
  Values (4, 20, 'en', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 1, 0, 0);
 
+UPDATE UM_Profiles SET is_Deleted = 1, changedBy='IMWIF', userchanged=TO_DATE('9999-12-31','YYYY-MM-DD') WHERE TYPE='QM' AND profilename<>'doc41_qmsup';
 
 UPDATE Versions SET subVersion = 11 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 10 );
 COMMIT WORK;
