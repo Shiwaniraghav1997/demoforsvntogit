@@ -536,6 +536,11 @@ Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPT
 
 UPDATE UM_Profiles SET is_Deleted = 1, changedBy='IMWIF', userchanged=TO_DATE('9999-12-31','YYYY-MM-DD') WHERE TYPE='QM' AND profilename<>'doc41_qmsup';
 
+-- permissions must be deactivated, too (missing deletion flag check for profile on getting resolved permissions
+UPDATE UM_Permissions SET is_Deleted = 1, changedBy='IMWIF', userchanged=TO_DATE('9999-12-31','YYYY-MM-DD') 
+ WHERE (type like '%QM') AND (permissionname NOT IN (
+  'NavDocumentQMCoAUpload', 'DocumentQMCoAUpload', 'NavDocumentQMCoCUpload', 'DocumentQMCoCUpload', 'NavDocumentQMOthUpload', 'DocumentQMOthUpload'));
+
 UPDATE Versions SET subVersion = 11 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 10 );
 COMMIT WORK;
 
