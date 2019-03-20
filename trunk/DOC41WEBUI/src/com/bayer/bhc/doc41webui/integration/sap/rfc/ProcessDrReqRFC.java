@@ -57,6 +57,9 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
 					sapInput.setValue(IN_DOC_TYPE,docClass);
 				}
 				sapInput.setValue(IN_ATTRIBS,getAttribString(attribValues));
+				if (Doc41Log.get().isDebugActive()) {
+                    Doc41Log.get().debug(this, null, RFCFunctionDumper.dumpFunction(pFunction));
+                }
 				Doc41Log.get().debug(ProcessDrReqRFC.class, null, "prepareCall():attributs are set");
             } else {
                 throw new SAPException(
@@ -105,6 +108,9 @@ public class ProcessDrReqRFC extends AbstractDoc41RFC<Integer> {
             int attCount = exportParameterList.getInt(OUT_ATTCOUNT);
 
             mResult.add(attCount);
+        }
+        if (Doc41Log.get().isDebugActive()) {
+            Doc41Log.get().debug(getClass(), null, RFCFunctionDumper.dumpFunction(pFunction));
         }
         Doc41Log.get().debug(ProcessDrReqRFC.class, null, "processResult():EXIT");
         return mResult;

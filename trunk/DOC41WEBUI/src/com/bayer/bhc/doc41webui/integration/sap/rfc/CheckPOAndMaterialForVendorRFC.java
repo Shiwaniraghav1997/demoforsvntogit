@@ -3,6 +3,7 @@ package com.bayer.bhc.doc41webui.integration.sap.rfc;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.sap3.SAPException;
@@ -19,7 +20,8 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 	private static final String OUT_PLANT = "EV_PLANT";
 	
 	private static final String RETURNCODE_OK = "0";
-	private static final String RETURNCODE_NOT_FOUND = "4";
+	private static final String RETURNCODE_ORDER_NOT_EXISTING = "1";
+	private static final String RETURNCODE_ORDER_NOT_FOUND = "2";
 
 	
 	/**
@@ -88,12 +90,14 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 	}
 	
 	private String mapReturnCodeToTag(String returnCode) {
-		if(StringTool.equals(returnCode, RETURNCODE_OK)){
+		if (StringTool.equals(returnCode, RETURNCODE_OK)) {
 			return null;
-		} else if(StringTool.equals(returnCode, RETURNCODE_NOT_FOUND)){
-			return "MatNotFoundForVendor";
+		} else if (StringTool.equals(returnCode, RETURNCODE_ORDER_NOT_EXISTING)) {
+			return Doc41Constants.ERROR_MESSAGE_ORDER_NOT_EXISTING;
+		} else if (StringTool.equals(returnCode, RETURNCODE_ORDER_NOT_FOUND)) {
+			return Doc41Constants.ERROR_MESSAGE_ORDER_NOT_FOUND;
 		}
-		return "UnknownReturnCode";
+		return Doc41Constants.ERROR_MESSAGE_UNKNOWN_RETURN_CODE;
 	}
 
 }

@@ -76,6 +76,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.TecPackDelReqForPM
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertDownCountryDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertDownCustomerDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertUploadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.QMCOAUploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.SupplierCOADocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.AWBDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.BOLDocumentType;
@@ -165,6 +166,7 @@ public class DocumentUC {
 		addDocumentType(new DeliveryCertDownCustomerDocumentType());
 		addDocumentType(new DeliveryCertUploadDocumentType());
 		addDocumentType(new SupplierCOADocumentType());
+		addDocumentType(new QMCOAUploadDocumentType());
 		
 		addDocumentType(new ArtworkForLayoutSupplierDocumentType());
 		addDocumentType(new LayoutForLayoutSupplierDocumentType());

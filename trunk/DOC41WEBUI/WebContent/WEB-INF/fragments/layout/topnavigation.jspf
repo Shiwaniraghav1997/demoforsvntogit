@@ -19,6 +19,7 @@
 			  	<doc41:navEntry href="documents/supcoaupinput?type=SUPCOA"   title="Supplier CoA"         id="SUPCOAUP"     cssclass=""            permission="NAV_SUPCOA_UP"/>
 
 			  	<doc41:navEntry href="documents/delcertupinput?type=DELCERT" title="Delivery Certificate" id="DELCERTUP"    cssclass=""            permission="NAV_DELCERT_UP"/>
+			  	<doc41:navEntry href="documents/qmcoaupload?type=QMCoA" 	 title="QM CoA" 			  id="DOC_QMCOA_UP" cssclass=""            permission="NAV_QMCOA_UP"/>
 
 			  	<doc41:navEntry href="documents/ptupload?type=ARTWORK_LS"    title="Artwork Low Res"      id="ARTWORK_LSUP" cssclass=""            permission="NAV_ARTWORK_UP_LS"/>
 			  	<doc41:navEntry href="documents/ptupload?type=LAYOUT_LS"     title="Layout High Res"      id="LAYOUT_LSUP"  cssclass=""            permission="NAV_LAYOUT_UP_LS"/>
