@@ -260,7 +260,7 @@
     	<mkdir dir="${dir.distrib}" />
     	<retry retrycount="10">
         	<get src="http://${server}:${checkport}" dest="${dir.distrib}/test-${server}.html"
-        	   maxtime="20" retries="1" httpusecaches="false"/>
+        	   maxtime="20" retries="1" httpusecaches="false" verbose="true"/>
 		</retry>
     	<echo message="check OK"/>
     </target>
