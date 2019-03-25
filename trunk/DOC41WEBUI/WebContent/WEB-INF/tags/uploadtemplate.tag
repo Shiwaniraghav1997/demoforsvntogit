@@ -76,7 +76,7 @@
 							        <td>
 							        <c:choose>
 							         <c:when test="${fn:length(uploadForm.attributePredefValues[attributeValue.key])>0}">
-							         	<select id="${attributeValue.key}" class="portlet-form-input-field ${searchForm.attributeMandatory[attributeValue.key]?'portlet-mandatory':''} portlet-big"  name="attributeValues['${attributeValue.key}']">
+							         	<select id="${attributeValue.key}" class="portlet-form-input-field ${uploadForm.attributeMandatory[attributeValue.key]?'portlet-mandatory':''} portlet-big"  name="attributeValues['${attributeValue.key}']">
 									<c:forEach items="${uploadForm.attributePredefValues[attributeValue.key]}" var="predefValue" varStatus="pdstatus">
 										<c:choose>
 											<c:when test="${attributeValue.value ==  predefValue}"><option selected="selected">${predefValue}</option></c:when>
@@ -86,7 +86,7 @@
 							         	</select>
 							         </c:when>
 							         <c:otherwise>
-							          <input id="${attributeValue.key}" class="portlet-form-input-field ${searchForm.attributeMandatory[attributeValue.key]?'portlet-mandatory':''} portlet-big"  maxlength="70" name="attributeValues['${attributeValue.key}']" value="${attributeValue.value}"/>
+							          <input id="${attributeValue.key}" class="portlet-form-input-field ${uploadForm.attributeMandatory[attributeValue.key]?'portlet-mandatory':''} portlet-big"  maxlength="70" name="attributeValues['${attributeValue.key}']" value="${attributeValue.value}"/>
 							         </c:otherwise>
 							        </c:choose>
 							        <doc41:error path="attributeValues['${attributeValue.key}']" />
