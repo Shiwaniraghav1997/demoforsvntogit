@@ -258,9 +258,10 @@
     <target name="check.tomcat">
         <echo message="server = ${server}"/>
     	<mkdir dir="${dir.distrib}" />
-    	<retry retrycount="100">
+    	<sleep milliseconds="10000"/>
+    	<retry retrycount="10">
         	<get src="http://${server}:${checkport}" dest="${dir.distrib}/test-${server}.html"
-        	   maxtime="20" retries="100" httpusecaches="false"/>
+        	   maxtime="20" retries="1" httpusecaches="false"/>
 		</retry>
     	<echo message="check OK"/>
     </target>
