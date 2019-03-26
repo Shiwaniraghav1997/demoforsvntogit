@@ -1,0 +1,46 @@
+##################################################################
+# project:   DOC41WEB
+# filename:  Chain-DOC41WEB.prepare
+# task:      link up the right files and directories
+#	           (project specific part)
+# author:    Frank Wiesen (IMWIF)
+# author:    Ingeborg Menge (KEI)
+# changed:	 17.12.2013
+# arguments: none
+##################################################################
+
+# How to set up: see Chain.config
+# No changes should be neccessary on this script
+# Run this script ONLY local from the bin directory!
+
+# Get the LOCAL settings (not exported by the script) for setup:
+. ./Chain-DOC41WEB.config
+. ${CHAIN_BIN}/Chain.prepare-local
+
+cd ~
+if [ ! -f .netrc ]; then
+  ln -s ${CHAIN_BIN}/.netrc
+fi
+if [ ! -f Chain-DOC41WEB.config ]; then
+  ln -s ${CHAIN_BIN}/Chain-DOC41WEB.config
+fi
+if [ ! -f execCronChain.sh ]; then
+  ln -s ${CHAIN_BIN}/execCronChain.sh
+fi
+
+cd ${CHAIN_HOME}
+if [ ! -L log ]; then
+  if [ -d log ]; then
+    mv -f log/* resources/chain/var/log
+    rmdir log
+  fi
+  ln -s resources/chain/var/log
+fi
+
+cd ${CHAIN_BIN}/${CHAIN_INC}
+
+if [ -f ORA-GBO-${CHAINENV}-Connect.inc ]; then
+  rm ORA-GBO-${CHAINENV}-Connect.inc
+fi
+ln -s ORA-${CHAINDB}-${CHAINENV}-Connect.inc ORA-GBO-${CHAINENV}-Connect.inc
+

@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="DOC41-Jenkins" default="build-jenkins">
+	
+	<tstamp/>
+
+	<property name="secprops.location" value="C:/eclipse/BOEAH/wasproj/doc41webui/conf/security.properties" />
+	<property file="${secprops.location}" />
+	<property name="ECLIPSE_HOME" value="related/jenkins/eclipse_home" />
+	<property name="SLEEP_BETWEEN_SERVERS" value="0"/>
+	
+	<property name="target" value="1.6"/>
+	<property name="source" value="1.6"/>
+	<property name="junit.output.dir" value="junit"/>
+	<property name="debuglevel" value="source,lines,vars"/>
+
+	<property name="war.name" value="bds.war" />
+	<property name="dir.distrib" value="${basedir}/distrib" />
+	<property name="war.file" value="${dir.distrib}/${war.name}" />
+	<property name="webapp" value="WebContent" />
+	<property name="dir.classes" value="${webapp}/WEB-INF/classes" />
+	<property name="dir.libs" value="${webapp}/WEB-INF/lib" />
+
+	<property name="tomcat.dir.tmp" value="/tmp"/>
+    <property name="tomcat.script.control.prefix" value="sudo systemctl" />
+	<property name="tomcat.script.control.suffix" value="tomcat-${proj.tcinstance}.service" />
+	<property name="tomcat.script.deploy" value="sudo /app/jenkins/scripts/deploy_war.sh" />
+	
+	<property name="apache.script.control" value="sudo /app/jenkins/scripts/start_stop_V_Hosts" />
+    <property name="server.dev1" value="BY0P5Q.bayer.cnb" />
+    <property name="server.dev2" value="" />
+    <property name="server.qa1" value="BY0OW0.de.bayer.cnb" />
+    <property name="server.qa2" value="BY0OW1.bayer.cnb" />
+    <property name="server.prod1" value="BY0OM6.de.bayer.cnb" />
+    <property name="server.prod2" value="BY0P5M.de.bayer.cnb" />
+    <property name="checkport.dev1.bds-a" value="8180" />
+    <property name="checkport.dev1.bds-b" value="2180" />
+    <property name="checkport.dev1.bds-c" value="2280" />
+    <property name="checkport.qa1.bds-a" value="2080" />
+    <property name="checkport.qa1.bds-b" value="3080" />
+    <property name="checkport.qa2.bds-a" value="2080" />
+    <property name="checkport.qa2.bds-b" value="3080" />
+    <property name="checkport.prod1.bds" value="2080" />
+    <property name="checkport.prod2.bds" value="2080" />
+	<property name="vhname.dev" value="doc41-dev.bayer-ag.com"/>
+	<property name="vhname.qa" value="bds-a"/>
+	<property name="vhname.prod" value="bds"/>
+	
+	<property name="dir.net.share" value="//DE.BAYER.CNB/BBS/BBSGmbH/Group/IBS/IBS-eBC/90 Archive/30 Deployment"/>
+	<property name="proj.dir.net.share.qa" value="DOC41/QA"/>
+	<property name="proj.dir.net.share.prod" value="DOC41/Prod"/>
+	<property name="proj.dir.net.share.builds" value="DOC41/Builds"/>
+	<property name="proj.versionfile" value="cfg/BaseProperties.ini"/>
+	<property name="proj.version.regexp.search" value="all\.common\.all\.version=.*"/>
+	<property name="proj.version.regexp.replace.prefix" value="all.common.all.version="/>
+	<property name="proj.tcinstance" value="bds-a"/>
+	
+	<!-- defaults -->
+	<property name="apache.failonerror" value="false"/>
+	<property name="versionnumber.prefix" value="MANUAL"/>
+	<property name="versionnumber.number" value="${DSTAMP}-${TSTAMP}"/>
+	<property name="versionnumber" value="${versionnumber.prefix}-${versionnumber.number}"/>
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+        <classpath>
+            <pathelement location="related/jenkins/antjars/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef> 
+
+	<path id="path.tomcat">
+		<fileset dir="related/jenkins/tomcatjars" includes="*.jar" />
+	</path>
+
+	<path id="path.webapp">
+		<fileset dir="${dir.libs}" includes="*.jar" />
+	</path>
+
+	<path id="path.junit">
+		<fileset dir="related/jenkins/junitjars" includes="*.jar" />
+	</path>
+
+	<path id="DOC41.classpath">
+		<pathelement location="${dir.classes}" />
+		<path refid="path.webapp" />
+		<path refid="path.tomcat" />
+		<path refid="path.junit" />
+		<pathelement location="related/serverlibs/sapjco3.jar" />
+		<pathelement location="related/serverlibs/ojdbc6.jar" />
+		<pathelement location="related/junit/org.springframework.test-3.1.1.RELEASE.jar" />
+	</path>
+	
+	<target name="clean">
+        <delete dir="${dir.classes}"/>
+    </target>
+	
+    <target name="init">
+        <mkdir dir="${dir.classes}"/>
+        <copy includeemptydirs="false" todir="${dir.classes}">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="${dir.classes}">
+            <fileset dir="src-test">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+	
+    <target name="build" depends="init">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="${dir.classes}" source="${source}" target="${target}" encoding="UTF-8">
+            <src path="src"/>
+            <classpath refid="DOC41.classpath"/>
+        </javac>
+    	<replaceregexp
+            file="${dir.classes}/${proj.versionfile}"
+            match="${proj.version.regexp.search}"
+            replace="${proj.version.regexp.replace.prefix}${versionnumber}"
+            flags="g"
+        />
+    	<antcall target="replace-properties"/>
+    	<antcall target="replace-stage"/>
+    	<antcall target="replace-instance"/>
+    </target>
+	
+	<target name="replace-properties" if="proj.properties.regexp.replace">
+		<echo message="replace properties with ${proj.properties.regexp.replace}"/>
+		<replaceregexp
+            file="${dir.classes}/${proj.basepropertiesfile}"
+            match="${proj.properties.regexp.search}"
+            replace="${proj.properties.regexp.replace}"
+            flags="g"
+        />
+	</target>
+	
+	<target name="replace-stage" if="proj.stage.regexp.replace">
+		<echo message="replace stage with ${proj.stage.regexp.replace}"/>
+		<replaceregexp
+            file="${dir.classes}/${proj.basepropertiesfile}"
+            match="${proj.stage.regexp.search}"
+            replace="app_stageS=${proj.stage.regexp.replace}"
+            flags="g"
+        />
+    </target>
+	
+	<target name="replace-instance" if="proj.instance.regexp.replace">
+		<echo message="replace instance with ${proj.instance.regexp.replace}"/>
+		<replaceregexp
+            file="${dir.classes}/${proj.basepropertiesfile}"
+            match="${proj.instance.regexp.search}"
+            replace="app_inst_local=${proj.instance.regexp.replace}"
+            flags="g"
+        />
+	</target>
+	
+    <target name="build-test" depends="init">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="${dir.classes}" source="${source}" target="${target}">
+            <src path="src-test"/>
+            <classpath refid="DOC41.classpath"/>
+        </javac>
+    </target>
+
+	<target name="junit" depends="build-test">
+		<delete dir="${junit.output.dir}" failonerror="false"/>
+		<mkdir dir="${junit.output.dir}"/>
+		<junit showoutput="true"  filtertrace="true" printsummary="on" fork="true" forkmode="once">
+			<classpath refid="DOC41.classpath" />
+			<formatter type="xml" />
+		<!--	<test name="com.bayer.bhc.boeah.AllCITests" todir="${junit.output.dir}"/> -->
+		</junit>
+	</target>
+
+	<target name="build-jenkins" description="build in jenkins">
+		<antcall target="clean" />
+		<antcall target="build" />
+		<antcall target="build-test" />
+		<antcall target="junit" />
+	</target>
+	
+    <target name="jenkins-create-version" description="build in jenkins">
+        <antcall target="war" />
+        <antcall target="build-test" />
+        <antcall target="junit" />
+    	<antcall target="copy.to.net.share.builds" />
+    </target>
+	
+	<target name="jenkins-deploy-dev" description="build and deploy on dev server from jenkins">
+		<antcall target="war"/>
+		<antcall target="deploy.to.dev.tomcat"/>
+	</target>
+	
+    <target name="jenkins-deploy-qa" description="build and deploy on both qa servers from jenkins">
+        <antcall target="copy.from.net.share.builds"/>
+        <antcall target="copy.to.net.share.qa"/>    
+        <antcall target="deploy.to.qa.tomcats"/>
+    </target>
+    
+    <target name="jenkins-deploy-qa1" description="build and deploy on qa2 server from jenkins">
+        <antcall target="copy.from.net.share.builds"/>
+        <antcall target="copy.to.net.share.qa"/>    
+        <antcall target="deploy.to.qa1.tomcat"/>
+    </target>
+    
+    <target name="jenkins-deploy-qa2" description="build and deploy on qa1 server from jenkins">
+        <antcall target="copy.from.net.share.builds"/>
+        <antcall target="copy.to.net.share.qa"/>    
+        <antcall target="deploy.to.qa2.tomcat"/>
+    </target>
+	
+	<target name="jenkins-deploy-prod" description="deploy on prod server from jenkins">
+		<antcall target="copy.from.net.share.qa"/>
+		<antcall target="copy.to.net.share.prod"/>
+		<antcall target="deploy.to.prod.tomcats"/>
+	</target>
+
+	<target name="war" description="build war file">
+		<antcall target="clean" />
+		<antcall target="build" />
+		<mkdir dir="${dir.distrib}" />
+		<delete file="${war.file}" failonerror="false" />
+		<war destfile="${war.file}" webxml="${webapp}/WEB-INF/web.xml" update="true">
+			<classes dir="${dir.classes}" />
+			<fileset dir="${webapp}">
+				<exclude name="WEB-INF/classes/**" />
+				<exclude name="WEB-INF/web.xml" />
+			</fileset>
+		</war>
+	</target>
+	
+	<!--<target name="control.apache.vh">
+		<echo message="server = ${server}"/>
+		<echo message="virtual.host = ${virtual.host}"/>
+		<echo message="command = ${command}"/>
+		<echo message="line = ${apache.script.control} ${command}"/>
+		<echo message="linux-user = ${linux-user}"/>
+		<sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="${apache.script.control} ${virtual.host} ${command}"
+			failonerror="${apache.failonerror}"/>
+	</target>-->	
+	
+	<target name="status.apache.vh">
+		<sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="dir /etc/httpd/vh.d/${virtual.host}*"
+					failonerror="${apache.failonerror}"/>
+		<sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="sudo /etc/init.d/httpd status"
+							failonerror="${apache.failonerror}"/>
+	</target>
+			
+    <target name="control.tomcat">
+        <echo message="server = ${server}"/>
+        <echo message="command = ${command}"/>
+        <echo message="line = ${tomcat.script.control.prefix} ${command} ${tomcat.script.control.suffix}"/>
+        <echo message="linux-user = ${linux-user}"/>
+        <sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="${tomcat.script.control.prefix} ${command} ${tomcat.script.control.suffix}" />
+    </target>
+
+    <target name="check.tomcat">
+        <echo message="server = ${server}"/>
+    	<mkdir dir="${dir.distrib}" />
+		<echo message="Wait 10 seconds....."/>
+		<sleep milliseconds="10000"/>
+    	<retry retrycount="10">
+        	<get src="http://${server}:${checkport}" dest="${dir.distrib}/test-${server}.html"
+        	   maxtime="20" retries="1" httpusecaches="false"/>
+		</retry>
+    	<echo message="check OK"/>
+    </target>
+
+	<target name="deploy.to.one.tomcat">
+		<!-- create dir on temp -->
+        <sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="mkdir -p ${tomcat.dir.tmp}/${linux-user}"
+                    failonerror="false"/>
+        <!-- copy war file to temp -->
+		<scp file="${war.file}" todir="${linux-user}:${linux-password}@${server}:${tomcat.dir.tmp}/${linux-user}" trust="true">
+		</scp>
+		<antcall target="control.tomcat">
+			<param name="server" value="${server}"/>
+			<param name="command" value="stop"/>
+		</antcall>
+		<!-- deploy script -->
+		<sshexec host="${server}" username="${linux-user}" password="${linux-password}" trust="true" command="${tomcat.script.deploy} ${tomcat.dir.tmp}/${linux-user}/${war.name} ${proj.tcinstance}" />
+		
+		<!-- start server -->
+		<antcall target="control.tomcat">
+			<param name="server" value="${server}"/>
+			<param name="command" value="start"/>
+		</antcall>
+		<antcall target="check.tomcat">
+            <param name="server" value="${server}"/>
+			<param name="checkport" value="${checkport}"/>
+		</antcall>
+	</target>
+	
+
+	<target name="deploy.to.dev.tomcat">
+		<propertycopy property="checkport" from="checkport.dev1.${proj.tcinstance}" />
+		<antcall target="deploy.to.one.tomcat">
+			<param name="server" value="${server.dev1}" />
+			<param name="checkport" value="${checkport}" />
+			<param name="virtual.host" value="${vhname.dev}" />
+		</antcall>
+	</target>
+	
+    <target name="deploy.to.qa.tomcats">
+        <antcall target="deploy.to.qa1.tomcat"/>
+        <echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
+        <sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
+        <antcall target="deploy.to.qa2.tomcat"/>
+    </target>
+
+    <target name="deploy.to.qa1.tomcat">
+        <propertycopy property="checkport" from="checkport.qa1.${proj.tcinstance}" />
+        <antcall target="deploy.to.one.tomcat">
+            <param name="server" value="${server.qa1}" />
+            <param name="checkport" value="${checkport}" />
+            <param name="virtual.host" value="${vhname.qa}" />
+        </antcall>
+    </target>
+    
+    <target name="deploy.to.qa2.tomcat">
+        <propertycopy property="checkport" from="checkport.qa2.${proj.tcinstance}" />
+        <antcall target="deploy.to.one.tomcat">
+            <param name="server" value="${server.qa2}" />
+            <param name="checkport" value="${checkport}" />
+            <param name="virtual.host" value="${vhname.qa}" />
+        </antcall>
+    </target>
+
+	<target name="deploy.to.prod.tomcats">
+		<propertycopy property="checkport1" from="checkport.prod1.${proj.tcinstance}" />
+		<antcall target="deploy.to.one.tomcat">
+			<param name="server" value="${server.prod1}" />
+			<param name="checkport" value="${checkport1}" />
+			<param name="virtual.host" value="${vhname.prod}" />
+		</antcall>
+		<echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
+		<sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
+		<propertycopy property="checkport2" from="checkport.prod2.${proj.tcinstance}" />
+		<antcall target="deploy.to.one.tomcat">
+			<param name="server" value="${server.prod2}" />
+			<param name="checkport" value="${checkport2}" />
+			<param name="virtual.host" value="${vhname.prod}" />
+		</antcall>
+	</target>
+	
+	<target name="servercontrol.start" depends="servercontrol.servernames">
+		<antcall target="control.tomcat">
+			<param name="server" value="${server1}"/>
+			<param name="command" value="start"/>
+		</antcall>
+		<antcall target="check.tomcat">
+            <param name="server" value="${server1}"/>
+			<param name="checkport" value="${checkport1}"/>
+		</antcall>
+		<if>
+			<length string="${server2}" when="greater" length="0" />
+			<then>
+				<antcall target="control.tomcat">
+					<param name="server" value="${server2}"/>
+					<param name="command" value="start"/>
+				</antcall>
+				<antcall target="check.tomcat">
+					<param name="server" value="${server2}"/>
+					<param name="checkport" value="${checkport2}"/>
+		        </antcall>
+			</then>
+		</if>
+	</target>
+	
+	<target name="servercontrol.stop" depends="servercontrol.servernames">
+		<antcall target="control.tomcat">
+			<param name="server" value="${server1}"/>
+			<param name="command" value="stop"/>
+		</antcall>
+		
+		<if>
+			<length string="${server2}" when="greater" length="0" />
+			<then>
+				<antcall target="control.tomcat">
+					<param name="server" value="${server2}"/>
+					<param name="command" value="stop"/>
+				</antcall>
+			</then>
+		</if>
+	</target>
+	
+	<target name="servercontrol.restart" depends="servercontrol.servernames">
+		<antcall target="control.tomcat">
+			<param name="server" value="${server1}"/>
+			<param name="command" value="restart"/>
+		</antcall>
+		<antcall target="check.tomcat">
+            <param name="server" value="${server1}"/>
+			<param name="checkport" value="${checkport1}"/>
+        </antcall>
+		<if>
+			<length string="${server2}" when="greater" length="0" />
+			<then>
+				<echo message="sleep for ${SLEEP_BETWEEN_SERVERS} minutes"/>
+				<sleep minutes="${SLEEP_BETWEEN_SERVERS}"/>
+				<antcall target="control.tomcat">
+					<param name="server" value="${server2}"/>
+					<param name="command" value="restart"/>
+				</antcall>
+				<antcall target="check.tomcat">
+		            <param name="server" value="${server2}"/>
+					<param name="checkport" value="${checkport2}"/>
+		        </antcall>
+			</then>
+		</if>
+	</target>
+	
+	<target name="servercontrol.status" depends="servercontrol.servernames">
+		<antcall target="status.apache.vh">
+			<param name="server" value="${server1}"/>
+		</antcall>
+		<antcall target="control.tomcat">
+			<param name="server" value="${server1}"/>
+			<param name="command" value="status"/>
+		</antcall>
+		
+		<if>
+			<length string="${server2}" when="greater" length="0" />
+			<then>
+				<antcall target="status.apache.vh">
+					<param name="server" value="${server2}"/>
+				</antcall>
+				<antcall target="control.tomcat">
+					<param name="server" value="${server2}"/>
+					<param name="command" value="status"/>
+				</antcall>
+			</then>
+		</if>
+	</target>
+	
+	<target name="servercontrol">
+		<antcall target="servercontrol.${COMMAND}">
+			<param name="STAGE" value="${STAGE}"/>
+
+		</antcall>
+	</target>
+	
+	<target name="servercontrol.servernames">
+		<propertycopy name="server1" from="server.${STAGE}1" />
+		<propertycopy name="server2" from="server.${STAGE}2" />
+		<propertycopy name="virtual.host" from="vhname.${STAGE}" />
+		<propertycopy name="checkport1" from="checkport.${STAGE}1.${proj.tcinstance}" />
+		<propertycopy name="checkport2" from="checkport.${STAGE}2.${proj.tcinstance}" silent="true"/>
+	</target>
+	
+    <target name="copy.to.net.share.builds">
+        <mkdir dir="${dir.net.share}/${proj.dir.net.share.builds}/${versionnumber}"/>
+        <copy file="${war.file}" todir="${dir.net.share}/${proj.dir.net.share.builds}/${versionnumber}" overwrite="false"/>
+    </target>
+    
+    <target name="copy.from.net.share.builds">
+        <delete dir="${dir.distrib}" failonerror="false"/>
+        <mkdir dir="${dir.distrib}"/>
+        <copy file="${dir.net.share}/${proj.dir.net.share.builds}/${versionnumber}/${war.name}" todir="${dir.distrib}" overwrite="true"/>
+    </target>
+	
+    <target name="copy.to.net.share.qa">
+        <mkdir dir="${dir.net.share}/${proj.dir.net.share.qa}/${versionnumber}"/>
+        <copy file="${war.file}" todir="${dir.net.share}/${proj.dir.net.share.qa}/${versionnumber}" overwrite="false"/>
+    </target>
+    
+    <target name="copy.from.net.share.qa">
+        <delete dir="${dir.distrib}" failonerror="false"/>
+        <mkdir dir="${dir.distrib}"/>
+        <copy file="${dir.net.share}/${proj.dir.net.share.qa}/${versionnumber}/${war.name}" todir="${dir.distrib}" overwrite="true"/>
+    </target>
+        
+    <target name="copy.to.net.share.prod">
+        <mkdir dir="${dir.net.share}/${proj.dir.net.share.prod}/${versionnumber}"/>
+        <copy file="${war.file}" todir="${dir.net.share}/${proj.dir.net.share.prod}/${versionnumber}" overwrite="false"/>
+    </target>
+
+	<target name="test">
+		<echo message="${ECLIPSE_HOME}" />
+		<echo message="${versionnumber}"/>
+	</target>
+	
+	<target name="servercontrol.single">
+		<propertycopy name="server" from="server.${STAGE}${SERVERNUMBER}" />
+		<propertycopy name="virtual.host" from="vhname.${STAGE}" />
+		<if>
+			<equals arg1="${SERVERTYPE}" arg2="tomcat"/>
+			<then>
+				<antcall target="control.tomcat">
+					<param name="server" value="${server}"/>
+					<param name="command" value="${COMMAND}"/>
+				</antcall>
+			</then>
+		</if>
+	</target>
+</project>
