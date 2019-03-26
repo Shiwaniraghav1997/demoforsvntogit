@@ -56,25 +56,29 @@ public interface Doc41Constants {
 	 * Attribute name of vendor batch defined in KGS customizing.
 	 */
 	public static final String ATTRIB_NAME_VENDOR_BATCH = "BATCH";
+	/**
+	 * Attribute name of country defined in KGS customizing.
+	 */
+	public static final String ATTRIB_NAME_COUNTRY = "COUNTRY";
+	/**
+	 * Attribute name of automatic version number defined in KGS customizing.
+	 */
+	public static final String ATTRIB_NAME_XVERSION = "XVERSION";
+	/**
+	 * Attribute name of vendor number defined in KGS customizing.
+	 */
+	public static final String ATTRIB_NAME_VENDOR_NUMBER = "VENDOR NUMBER";
+	/**
+	 * Attribute name of object type 2 required for document type linking in SAP.
+	 */
+	public static final String ATTRIB_OBJECT_TYPE_2 = "OBJTYPE_2";
+	/**
+	 * Attribute name of object id 2 required for document type linking in SAP.
+	 */
+	public static final String ATTRIB_OBJECT_ID_2 = "OBJECTID_2";
+	/**
+	 * Attribute name of document type 2 required for document type linking in SAP.
+	 */
+	public static final String ATTRIB_DOCUMENT_TYPE_2 = "DOCTYPE_2";
 
-	/**
-	 * Error message for return code mapping in RFC call when no return code is
-	 * returned from SAP.
-	 */
-	public static final String ERROR_MESSAGE_NO_RETURN_CODE = "NoReturnCode";
-	/**
-	 * Error message for return code mapping in RFC call when order is not existing
-	 * in SAP.
-	 */
-	public static final String ERROR_MESSAGE_ORDER_NOT_EXISTING = "OrderNotExisting";
-	/**
-	 * Error message for return code mapping in RFC call when order is not found for
-	 * given material or vendor in SAP.
-	 */
-	public static final String ERROR_MESSAGE_ORDER_NOT_FOUND = "OrderNotFoundForGivenMaterialOrVendor";
-	/**
-	 * Error message for return code mapping in RFC call when unknown return code is
-	 * returned from SAP.
-	 */
-	public static final String ERROR_MESSAGE_UNKNOWN_RETURN_CODE = "UnknownReturnCode";
 }

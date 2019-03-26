@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package com.bayer.bhc.doc41webui.usecase.documenttypes.qm;
 
 import java.util.Map;
@@ -11,17 +14,17 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 
 /**
  * @author ETZAJ
- * @version 13.03.2019
+ * @version 25.03.2019
  *
- *          Class for QMCoA upload document types.
- * 
+ *          Class for QMCoC upload document types.
+ *
  */
-public class QMCOAUploadDocumentType extends AbstractQMDocumentType implements UploadDocumentType {
+public class QMCOCUploadDocumentType extends AbstractQMDocumentType implements UploadDocumentType {
 
-	private static final String SAP_TYPE_ID = "DOC41.39";
-	private static final String TYPE_CONST = "QMCoA";
-	private static final String PERMISSION_UPLOAD = "DOC_QMCOA_UP";
-	
+	private static final String SAP_TYPE_ID = "DOC41.55";
+	private static final String TYPE_CONST = "QMCoC";
+	private static final String PERMISSION_UPLOAD = "DOC_QMCOC_UP";
+
 	/**
 	 * Gets specific SAP type ID determined for document type.
 	 * 

@@ -26,6 +26,31 @@ public final class Doc41ValidationUtils {
 	private static final String VENDOR_BATCH_MISSING_ERROR_MESSAGE = "VendorBatchIsMissing";
 	private static final String VENDOR_BATCH_TOO_LONG_ERROR_MESSAGE = "VendorBatchIsTooLong";
 	private static final int VENDOR_BATCH_MAX_LENGTH = 10;
+	/**
+	 * Error message for return code mapping in RFC call when no return code is
+	 * returned from SAP.
+	 */
+	public static final String ERROR_MESSAGE_NO_RETURN_CODE = "NoReturnCode";
+	/**
+	 * Error message for return code mapping in RFC call when order is not existing
+	 * in SAP.
+	 */
+	public static final String ERROR_MESSAGE_ORDER_NOT_EXISTING = "OrderNotExisting";
+	/**
+	 * Error message for return code mapping in RFC call when order is not found for
+	 * given material or vendor in SAP.
+	 */
+	public static final String ERROR_MESSAGE_ORDER_NOT_FOUND = "OrderNotFoundForGivenMaterialOrVendor";
+	/**
+	 * Error message for return code mapping in RFC call when unknown return code is
+	 * returned from SAP.
+	 */
+	public static final String ERROR_MESSAGE_UNKNOWN_RETURN_CODE = "UnknownReturnCode";
+	/**
+	 * Error message for return code mapping in RFC call when plant is not returned
+	 * from SAP.
+	 */
+	public static final String ERR_MESS_PLANT_NOT_RETURNED = "PlantNotReturned";
 
 	// Can not be instantiated.
 	private Doc41ValidationUtils() {

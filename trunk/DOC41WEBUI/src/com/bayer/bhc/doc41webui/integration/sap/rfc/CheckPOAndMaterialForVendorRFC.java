@@ -3,8 +3,8 @@ package com.bayer.bhc.doc41webui.integration.sap.rfc;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.sap3.SAPException;
 import com.sap.conn.jco.JCoFunction;
@@ -93,11 +93,11 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 		if (StringTool.equals(returnCode, RETURNCODE_OK)) {
 			return null;
 		} else if (StringTool.equals(returnCode, RETURNCODE_ORDER_NOT_EXISTING)) {
-			return Doc41Constants.ERROR_MESSAGE_ORDER_NOT_EXISTING;
+			return Doc41ValidationUtils.ERROR_MESSAGE_ORDER_NOT_EXISTING;
 		} else if (StringTool.equals(returnCode, RETURNCODE_ORDER_NOT_FOUND)) {
-			return Doc41Constants.ERROR_MESSAGE_ORDER_NOT_FOUND;
+			return Doc41ValidationUtils.ERROR_MESSAGE_ORDER_NOT_FOUND;
 		}
-		return Doc41Constants.ERROR_MESSAGE_UNKNOWN_RETURN_CODE;
+		return Doc41ValidationUtils.ERROR_MESSAGE_UNKNOWN_RETURN_CODE;
 	}
 
 }

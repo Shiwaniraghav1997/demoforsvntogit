@@ -19,58 +19,58 @@ import com.bayer.bhc.doc41webui.domain.Attribute;
  * @author ETZAJ
  * @version 14.03.2019
  *
- *          Controller class for QMCoA document type uploads.
+ *          Controller class for QMC (QMCoA, QMCoC) document type uploads.
  *
  */
 @Controller
-public class QMCOAUploadController extends UploadController {
+public class QMCUploadController extends UploadController {
 
 	/**
-	 * Handles GET requests for uploading QMCoA document types. Prepares view
-	 * (upload form) for entering input parameters for QMCoA document type uploads.
+	 * Handles GET requests for uploading QMC document types. Prepares view (upload
+	 * form) for entering input parameters for QMC document type uploads.
 	 * 
 	 * @param type
 	 *            used for determination of document type being uploaded.
-	 * @return upload form for entering input parameters for QMCoA document type
+	 * @return upload form for entering input parameters for QMC document type
 	 *         uploads.
 	 */
-	@RequestMapping(value = "/documents/qmcoaupload", method = RequestMethod.GET)
+	@RequestMapping(value = "/documents/qmcupload", method = RequestMethod.GET)
 	public UploadForm get(@RequestParam() String type) throws Doc41BusinessException {
 		return super.get(type);
 	}
 
 	/**
-	 * Handles POST requests for uploading QMCoA document types. Handles entered
-	 * values of input parameters and calls specific SAP function for uploading
-	 * QMCoA document types.
+	 * Handles POST requests for uploading QMC document types. Handles entered
+	 * values of input parameters and calls specific SAP function for uploading QMC
+	 * document types.
 	 * 
 	 * @param upload
-	 *            form with entered input parameter values for QMCoA document type
+	 *            form with entered input parameter values for QMC document type
 	 *            uploads.
 	 * @param binding
 	 *            result used for defining result of POST request call.
-	 * @return ModelAndView, if document type is successfully uploaded, or MAV with failure
-	 *         URL, if document type upload had failed.
+	 * @return ModelAndView, if document type is successfully uploaded, or MAV with
+	 *         failure URL, if document type upload had failed.
 	 */
-	@RequestMapping(value = "/documents/qmcoauploadpost", method = RequestMethod.POST)
+	@RequestMapping(value = "/documents/qmcuploadpost", method = RequestMethod.POST)
 	public ModelAndView postUploadMAV(@ModelAttribute UploadForm uploadForm, BindingResult bindingResult)
 			throws Doc41BusinessException {
 		ModelAndView mav = new ModelAndView();
 		String view = super.postUpload(uploadForm, bindingResult);
-		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(uploadForm.getType(),true);
-		uploadForm.initAttributes(attributeDefinitions,LocaleInSession.get().getLanguage());
+		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(uploadForm.getType(), true);
+		uploadForm.initAttributes(attributeDefinitions, LocaleInSession.get().getLanguage());
 		mav.setViewName(view);
 		return mav;
 	}
-	
+
 	@Override
 	protected String getFailedURL() {
-		return "/documents/qmcoaupload";
+		return "/documents/qmcupload";
 	}
 
 	@Override
 	protected String getSuccessURL() {
-		return "qmcoaupload";
+		return "qmcupload";
 	}
 
 }

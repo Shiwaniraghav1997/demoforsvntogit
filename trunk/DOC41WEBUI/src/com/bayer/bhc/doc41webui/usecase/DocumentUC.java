@@ -77,6 +77,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertDownCountry
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertDownCustomerDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertUploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.QMCOAUploadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.QMCOCUploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.SupplierCOADocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.AWBDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.BOLDocumentType;
@@ -167,6 +168,7 @@ public class DocumentUC {
 		addDocumentType(new DeliveryCertUploadDocumentType());
 		addDocumentType(new SupplierCOADocumentType());
 		addDocumentType(new QMCOAUploadDocumentType());
+		addDocumentType(new QMCOCUploadDocumentType());
 		
 		addDocumentType(new ArtworkForLayoutSupplierDocumentType());
 		addDocumentType(new LayoutForLayoutSupplierDocumentType());

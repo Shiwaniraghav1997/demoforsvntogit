@@ -4,8 +4,8 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <doc41:layout activePage="${pageContext.request.servletPath}"
-	jspName="qmcoaupload" component="documents" activeTopNav="upload"
-	activeNav="${uploadForm.type}UP" title="Upload QMCoA Document">
+	jspName="qmcupload" component="documents" activeTopNav="upload"
+	activeNav="${uploadForm.type}UP" title="Upload ${uploadForm.type} Document">
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/js/doc41popup.js"></script>
 	<script>
@@ -18,7 +18,7 @@
 			return '&vendorNumber=' + pn;
 		}
 	</script>
-	<doc41:uploadtemplate action="qmcoauploadpost">
+	<doc41:uploadtemplate action="qmcuploadpost">
 		<jsp:attribute name="fragmentAdditionalButtons">
 		</jsp:attribute>
 	</doc41:uploadtemplate>
