@@ -72,6 +72,12 @@ public class ArtworkForPMSupplierDocumentType extends PMSupplierDownloadDocument
         return new CheckForDownloadResult(additionalAttributes,null);
 */
     }
+
+	@Override
+	public Set<String> getMandatoryAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 	//TODO downloadcheck wie pm
 }

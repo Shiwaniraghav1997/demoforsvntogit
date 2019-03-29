@@ -1,5 +1,7 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes.sd;
 
+import java.util.Set;
+
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DirectDownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
@@ -30,6 +32,12 @@ public class BOLDocumentType extends SDDocumentType implements DownloadDocumentT
 	@Override
 	public String getPermissionDirectDownload() {
 		return "DOC_BOL_DIRECT_DOWN";
+	}
+
+	@Override
+	public Set<String> getMandatoryAttributes() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,27 +1,30 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes.qm;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.springframework.validation.Errors;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 
 /**
- * @author ETZAJ
- * @version 13.03.2019
+ * @author EUUDI
+ * @version 27.03.2019
  *
- *          Class for QMCoA upload document types.
- * 
+ *          Class for QMOTH upload document types.
+ *
  */
-public class QMCOAUploadDocumentType extends AbstractQMDocumentType implements UploadDocumentType {
-
-	private static final String SAP_TYPE_ID = "DOC41.39";
-	private static final String TYPE_CONST = "QMCoA";
-	private static final String PERMISSION_UPLOAD = "DOC_QMCOA_UP";
+public class QMOTHUploadDocumentType extends AbstractQMDocumentType implements UploadDocumentType{
+	
+	private static final String SAP_TYPE_ID = "DOC41.71";
+	private static final String TYPE_CONST = "QMOTH";
+	private static final String PERMISSION_UPLOAD = "DOC_QMOTH_UP";
 	
 	/**
 	 * Gets specific SAP type ID determined for document type.
@@ -83,12 +86,15 @@ public class QMCOAUploadDocumentType extends AbstractQMDocumentType implements U
 				viewAttributes, SAP_TYPE_ID);
 	}
 
+	
+	/**
+	 * Returning attributes which are mandatory for this type of document
+	 */
 	@Override
 	public Set<String> getMandatoryAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+		return new HashSet<String>(
+				Arrays.asList(Doc41Constants.ATTRIB_NAME_PURCHASE_ORDER, Doc41Constants.ATTRIB_NAME_VENDOR_NUMBER, 
+						Doc41Constants.ATTRIB_NAME_MATERIAL, Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION));
 	}
-
-
 
 }

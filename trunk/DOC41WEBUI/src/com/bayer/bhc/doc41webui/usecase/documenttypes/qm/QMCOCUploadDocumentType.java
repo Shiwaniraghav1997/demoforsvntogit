@@ -4,6 +4,7 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes.qm;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.validation.Errors;
 
@@ -83,6 +84,12 @@ public class QMCOCUploadDocumentType extends AbstractQMDocumentType implements U
 			Map<String, String> viewAttributes) throws Doc41BusinessException {
 		return super.checkForUpload(errors, documentUC, customerNumber, vendorNumber, objectId, attributeValues,
 				viewAttributes, SAP_TYPE_ID);
+	}
+
+	@Override
+	public Set<String> getMandatoryAttributes() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

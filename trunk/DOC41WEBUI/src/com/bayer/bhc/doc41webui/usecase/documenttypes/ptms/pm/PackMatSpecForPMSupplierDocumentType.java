@@ -1,7 +1,6 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm;
 
-
-
+import java.util.Set;
 
 public class PackMatSpecForPMSupplierDocumentType extends PMSupplierDownloadDocumentType {
 
@@ -18,6 +17,12 @@ public class PackMatSpecForPMSupplierDocumentType extends PMSupplierDownloadDocu
 	@Override
 	public String getPermissionDownload() {
 		return "DOC_PMS_DOWN_PM";
+	}
+
+	@Override
+	public Set<String> getMandatoryAttributes() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

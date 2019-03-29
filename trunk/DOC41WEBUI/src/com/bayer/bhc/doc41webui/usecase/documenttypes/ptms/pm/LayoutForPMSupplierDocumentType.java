@@ -51,4 +51,10 @@ public class LayoutForPMSupplierDocumentType extends PMSupplierDownloadDocumentT
 		return result;
 	}
 	//TODO download check wie pm
+
+	@Override
+	public Set<String> getMandatoryAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -78,6 +78,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertDownCustome
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertUploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.QMCOAUploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.QMCOCUploadDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.QMOTHUploadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.SupplierCOADocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.AWBDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.sd.BOLDocumentType;
@@ -169,6 +170,7 @@ public class DocumentUC {
 		addDocumentType(new SupplierCOADocumentType());
 		addDocumentType(new QMCOAUploadDocumentType());
 		addDocumentType(new QMCOCUploadDocumentType());
+		addDocumentType(new QMOTHUploadDocumentType());
 		
 		addDocumentType(new ArtworkForLayoutSupplierDocumentType());
 		addDocumentType(new LayoutForLayoutSupplierDocumentType());
@@ -430,9 +432,11 @@ public class DocumentUC {
             DocMetadata metadata = getMetadata(doctype);
             List<Attribute> kgsAttributes = metadata.getAttributes();
             Set<String> excludedAttributes = documentType.getExcludedAttributes();
+            Set<String> mandatoryAttributes = documentType.getMandatoryAttributes();
             for (Attribute attribute : kgsAttributes) {
                 String name = attribute.getName();
                 if(excludedAttributes==null || !excludedAttributes.contains(name)){
+                	setMandatoryAttribute(attribute, mandatoryAttributes);
                     boolean fileNameFilterCheck = !filterFileName || !StringTool.equals(name, Doc41Constants.ATTRIB_NAME_FILENAME);
                     boolean globalExcludeCheck = !StringTool.equals(name, Doc41Constants.ATTRIB_NAME_WEBUI_USER);
                     if(fileNameFilterCheck && globalExcludeCheck){
@@ -444,6 +448,20 @@ public class DocumentUC {
 		//Doc41Constants.ATTRIB_NAME_FILENAME
 		return filteredAttributes;
 	}
+	
+	/**
+	 * Set mandatory attribute flag based on mandatoryAttributes information
+	 * 
+	 * @param attribute attribute
+	 * 
+	 * @param mandatoryAttributes set with information about mandatory attributes
+	 */
+	void setMandatoryAttribute(Attribute attribute, Set<String> mandatoryAttributes) {
+		if (mandatoryAttributes != null && !mandatoryAttributes.contains(attribute.getName())) {
+			attribute.setMandatory(false);
+		};	
+	}
+	
 	
 	public List<DeliveryOrShippingUnit> getOpenDeliveries(String type, String carrier) throws Doc41BusinessException {
 		try{
@@ -830,7 +848,7 @@ public class DocumentUC {
     }
 
     /**
-     * Regular download by klick on download link.
+     * Regular download by click on download link.
      * @param targetResponse
      * @param type
      * @param docId

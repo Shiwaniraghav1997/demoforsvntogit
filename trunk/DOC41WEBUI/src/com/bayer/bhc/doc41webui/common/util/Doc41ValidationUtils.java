@@ -24,6 +24,7 @@ public final class Doc41ValidationUtils {
 	private static final String MATERIAL_NUMBER_TOO_LONG_ERROR_MESSAGE = "MaterialNumberIsTooLong";
 	private static final int MATERIAL_NUMBER_MAX_LENGTH = 18;
 	private static final String VENDOR_BATCH_MISSING_ERROR_MESSAGE = "VendorBatchIsMissing";
+	private static final String VENDOR_BATCH_DOCUMENT_IDENTIFICATION_MISSING_ERROR_MESSAGE = "VendorBatchMissingForDocumentIdentification";
 	private static final String VENDOR_BATCH_TOO_LONG_ERROR_MESSAGE = "VendorBatchIsTooLong";
 	private static final int VENDOR_BATCH_MAX_LENGTH = 10;
 	/**
@@ -135,15 +136,19 @@ public final class Doc41ValidationUtils {
 	 * @param errors
 	 *            is used for error handling.
 	 */
-	public static String validateVendorBatch(String vendorBatch, Errors errors) {
-		if (StringTool.isTrimmedEmptyOrNull(vendorBatch)) {
+	public static String validateVendorBatch(String vendorBatch, String documentIdentification, Errors errors) {
+		
+		if (StringTool.isTrimmedEmptyOrNull(vendorBatch) && documentIdentification == null) {
 			errors.rejectValue(String.format("attributeValues['%s']", Doc41Constants.ATTRIB_NAME_VENDOR_BATCH),
 					VENDOR_BATCH_MISSING_ERROR_MESSAGE);
-		} else if (vendorBatch.length() > VENDOR_BATCH_MAX_LENGTH) {
+		} else if (StringTool.isTrimmedEmptyOrNull(vendorBatch) && 
+				(documentIdentification != null && !documentIdentification.equalsIgnoreCase(Doc41Constants.NAME_DOCUMENT_IDENTIFICATION_VENDOR_PACKING_LIST))) {
+			errors.rejectValue(String.format("attributeValues['%s']", Doc41Constants.ATTRIB_NAME_VENDOR_BATCH),
+					VENDOR_BATCH_DOCUMENT_IDENTIFICATION_MISSING_ERROR_MESSAGE);
+		}else if (!StringTool.isTrimmedEmptyOrNull(vendorBatch) && vendorBatch.length() > VENDOR_BATCH_MAX_LENGTH) {
 			errors.rejectValue(String.format("attributeValues['%s']", Doc41Constants.ATTRIB_NAME_VENDOR_BATCH),
 					VENDOR_BATCH_TOO_LONG_ERROR_MESSAGE);
 		}
 		return vendorBatch;
 	}
-
 }

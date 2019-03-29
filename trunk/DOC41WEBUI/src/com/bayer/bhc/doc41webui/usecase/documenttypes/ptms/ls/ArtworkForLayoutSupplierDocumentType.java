@@ -2,6 +2,7 @@ package com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.validation.Errors;
 
@@ -72,5 +73,11 @@ public class ArtworkForLayoutSupplierDocumentType extends LayoutSupplierDocument
         
         return new CheckForDownloadResult(additionalAttributes,null);
     }
+
+	@Override
+	public Set<String> getMandatoryAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
     	
 }

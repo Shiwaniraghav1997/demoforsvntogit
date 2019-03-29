@@ -23,6 +23,7 @@ public interface DocumentType {
 	public String getSapTypeId();
 	public int getObjectIdFillLength();
 	public Set<String> getExcludedAttributes();
+	public Set<String> getMandatoryAttributes();
 
     /**
      * Get the profile type for download permissions (DOC_SD/QM/LS/PT), see DocumentType.GROUP_* constants.

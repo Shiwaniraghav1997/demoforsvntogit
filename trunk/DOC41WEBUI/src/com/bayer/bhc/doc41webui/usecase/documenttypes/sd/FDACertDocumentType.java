@@ -1,5 +1,7 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes.sd;
 
+import java.util.Set;
+
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DirectDownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 
@@ -24,6 +26,12 @@ public class FDACertDocumentType extends SDDocumentType implements DownloadDocum
 	@Override
 	public String getPermissionDirectDownload() {
 		return "DOC_FDACERT_DIRECT_DOWN";
+	}
+
+	@Override
+	public Set<String> getMandatoryAttributes() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

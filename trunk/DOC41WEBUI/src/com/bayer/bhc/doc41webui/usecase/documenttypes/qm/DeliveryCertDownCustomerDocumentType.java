@@ -3,6 +3,7 @@ package com.bayer.bhc.doc41webui.usecase.documenttypes.qm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.validation.Errors;
 
@@ -90,4 +91,12 @@ public class DeliveryCertDownCustomerDocumentType extends
 		return new CheckForDownloadResult(null,additionalObjectIds);
 		
 	}
+
+	@Override
+	public Set<String> getMandatoryAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }

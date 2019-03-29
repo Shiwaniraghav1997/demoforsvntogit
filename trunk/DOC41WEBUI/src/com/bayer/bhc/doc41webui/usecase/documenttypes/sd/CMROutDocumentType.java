@@ -1,5 +1,7 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes.sd;
 
+import java.util.Set;
+
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 
 
@@ -18,6 +20,12 @@ public class CMROutDocumentType extends SDDocumentType implements DownloadDocume
 	@Override
 	public String getPermissionDownload() {
 		return "DOC_CMROUT_DOWN";
+	}
+
+	@Override
+	public Set<String> getMandatoryAttributes() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -48,6 +48,7 @@ public interface Doc41Constants {
 	public static final String ATTRIB_NAME_I_DVSOBJTYPE = "_I_DVSOBJTYPE";
 	public static final String ATTRIB_NAME_I_DVSDOCTYPE = "_I_DVSDOCTYPE";
 	public static final String ATTRIB_NAME_I_NAMETYPE = "_I_NAMETYPE";
+		
 	/**
 	 * Attribute name of purchase order defined in KGS customizing.
 	 */
@@ -80,5 +81,13 @@ public interface Doc41Constants {
 	 * Attribute name of document type 2 required for document type linking in SAP.
 	 */
 	public static final String ATTRIB_DOCUMENT_TYPE_2 = "DOCTYPE_2";
+	/**
+	 * Attribute name of document identification required for document type linking in SAP.
+	 */
+	public static final String ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION = "DOCUMENT-ID";
+	/**
+	 * Name of document identification type vendor packing list.
+	 */
+	public static final String NAME_DOCUMENT_IDENTIFICATION_VENDOR_PACKING_LIST ="VENDOR PACKING LIST";
 
 }

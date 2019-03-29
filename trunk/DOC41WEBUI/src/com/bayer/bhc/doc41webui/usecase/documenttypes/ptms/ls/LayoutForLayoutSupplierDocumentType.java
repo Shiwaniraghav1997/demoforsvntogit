@@ -1,5 +1,7 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls;
 
+import java.util.Set;
+
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.UploadDocumentType;
 
@@ -30,5 +32,11 @@ public class LayoutForLayoutSupplierDocumentType extends LayoutSupplierDocumentT
 	@Override
 	protected boolean checkExistingDocs() {
 	    return true;
+	}
+
+	@Override
+	public Set<String> getMandatoryAttributes() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

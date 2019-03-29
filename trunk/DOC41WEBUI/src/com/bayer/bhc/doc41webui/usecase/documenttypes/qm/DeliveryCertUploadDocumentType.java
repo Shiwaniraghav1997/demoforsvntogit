@@ -2,6 +2,7 @@ package com.bayer.bhc.doc41webui.usecase.documenttypes.qm;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.validation.Errors;
 
@@ -64,5 +65,12 @@ public class DeliveryCertUploadDocumentType extends
 		
 		return new CheckForUpdateResult(SAP_OBJECT_BATCH_OBJ,null,null);
 	}
+
+	@Override
+	public Set<String> getMandatoryAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

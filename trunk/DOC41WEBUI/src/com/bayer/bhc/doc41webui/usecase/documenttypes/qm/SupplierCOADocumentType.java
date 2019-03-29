@@ -154,5 +154,11 @@ public class SupplierCOADocumentType implements UploadDocumentType {
     public String getGroup() {
         return GROUP_QM;
     }
+
+	@Override
+	public Set<String> getMandatoryAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }
