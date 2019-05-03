@@ -541,6 +541,16 @@ UPDATE UM_Permissions SET is_Deleted = 1, changedBy='IMWIF', userchanged=TO_DATE
  WHERE (type like '%QM')  AND (is_Deleted = 0) AND (permissionname NOT IN (
   'NavDocumentQMCoAUpload', 'DocumentQMCoAUpload', 'NavDocumentQMCoCUpload', 'DocumentQMCoCUpload', 'NavDocumentQMOthUpload', 'DocumentQMOthUpload'));
 
+INSERT INTO UM_PGU_Permissions(permission_Id, profile_Id, createdBy, changedBy, is_Deleted)
+  SELECT
+    pe.object_Id AS permission_Id, pr.object_Id AS profile_Id, 'IMWIF' AS createdBy, 'IMWIF' AS changedBy, 0 AS is_Deleted
+  FROM
+    UM_Permissions pe
+    INNER JOIN UM_Profiles pr ON
+     (pr.profileName = 'doc41_qmsup') AND
+     (pe.code IN ('TOPNAV_MYPROFILE','TOPNAV_DOWNLOAD'))
+;
+
 UPDATE Versions SET subVersion = 11 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 10 );
 COMMIT WORK;
 
