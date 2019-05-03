@@ -196,7 +196,7 @@ UPDATE UM_Permissions SET permissionDescription = 'Restriction Allow only read a
 commit;
 
 UPDATE UM_Permissions SET is_Deleted = 1 WHERE (code = 'DOC_GLO_LS');
-UPDATE UM_PGU_PERMISSIONS SET is_Deleted = 0 WHERE (is_Deleted = 1) AND (permission_Id = (SELECT object_Id FROM UM_Permissions WHERE (code = 'DOC_GLO_LS'))); 
+UPDATE UM_PGU_PERMISSIONS SET is_Deleted = 0 WHERE (is_Deleted = 1) AND (permission_Id = (SELECT object_Id FROM UM_Permissions WHERE (code = 'DOC_GLO_LS')));
 commit;
 
 UPDATE Versions SET subVersion = 3 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 2 );
@@ -210,7 +210,7 @@ COMMIT WORK;
 
 -- create / assign permissions for navigation separated from permissions for doc access (with sync)
 
-INSERT INTO UM_Permissions (Permissionname, PermissionDescription, code, type, createdBy, changedBy, Assign_Profile, is_Deleted) 
+INSERT INTO UM_Permissions (Permissionname, PermissionDescription, code, type, createdBy, changedBy, Assign_Profile, is_Deleted)
 SELECT
   'Nav'||Permissionname             AS Permissionname,
   'Navigation ' || PermissionDescription    AS PermissionDescription,
@@ -320,12 +320,12 @@ COMMIT WORK;
 -- Alter-Script: CVS v1.6 -> v1.7 --
 ------------------------------------
 
-UPDATE UM_PGU_Permissions SET is_Deleted = 0 WHERE (is_Deleted = 1) AND (permission_Id IN ( 
+UPDATE UM_PGU_Permissions SET is_Deleted = 0 WHERE (is_Deleted = 1) AND (permission_Id IN (
 SELECT object_Id FROM UM_Permissions WHERE (is_Deleted = 0) AND (type = 'NAV_DOC_SD') AND (permissionname NOT LIKE '%Direct%') AND (permissionname NOT LIKE '%GlobalSD') AND (permissionname NOT LIKE '%Upload%')
 ))
 ;
 
-UPDATE UM_PGU_Permissions SET is_Deleted = 1 WHERE (is_Deleted = 0) AND (permission_Id IN ( 
+UPDATE UM_PGU_Permissions SET is_Deleted = 1 WHERE (is_Deleted = 0) AND (permission_Id IN (
 SELECT object_Id from UM_Permissions WHERE (is_Deleted = 0) AND (type = 'NAV_DOC_SD') AND (permissionname LIKE '%GlobalSD')
 )) AND (profile_Id IN(
 SELECT object_Id FROM UM_Profiles WHERE profilename NOT LIKE '%glo'
@@ -426,7 +426,7 @@ UPDATE
   UM_Profiles
 SET
   profileName = 'doc41_pppi_pm',		-- doc41_pmsubcon
-  profileDescription = 'pm pppi toller'		-- pm subcontractor 
+  profileDescription = 'pm pppi toller'		-- pm subcontractor
 WHERE
   (profileName = 'doc41_pmsubcon')
 ;
@@ -534,11 +534,11 @@ Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPT
 Insert into DISPLAYTEXT (TEXT_ID, TEXTTYPE_ID, LANGUAGE_ISO_CODE, TEXT, DESCRIPTION, CODE, IS_ACTIVE, IS_DEFAULT, IS_DEPRECATED)
  Values (4, 20, 'en', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 'Extract Supplier Batch Record', 1, 0, 0);
 
-UPDATE UM_Profiles SET is_Deleted = 1, changedBy='IMWIF', userchanged=TO_DATE('9999-12-31','YYYY-MM-DD') WHERE TYPE='QM' AND profilename<>'doc41_qmsup';
+UPDATE UM_Profiles SET is_Deleted = 1, changedBy='IMWIF', userchanged=TO_DATE('9999-12-31','YYYY-MM-DD') WHERE (TYPE='QM') AND (profilename<>'doc41_qmsup') AND (is_Deleted = 0);
 
 -- permissions must be deactivated, too (missing deletion flag check for profile on getting resolved permissions
-UPDATE UM_Permissions SET is_Deleted = 1, changedBy='IMWIF', userchanged=TO_DATE('9999-12-31','YYYY-MM-DD') 
- WHERE (type like '%QM') AND (permissionname NOT IN (
+UPDATE UM_Permissions SET is_Deleted = 1, changedBy='IMWIF', userchanged=TO_DATE('9999-12-31','YYYY-MM-DD')
+ WHERE (type like '%QM')  AND (is_Deleted = 0) AND (permissionname NOT IN (
   'NavDocumentQMCoAUpload', 'DocumentQMCoAUpload', 'NavDocumentQMCoCUpload', 'DocumentQMCoCUpload', 'NavDocumentQMOthUpload', 'DocumentQMOthUpload'));
 
 UPDATE Versions SET subVersion = 11 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 10 );
