@@ -142,7 +142,7 @@ public class UserlistController extends AbstractDoc41Controller {
 	private String displayRoles(List<String> roles,
 			Tags tags) {
 		StringBuilder sb = new StringBuilder();
-		if(roles!=null){
+		if (roles!=null) {
 			for (String role : roles) {
 				if(sb.length()>0){
 					sb.append(",<BR>");
