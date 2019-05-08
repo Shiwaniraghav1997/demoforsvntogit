@@ -3,17 +3,22 @@ $(function(){
 	if(typeof tsheaders === "undefined"){
 		tsheaders={};
 	}
-	
+
 	//addparams can be used to append additional request parameters
 	if(typeof addparams === "undefined"){
 		addparams='';
 	}
-	
+
 	//tsfilters can be used to configure special filters like select boxes
 	if(typeof tsfilters === "undefined"){
 		tsfilters={};
 	}
-	
+
+	//tsFilterSource can be used to configure special filters /lable list
+	if(typeof tsFilterSource === "undefined"){
+		tsFilterSource={};
+	}
+
 
   // Initialize tablesorter
   // ***********************
@@ -28,15 +33,16 @@ $(function(){
     	  filter_functions : tsfilters
       },
       headers: tsheaders,
+      filter_selectSource: tsFilterSource,
       filter_searchDelay: 1000,
       filter_serversideFiltering : false
-      
+
     })
 
     // initialize the pager plugin
     // ****************************
     .tablesorterPager({
-    	
+
       // **********************************
       //  Description of ALL pager options
       // **********************************
@@ -105,7 +111,7 @@ $(function(){
                 row.push(d[r][c]); // add each table cell data to row array
               }
             }
-            if(typeof printcells == 'function') { 
+            if(typeof printcells == 'function') {
             	printcells(row);
             }
             rows.push(row); // add new row array to rows array
@@ -148,5 +154,5 @@ $(function(){
       cssDisabled    : 'disabled' // Note there is no period "." in front of this class name
 
     });
-  
+
 });

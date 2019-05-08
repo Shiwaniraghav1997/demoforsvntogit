@@ -45,16 +45,16 @@ public class UserlistController extends AbstractDoc41Controller {
     /**
      * Get a reqired permission to perform a certain operation, can be overwritten to enforce specific permission
      * @param usr
-     * @param request 
+     * @param request
      * @return null, if no specific permission required.
-     * @throws Doc41BusinessException 
+     * @throws Doc41BusinessException
      */
     @Override
     protected String[] getReqPermission(User usr, HttpServletRequest request) throws Doc41BusinessException {
         return new String[] {Doc41Constants.PERMISSION_USER_LIST};
 //		return usr.hasPermission(Doc41Constants.PERMISSION_USER_LIST);
     }
-	
+
 	@ModelAttribute("allRoles")
 	public String[] getAllRoles(){
 		try {
@@ -63,13 +63,13 @@ public class UserlistController extends AbstractDoc41Controller {
             throw new Doc41RuntimeExceptionBase("Failed to receive list of all Role names.", e);
         }
 	}
-	
+
 	@RequestMapping(value="/useradmin/userlist",method=RequestMethod.GET)
     protected void get() throws Exception {
 	  //no data necessary
     }
-	
-	@RequestMapping(value="/useradmin/jsontable", method=RequestMethod.GET,produces="application/json") 
+
+	@RequestMapping(value="/useradmin/jsontable", method=RequestMethod.GET,produces="application/json")
     @ResponseBody
     public Map<String, Object> getTable(TableSorterParams params) throws Doc41ExceptionBase, BATranslationsException {
 		Tags tags = new Doc41Tags(TranslationsDAO.SYSTEM_ID, "useradmin", "list", LocaleInSession.get());
@@ -81,11 +81,11 @@ public class UserlistController extends AbstractDoc41Controller {
 		userListFilter.setEmail(params.getFilter(4));
 		userListFilter.setType(params.getFilter(6));
 		userListFilter.setRole(params.getFilter(7));
-		
+
 		userListFilter.setOrderBy(params.getSortColumn(DB_COL_NAMES));
-		
+
         PagingResult<User> result = getUserManagementUC().findUsers(userListFilter, new TablesorterPagingData(params.getPage(),params.getSize()));
-        
+
 		List<User> list = result.getResult();
 		List<String[]> rows = new ArrayList<String[]>();
 		if(list.isEmpty()){
@@ -101,21 +101,21 @@ public class UserlistController extends AbstractDoc41Controller {
 				row[4]= StringTool.nullToEmpty(user.getEmail());
 				row[5]= StringTool.nullToEmpty(user.getPhone());
 				row[6]= StringTool.nullToEmpty(user.getType());
-				row[7]= displayRoles(user.getRoles(),tags); 
+				row[7]= displayRoles(user.getRoles(),tags);
 				//TODO move HTML to JSP
 				row[8]= displayEditButton(user.getCwid(),tags);
 				row[9]= displayToggleButton(user,tags);
 				rows.add(row);
 			}
 		}
-		
+
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("total_rows", result.getTotalSize());
         map.put("rows",rows);
 
         return map;
     }
-	
+
 	private String displayToggleButton(User user,Tags tags) {
 		String message;
 		String iconName;
@@ -130,7 +130,7 @@ public class UserlistController extends AbstractDoc41Controller {
 			buttonLabel = tags.getTag("ButtonActivate");
 		}
 		return "<a href='#' onclick=\"sendPostAfterCheck('"+message+"', 'toggleuser', 'togglecwid="+user.getCwid()+"')\"><img src='../resources/img/usermanagement/"+iconName+"' alt='"+buttonLabel+"' title='"+buttonLabel+"' style=\"border: 0px;\"></a>";
-		
+
 	}
 
 	private String displayEditButton(String cwid,
@@ -138,16 +138,16 @@ public class UserlistController extends AbstractDoc41Controller {
 		return "<a href='useredit?editcwid="+cwid+"'><img src='../resources/img/common/page_edit.gif' alt='"+tags.getTag("ButtonEdit")+"' title='"+tags.getTag("ButtonEdit")+"' style=\"border: 0px;\"></a>";
 	}
 
-	
+
 	private String displayRoles(List<String> roles,
 			Tags tags) {
 		StringBuilder sb = new StringBuilder();
 		if(roles!=null){
 			for (String role : roles) {
 				if(sb.length()>0){
-					sb.append(", ");
+					sb.append(",<BR>");
 				}
-				sb.append(tags.getTag(role));
+				sb.append(StringTool.escapeHTML(role) + ": " + tags.getTag(role));
 			}
 		}
 		return sb.toString();
@@ -159,7 +159,7 @@ public class UserlistController extends AbstractDoc41Controller {
 			return "/useradmin/userlist";
 		}
 		userManagementUC.toggleUserActivation(cwid);
-        
+
         return "redirect:/useradmin/userlist";
 	}
 }
