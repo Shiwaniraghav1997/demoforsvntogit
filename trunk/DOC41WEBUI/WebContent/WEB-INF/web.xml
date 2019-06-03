@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-			xmlns="http://java.sun.com/xml/ns/javaee" 
-			xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp" 
-			xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
-			xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+<web-app 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xmlns="http://java.sun.com/xml/ns/javaee"
+			xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp"
+			xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+			xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 			id="WebApp_ID" version="2.5">
   <display-name>DOC41WEBUI</display-name>
   <listener>
@@ -18,7 +18,7 @@
     </init-param>
     <init-param>
       <param-name>forceEncoding</param-name>
-      <param-value>false</param-value>
+      <param-value>true</param-value>
     </init-param>
   </filter>
   <filter-mapping>
@@ -78,10 +78,10 @@
     <servlet-name>Status</servlet-name>
     <url-pattern>/status/*</url-pattern>
   </servlet-mapping>
-  <mime-mapping>  
-	     <extension>sap</extension>  
-	     <mime-type>application/x-sapshortcut</mime-type>  
-  </mime-mapping> 
+  <mime-mapping>
+	     <extension>sap</extension>
+	     <mime-type>application/x-sapshortcut</mime-type>
+  </mime-mapping>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
@@ -98,7 +98,7 @@
       <taglib-uri>doc41-tags</taglib-uri>
       <taglib-location>/WEB-INF/tld/doc41-tags.tld</taglib-location>
     </taglib>
-    
+
     <jsp-property-group>
         <url-pattern>*.jsp</url-pattern>
         <page-encoding>UTF-8</page-encoding>
@@ -126,7 +126,7 @@
   <session-config>
     <session-timeout>240</session-timeout>
   </session-config>
-  
+
   	<!-- 404 Not Found -->
 	<error-page>
 		<error-code>404</error-code>
