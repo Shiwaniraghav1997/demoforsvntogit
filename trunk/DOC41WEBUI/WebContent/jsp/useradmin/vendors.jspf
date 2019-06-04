@@ -28,7 +28,7 @@ function addVendor(vendor){
 		} else {
 			alert('<doc41:translate label="VendorNumberInvalid"/>');
 		}
-	});	
+	});
 }
 
 function removeVendor(id){
@@ -40,7 +40,7 @@ function addVendorLine(number,name1,name2){
 }
 $(function() {
 	<c:forEach items="${userEditForm.vendors}" var="vendor" varStatus="vendorStatus">
-	addVendorLine('${vendor.number}','${vendor.name1}','${vendor.name2}');
+	addVendorLine('${vendor.number}','<spring:escapeBody javaScriptEscape="true">${vendor.name1}</spring:escapeBody>','<spring:escapeBody javaScriptEscape="true">${vendor.name2}</spring:escapeBody>');
 	</c:forEach>
 });
 
@@ -53,10 +53,10 @@ $(function() {
 				<th colspan="7"><doc41:translate label="TitelVendors"/></th>
 			</tr>
 		</thead>
-		<tbody class="portlet-table-body">		
-			
+		<tbody class="portlet-table-body">
+
 			<tr>
-				
+
 				<th style="width: 15%"><doc41:translate label="VendorNumbers"/></th>
 				<td style="width: 85%">
 					<table id="vendorlist">
