@@ -1195,5 +1195,9 @@ public class DocumentUC {
 		}
 		
 	}
+	
+	public boolean isNotificationEMailHidden(String documentType) throws Doc41BusinessException {
+		return getDocType(documentType).isNotificationEMailHidden();
+	}
 
 }

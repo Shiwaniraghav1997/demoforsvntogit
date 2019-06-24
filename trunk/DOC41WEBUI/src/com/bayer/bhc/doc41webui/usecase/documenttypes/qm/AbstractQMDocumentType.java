@@ -102,29 +102,31 @@ public abstract class AbstractQMDocumentType implements DocumentType {
 		return true;
 	}
 
+	@Override
+	public boolean isNotificationEMailHidden() {
+		return true;
+	}
+
 	protected CheckForUpdateResult checkForUpload(Errors errors, DocumentUC documentUC, String customerNumber,
 			String vendorNumber, String objectId, Map<String, String> attributeValues,
 			Map<String, String> viewAttributes, String sapTypeId) throws Doc41BusinessException {
-		
 		String purchaseOrderNumber = Doc41ValidationUtils.validatePurchaseOrderNumber(objectId, errors);
 		String materialNumber = Doc41ValidationUtils
 				.validateMaterialNumber(attributeValues.get(Doc41Constants.ATTRIB_NAME_MATERIAL), errors);
-		String vendorBatch = Doc41ValidationUtils
-				.validateVendorBatch(attributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_BATCH), attributeValues.get(Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION), errors);
-		
+		String vendorBatch = Doc41ValidationUtils.validateVendorBatch(
+				attributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_BATCH),
+				attributeValues.get(Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION), errors);
 		if (errors.hasErrors()) {
 			return null;
 		}
-		
 		List<String> results = documentUC.checkPOAndMaterialForVendor(vendorNumber, purchaseOrderNumber, materialNumber,
 				null);
 		validateResults(results, errors);
 		if (errors.hasErrors()) {
 			return null;
 		}
-		
 		setAttributeValues(attributeValues, purchaseOrderNumber, vendorNumber, results.get(1), materialNumber,
-				vendorBatch, sapTypeId);
+				vendorBatch, sapTypeId, results.get(2));
 		return new CheckForUpdateResult(SAP_OBJECT_BATCH_OBJ, null, null);
 	}
 
@@ -143,7 +145,7 @@ public abstract class AbstractQMDocumentType implements DocumentType {
 	}
 
 	private void setAttributeValues(Map<String, String> attributeValues, String purchaseOrderNumber,
-			String vendorNumber, String plant, String materialNumber, String vendorBatch, String sapTypeId) {
+			String vendorNumber, String plant, String materialNumber, String vendorBatch, String sapTypeId, String cwid) {
 		attributeValues.put(Doc41Constants.ATTRIB_NAME_PURCHASE_ORDER, purchaseOrderNumber);
 		attributeValues.put(Doc41Constants.ATTRIB_NAME_VENDOR_NUMBER, vendorNumber);
 		attributeValues.put(Doc41Constants.ATTRIB_NAME_PLANT, plant);
@@ -160,17 +162,14 @@ public abstract class AbstractQMDocumentType implements DocumentType {
 		 * actual vendor batch value). If [BATCH] has more than 10 characters, it is
 		 * reduced to 10 characters.
 		 */
-		
-		//TODO Waiting for response from Torsten: "What to send in case of an empty batch?"
 		if (vendorBatch != null) {
 			vendorBatch = vendorBatch.length() < 10 ? StringTool.minRString(vendorBatch, 10, ' ') : vendorBatch;
-		}else 
-		{
+		} else {
 			vendorBatch = "";
 		}
-		attributeValues.put(Doc41Constants.ATTRIB_OBJECT_ID_2, materialNumber
-				+ vendorBatch + plant);
+		attributeValues.put(Doc41Constants.ATTRIB_OBJECT_ID_2, materialNumber + vendorBatch + plant);
 		attributeValues.put(Doc41Constants.ATTRIB_DOCUMENT_TYPE_2, sapTypeId);
+		attributeValues.put(Doc41Constants.ATTRIB_NAME_EV_REQUESTER, cwid);
 	}
 
 }

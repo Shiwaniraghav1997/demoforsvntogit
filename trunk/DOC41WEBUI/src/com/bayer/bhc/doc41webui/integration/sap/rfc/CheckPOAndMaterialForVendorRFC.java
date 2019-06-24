@@ -18,6 +18,7 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
 	
 	private static final String OUT_RETURNCODE = "EV_RETURN";
 	private static final String OUT_PLANT = "EV_PLANT";
+	private static final String OUT_REQUESTER = "EV_REQUESTER";
 	
 	private static final String RETURNCODE_OK = "0";
 	private static final String RETURNCODE_ORDER_NOT_EXISTING = "1";
@@ -80,10 +81,12 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String>{
             JCoParameterList exportParameterList = pFunction.getExportParameterList();
             String returnCode = exportParameterList.getString(OUT_RETURNCODE);
             String evPlant = exportParameterList.getString(OUT_PLANT);
+            String evRequester = exportParameterList.getString(OUT_REQUESTER);
             mResult.add(mapReturnCodeToTag(returnCode));
             if(StringTool.emptyToNull(evPlant) != null){
             	mResult.add(evPlant);
             }
+            mResult.add(evRequester);
         }
         Doc41Log.get().debug(this, null, "EXIT");
         return mResult;

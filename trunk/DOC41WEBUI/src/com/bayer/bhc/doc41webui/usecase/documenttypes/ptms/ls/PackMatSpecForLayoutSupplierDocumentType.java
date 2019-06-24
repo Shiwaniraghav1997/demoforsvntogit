@@ -34,4 +34,9 @@ implements DownloadDocumentType{
 		return null;
 	}
 	
+	@Override
+	public boolean isNotificationEMailHidden() {
+		return false;
+	}
+	
 }

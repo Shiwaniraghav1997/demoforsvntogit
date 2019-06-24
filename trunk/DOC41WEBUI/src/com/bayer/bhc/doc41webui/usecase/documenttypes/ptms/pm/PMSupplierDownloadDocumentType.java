@@ -145,4 +145,9 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
         return GROUP_PM;
     }
     
+    @Override
+	public boolean isNotificationEMailHidden() {
+		return false;
+	}
+    
 }

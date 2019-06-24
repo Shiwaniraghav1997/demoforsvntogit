@@ -160,5 +160,10 @@ public class SupplierCOADocumentType implements UploadDocumentType {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public boolean isNotificationEMailHidden() {
+		return false;
+	}
     
 }

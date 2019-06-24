@@ -91,4 +91,9 @@ public abstract class AbstractDeliveryCertDocumentType implements DocumentType {
         return GROUP_QM;
     }
     
+    @Override
+	public boolean isNotificationEMailHidden() {
+		return false;
+	}
+    
 }

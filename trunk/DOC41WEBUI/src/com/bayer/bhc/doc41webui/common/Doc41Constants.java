@@ -89,5 +89,17 @@ public interface Doc41Constants {
 	 * Name of document identification type vendor packing list.
 	 */
 	public static final String NAME_DOCUMENT_IDENTIFICATION_VENDOR_PACKING_LIST ="VENDOR PACKING LIST";
+	/**
+	 * Name of SAP parameter containing user CWID.
+	 */
+	public static final String ATTRIB_NAME_EV_REQUESTER = "EV_REQUESTER";
+	public static final String PERSISTENT_SESSION_ID = "DOC41";
+	public static final String PERSISTENT_SESSION_COMPONENT = "UpsMail";
+	public static final Boolean PERSISTENT_SESSION_FLAG = true;
+	public static final String PROPERTY_NAME_RECIPIENT = "mail.recipient";
+	public static final String PROPERTY_NAME_NUMBER = "number";
+	public static final String PROPERTY_NAME_RECIPIENT_EMAIL_ADDRESS = "emailAddress";
+	public static final String PROPERTY_NAME_NOTIFICATION = "notification";
+	public static final String PROPERTY_NAME_CONTENT = "content";
 
 }

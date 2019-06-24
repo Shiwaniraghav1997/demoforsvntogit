@@ -44,4 +44,10 @@ public interface DocumentType {
      */
 	public boolean isKgs();
 	
+	/**
+     * Flag to determine, if document uses notification e-mail.
+     * @return true, if using notification e-mail. 
+     */
+	public boolean isNotificationEMailHidden();
+	
 }

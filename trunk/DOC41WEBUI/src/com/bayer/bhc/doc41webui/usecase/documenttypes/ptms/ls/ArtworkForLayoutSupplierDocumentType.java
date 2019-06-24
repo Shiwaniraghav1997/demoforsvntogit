@@ -79,5 +79,11 @@ public class ArtworkForLayoutSupplierDocumentType extends LayoutSupplierDocument
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	@Override
+	public boolean isNotificationEMailHidden() {
+		return false;
+	}
     	
 }

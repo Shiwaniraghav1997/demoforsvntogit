@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
+import com.bayer.bhc.doc41webui.common.util.EmailNotificationUtils;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UploadForm;
@@ -65,6 +67,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 				documentUC.hasVendorNumber(type),getLastVendorNumberFromSession());
 		List<Attribute> attributeDefinitions = documentUC.getAttributeDefinitions(type,true);
 		uploadForm.initAttributes(attributeDefinitions,language);
+		uploadForm.setNotificationEmailHidden(documentUC.isNotificationEMailHidden(type));
 		return uploadForm;
 	}
 
@@ -78,6 +81,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		String type = uploadForm.getType();
 		uploadForm.initPartnerNumbers(documentUC.hasCustomerNumber(type),null,
 				documentUC.hasVendorNumber(type),null);
+		uploadForm.setNotificationEmailHidden(documentUC.isNotificationEMailHidden(type));
 		checkPartnerNumbers(result,type,uploadForm.getCustomerNumber(),uploadForm.getVendorNumber());
 		checkAndFillObjectId(result,type,uploadForm);
 		MultipartFile file = uploadForm.getFile();
@@ -117,14 +121,17 @@ public abstract class UploadController extends AbstractDoc41Controller {
 			return failedURL;
 		} 
 		//set attributes in sap
-		documentUC.setAttributesForNewDocument(type,uploadForm.getFileId(),allAttributeValues,uploadForm.getObjectId(),uploadForm.getFileName(),checkResult.getSapObject(),checkResult.getVkOrg());
-		
-		String notificationEMail = uploadForm.getNotificationEMail();
-		if(!StringTool.isTrimmedEmptyOrNull(notificationEMail)){
-			documentUC.sendUploadNotification(notificationEMail,getTypeName(type,false),uploadForm.getFileName(),uploadForm.getFileId());
+		documentUC.setAttributesForNewDocument(type,uploadForm.getFileId(),allAttributeValues,uploadForm.getObjectId(),uploadForm.getFileName(),checkResult.getSapObject(),checkResult.getVkOrg());	
+		if (!uploadForm.isNotificationEmailHidden()) {
+			String notificationEMail = uploadForm.getNotificationEmail();
+			if(!StringTool.isTrimmedEmptyOrNull(notificationEMail)){
+				documentUC.sendUploadNotification(notificationEMail,getTypeName(type,false),uploadForm.getFileName(),uploadForm.getFileId());
+			}
+		} else {
+			if (allAttributeValues != null && !allAttributeValues.isEmpty()) {
+				EmailNotificationUtils.addEmailNotification(type, allAttributeValues.get(Doc41Constants.ATTRIB_NAME_FILENAME), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_EV_REQUESTER));
+			}
 		}
-		
-		
 		return "redirect:/documents/uploadsuccess?type="+type+"&uploadurl="+getSuccessURL();
 	}
 

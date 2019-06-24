@@ -176,4 +176,9 @@ public abstract class SDDocumentType implements DocumentType {
         return GROUP_SD;
     }
     
+    @Override
+	public boolean isNotificationEMailHidden() {
+		return false;
+	}
+    
 }
