@@ -48,7 +48,7 @@ public interface Doc41Constants {
 	public static final String ATTRIB_NAME_I_DVSOBJTYPE = "_I_DVSOBJTYPE";
 	public static final String ATTRIB_NAME_I_DVSDOCTYPE = "_I_DVSDOCTYPE";
 	public static final String ATTRIB_NAME_I_NAMETYPE = "_I_NAMETYPE";
-		
+
 	/**
 	 * Attribute name of purchase order defined in KGS customizing.
 	 */
@@ -82,24 +82,57 @@ public interface Doc41Constants {
 	 */
 	public static final String ATTRIB_DOCUMENT_TYPE_2 = "DOCTYPE_2";
 	/**
-	 * Attribute name of document identification required for document type linking in SAP.
+	 * Attribute name of document identification required for document type linking
+	 * in SAP.
 	 */
 	public static final String ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION = "DOCUMENT-ID";
 	/**
 	 * Name of document identification type vendor packing list.
 	 */
-	public static final String NAME_DOCUMENT_IDENTIFICATION_VENDOR_PACKING_LIST ="VENDOR PACKING LIST";
+	public static final String NAME_DOCUMENT_IDENTIFICATION_VENDOR_PACKING_LIST = "VENDOR PACKING LIST";
 	/**
 	 * Name of SAP parameter containing user CWID.
 	 */
 	public static final String ATTRIB_NAME_EV_REQUESTER = "EV_REQUESTER";
+	/**
+	 * ID used for identifying the persistent session for storing email
+	 * notifications (DW-18).
+	 */
 	public static final String PERSISTENT_SESSION_ID = "DOC41";
+	/**
+	 * Component used for identifying the persistent session for storing email
+	 * notifications (DW-18).
+	 */
 	public static final String PERSISTENT_SESSION_COMPONENT = "UpsMail";
+	/**
+	 * Flag used for choosing if exception should be thrown when the persistent
+	 * session for storing email notifications cannot be initiated (DW-18).
+	 */
 	public static final Boolean PERSISTENT_SESSION_FLAG = true;
+	/**
+	 * Property name used for storing a recipient in the persistent session for
+	 * storing email notifications (DW-18).
+	 */
 	public static final String PROPERTY_NAME_RECIPIENT = "mail.recipient";
+	/**
+	 * Property name used for storing the number of recipients in the persistent
+	 * session for storing email notifications (DW-18).
+	 */
 	public static final String PROPERTY_NAME_NUMBER = "number";
+	/**
+	 * Property name used for storing the email address of the recipient in the
+	 * persistent session for storing email notifications (DW-18).
+	 */
 	public static final String PROPERTY_NAME_RECIPIENT_EMAIL_ADDRESS = "emailAddress";
+	/**
+	 * Property name used for storing the extracted notification in the persistent
+	 * session for storing email notifications (DW-18).
+	 */
 	public static final String PROPERTY_NAME_NOTIFICATION = "notification";
+	/**
+	 * Property name used for storing the content of the extracted notification in
+	 * the persistent session for storing email notifications (DW-18).
+	 */
 	public static final String PROPERTY_NAME_CONTENT = "content";
 
 }

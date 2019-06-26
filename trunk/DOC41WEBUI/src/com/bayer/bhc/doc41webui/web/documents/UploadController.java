@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.web.documents;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -16,16 +17,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.EmailNotificationUtils;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.domain.Attribute;
+import com.bayer.bhc.doc41webui.domain.EmailNotification;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
 import com.bayer.bhc.doc41webui.usecase.DocClassNotAllowed;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
+import com.bayer.bhc.doc41webui.usecase.EmailNotificationUC;
 import com.bayer.bhc.doc41webui.usecase.UnknownExtensionException;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
@@ -129,7 +133,22 @@ public abstract class UploadController extends AbstractDoc41Controller {
 			}
 		} else {
 			if (allAttributeValues != null && !allAttributeValues.isEmpty()) {
-				EmailNotificationUtils.addEmailNotification(type, allAttributeValues.get(Doc41Constants.ATTRIB_NAME_FILENAME), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_EV_REQUESTER));
+				try {
+					EmailNotificationUC.addEmailNotification(new EmailNotification(
+							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_EV_REQUESTER),
+							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_NUMBER),
+							EmailNotificationUtils.findVendorNameByVendorNumber(uploadForm.getVendors(), uploadForm.getVendorNumber()),
+							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_BATCH),
+							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_MATERIAL),
+							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_PURCHASE_ORDER),
+							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_FILENAME),
+							EmailNotificationUtils.convertDocumentType(allAttributeValues.get(Doc41Constants.ATTRIB_DOCUMENT_TYPE_2)),
+							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION),
+							UserInSession.get().getCwid(),
+							LocalDateTime.now()));
+				} catch (Doc41TechnicalException d41te) {
+					throw new Doc41BusinessException("Email notification could not be stored.", d41te);
+				}
 			}
 		}
 		return "redirect:/documents/uploadsuccess?type="+type+"&uploadurl="+getSuccessURL();
