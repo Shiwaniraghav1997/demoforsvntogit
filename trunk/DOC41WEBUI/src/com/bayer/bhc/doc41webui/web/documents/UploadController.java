@@ -19,12 +19,10 @@ import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
-import com.bayer.bhc.doc41webui.common.util.EmailNotificationUtils;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.container.UploadForm;
 import com.bayer.bhc.doc41webui.domain.Attribute;
-import com.bayer.bhc.doc41webui.domain.EmailNotification;
 import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
 import com.bayer.bhc.doc41webui.usecase.DocClassNotAllowed;
@@ -134,18 +132,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		} else {
 			if (allAttributeValues != null && !allAttributeValues.isEmpty()) {
 				try {
-					EmailNotificationUC.addEmailNotification(new EmailNotification(
-							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_EV_REQUESTER),
-							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_NUMBER),
-							EmailNotificationUtils.findVendorNameByVendorNumber(uploadForm.getVendors(), uploadForm.getVendorNumber()),
-							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_BATCH),
-							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_MATERIAL),
-							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_PURCHASE_ORDER),
-							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_FILENAME),
-							EmailNotificationUtils.convertDocumentType(allAttributeValues.get(Doc41Constants.ATTRIB_DOCUMENT_TYPE_2)),
-							allAttributeValues.get(Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION),
-							UserInSession.get().getCwid(),
-							LocalDateTime.now()));
+					EmailNotificationUC.storeEmailNotificationBundle(allAttributeValues.get(Doc41Constants.ATTRIB_NAME_EV_REQUESTER), LocalDateTime.now(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_FILENAME), uploadForm.getVendors(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_NUMBER), UserInSession.get().getCwid(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_MATERIAL), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_BATCH), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_PURCHASE_ORDER), allAttributeValues.get(Doc41Constants.ATTRIB_DOCUMENT_TYPE_2), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION));
 				} catch (Doc41TechnicalException d41te) {
 					throw new Doc41BusinessException("Email notification could not be stored.", d41te);
 				}

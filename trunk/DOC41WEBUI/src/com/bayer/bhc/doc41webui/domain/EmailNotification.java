@@ -1,68 +1,51 @@
 package com.bayer.bhc.doc41webui.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import com.bayer.bhc.doc41webui.common.util.QmDocumentType;
 
 /**
  * @author ETZAJ
- * @version 25.06.2019
+ * @version 27.06.2019
+ * @ticket DW-18
  * 
- *          This class contains what is required for sending an e-mail
- *          notification for QM document types (DW-18).
+ *         This class represents an email notification. It contains information
+ *         about the document upload, required for filling the corresponding
+ *         email template.
  * 
  */
 public class EmailNotification {
 
-	private String cwid;
-	private String emailAddress;
-	private String vendorNumber;
-	private String vendorName;
-	private String batch;
-	private String materialNumber;
-	private String purchaseOrderNumber;
+	private LocalDateTime timestamp;
 	private String documentName;
+	private String vendorName;
+	private String vendorNumber;
+	private String username;
+	private String materialNumber;
+	private String batch;
+	private String purchaseOrderNumber;
 	private QmDocumentType documentType;
 	private String documentIdentification;
-	private String username;
-	private LocalDateTime timestamp;
 
-	public EmailNotification(String cwid, String vendorNumber, String vendorName, String batch, String materialNumber, String purchaseOrderNumber, String documentName, QmDocumentType documentType, String documentIdentification, String username, LocalDateTime timestamp) {
-		this.cwid = cwid;
-		this.vendorNumber = vendorNumber;
-		this.vendorName = vendorName;
-		this.batch = batch;
-		this.materialNumber = materialNumber;
-		this.purchaseOrderNumber = purchaseOrderNumber;
-		this.documentName = documentName;
-		this.documentType = documentType;
-		this.documentIdentification = documentIdentification;
-		this.username = username;
+	public EmailNotification() {
+
+	}
+
+	public LocalDateTime getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(LocalDateTime timestamp) {
 		this.timestamp = timestamp;
 	}
 
-	public String getCwid() {
-		return cwid;
+	public String getDocumentName() {
+		return documentName;
 	}
 
-	public void setCwid(String cwid) {
-		this.cwid = cwid;
-	}
-
-	public String getEmailAddress() {
-		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
-
-	public String getVendorNumber() {
-		return vendorNumber;
-	}
-
-	public void setVendorNumber(String vendorNumber) {
-		this.vendorNumber = vendorNumber;
+	public void setDocumentName(String documentName) {
+		this.documentName = documentName;
 	}
 
 	public String getVendorName() {
@@ -73,12 +56,20 @@ public class EmailNotification {
 		this.vendorName = vendorName;
 	}
 
-	public String getBatch() {
-		return batch;
+	public String getVendorNumber() {
+		return vendorNumber;
 	}
 
-	public void setBatch(String batch) {
-		this.batch = batch;
+	public void setVendorNumber(String vendorNumber) {
+		this.vendorNumber = vendorNumber;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getMaterialNumber() {
@@ -89,20 +80,20 @@ public class EmailNotification {
 		this.materialNumber = materialNumber;
 	}
 
+	public String getBatch() {
+		return batch;
+	}
+
+	public void setBatch(String batch) {
+		this.batch = batch;
+	}
+
 	public String getPurchaseOrderNumber() {
 		return purchaseOrderNumber;
 	}
 
 	public void setPurchaseOrderNumber(String purchaseOrderNumber) {
 		this.purchaseOrderNumber = purchaseOrderNumber;
-	}
-
-	public String getDocumentName() {
-		return documentName;
-	}
-
-	public void setDocumentName(String documentName) {
-		this.documentName = documentName;
 	}
 
 	public QmDocumentType getDocumentType() {
@@ -121,20 +112,16 @@ public class EmailNotification {
 		this.documentIdentification = documentIdentification;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public LocalDateTime getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof EmailNotification)) {
+			return false;
+		}
+		EmailNotification emailNotification = (EmailNotification) o;
+		return Objects.equals(documentName, emailNotification.getDocumentName()) && Objects.equals(vendorName, emailNotification.getVendorName()) && Objects.equals(vendorNumber, emailNotification.getVendorNumber()) && Objects.equals(username, emailNotification.getUsername()) && Objects.equals(materialNumber, emailNotification.getMaterialNumber()) && Objects.equals(batch, emailNotification.getBatch()) && Objects.equals(purchaseOrderNumber, emailNotification.getPurchaseOrderNumber()) && Objects.equals(documentType, emailNotification.getDocumentType()) && Objects.equals(documentIdentification, emailNotification.getDocumentIdentification());
 	}
 
 }

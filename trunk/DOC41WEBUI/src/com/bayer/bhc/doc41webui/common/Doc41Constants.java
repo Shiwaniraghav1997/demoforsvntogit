@@ -95,43 +95,48 @@ public interface Doc41Constants {
 	 */
 	public static final String ATTRIB_NAME_EV_REQUESTER = "EV_REQUESTER";
 	/**
-	 * ID used for identifying the persistent session for storing email
-	 * notifications (DW-18).
+	 * The ID used for identifying the corresponding persistent session for storing
+	 * email notification bundles (DW-18).
 	 */
 	public static final String PERSISTENT_SESSION_ID = "DOC41";
 	/**
-	 * Component used for identifying the persistent session for storing email
-	 * notifications (DW-18).
+	 * The component used for identifying the corresponding persistent session for
+	 * storing email notification bundles (DW-18).
 	 */
 	public static final String PERSISTENT_SESSION_COMPONENT = "UpsMail";
 	/**
-	 * Flag used for choosing if exception should be thrown when the persistent
-	 * session for storing email notifications cannot be initiated (DW-18).
+	 * The flag used for choosing if exception should be thrown when the
+	 * corresponding persistent session for storing email notification bundles
+	 * cannot be initiated (DW-18).
 	 */
 	public static final Boolean PERSISTENT_SESSION_FLAG = true;
 	/**
-	 * Property name used for storing a recipient in the persistent session for
-	 * storing email notifications (DW-18).
+	 * The property name used for storing an email notification bundle in the
+	 * corresponding persistent session for storing email notification bundles
+	 * (DW-18).
 	 */
-	public static final String PROPERTY_NAME_RECIPIENT = "mail.recipient";
+	public static final String PROPERTY_NAME_EMAIL_NOTIFICATION_BUNDLE = "emailNotificationBundle";
 	/**
-	 * Property name used for storing the number of recipients in the persistent
-	 * session for storing email notifications (DW-18).
+	 * The property name used for storing the number of objects (email notification
+	 * bundles or email notifications) in the corresponding persistent session for
+	 * storing email notification bundles (DW-18).
 	 */
 	public static final String PROPERTY_NAME_NUMBER = "number";
 	/**
-	 * Property name used for storing the email address of the recipient in the
-	 * persistent session for storing email notifications (DW-18).
+	 * The property name used for storing the email address of the email
+	 * notification bundle in the corresponding persistent session for storing email
+	 * notification bundles (DW-18).
 	 */
-	public static final String PROPERTY_NAME_RECIPIENT_EMAIL_ADDRESS = "emailAddress";
+	public static final String PROPERTY_NAME_EMAIL_ADDRESS = "emailAddress";
 	/**
-	 * Property name used for storing the extracted notification in the persistent
-	 * session for storing email notifications (DW-18).
+	 * The property name used for storing an email notification in the corresponding
+	 * persistent session for storing email notification bundles (DW-18).
 	 */
-	public static final String PROPERTY_NAME_NOTIFICATION = "notification";
+	public static final String PROPERTY_NAME_NOTIFICATION = "emailNotification";
 	/**
-	 * Property name used for storing the content of the extracted notification in
-	 * the persistent session for storing email notifications (DW-18).
+	 * The property name used for storing the content of an email notification in
+	 * the corresponding persistent session for storing email notification bundles
+	 * (DW-18).
 	 */
 	public static final String PROPERTY_NAME_CONTENT = "content";
 
