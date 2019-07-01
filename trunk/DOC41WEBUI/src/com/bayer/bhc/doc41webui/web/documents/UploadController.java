@@ -27,7 +27,7 @@ import com.bayer.bhc.doc41webui.domain.User;
 import com.bayer.bhc.doc41webui.integration.db.TranslationsDAO;
 import com.bayer.bhc.doc41webui.usecase.DocClassNotAllowed;
 import com.bayer.bhc.doc41webui.usecase.DocumentUC;
-import com.bayer.bhc.doc41webui.usecase.EmailNotificationUC;
+import com.bayer.bhc.doc41webui.usecase.EmailNotificationBundleUC;
 import com.bayer.bhc.doc41webui.usecase.UnknownExtensionException;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.CheckForUpdateResult;
 import com.bayer.bhc.doc41webui.web.AbstractDoc41Controller;
@@ -132,7 +132,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		} else {
 			if (allAttributeValues != null && !allAttributeValues.isEmpty()) {
 				try {
-					EmailNotificationUC.storeEmailNotificationBundle(allAttributeValues.get(Doc41Constants.ATTRIB_NAME_EV_REQUESTER), LocalDateTime.now(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_FILENAME), uploadForm.getVendors(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_NUMBER), UserInSession.get().getCwid(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_MATERIAL), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_BATCH), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_PURCHASE_ORDER), allAttributeValues.get(Doc41Constants.ATTRIB_DOCUMENT_TYPE_2), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION));
+					EmailNotificationBundleUC.storeEmailNotificationBundle(allAttributeValues.get(Doc41Constants.ATTRIB_NAME_EV_REQUESTER), LocalDateTime.now(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_FILENAME), uploadForm.getVendors(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_NUMBER), UserInSession.get().getCwid(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_MATERIAL), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_BATCH), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_PURCHASE_ORDER), allAttributeValues.get(Doc41Constants.ATTRIB_DOCUMENT_TYPE_2), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION) != null ? allAttributeValues.get(Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION) : "");
 				} catch (Doc41TechnicalException d41te) {
 					throw new Doc41BusinessException("Email notification could not be stored.", d41te);
 				}

@@ -30,9 +30,9 @@ import com.bayer.ecim.foundation.business.sbcommon.SBeanException;
  *         session.
  * 
  */
-public final class EmailNotificationUC {
+public final class EmailNotificationBundleUC {
 
-	private EmailNotificationUC() {
+	private EmailNotificationBundleUC() {
 
 	}
 
@@ -46,9 +46,9 @@ public final class EmailNotificationUC {
 			storeEmailNotificationBundle(properties, emailNotificationBundle);
 			SBSessionManagerSingleton.get().getSessionManager().storeSession(Doc41Constants.PERSISTENT_SESSION_ID, Doc41Constants.PERSISTENT_SESSION_COMPONENT, properties);
 		} catch (SBeanException sbe) {
-			Doc41Log.get().error(EmailNotificationUC.class.getName(), UserInSession.getCwid(), sbe);
+			Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), UserInSession.getCwid(), sbe);
 		} catch (InitException ie) {
-			Doc41Log.get().error(EmailNotificationUC.class.getName(), UserInSession.getCwid(), ie);
+			Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), UserInSession.getCwid(), ie);
 		}
 	}
 
@@ -85,7 +85,7 @@ public final class EmailNotificationUC {
 		}
 	}
 
-	private static List<EmailNotificationBundle> readStoredEmailNotificationBundles(Properties properties) throws Doc41TechnicalException {
+	public static List<EmailNotificationBundle> readStoredEmailNotificationBundles(Properties properties) throws Doc41TechnicalException {
 		List<EmailNotificationBundle> emailNotificationBundles = new ArrayList<EmailNotificationBundle>();
 		for (int emailNotificationBundleIndex = 1; emailNotificationBundleIndex <= readStoredEmailNotificationBundleNumber(properties); emailNotificationBundleIndex++) {
 			emailNotificationBundles.add(readStoredEmailNotificationBundle(properties, emailNotificationBundleIndex));
@@ -100,7 +100,7 @@ public final class EmailNotificationUC {
 			try {
 				emailNotificationBundleNumber = Integer.valueOf(emailNotificationBundleNumberString);
 			} catch (NumberFormatException nfe) {
-				Doc41Log.get().error(EmailNotificationUC.class.getName(), UserInSession.getCwid(), nfe);
+				Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), UserInSession.getCwid(), nfe);
 			}
 		} else {
 			properties.setProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationBundleNumber(), emailNotificationBundleNumber.toString());
@@ -130,7 +130,7 @@ public final class EmailNotificationUC {
 			try {
 				emailNotificationNumber = Integer.valueOf(notificationNumberString);
 			} catch (NumberFormatException nfe) {
-				Doc41Log.get().error(EmailNotificationUC.class.getName(), UserInSession.getCwid(), nfe);
+				Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), UserInSession.getCwid(), nfe);
 			}
 		} else {
 			properties.setProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationNumber(emailNotificationBundleIndex), emailNotificationNumber.toString());
@@ -139,27 +139,13 @@ public final class EmailNotificationUC {
 	}
 
 	private static EmailNotification readStoredEmailNotification(Properties properties, Integer emailNotificationBundleIndex, Integer emailNotificationIndex) throws Doc41TechnicalException {
-		EmailNotification emailNotification = new EmailNotification();
-		String emailNotificationContent = properties.getProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationContent(emailNotificationBundleIndex, emailNotificationIndex));
-		String[] emailNotificationContentArray = emailNotificationContent.split(EmailNotificationBundleUtils.getSeparator());
-		emailNotification.setTimestamp(EmailNotificationBundleUtils.convertToTimestamp(emailNotificationContentArray[0]));
-		emailNotification.setDocumentName(emailNotificationContentArray[1]);
-		emailNotification.setVendorName(emailNotificationContentArray[2]);
-		emailNotification.setVendorNumber(emailNotificationContentArray[3]);
-		emailNotification.setUsername(emailNotificationContentArray[4]);
-		emailNotification.setMaterialNumber(emailNotificationContentArray[5]);
-		emailNotification.setBatch(emailNotificationContentArray[6]);
-		emailNotification.setPurchaseOrderNumber(emailNotificationContentArray[7]);
-		/*
-		 * The document type (8th array element) and document ID (9th array element) are
-		 * both set in the next line.
-		 */
-		emailNotification.setDocumentType(EmailNotificationBundleUtils.convertToDocumentType(emailNotificationContentArray[9]));
-		emailNotification.setDocumentIdentification(!emailNotificationContentArray[10].equals("null") ? emailNotificationContentArray[10] : null);
+		EmailNotification emailNotification = null;
+		String emailNotificationString = properties.getProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationContent(emailNotificationBundleIndex, emailNotificationIndex));
+		emailNotification = EmailNotificationBundleUtils.convertToEmailNotification(emailNotificationString);
 		return emailNotification;
 	}
 
-	private static void storeNewEmailNotificationBundle(Properties properties, EmailNotificationBundle emailNotificationBundle) {
+	private static void storeNewEmailNotificationBundle(Properties properties, EmailNotificationBundle emailNotificationBundle) throws Doc41TechnicalException {
 		Integer emailNotificationBundleNumber = readStoredEmailNotificationBundleNumber(properties);
 		Integer emailNotificationBundleIndex = emailNotificationBundleNumber + 1;
 		properties.setProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationBundleNumber(), (emailNotificationBundleIndex).toString());
@@ -167,11 +153,11 @@ public final class EmailNotificationUC {
 		storeNewEmailNotification(properties, emailNotificationBundle.getEmailNotifications().get(0), emailNotificationBundleIndex);
 	}
 
-	private static void storeNewEmailNotification(Properties properties, EmailNotification emailNotification, Integer emailNotificationBundleIndex) {
+	private static void storeNewEmailNotification(Properties properties, EmailNotification emailNotification, Integer emailNotificationBundleIndex) throws Doc41TechnicalException {
 		Integer emailNotificationNumber = readStoredEmailNotificationNumber(properties, emailNotificationBundleIndex);
 		Integer emailNotificationIndex = emailNotificationNumber + 1;
 		properties.setProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationNumber(emailNotificationBundleIndex), (emailNotificationIndex).toString());
-		properties.setProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationContent(emailNotificationBundleIndex, emailNotificationIndex), EmailNotificationBundleUtils.convertToString(emailNotification));
+		properties.setProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationContent(emailNotificationBundleIndex, emailNotificationIndex), EmailNotificationBundleUtils.convertToCsvString(emailNotification));
 	}
 
 	private static void storeExistingEmailNotificationBundle(Properties properties, EmailNotificationBundle emailNotificationBundle) throws Doc41TechnicalException {
@@ -185,6 +171,17 @@ public final class EmailNotificationUC {
 		if (EmailNotificationBundleUtils.isNewEmailNotification(emailNotification, emailNotifications)) {
 			storeNewEmailNotification(properties, emailNotification, emailNotificationBundleIndex);
 		}
+	}
+
+	public static void sendEmailNotificationBundles(Properties properties) throws Doc41TechnicalException {
+		List<EmailNotificationBundle> emailNotificationBundles = readStoredEmailNotificationBundles(properties);
+		for (EmailNotificationBundle emailNotificationBundle : emailNotificationBundles) {
+			sendEmailNotificationBundle(emailNotificationBundle);
+		}
+	}
+
+	private static void sendEmailNotificationBundle(EmailNotificationBundle emailNotificationBundle) {
+		
 	}
 
 }
