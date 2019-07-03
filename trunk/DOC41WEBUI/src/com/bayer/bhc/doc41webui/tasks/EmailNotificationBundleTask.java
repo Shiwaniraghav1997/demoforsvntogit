@@ -2,6 +2,8 @@ package com.bayer.bhc.doc41webui.tasks;
 
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
@@ -19,6 +21,9 @@ import com.bayer.ecim.foundation.business.sbeans.tas.GenericTask;
  * 
  */
 public class EmailNotificationBundleTask extends GenericTask {
+	
+	@Autowired
+	private EmailNotificationBundleUC emailNotificationBundleUC;
 
 	@Override
 	public void execute() throws Exception {
@@ -27,7 +32,7 @@ public class EmailNotificationBundleTask extends GenericTask {
 			if (properties == null) {
 				properties = new Properties();
 			}
-			EmailNotificationBundleUC.sendEmailNotificationBundles(properties);
+			emailNotificationBundleUC.sendEmailNotificationBundles();
 			SBSessionManagerSingleton.get().getSessionManager().storeSession(Doc41Constants.PERSISTENT_SESSION_ID, Doc41Constants.PERSISTENT_SESSION_COMPONENT, new Properties());
 		} catch (SBeanException sbe) {
 			Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), UserInSession.getCwid(), sbe);
