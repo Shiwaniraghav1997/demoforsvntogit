@@ -6,7 +6,6 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.domain.EmailNotification;
-import com.bayer.bhc.doc41webui.domain.EmailNotificationBundle;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.ServerException;
@@ -26,7 +24,7 @@ import com.bayer.ecim.foundation.web.usermanagementN.UMCwidDetails2NDC;
 
 /**
  * @author ETZAJ
- * @version 27.06.2019
+ * @version 03.07.2019
  * @ticket DW-18
  * 
  *         Utility class for email notification bundles.
@@ -38,6 +36,14 @@ public final class EmailNotificationBundleUtils {
 
 	}
 
+	/**
+	 * This methods finds the vendor name of a vendor with the corresponding vendor
+	 * number.
+	 * 
+	 * @param sapVendors
+	 * @param vendorNumber
+	 * @return
+	 */
 	public static String findVendorNameByVendorNumber(List<SapVendor> sapVendors, String vendorNumber) {
 		String vendorName = null;
 		if (sapVendors != null && !sapVendors.isEmpty()) {
@@ -51,6 +57,14 @@ public final class EmailNotificationBundleUtils {
 		return vendorName;
 	}
 
+	/**
+	 * This method converts a document type ID (string) to the corresponding
+	 * document type (enumeration).
+	 * 
+	 * @param documentTypeId
+	 * @return
+	 * @throws Doc41TechnicalException
+	 */
 	public static QmDocumentType convertToDocumentType(String documentTypeId) throws Doc41TechnicalException {
 		QmDocumentType qmDocumentType = null;
 		if (documentTypeId == null || (!documentTypeId.equals(QmDocumentType.COA.getId()) && !documentTypeId.equals(QmDocumentType.COC.getId()) && !documentTypeId.equals(QmDocumentType.OID.getId()))) {
@@ -66,10 +80,14 @@ public final class EmailNotificationBundleUtils {
 		return qmDocumentType;
 	}
 
-	private static String getEmailAddressPlaceholder() {
-		return "EmailAddressPlaceholder";
-	}
-
+	/**
+	 * This method converts a CWID to the corresponding email address, if there is
+	 * one. Otherwise this method converts a CWID to an email address placeholder,
+	 * which is used to indicate that the default email address must be used.
+	 * 
+	 * @param cwid
+	 * @return
+	 */
 	public static String convertToEmailAddress(String cwid) {
 		String emailAddress = null;
 		if (StringUtils.isNotBlank(cwid)) {
@@ -93,6 +111,10 @@ public final class EmailNotificationBundleUtils {
 		return emailAddress;
 	}
 
+	public static String getEmailAddressPlaceholder() {
+		return "EmailAddressPlaceholder";
+	}
+
 	public static String getPropertyNameEmailNotificationBundleNumber() {
 		return Doc41Constants.PROPERTY_NAME_EMAIL_NOTIFICATION_BUNDLE + "." + Doc41Constants.PROPERTY_NAME_NUMBER;
 	}
@@ -109,6 +131,14 @@ public final class EmailNotificationBundleUtils {
 		return Doc41Constants.PROPERTY_NAME_EMAIL_NOTIFICATION_BUNDLE + "." + emailNotificationBundleIndex.toString() + "." + Doc41Constants.PROPERTY_NAME_NOTIFICATION + "." + emailNotificationIndex.toString() + "." + Doc41Constants.PROPERTY_NAME_CONTENT;
 	}
 
+	/**
+	 * This method converts an email notification string (CSV format) to an email
+	 * notification (POJO).
+	 * 
+	 * @param emailNotificationString
+	 * @return
+	 * @throws Doc41TechnicalException
+	 */
 	public static EmailNotification convertToEmailNotification(String emailNotificationString) throws Doc41TechnicalException {
 		EmailNotification emailNotification = null;
 		DBDataRow dBDataRow = null;
@@ -144,48 +174,18 @@ public final class EmailNotificationBundleUtils {
 		return localDateTime;
 	}
 
-	public static Boolean isNewEmailNotificationBundle(EmailNotificationBundle emailNotificationBundle, List<EmailNotificationBundle> emailNotificationBundles) {
-		Boolean isNew = true;
-		for (EmailNotificationBundle eNB : emailNotificationBundles) {
-			if (emailNotificationBundle.equals(eNB)) {
-				isNew = false;
-				break;
-			}
-		}
-		return isNew;
-	}
-
+	/**
+	 * This method converts an email notification (POJO) to the corresponding email
+	 * notification string (CSV format).
+	 * 
+	 * @param emailNotification
+	 * @return
+	 */
 	public static String convertToCsvString(EmailNotification emailNotification) {
 		String csvString = null;
 		String[] emailNotificationArray = new String[] { StringEscapeUtils.escapeCsv(emailNotification.getTimestamp().toString()), StringEscapeUtils.escapeCsv(emailNotification.getDocumentName()), StringEscapeUtils.escapeCsv(emailNotification.getVendorName()), StringEscapeUtils.escapeCsv(emailNotification.getVendorNumber()), StringEscapeUtils.escapeCsv(emailNotification.getUsername()), StringEscapeUtils.escapeCsv(emailNotification.getMaterialNumber()), StringEscapeUtils.escapeCsv(emailNotification.getBatch()), StringEscapeUtils.escapeCsv(emailNotification.getPurchaseOrderNumber()), StringEscapeUtils.escapeCsv(emailNotification.getDocumentType().getTitle()), StringEscapeUtils.escapeCsv(emailNotification.getDocumentType().getId()), StringEscapeUtils.escapeCsv(emailNotification.getDocumentIdentification()) };
 		csvString = StringUtils.join(emailNotificationArray, ",");
 		return csvString;
-	}
-
-	public static Integer findEmailNotificationBundleIndex(String emailAddress, List<EmailNotificationBundle> emailNotificationBundles) {
-		Integer emailNotificationBundleIndex = 0;
-		for (EmailNotificationBundle emailNotificationBundle : emailNotificationBundles) {
-			emailNotificationBundleIndex++;
-			if (emailAddress.equals(emailNotificationBundle.getEmailAddress())) {
-				break;
-			}
-		}
-		return emailNotificationBundleIndex;
-	}
-
-	public static Boolean isNewEmailNotification(EmailNotification emailNotification, List<EmailNotification> emailNotifications) {
-		Boolean isNew = true;
-		for (EmailNotification eN : emailNotifications) {
-			if (emailNotification.equals(eN)) {
-				isNew = false;
-				break;
-			}
-		}
-		return isNew;
-	}
-
-	public static Boolean isEmailAddressInitialized(String emailAddress) {
-		return !Objects.equals(emailAddress, getEmailAddressPlaceholder());
 	}
 
 	public static String[] getEmailTemplateParameterNames() {

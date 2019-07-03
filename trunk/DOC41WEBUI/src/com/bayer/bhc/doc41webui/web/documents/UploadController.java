@@ -43,6 +43,9 @@ public abstract class UploadController extends AbstractDoc41Controller {
 	@Autowired
 	protected DocumentUC documentUC;
 	
+	@Autowired
+	private EmailNotificationBundleUC emailNotificationBundleUC;
+	
     /**
      * Get a reqired permission to perform a certain operation, can be overwritten to enforce specific permission
      * @param usr
@@ -132,7 +135,7 @@ public abstract class UploadController extends AbstractDoc41Controller {
 		} else {
 			if (allAttributeValues != null && !allAttributeValues.isEmpty()) {
 				try {
-					EmailNotificationBundleUC.storeEmailNotificationBundle(allAttributeValues.get(Doc41Constants.ATTRIB_NAME_EV_REQUESTER), LocalDateTime.now(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_FILENAME), uploadForm.getVendors(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_NUMBER), UserInSession.get().getCwid(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_MATERIAL), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_BATCH), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_PURCHASE_ORDER), allAttributeValues.get(Doc41Constants.ATTRIB_DOCUMENT_TYPE_2), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION) != null ? allAttributeValues.get(Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION) : "");
+					emailNotificationBundleUC.storeEmailNotificationBundle(allAttributeValues.get(Doc41Constants.ATTRIB_NAME_EV_REQUESTER), LocalDateTime.now(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_FILENAME), uploadForm.getVendors(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_NUMBER), UserInSession.get().getCwid(), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_MATERIAL), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_VENDOR_BATCH), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_PURCHASE_ORDER), allAttributeValues.get(Doc41Constants.ATTRIB_DOCUMENT_TYPE_2), allAttributeValues.get(Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION) != null ? allAttributeValues.get(Doc41Constants.ATTRIB_NAME_I_DOCUMENT_IDENTIFICATION) : "");
 				} catch (Doc41TechnicalException d41te) {
 					throw new Doc41BusinessException("Email notification could not be stored.", d41te);
 				}
