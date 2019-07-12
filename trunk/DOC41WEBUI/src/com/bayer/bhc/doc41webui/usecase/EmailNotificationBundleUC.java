@@ -3,6 +3,7 @@ package com.bayer.bhc.doc41webui.usecase;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -15,17 +16,16 @@ import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.EmailNotificationBundleUtils;
-import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.EmailNotification;
 import com.bayer.bhc.doc41webui.domain.EmailNotificationBundle;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
-import com.bayer.ecim.foundation.basic.ConfigMap;
 import com.bayer.ecim.foundation.basic.InitException;
 import com.bayer.ecim.foundation.basic.SendMail;
 import com.bayer.ecim.foundation.basic.SendMailMessageContext;
-import com.bayer.ecim.foundation.basic.Template;
 import com.bayer.ecim.foundation.business.sbcommon.SBSessionManagerSingleton;
 import com.bayer.ecim.foundation.business.sbcommon.SBeanException;
+import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
+import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
 /**
  * @author ETZAJ
@@ -45,6 +45,19 @@ public class EmailNotificationBundleUC {
 	 * The corresponding persistent session for storing email notification bundles.
 	 */
 	private Properties properties;
+	/**
+	 * The client for sending email notification bundles.
+	 */
+	private SendMailMessageContext sendMailMessageContext;
+	/**
+	 * The default email address, if the email address is not specified by SAP.
+	 */
+	private String defaultEmailAddress;
+	/**
+	 * The foundation class used to retrieve translations from the DOC41 dedicated
+	 * database table.
+	 */
+	private Tags tags;
 
 	public EmailNotificationBundleUC() {
 
@@ -69,25 +82,18 @@ public class EmailNotificationBundleUC {
 	 * @throws Doc41TechnicalException
 	 */
 	public void storeEmailNotificationBundle(String cwid, LocalDateTime timestamp, String documentName, List<SapVendor> sapVendors, String vendorNumber, String username, String materialNumber, String batch, String purchaseOrderNumber, String documentTypeId, String documentIdentification) throws Doc41TechnicalException {
-		try {
-			properties = SBSessionManagerSingleton.get().getSessionManager().retrieveSession(Doc41Constants.PERSISTENT_SESSION_ID, Doc41Constants.PERSISTENT_SESSION_COMPONENT, Doc41Constants.PERSISTENT_SESSION_FLAG);
-			if (properties == null) {
-				properties = new Properties();
-			}
-			EmailNotificationBundle emailNotificationBundle = createEmailNotificationBundle(EmailNotificationBundleUtils.convertToEmailAddress(cwid), timestamp, documentName, sapVendors, vendorNumber, username, materialNumber, batch, purchaseOrderNumber, documentTypeId, documentIdentification);
-			storeEmailNotificationBundle(emailNotificationBundle);
-			SBSessionManagerSingleton.get().getSessionManager().storeSession(Doc41Constants.PERSISTENT_SESSION_ID, Doc41Constants.PERSISTENT_SESSION_COMPONENT, properties);
-		} catch (SBeanException sbe) {
-			Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), UserInSession.getCwid(), sbe);
-		} catch (InitException ie) {
-			Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), UserInSession.getCwid(), ie);
-		}
+		EmailNotificationBundle emailNotificationBundle = createEmailNotificationBundle(EmailNotificationBundleUtils.convertToEmailAddress(cwid), timestamp, documentName, sapVendors, vendorNumber, username, materialNumber, batch, purchaseOrderNumber, documentTypeId, documentIdentification, EmailNotificationBundleUtils.convertToLocale(cwid));
+		retrievePersistentSession();
+		storeEmailNotificationBundle(emailNotificationBundle);
+		storePersistentSession();
 	}
 
-	private EmailNotificationBundle createEmailNotificationBundle(String emailAddress, LocalDateTime timestamp, String documentName, List<SapVendor> sapVendors, String vendorNumber, String username, String materialNumber, String batch, String purchaseOrderNumber, String documentTypeId, String documentIdentification) throws Doc41TechnicalException {
+	private EmailNotificationBundle createEmailNotificationBundle(String emailAddress, LocalDateTime timestamp, String documentName, List<SapVendor> sapVendors, String vendorNumber, String username, String materialNumber, String batch, String purchaseOrderNumber, String documentTypeId, String documentIdentification, Locale locale) throws Doc41TechnicalException {
 		EmailNotificationBundle emailNotificationBundle = new EmailNotificationBundle();
 		emailNotificationBundle.setEmailAddress(emailAddress);
 		emailNotificationBundle.setEmailNotifications(createEmailNotifications(timestamp, documentName, sapVendors, vendorNumber, username, materialNumber, batch, purchaseOrderNumber, documentTypeId, documentIdentification));
+		emailNotificationBundle.setLocale(locale);
+		emailNotificationBundle.setProcessed(false);
 		return emailNotificationBundle;
 	}
 
@@ -106,6 +112,19 @@ public class EmailNotificationBundleUC {
 		emailNotification.setDocumentIdentification(documentIdentification);
 		emailNotifications.add(emailNotification);
 		return emailNotifications;
+	}
+
+	private void retrievePersistentSession() {
+		try {
+			properties = SBSessionManagerSingleton.get().getSessionManager().retrieveSession(Doc41Constants.PERSISTENT_SESSION_ID, Doc41Constants.PERSISTENT_SESSION_COMPONENT, Doc41Constants.PERSISTENT_SESSION_FLAG);
+			if (properties == null) {
+				properties = new Properties();
+			}
+		} catch (SBeanException sbe) {
+			Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), "Session could not be created.", sbe);
+		} catch (InitException ie) {
+			Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), "Session could not be initialized.", ie);
+		}
 	}
 
 	private void storeEmailNotificationBundle(EmailNotificationBundle emailNotificationBundle) throws Doc41TechnicalException {
@@ -141,7 +160,7 @@ public class EmailNotificationBundleUC {
 			try {
 				emailNotificationBundleNumber = Integer.valueOf(emailNotificationBundleNumberString);
 			} catch (NumberFormatException nfe) {
-				Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), UserInSession.getCwid(), nfe);
+				Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), "Number of email notification bundles could not be read.", nfe);
 			}
 		} else {
 			properties.setProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationBundleNumber(), emailNotificationBundleNumber.toString());
@@ -153,6 +172,8 @@ public class EmailNotificationBundleUC {
 		EmailNotificationBundle emailNotificationBundle = new EmailNotificationBundle();
 		emailNotificationBundle.setEmailAddress(properties.getProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationBundleEmailAddress(emailNotificationBundleIndex)));
 		emailNotificationBundle.setEmailNotifications(readStoredEmailNotifications(emailNotificationBundleIndex));
+		emailNotificationBundle.setLocale(EmailNotificationBundleUtils.convertToLocale(properties.getProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationBundleLanguage(emailNotificationBundleIndex)), properties.getProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationBundleCountry(emailNotificationBundleIndex))));
+		emailNotificationBundle.setProcessed(false);
 		return emailNotificationBundle;
 	}
 
@@ -171,7 +192,7 @@ public class EmailNotificationBundleUC {
 			try {
 				emailNotificationNumber = Integer.valueOf(emailNotificationNumberString);
 			} catch (NumberFormatException nfe) {
-				Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), UserInSession.getCwid(), nfe);
+				Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), "Number of email notifications could not be read.", nfe);
 			}
 		} else {
 			properties.setProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationNumber(emailNotificationBundleIndex), emailNotificationNumber.toString());
@@ -192,6 +213,8 @@ public class EmailNotificationBundleUC {
 		properties.setProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationBundleNumber(), (emailNotificationBundleIndex).toString());
 		properties.setProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationBundleEmailAddress(emailNotificationBundleIndex), emailNotificationBundle.getEmailAddress());
 		storeNewEmailNotification(emailNotificationBundle.getEmailNotifications().get(0), emailNotificationBundleIndex);
+		properties.setProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationBundleLanguage(emailNotificationBundleIndex), emailNotificationBundle.getLocale().getLanguage());
+		properties.setProperty(EmailNotificationBundleUtils.getPropertyNameEmailNotificationBundleCountry(emailNotificationBundleIndex), emailNotificationBundle.getLocale().getCountry());
 	}
 
 	private void storeNewEmailNotification(EmailNotification emailNotification, Integer emailNotificationBundleIndex) throws Doc41TechnicalException {
@@ -234,52 +257,137 @@ public class EmailNotificationBundleUC {
 		return true;
 	}
 
+	private void storePersistentSession() {
+		try {
+			SBSessionManagerSingleton.get().getSessionManager().storeSession(Doc41Constants.PERSISTENT_SESSION_ID, Doc41Constants.PERSISTENT_SESSION_COMPONENT, properties);
+		} catch (SBeanException sbe) {
+			Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), "Session could not be created.", sbe);
+		} catch (InitException ie) {
+			Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), "Session could not be initialized.", ie);
+		}
+	}
+
 	/**
-	 * This method sends an email for each email notification bundle stored in the
-	 * corresponding persistent session for storing email notification bundles.
+	 * This method configures the common and initial parameters for sending email
+	 * notification bundles.
 	 * 
+	 * @param mimeType
+	 *            - defines the MIME type used in the email notification.
+	 * @param from
+	 *            - defines the sender of the email notification.
+	 * @param defaultSendTo
+	 *            - defines the default recipient of the email notification.
+	 * @param copyTo
+	 *            - defines the recipient of a copy of the email notification.
+	 * @param replyTo
+	 *            - defines the recipient of a reply to the email notification.
+	 */
+	public void configureEmailNotificationBundles(String mimeType, String from, String defaultSendTo, String copyTo, String replyTo) {
+		sendMailMessageContext = new SendMailMessageContext();
+		sendMailMessageContext.setMimeType(mimeType);
+		sendMailMessageContext.setFrom(from);
+		if (!Objects.equals(copyTo, EmailNotificationBundleUtils.getEmailTemplateParameterValuePlaceholder())) {
+			sendMailMessageContext.setCopyTo(new String[] { copyTo });
+		}
+		if (!Objects.equals(replyTo, EmailNotificationBundleUtils.getEmailTemplateParameterValuePlaceholder())) {
+			sendMailMessageContext.setReplyTo(replyTo);
+		}
+		defaultEmailAddress = defaultSendTo;
+	}
+
+	/**
+	 * This method reads stored email notification bundles from the corresponding
+	 * persistent session for storing email notification bundles and sends an email
+	 * for each email notification bundle. It designates email notification bundles
+	 * which were successfully processed.
+	 * 
+	 * @return - successfully and unsuccessfully processed (designated) email
+	 *         notification bundles.
 	 * @throws Doc41TechnicalException
 	 */
-	public void sendEmailNotificationBundles() throws Doc41TechnicalException {
+	public List<EmailNotificationBundle> sendEmailNotificationBundles() throws Doc41TechnicalException {
+		retrievePersistentSession();
 		List<EmailNotificationBundle> emailNotificationBundles = readStoredEmailNotificationBundles();
 		for (EmailNotificationBundle emailNotificationBundle : emailNotificationBundles) {
 			sendEmailNotificationBundle(emailNotificationBundle);
 		}
+		return emailNotificationBundles;
 	}
 
 	private void sendEmailNotificationBundle(EmailNotificationBundle emailNotificationBundle) throws Doc41TechnicalException {
-		Properties properties = null;
+		sendMailMessageContext.setSendTo(determineSendTo(emailNotificationBundle.getEmailAddress()));
 		try {
-			properties = ConfigMap.get().getSubCfg("emailNotificationBundle", "emailNotification");
-		} catch (InitException ie) {
-			throw new Doc41TechnicalException(EmailNotificationBundleUC.class, UserInSession.getCwid(), ie);
+			tags = new Tags("DOC41", "tasks", "emailNotification", emailNotificationBundle.getLocale().getLanguage(), emailNotificationBundle.getLocale().getCountry());
+		} catch (BATranslationsException bate) {
+			Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), "Translation tags could not be created.", bate);
 		}
-		SendMailMessageContext sendMailMessageContext = new SendMailMessageContext();
-		sendMailMessageContext.setMimeType("text/html");
-		sendMailMessageContext.setFrom(properties.getProperty("from"));
-		sendMailMessageContext.setSendTo(getSendTo(emailNotificationBundle.getEmailAddress(), properties));
-		sendMailMessageContext.setCopyTo(new String[] { properties.getProperty("copyTo") });
-		sendMailMessageContext.setSubject(properties.getProperty("subject"));
-		sendMailMessageContext.setBody(Template.expand(properties.getProperty("bodyTemplate." + UserInSession.get().getLocale().getLanguage()), EmailNotificationBundleUtils.getEmailTemplateParameterValues(emailNotificationBundle.getEmailNotifications()), EmailNotificationBundleUtils.getEmailTemplateParameterNames()));
+		sendMailMessageContext.setSubject(tags.getTagNoEsc("subjectTemplate"));
+		sendMailMessageContext.setBody(tags.getTagNoEsc("bodyTemplate", EmailNotificationBundleUtils.getEmailTemplateParameterValues(emailNotificationBundle.getEmailNotifications()), EmailNotificationBundleUtils.getEmailTemplateParameterNames()));
 		try {
 			SendMail.get().send(sendMailMessageContext);
 		} catch (MessagingException me) {
-			throw new Doc41TechnicalException(EmailNotificationBundleUC.class, UserInSession.getCwid(), me);
+			throw new Doc41TechnicalException(EmailNotificationBundleUC.class, "Email could not be sent.", me);
 		}
+		emailNotificationBundle.setProcessed(true);
 	}
 
-	private String[] getSendTo(String emailAddress, Properties properties) {
+	private String[] determineSendTo(String emailAddress) {
 		String[] sendTo = null;
-		if (isEmailAddressInitialized(emailAddress)) {
+		if (!Objects.equals(emailAddress, EmailNotificationBundleUtils.getEmailAddressPlaceholder())) {
 			sendTo = new String[] { emailAddress };
 		} else {
-			sendTo = new String[] { properties.getProperty("sendTo") };
+			sendTo = new String[] { defaultEmailAddress };
 		}
 		return sendTo;
 	}
 
-	private Boolean isEmailAddressInitialized(String emailAddress) {
-		return !Objects.equals(emailAddress, EmailNotificationBundleUtils.getEmailAddressPlaceholder());
+	/**
+	 * This method filters email notification bundles that were not processed during
+	 * the sending of email notifications. It also filters new email notification
+	 * bundles that were possibly stored during the sending of email notifications.
+	 * Afterwards it stores all unprocessed email notification bundles in the
+	 * corresponding persistent session for storing email notification bundles.
+	 * 
+	 * @param processedAndUnprocessedEmailNotificationBundles
+	 * @throws Doc41TechnicalException
+	 */
+	public void storeUnprocessedEmailNotificationBundles(List<EmailNotificationBundle> processedAndUnprocessedEmailNotificationBundles) throws Doc41TechnicalException {
+		List<EmailNotificationBundle> unprocessedEmailNotificationBundles = filterUnprocessedEmailNotificationBundles(processedAndUnprocessedEmailNotificationBundles);
+		unprocessedEmailNotificationBundles.addAll(filterNewUnprocessedEmailNotificationBundles(processedAndUnprocessedEmailNotificationBundles));
+		properties = new Properties();
+		for (EmailNotificationBundle emailNotificationBundle : unprocessedEmailNotificationBundles) {
+			storeEmailNotificationBundle(emailNotificationBundle);
+		}
+		storePersistentSession();
+	}
+
+	private List<EmailNotificationBundle> filterUnprocessedEmailNotificationBundles(List<EmailNotificationBundle> processedAndUnprocessedEmailNotificationBundles) {
+		List<EmailNotificationBundle> unprocessedEmailNotificationBundles = new ArrayList<EmailNotificationBundle>();
+		for (EmailNotificationBundle emailNotificationBundle : processedAndUnprocessedEmailNotificationBundles) {
+			if (!emailNotificationBundle.isProcessed()) {
+				unprocessedEmailNotificationBundles.add(emailNotificationBundle);
+			}
+		}
+		return unprocessedEmailNotificationBundles;
+	}
+
+	private List<EmailNotificationBundle> filterNewUnprocessedEmailNotificationBundles(List<EmailNotificationBundle> processedAndUnprocessedEmailNotificationBundles) throws Doc41TechnicalException {
+		List<EmailNotificationBundle> newUnprocessedEmailNotificationBundles = new ArrayList<EmailNotificationBundle>();
+		retrievePersistentSession();
+		List<EmailNotificationBundle> storedEmailNotificationBundles = readStoredEmailNotificationBundles();
+		for (EmailNotificationBundle newEmailNotificationBundle : storedEmailNotificationBundles) {
+			Boolean isNew = true;
+			for (EmailNotificationBundle emailNotificationBundle : processedAndUnprocessedEmailNotificationBundles) {
+				if (Objects.equals(newEmailNotificationBundle, emailNotificationBundle)) {
+					isNew = false;
+					break;
+				}
+			}
+			if (isNew) {
+				newUnprocessedEmailNotificationBundles.add(newEmailNotificationBundle);
+			}
+		}
+		return newUnprocessedEmailNotificationBundles;
 	}
 
 }

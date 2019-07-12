@@ -139,5 +139,17 @@ public interface Doc41Constants {
 	 * (DW-18).
 	 */
 	public static final String PROPERTY_NAME_CONTENT = "content";
+	/**
+	 * The property name used for storing the language of the email notification
+	 * bundle in the corresponding persistent session for storing email notification
+	 * bundles (DW-18).
+	 */
+	public static final String PROPERTY_NAME_LANGUAGE = "language";
+	/**
+	 * The property name used for storing the country of the email notification
+	 * bundle in the corresponding persistent session for storing email notification
+	 * bundles (DW-18).
+	 */
+	public static final String PROPERTY_NAME_COUNTRY = "country";
 
 }

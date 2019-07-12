@@ -12,15 +12,17 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41TechnicalException;
+import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.domain.EmailNotification;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
-import com.bayer.ecim.foundation.basic.InitException;
+import com.bayer.bhc.doc41webui.usecase.EmailNotificationBundleUC;
 import com.bayer.ecim.foundation.basic.ServerException;
 import com.bayer.ecim.foundation.db.exchange.CSVReader;
 import com.bayer.ecim.foundation.db.exchange.DBDataRow;
 import com.bayer.ecim.foundation.dbx.QueryException;
 import com.bayer.ecim.foundation.web.usermanagementN.OTUserManagementN;
 import com.bayer.ecim.foundation.web.usermanagementN.UMCwidDetails2NDC;
+import com.bayer.ecim.foundation.web.usermanagementN.UMUserNDC;
 
 /**
  * @author ETZAJ
@@ -68,7 +70,7 @@ public final class EmailNotificationBundleUtils {
 	public static QmDocumentType convertToDocumentType(String documentTypeId) throws Doc41TechnicalException {
 		QmDocumentType qmDocumentType = null;
 		if (documentTypeId == null || (!documentTypeId.equals(QmDocumentType.COA.getId()) && !documentTypeId.equals(QmDocumentType.COC.getId()) && !documentTypeId.equals(QmDocumentType.OID.getId()))) {
-			throw new Doc41TechnicalException(EmailNotificationBundleUtils.class, "Document type could not be converted.");
+			throw new Doc41TechnicalException(EmailNotificationBundleUtils.class, UserInSession.getCwid());
 		}
 		if (documentTypeId.equals(QmDocumentType.COA.getId())) {
 			qmDocumentType = QmDocumentType.COA;
@@ -91,14 +93,18 @@ public final class EmailNotificationBundleUtils {
 	public static String convertToEmailAddress(String cwid) {
 		String emailAddress = null;
 		if (StringUtils.isNotBlank(cwid)) {
-			emailAddress = EmailNotificationBundleUtils.getEmailAddressByCwid(cwid);
+			try {
+				emailAddress = EmailNotificationBundleUtils.getEmailAddressByCwid(cwid);
+			} catch (Doc41TechnicalException d41te) {
+				Doc41Log.get().warning(EmailNotificationBundleUC.class, "Email address could not be converted.", d41te);
+			}
 		} else {
 			emailAddress = getEmailAddressPlaceholder();
 		}
 		return emailAddress;
 	}
 
-	private static String getEmailAddressByCwid(String cwid) throws InitException {
+	private static String getEmailAddressByCwid(String cwid) throws Doc41TechnicalException {
 		String emailAddress = null;
 		try {
 			UMCwidDetails2NDC umCwidDetails2NDC = OTUserManagementN.get().getCwidDetails2ByCwid(cwid, Locale.US);
@@ -106,13 +112,49 @@ public final class EmailNotificationBundleUtils {
 				emailAddress = umCwidDetails2NDC.getMailAddress();
 			}
 		} catch (QueryException qe) {
-			throw new InitException("CWID \"" + cwid + "\" could not be resolved to email address.", qe);
+			throw new Doc41TechnicalException(EmailNotificationBundleUtils.class, "Email address could not be retrieved.", qe);
 		}
 		return emailAddress;
 	}
 
 	public static String getEmailAddressPlaceholder() {
 		return "EmailAddressPlaceholder";
+	}
+
+	/**
+	 * This method converts a CWID to the corresponding locale, if there is one.
+	 * Otherwise this method converts a CWID to the default locale (en_US).
+	 * 
+	 * @param cwid
+	 * @return
+	 * @throws Doc41TechnicalException
+	 */
+	public static Locale convertToLocale(String cwid) {
+		Locale locale = null;
+		if (StringUtils.isNotBlank(cwid)) {
+			try {
+				locale = getLocaleByCwid(cwid);
+			} catch (Doc41TechnicalException d41te) {
+				Doc41Log.get().warning(EmailNotificationBundleUC.class, "Locale could not be converted.", d41te);
+			}
+		}
+		if (locale == null) {
+			locale = Locale.US;
+		}
+		return locale;
+	}
+
+	private static Locale getLocaleByCwid(String cwid) throws Doc41TechnicalException {
+		Locale locale = null;
+		try {
+			UMUserNDC umUserNDC = OTUserManagementN.get().getUserByCWID(cwid, Locale.US);
+			if (umUserNDC != null) {
+				locale = umUserNDC.getDisplayLocale();
+			}
+		} catch (QueryException qe) {
+			throw new Doc41TechnicalException(EmailNotificationBundleUtils.class, "Locale could not be retrieved.", qe);
+		}
+		return locale;
 	}
 
 	public static String getPropertyNameEmailNotificationBundleNumber() {
@@ -129,6 +171,30 @@ public final class EmailNotificationBundleUtils {
 
 	public static String getPropertyNameEmailNotificationContent(Integer emailNotificationBundleIndex, Integer emailNotificationIndex) {
 		return Doc41Constants.PROPERTY_NAME_EMAIL_NOTIFICATION_BUNDLE + "." + emailNotificationBundleIndex.toString() + "." + Doc41Constants.PROPERTY_NAME_NOTIFICATION + "." + emailNotificationIndex.toString() + "." + Doc41Constants.PROPERTY_NAME_CONTENT;
+	}
+
+	public static String getPropertyNameEmailNotificationBundleLanguage(Integer emailNotificationBundleIndex) {
+		return Doc41Constants.PROPERTY_NAME_EMAIL_NOTIFICATION_BUNDLE + "." + emailNotificationBundleIndex.toString() + "." + Doc41Constants.PROPERTY_NAME_LANGUAGE;
+	}
+
+	public static String getPropertyNameEmailNotificationBundleCountry(Integer emailNotificationBundleIndex) {
+		return Doc41Constants.PROPERTY_NAME_EMAIL_NOTIFICATION_BUNDLE + "." + emailNotificationBundleIndex.toString() + "." + Doc41Constants.PROPERTY_NAME_COUNTRY;
+	}
+
+	/**
+	 * This methods uses the provided language and country and converts them to a
+	 * locale.
+	 * 
+	 * @param language
+	 * @param country
+	 * @return
+	 */
+	public static Locale convertToLocale(String language, String country) {
+		Locale locale = null;
+		if (StringUtils.isNotBlank(language) && StringUtils.isNotBlank(country)) {
+			locale = new Locale(language, country);
+		}
+		return locale;
 	}
 
 	/**
@@ -148,7 +214,7 @@ public final class EmailNotificationBundleUtils {
 			dBDataRow = csvReader.getRow();
 			csvReader.close();
 		} catch (ServerException se) {
-			throw new Doc41TechnicalException(EmailNotificationBundleUtils.class, "Email notification could not be converted.", se);
+			throw new Doc41TechnicalException(EmailNotificationBundleUtils.class, UserInSession.getCwid(), se);
 		}
 		emailNotification = new EmailNotification();
 		emailNotification.setTimestamp(convertToTimestamp(dBDataRow.getValue(0)));
@@ -169,7 +235,7 @@ public final class EmailNotificationBundleUtils {
 		try {
 			localDateTime = LocalDateTime.parse(timestampString);
 		} catch (DateTimeParseException dtpe) {
-			throw new Doc41TechnicalException(EmailNotificationBundleUtils.class, "Timestamp could not be converted.", dtpe);
+			throw new Doc41TechnicalException(EmailNotificationBundleUtils.class, UserInSession.getCwid(), dtpe);
 		}
 		return localDateTime;
 	}
@@ -186,6 +252,10 @@ public final class EmailNotificationBundleUtils {
 		String[] emailNotificationArray = new String[] { StringEscapeUtils.escapeCsv(emailNotification.getTimestamp().toString()), StringEscapeUtils.escapeCsv(emailNotification.getDocumentName()), StringEscapeUtils.escapeCsv(emailNotification.getVendorName()), StringEscapeUtils.escapeCsv(emailNotification.getVendorNumber()), StringEscapeUtils.escapeCsv(emailNotification.getUsername()), StringEscapeUtils.escapeCsv(emailNotification.getMaterialNumber()), StringEscapeUtils.escapeCsv(emailNotification.getBatch()), StringEscapeUtils.escapeCsv(emailNotification.getPurchaseOrderNumber()), StringEscapeUtils.escapeCsv(emailNotification.getDocumentType().getTitle()), StringEscapeUtils.escapeCsv(emailNotification.getDocumentType().getId()), StringEscapeUtils.escapeCsv(emailNotification.getDocumentIdentification()) };
 		csvString = StringUtils.join(emailNotificationArray, ",");
 		return csvString;
+	}
+	
+	public static String getEmailTemplateParameterValuePlaceholder() {
+		return "NA";
 	}
 
 	public static String[] getEmailTemplateParameterNames() {

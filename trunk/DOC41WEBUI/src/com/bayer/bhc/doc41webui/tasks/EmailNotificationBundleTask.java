@@ -1,44 +1,44 @@
 package com.bayer.bhc.doc41webui.tasks;
 
-import java.util.Properties;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.bayer.bhc.doc41webui.common.Doc41Constants;
-import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
-import com.bayer.bhc.doc41webui.common.util.UserInSession;
+import com.bayer.bhc.doc41webui.domain.EmailNotificationBundle;
 import com.bayer.bhc.doc41webui.usecase.EmailNotificationBundleUC;
-import com.bayer.ecim.foundation.basic.InitException;
-import com.bayer.ecim.foundation.business.sbcommon.SBSessionManagerSingleton;
-import com.bayer.ecim.foundation.business.sbcommon.SBeanException;
 import com.bayer.ecim.foundation.business.sbeans.tas.GenericTask;
 
 /**
  * @author ETZAJ
- * @version 26.06.2019
+ * @version 03.07.2019
  * 
- * This class represents a task for sending email notifications. 
+ *          This class represents a task for sending email notifications. Email
+ *          notifications are sent every day at 10:00 AM and 03:00 PM.
  * 
  */
 public class EmailNotificationBundleTask extends GenericTask {
-	
-	@Autowired
+
+	/**
+	 * The use case class for sending email notification bundles.
+	 */
 	private EmailNotificationBundleUC emailNotificationBundleUC;
 
+	/**
+	 * This method initializes the initial task parameters required for the task
+	 * execution.
+	 */
+	@Override
+	public void initialize() {
+		emailNotificationBundleUC = new EmailNotificationBundleUC();
+		emailNotificationBundleUC.configureEmailNotificationBundles(getParameterAsString("mimeType"), getParameterAsString("from"), getParameterAsString("defaultSendTo"), getParameterAsString("copyTo"), getParameterAsString("replyTo"));
+	}
+
+	/**
+	 * This method sends an email for each email notification bundle and stores
+	 * unprocessed email notification bundles.
+	 */
 	@Override
 	public void execute() throws Exception {
-		try {
-			Properties properties = SBSessionManagerSingleton.get().getSessionManager().retrieveSession(Doc41Constants.PERSISTENT_SESSION_ID, Doc41Constants.PERSISTENT_SESSION_COMPONENT, Doc41Constants.PERSISTENT_SESSION_FLAG);
-			if (properties == null) {
-				properties = new Properties();
-			}
-			emailNotificationBundleUC.sendEmailNotificationBundles();
-			SBSessionManagerSingleton.get().getSessionManager().storeSession(Doc41Constants.PERSISTENT_SESSION_ID, Doc41Constants.PERSISTENT_SESSION_COMPONENT, new Properties());
-		} catch (SBeanException sbe) {
-			Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), UserInSession.getCwid(), sbe);
-		} catch (InitException ie) {
-			Doc41Log.get().error(EmailNotificationBundleUC.class.getName(), UserInSession.getCwid(), ie);
-		}
+		List<EmailNotificationBundle> processedAndUnprocessedEmailNotificationBundles = emailNotificationBundleUC.sendEmailNotificationBundles();
+		emailNotificationBundleUC.storeUnprocessedEmailNotificationBundles(processedAndUnprocessedEmailNotificationBundles);
 	}
 
 }

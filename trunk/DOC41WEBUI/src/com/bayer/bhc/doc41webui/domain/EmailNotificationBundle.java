@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.domain;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -17,6 +18,8 @@ public class EmailNotificationBundle {
 
 	private String emailAddress;
 	private List<EmailNotification> emailNotifications;
+	private Locale locale;
+	private Boolean processed;
 
 	public EmailNotificationBundle() {
 
@@ -36,6 +39,22 @@ public class EmailNotificationBundle {
 
 	public void setEmailNotifications(List<EmailNotification> emailNotifications) {
 		this.emailNotifications = emailNotifications;
+	}
+
+	public Locale getLocale() {
+		return locale;
+	}
+
+	public void setLocale(Locale locale) {
+		this.locale = locale;
+	}
+
+	public Boolean isProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(Boolean processed) {
+		this.processed = processed;
 	}
 
 	@Override
