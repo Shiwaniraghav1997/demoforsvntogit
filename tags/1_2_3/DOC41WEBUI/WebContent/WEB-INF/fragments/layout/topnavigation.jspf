@@ -1,0 +1,86 @@
+<%@taglib prefix="doc41" 	uri="doc41-tags" %>
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core" %>
+			<!--  BEGIN Top Navigation -->
+			<div id="mainNav">
+			 <ul class="hnav main">
+<c:if test="${empty showTopNav or showTopNav}">
+			  <doc41:topNavEntry href="userprofile/myprofile" title="navMyProfile" id="myProfile" cssclass="first home">
+			  	<!-- doc41:navEntry href="userprofile/myprofile" title="My Profile" id="myProfile" cssclass="first-child" /-->
+			  </doc41:topNavEntry>
+			  
+
+
+			  <doc41:topNavEntry href="#" title="navUpload" id="upload" permission="TOPNAV_UPLOAD">
+
+			  	<doc41:navEntry href="documents/sdupload?type=BOL"           title="Bill of Lading"       id="BOLUP"        cssclass="first-child" permission="NAV_BOL_UP"/>
+			  	<doc41:navEntry href="documents/sdupload?type=AWB"           title="Air Waybill"          id="AWBUP"        cssclass=""            permission="NAV_AWB_UP"/>
+			  	<doc41:navEntry href="documents/sdupload?type=CMR"           title="CMR Incoming"         id="CMRUP"        cssclass=""            permission="NAV_CMR_UP"/>
+
+			  	<doc41:navEntry href="documents/supcoaupinput?type=SUPCOA"   title="Supplier CoA"         id="SUPCOAUP"     cssclass=""            permission="NAV_SUPCOA_UP"/>
+
+			  	<doc41:navEntry href="documents/delcertupinput?type=DELCERT" title="Delivery Certificate" id="DELCERTUP"    cssclass=""            permission="NAV_DELCERT_UP"/>
+			  	<doc41:navEntry href="documents/qmcupload?type=QMCoA" 	 	 title="QM CoA" 			  id="DOC_QMCOA_UP" cssclass=""            permission="NAV_QMCOA_UP"/>
+			  	<doc41:navEntry href="documents/qmcupload?type=QMCoC" 	 	 title="QM CoC" 			  id="DOC_QMCOC_UP" cssclass=""            permission="NAV_QMCOC_UP"/>
+				<doc41:navEntry href="documents/qmcupload?type=QMOTH" 	 	 title="QM OTH" 			  id="DOC_QMOTH_UP" cssclass=""            permission="NAV_QMCOC_UP"/>
+				
+			  	<doc41:navEntry href="documents/ptupload?type=ARTWORK_LS"    title="Artwork Low Res"      id="ARTWORK_LSUP" cssclass=""            permission="NAV_ARTWORK_UP_LS"/>
+			  	<doc41:navEntry href="documents/ptupload?type=LAYOUT_LS"     title="Layout High Res"      id="LAYOUT_LSUP"  cssclass=""            permission="NAV_LAYOUT_UP_LS"/>
+
+			  </doc41:topNavEntry>
+			  
+
+
+			  <doc41:topNavEntry href="#" title="navDownload" id="download" permission="TOPNAV_DOWNLOAD">
+
+			  	<doc41:navEntry href="documents/documentsearch?type=BOL"                        title="Bill of Lading"                                        id="BOLDOWN"                cssclass=""            permission="NAV_BOL_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=WB"                         title="Waybill"                                               id="WBDOWN"                 cssclass=""            permission="NAV_WB_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=AWB"                        title="Air Waybill"                                           id="AWBDOWN"                cssclass=""            permission="NAV_AWB_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=FDACERT"                    title="FDA Certificate"                                       id="FDACERTDOWN"            cssclass=""            permission="NAV_FDACERT_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=SHIPDECL"                   title="Shippers Declaration"                                  id="SHIPDECLDOWN"           cssclass=""            permission="NAV_SHIPDECL_DOWN"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=CMROUT"                     title="CMR Outgoing"                                          id="CMROUTDOWN"             cssclass=""            permission="NAV_CMROUT_DOWN"/>
+
+			  	<doc41:navEntry href="documents/searchdelcertcountry?type=DELCERTDOWNCOUNTRY"   title="Delivery Certificate Country"                          id="DELCERTDOWNCOUNTRY"     cssclass=""            permission="NAV_DELCERT_DOWN_COUNTRY"/>
+			  	<doc41:navEntry href="documents/searchdelcertcustomer?type=DELCERTDOWNCUSTOMER" title="Delivery Certificate Customer"                         id="DELCERTDOWNCUSTOMER"    cssclass=""            permission="NAV_DELCERT_DOWN_CUSTOMER"/>
+            
+			  	<doc41:navEntry href="documents/documentsearch?type=ARTWORK_LS"                 title="Artwork Low Res for Layout Supplier"                   id="ARTWORK_LSDOWN"         cssclass=""            permission="NAV_ARTWORK_DOWN_LS"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=LAYOUT_LS"                  title="Layout High Res for Layout Supplier"                   id="LAYOUT_LSDOWN"          cssclass=""            permission="NAV_LAYOUT_DOWN_LS"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=PMS_LS"                     title="Packaging Material Specificat. for Layout Supplier"  id="PMS_LSDOWN"             cssclass="first-child" permission="NAV_PMS_DOWN_LS"/>
+			  	<doc41:navEntry href="documents/documentsearch?type=PZ_LS"                      title="Technical Drawing PZ for Layout Supplier"              id="PZ_LSDOWN"              cssclass=""            permission="NAV_PZ_DOWN_LS"/>
+            
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=ARTWORK_PM"               title="Artwork Low Res for PM Supplier"                       id="ARTWORK_PMDOWN"         cssclass=""            permission="NAV_ARTWORK_DOWN_PM"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=LAYOUT_PM"                title="Layout High Res for PM Supplier"                       id="LAYOUT_PMDOWN"          cssclass=""            permission="NAV_LAYOUT_DOWN_PM"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=PMS_PM"                   title="Packaging Material Specification for PM Supplier"      id="PMS_PMDOWN"             cssclass="first-child" permission="NAV_PMS_DOWN_PM"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=PZ_PM"                    title="Technical Drawing PZ for PM Supplier"                  id="PZ_PMDOWN"              cssclass=""            permission="NAV_PZ_DOWN_PM"/>
+			  	<doc41:navEntry href="documents/searchpmsupplier?type=TPACKDELREQ_PM"           title="Tech. Pack. and Deliv. Requirem. for PM Supplier"   id="TPACKDELREQ_PMDOWN"     cssclass=""            permission="NAV_TPACKDELREQ_DOWN_PM"/>
+			    <doc41:navEntry href="documents/searchpmsupplier?type=ACS_PM"                   title="Anti-Counterfeiting Specification for PM Supplier"     id="ACS_PMDOWN"             cssclass=""            permission="NAV_ACS_DOWN_PM"/>
+
+                <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_PM"             title="PM Supplier (global)"                                  id="ALL_PMDOWN"             cssclass=""            permission="NAV_GLO_PM"/>
+                <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_PPPI_PM"        title="PM PP/PI-Toller (global)"                             id="ALL_PMDOWN"             cssclass=""       	 permission="NAV_GLO_PPPI_PM"/>
+                <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_SD"             title="SD Supplier (global)"                                  id="ALL_SDDOWN"             cssclass=""            permission="NAV_GLO_SD"/>
+                
+                
+
+              </doc41:topNavEntry>
+
+
+			  
+			  <doc41:topNavEntry href="useradmin/userlist" title="navManagement" id="management" permission="TOPNAV_MANAGEMENT">
+			  	<doc41:navEntry href="useradmin/userlist" title="User Management" id="userManagement" cssclass="first-child" />
+			  </doc41:topNavEntry>
+			  
+			  <doc41:topNavEntry href="monitoring/monitoringOverview" title="navMaintenance" id="maintenance" permission="TOPNAV_MAINTENANCE">
+			  	<doc41:navEntry href="SupportConsole" title="Support Console" id="supportConsole" cssclass="first-child" permission="NAV_SUPPORTCONSOLE"/>
+			  	<doc41:navEntry href="applogs" title="Application Logs" id="applogs" permission="NAV_APPLOGS"/>
+			  	<doc41:navEntry href="translations/translationOverview" title="Translations" id="translations" permission="NAV_TRANSLATIONS"/>
+			  	<!-- doc41:navEntry href="busedit" title="System Administration" id="systemAdministration"/-->
+			  	<doc41:navEntry href="monitoring/monitoringOverview" title="Interface Monitoring" id="interfaceMonitoring" permission="NAV_MONITORING"/>
+			  	<doc41:navEntry href="maintenance/profilePermissions" title="Profile Permissions" id="profilePermissions" permission="NAV_PROFILEPERMISSIONS"/>
+			  	<doc41:navEntry href="maintenance/rfcMetadata" title="RFC Metadata" id="rfcMetadata" permission="NAV_RFCMETADATA"/>
+			  	<doc41:navEntry href="maintenance/kgsCustomizing" title="KGS Customizing" id="kgsCustomizing" permission="NAV_KGSCUSTOMIZING"/>
+			  	<doc41:navEntry href="maintenance/untranslatedLabels" title="Untranslated Labels" id="untranslatedLabels" permission="NAV_UNTRANSLATEDLABELS"/>
+			  </doc41:topNavEntry>
+			  
+</c:if>
+			 </ul>
+			</div>
+			<!--  END   Top Navigation -->
