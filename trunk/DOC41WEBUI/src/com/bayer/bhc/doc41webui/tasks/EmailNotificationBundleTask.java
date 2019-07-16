@@ -28,7 +28,7 @@ public class EmailNotificationBundleTask extends GenericTask {
 	@Override
 	public void initialize() {
 		emailNotificationBundleUC = new EmailNotificationBundleUC();
-		emailNotificationBundleUC.configureEmailNotificationBundles(getParameterAsString("mimeType"), getParameterAsString("from"), getParameterAsString("defaultSendTo"), getParameterAsString("copyTo"), getParameterAsString("replyTo"));
+		emailNotificationBundleUC.configureEmailNotificationBundles(getParameterAsString("mimeType"), getParameterAsString("from"), getParameterAsString("defaultSendTo"), getOptionalParameterAsString("copyTo", ""), getOptionalParameterAsString("replyTo", ""));
 	}
 
 	/**

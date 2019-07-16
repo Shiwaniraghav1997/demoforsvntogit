@@ -286,10 +286,10 @@ public class EmailNotificationBundleUC {
 		sendMailMessageContext = new SendMailMessageContext();
 		sendMailMessageContext.setMimeType(mimeType);
 		sendMailMessageContext.setFrom(from);
-		if (!Objects.equals(copyTo, EmailNotificationBundleUtils.getEmailTemplateParameterValuePlaceholder())) {
+		if (StringUtils.isNotBlank(copyTo)) {
 			sendMailMessageContext.setCopyTo(new String[] { copyTo });
 		}
-		if (!Objects.equals(replyTo, EmailNotificationBundleUtils.getEmailTemplateParameterValuePlaceholder())) {
+		if (StringUtils.isNotBlank(replyTo)) {
 			sendMailMessageContext.setReplyTo(replyTo);
 		}
 		defaultEmailAddress = defaultSendTo;

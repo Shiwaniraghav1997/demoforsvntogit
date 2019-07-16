@@ -254,10 +254,6 @@ public final class EmailNotificationBundleUtils {
 		return csvString;
 	}
 	
-	public static String getEmailTemplateParameterValuePlaceholder() {
-		return "NA";
-	}
-
 	public static String[] getEmailTemplateParameterNames() {
 		return new String[] { "EMAIL_NOTIFICATIONS", "TIMESTAMPS", "DOCUMENT_NAMES", "VENDOR_NAMES", "VENDOR_NUMBERS", "USERNAMES", "MATERIAL_NUMBERS", "BATCHES", "PURCHASE_ORDER_NUMBERS", "DOCUMENT_TITLES", "DOCUMENT_IDS", "DOCUMENT_IDENTIFICATIONS" };
 	}
