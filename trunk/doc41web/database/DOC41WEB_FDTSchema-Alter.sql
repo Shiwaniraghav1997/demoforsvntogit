@@ -548,9 +548,47 @@ INSERT INTO UM_PGU_Permissions(permission_Id, profile_Id, createdBy, changedBy, 
     UM_Permissions pe
     INNER JOIN UM_Profiles pr ON
      (pr.profileName = 'doc41_qmsup') AND
-     (pe.code IN ('TOPNAV_MYPROFILE','TOPNAV_DOWNLOAD'))
+     (pe.code IN ('TOPNAV_MYPROFILE','TOPNAV_UPLOAD'))
 ;
 
 UPDATE Versions SET subVersion = 11 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 10 );
 COMMIT WORK;
+
+
+--------------------------------------
+-- Alter-Script: CVS v1.11 -> v1.12 --
+--------------------------------------
+-- implementation JIRA DW-21
+-- IMWIF
+
+INSERT INTO UM_Profiles(profileName, profileDescription, isExternal, type, d41_Order_By, createdBy, changedBy, is_Deleted)
+  VALUES('doc41_pppitf_pm', 'pm pppitf toller', 1, 'PT', 85, 'IMWIF', 'IMWIF', 0)
+;
+
+INSERT INTO UM_Permissions(permissionname, permissionDescription, code, type, assign_User, assign_Group, assign_Profile, has_Customer, has_Vendor, has_Country, has_Plant, createdBy, changedBy, is_Deleted)
+  VALUES('NavDocumentGlobalPPPITFTollerPM', 'Navigation Doc PM Downl. Global Search PP/PI-Toller, TimeFrame', 'NAV_GLO_PPPITF_PM', 'NAV_DOC_PM', 0, 0, 1, 0, 0, 0, 0, 'IMWIF', 'IMWIF', 0)
+;
+
+INSERT INTO UM_PGU_Permissions(permission_Id, profile_Id, createdBy, changedBy, is_Deleted)
+  SELECT
+    pgup.permission_Id, pr.object_Id AS profile_Id, 'IMWIF' AS createdBy, 'IMWIF' AS changedBy, pgup.is_Deleted
+  FROM
+    UM_PGU_Permissions pgup
+    INNER JOIN UM_Profiles pr ON (pr.profileName = 'doc41_pppitf_pm')
+  WHERE
+    (pgup.profile_Id IN (SELECT object_Id FROM UM_Profiles WHERE profileName = 'doc41_pmsup')) AND
+    (pgup.permission_Id NOT IN (SELECT object_Id FROM UM_Permissions WHERE code = 'NAV_GLO_PM'))
+;
+INSERT INTO UM_PGU_Permissions(permission_Id, profile_Id, createdBy, changedBy, is_Deleted)
+  SELECT
+    pe.object_Id AS permission_Id, pr.object_Id AS profile_Id, 'IMWIF' AS createdBy, 'IMWIF' AS changedBy, 0 AS is_Deleted
+  FROM
+    UM_Permissions pe
+    INNER JOIN UM_Profiles pr ON (pr.profileName = 'doc41_pppitf_pm') AND (pe.code = 'NAV_GLO_PPPITF_PM')
+;
+
+UPDATE Versions SET subVersion = 12 WHERE ( module = 'Foundation-X' ) AND ( subVersion = 11 );
+COMMIT WORK;
+
+-- closed
 
