@@ -60,8 +60,8 @@ import com.bayer.ecim.foundation.business.sbeanaccess.BATranslationsException;
 import com.bayer.ecim.foundation.business.sbeanaccess.Tags;
 
 /**
- * Search- & Download-Controller.
- * This Controler implements Search and Download functions.
+ * Search- & Download-Controller. This Controler implements Search and Download
+ * functions.
  */
 @Controller
 public class SearchController extends AbstractDoc41Controller {
@@ -69,349 +69,328 @@ public class SearchController extends AbstractDoc41Controller {
 	@Autowired
 	private DocumentUC documentUC;
 
-    /**
-     * Get a reqired permission to perform a certain operation, can be overwritten to enforce specific permission
-     * @param usr
-     * @param request
-     * @return null, if no specific permission required.
-     * @throws Doc41BusinessException
-     */
-    @Override
-    protected String[] getReqPermission(User usr, HttpServletRequest request) throws Doc41BusinessException{
-		String type = request.getParameter("type");
-		if(StringTool.isTrimmedEmptyOrNull(type)){
-		    return null;
-		    //return true;
-//			throw new IllegalArgumentException("type is missing");
+	/**
+	 * Get a required permission to perform a certain operation, can be overwritten
+	 * to enforce specific permission.
+	 * 
+	 * @param user
+	 *            - user.
+	 * @param httpServletRequest
+	 *            - HTTP servlet request.
+	 * @return null, if no specific permission required.
+	 * @throws Doc41BusinessException
+	 */
+	@Override
+	protected String[] getReqPermission(User user, HttpServletRequest httpServletRequest) throws Doc41BusinessException {
+		String type = httpServletRequest.getParameter("type");
+		if (StringTool.isTrimmedEmptyOrNull(type)) {
+			return null;
 		}
-		return getReqPermission(usr, type);
-    }
+		return getReqPermission(user, type);
+	}
 
-    private String[] getReqPermission(User usr, String type)
-            throws Doc41BusinessException {
-    	// Checking if User is accessing docs via the PI/PP Toller menu entry
-    	if(type.equals(DocumentType.GROUP_PPPI_PM)){
-    		type = DocumentType.GROUP_PM;
-    	}
+	private String[] getReqPermission(User user, String documentType) throws Doc41BusinessException {
+		// Checking if user is accessing documents via the PI/PP Toller menu entry.
+		if (documentType.equals(DocumentType.GROUP_PPPI_PM) || documentType.equals(DocumentType.GROUP_PPPITF_PM)) {
+			documentType = DocumentType.GROUP_PM;
+		}
+		return !documentUC.getFilteredDocTypesForDownload(documentType, user).isEmpty() ? null : new String[] { documentUC.getDownloadPermission(documentType), documentUC.getGroupDownloadPermission(documentType) };
+	}
 
-        return
-                !documentUC.getFilteredDocTypesForDownload(type, usr).isEmpty() ? null : // 1. user has a permission on at least one type of a DownloadGroup (includes also check for single DownloadType)
-                new String[] {documentUC.getDownloadPermission(type), documentUC.getGroupDownloadPermission(type)}; // 2. or user has permission on a single DocumentType (single Download alread checked on 1.)
-//		return
-//		        !documentUC.getFilteredDocTypesForDownload(type, usr).isEmpty() || // 1. user has a permission on at least one type of a DownloadGroup (includes also check for single DownloadType)
-//		        usr.hasPermission(documentUC.getDownloadPermission(type), documentUC.getGroupDownloadPermission(type)); // 2. or user has permission on a single DocumentType (single Download alread checked on 1.)
-    }
-
-	@RequestMapping(value="/documents/documentsearch",method = RequestMethod.GET)
-	public SearchForm get(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch,@RequestParam(required=false,defaultValue="true") boolean errorOnNoDocuments) throws Doc41BusinessException, BATranslationsException{
-	    User usr = UserInSession.get();
+	@RequestMapping(value = "/documents/documentsearch", method = RequestMethod.GET)
+	public SearchForm get(@ModelAttribute SearchForm searchForm, BindingResult bindingResult, @RequestParam(required = false) String ButtonSearch, @RequestParam(required = false, defaultValue = "true") boolean errorOnNoDocuments) throws Doc41BusinessException, BATranslationsException {
+		User user = UserInSession.get();
 		String language = LocaleInSession.get().getLanguage();
 		String mFormType = searchForm.getType();
-		if(StringTool.isTrimmedEmptyOrNull(mFormType)){
+		if (StringTool.isTrimmedEmptyOrNull(mFormType)) {
 			throw new Doc41BusinessException("typeIsMissing");
 		}
-
-		// Checking if User is accessing docs via the PI/PP Toller menu entry
-		if(mFormType.equals(DocumentType.GROUP_PPPI_PM)){
-			mFormType = DocumentType.GROUP_PM; // user accesses the docs from the PM Supplier (Global)
+		// Checking if user is accessing documents via the PI/PP Toller menu entry.
+		if (mFormType.equals(DocumentType.GROUP_PPPI_PM) || mFormType.equals(DocumentType.GROUP_PPPITF_PM)) {
+			mFormType = DocumentType.GROUP_PM;
 		}
-
 		String mSelectedDocType = StringTool.emptyToNull(searchForm.getDocType());
-		List<DownloadDocumentType> mDocTypes = documentUC.getFilteredDocTypesForDownload(mFormType, usr);
-		Doc41Log.get().debug(this, null, "Search for download for " + mDocTypes.size() + " document types by '" + mFormType );
+		List<DownloadDocumentType> mDocTypes = documentUC.getFilteredDocTypesForDownload(mFormType, user);
+		Doc41Log.get().debug(this, null, "Search for download for " + mDocTypes.size() + " document types by '" + mFormType);
 		searchForm.setDocumentTypes(mDocTypes);
 		List<Attribute> attributeDefinitions = new ArrayList<Attribute>();
 		HashSet<String> attributeDefinitionNames = new HashSet<String>();
 		int objectIdFillLength = -1;
 		boolean isFirst = true;
 		boolean isKgs = false;
-		Properties mMaxVer = ConfigMap.get().getSubCfg("documents", "getOnlyMaxVer"); // Properties with TypeConst, e.g. AWB or GROUP, e.g. DOC_PM (see DocumentType.GROUP_*)
-		boolean mOnlyMaxVer = true; // gets false, if at least one of the types not wants only MaxVer
-        Locale locale = LocaleInSession.get();
-        Tags tags = new Doc41Tags(TranslationsDAO.SYSTEM_ID, "documents", "*", (locale == null) ? Locale.US : locale);
+		Properties mMaxVer = ConfigMap.get().getSubCfg("documents", "getOnlyMaxVer");
+		boolean mOnlyMaxVer = true;
+		Locale locale = LocaleInSession.get();
+		Tags tags = new Doc41Tags(TranslationsDAO.SYSTEM_ID, "documents", "*", (locale == null) ? Locale.US : locale);
 		ArrayList<SelectionItem> mAllowedDocTypes = new ArrayList<SelectionItem>();
-        mAllowedDocTypes.add( new SelectionItem( "", tags.getOptTagNoEsc("allDocTypes") ) );
+		mAllowedDocTypes.add(new SelectionItem("", tags.getOptTagNoEsc("allDocTypes")));
 		for (DownloadDocumentType mDocType : mDocTypes) {
-		    mAllowedDocTypes.add( new SelectionItem( mDocType.getTypeConst(), tags.getTagNoEsc(mDocType.getTypeConst()) ) );
-		    if (isFirst) {
-		        isFirst = false;
-		        isKgs = mDocType.isKgs();
-		    } else {
-		        if (isKgs != mDocType.isKgs()) {
-	                throw new Doc41BusinessException("Mixed kind of DocumentType storage technology - KGS & DIRS - not supported!");
-		        }
-		    }
-		    mOnlyMaxVer &= BooleanTool.getBoolean(mMaxVer.getProperty(mDocType.getTypeConst()), BooleanTool.getBoolean(mMaxVer.getProperty(mDocType.getGroup()), false));
-		    int objectIdFillLengthLocal = mDocType.getObjectIdFillLength();
-		    if (objectIdFillLength == -1) {
-		        objectIdFillLength = objectIdFillLengthLocal;
-		    } else if (objectIdFillLength != objectIdFillLengthLocal) {
-		        throw new Doc41BusinessException("ObjectIdFillLength ambigious for Documents of Type: " + mFormType + " -> " + objectIdFillLength + " <> " + objectIdFillLengthLocal );
-		    }
-		    String mType = mDocType.getTypeConst();
-		    searchForm.initPartnerNumbers(documentUC.hasCustomerNumber(mType),getLastCustomerNumberFromSession(),
-		            documentUC.hasVendorNumber(mType),getLastVendorNumberFromSession());
-		    List<Attribute> typeAttributeDefinitions = documentUC.getAttributeDefinitions(mType,false);
-		    for (Attribute attr : typeAttributeDefinitions) {
-		        if (!attributeDefinitionNames.contains(attr.getName())) {
-		            Doc41Log.get().debug(this, null, "--->>> ATTR-NAME: '" + attr.getName());
-		            attributeDefinitionNames.add(attr.getName());
-		            attributeDefinitions.add(attr);
-		        }
-		    }
+			mAllowedDocTypes.add(new SelectionItem(mDocType.getTypeConst(), tags.getTagNoEsc(mDocType.getTypeConst())));
+			if (isFirst) {
+				isFirst = false;
+				isKgs = mDocType.isKgs();
+			} else {
+				if (isKgs != mDocType.isKgs()) {
+					throw new Doc41BusinessException("Mixed kind of DocumentType storage technology - KGS & DIRS - not supported!");
+				}
+			}
+			mOnlyMaxVer &= BooleanTool.getBoolean(mMaxVer.getProperty(mDocType.getTypeConst()), BooleanTool.getBoolean(mMaxVer.getProperty(mDocType.getGroup()), false));
+			int objectIdFillLengthLocal = mDocType.getObjectIdFillLength();
+			if (objectIdFillLength == -1) {
+				objectIdFillLength = objectIdFillLengthLocal;
+			} else if (objectIdFillLength != objectIdFillLengthLocal) {
+				throw new Doc41BusinessException("ObjectIdFillLength ambigious for Documents of Type: " + mFormType + " -> " + objectIdFillLength + " <> " + objectIdFillLengthLocal);
+			}
+			String mType = mDocType.getTypeConst();
+			searchForm.initPartnerNumbers(documentUC.hasCustomerNumber(mType), getLastCustomerNumberFromSession(), documentUC.hasVendorNumber(mType), getLastVendorNumberFromSession());
+			List<Attribute> typeAttributeDefinitions = documentUC.getAttributeDefinitions(mType, false);
+			for (Attribute attr : typeAttributeDefinitions) {
+				if (!attributeDefinitionNames.contains(attr.getName())) {
+					Doc41Log.get().debug(this, null, "--->>> ATTR-NAME: '" + attr.getName());
+					attributeDefinitionNames.add(attr.getName());
+					attributeDefinitions.add(attr);
+				}
+			}
 		}
 		searchForm.setAllowedDocTypes(mAllowedDocTypes);
 		searchForm.setKgs(isKgs);
-		searchForm.initAttributes(attributeDefinitions,language);
-
-		if(!StringTool.isTrimmedEmptyOrNull(ButtonSearch)){
-			if(searchForm.isSearchFilled()){
+		searchForm.initAttributes(attributeDefinitions, language);
+		if (!StringTool.isTrimmedEmptyOrNull(ButtonSearch)) {
+			if (searchForm.isSearchFilled()) {
 				String searchFormCustomerNumber = searchForm.getCustomerNumber();
 				String searchFormVendorNumber = searchForm.getVendorNumber();
 				String searchFormCustomVersion = searchForm.getVersionIdBom();
-				checkPartnerNumbers(result,searchForm.isCustomerNumberUsed(), searchForm.isVendorNumberUsed(), searchForm.isVersionIdBomUsed(searchForm.getType()), searchFormCustomerNumber,searchFormVendorNumber,searchFormCustomVersion);
-
-				if(!result.hasErrors()){
+				Date searchFormTimeFrame = searchForm.getTimeFrame();
+				validateMandatoryInputFields(bindingResult, searchForm.isCustomerNumberUsed(), searchFormCustomerNumber, searchForm.isVendorNumberUsed(), searchFormVendorNumber, searchForm.isVersionIdBomUsed(searchForm.getType()), searchFormCustomVersion, searchForm.isTimeFrameUsed(searchForm.getType()), searchFormTimeFrame);
+				if (!bindingResult.hasErrors()) {
 					String singleObjectId = searchForm.getObjectId();
-
 					Map<String, String> attributeValues = searchForm.getAttributeValues();
 					Map<String, String> viewAttributes = searchForm.getViewAttributes();
 					Map<String, String> attributePredefValuesAsString = searchForm.getAttributePredefValuesAsString();
-					checkForbiddenWildcards(result,"objectId",singleObjectId);
-					checkForbiddenWildcards(result,"attributeValues['","']",attributeValues);
-					checkForbiddenWildcards(result,"viewAttributes['","']",viewAttributes);
-					checkAllOption(result,"attributeValues['","']",attributeValues,attributePredefValuesAsString);
-					checkAllOption(result,"viewAttributes['","']",viewAttributes,attributePredefValuesAsString);
-					if(!result.hasErrors()){
-						if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)){
-						    // int objectIdFillLength = documentUC.getDocumentFillLength(type);
-							if(singleObjectId.length()<objectIdFillLength){
+					checkForbiddenWildcards(bindingResult, "objectId", singleObjectId);
+					checkForbiddenWildcards(bindingResult, "attributeValues['", "']", attributeValues);
+					checkForbiddenWildcards(bindingResult, "viewAttributes['", "']", viewAttributes);
+					checkAllOption(bindingResult, "attributeValues['", "']", attributeValues, attributePredefValuesAsString);
+					checkAllOption(bindingResult, "viewAttributes['", "']", viewAttributes, attributePredefValuesAsString);
+					if (!bindingResult.hasErrors()) {
+						if (!StringTool.isTrimmedEmptyOrNull(singleObjectId)) {
+							if (singleObjectId.length() < objectIdFillLength) {
 								singleObjectId = StringTool.minLString(singleObjectId, objectIdFillLength, '0');
 								searchForm.setObjectId(singleObjectId);
 							}
 						}
-
-						ArrayList<String>searchingTargetTypes = new ArrayList<String>();
-                        ArrayList<BeanPropertyBindingResult>results = new ArrayList<BeanPropertyBindingResult>();
-                        Map<String, String> allAttributeValues = new HashMap<String, String>();
-                        List<String> objectIds = new ArrayList<String>();
-                        if(!StringTool.isTrimmedEmptyOrNull(singleObjectId)) {
-                            objectIds.add(singleObjectId);
-                        }
-                        int i = 0;
-                        HashSet<String> mChkErrs = new HashSet<String>();
-                        ArrayList<String> mChkErrTypes = new ArrayList<String>();
-                        boolean mIsMatNotFoundForVendor = false;
-
-						for (DocumentType mDocType: mDocTypes) {
-						    i++;
-						    Doc41Log.get().debug(this,  null,  "Check permission for DocType " + i + "/" + mDocTypes.size() + " : " + mDocType.getTypeConst() + " (" + mDocType.getSapTypeId() +")");
-						    // We need to create separate BindingResults per DocType, then see which work fine and choose them, otherwise merge all to show all errors.
-						    // hope this way is fine to create local, temporary result...
-						    BeanPropertyBindingResult mTmp = new BeanPropertyBindingResult(result.getTarget(), result.getObjectName() );
-						    results.add(mTmp);
-/** auth check (wer<-stücklisten) **/
-						    CheckForDownloadResult checkResult = documentUC.checkForDownload(mTmp, mDocType.getTypeConst(), searchFormCustomerNumber,searchFormVendorNumber, singleObjectId, searchFormCustomVersion, attributeValues, viewAttributes);
-						    if (!mTmp.hasErrors()) {
-						        if ( (mSelectedDocType == null) || mSelectedDocType.equals(mDocType.getTypeConst()) ) {
-						            searchingTargetTypes.add(mDocType.getTypeConst());
-						        }
-						        // FIXME: We should report the types possible to search for to the mask... (in case of GroupSearch, see DocumentType.GROUP*)
-						        allAttributeValues.putAll(attributeValues);
-						        Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
-						        if(additionalAttributes!=null){
-						            allAttributeValues.putAll(additionalAttributes);
-						        }
-						        List<String> additionalObjectIds = checkResult.getAdditionalObjectIds();
-						        if(additionalObjectIds!=null && !additionalObjectIds.isEmpty()) {
-						            // FIXME: Will we have a Duplicates Problem???
-						            objectIds.addAll(additionalObjectIds);
-						        }
-						    } else {
-						        mChkErrTypes.add(""+mDocType.getTypeConst()+"/"+mDocType.getSapTypeId());
-						        for (ObjectError mObjErr : mTmp.getAllErrors()) {
-						            String mObjErrStr = ""+mObjErr.getCode();
-                                    mIsMatNotFoundForVendor |= "[MatNotFoundForVendor]".equals(mObjErrStr);
-						            mChkErrs.add(mObjErrStr);
-						        }
-						        Doc41Log.get().debug(this,  null, "==>>> DocType ignored, user has no permission: " + mDocType.getTypeConst() + "(" + mDocType.getSapTypeId() +")" );
-						        Doc41Log.get().debug(this, null, StringTool.list(mTmp.getAllErrors(), " // ", false));
-						    }
+						ArrayList<String> searchingTargetTypes = new ArrayList<String>();
+						ArrayList<BeanPropertyBindingResult> results = new ArrayList<BeanPropertyBindingResult>();
+						Map<String, String> allAttributeValues = new HashMap<String, String>();
+						List<String> objectIds = new ArrayList<String>();
+						if (!StringTool.isTrimmedEmptyOrNull(singleObjectId)) {
+							objectIds.add(singleObjectId);
 						}
-                        Doc41Log.get().debug(this,  null, "SearchingTargetTypes allowed to search: " + searchingTargetTypes.size() + " (" + StringTool.list(searchingTargetTypes, ", ", false) + ")");
-                        if (mIsMatNotFoundForVendor) {
-                            Doc41Log.get().warning(this, null, "not allowed, Material: " + singleObjectId + ", Partner: " + searchFormVendorNumber + ", Customer: " + searchFormCustomerNumber + ", Version: " + searchFormCustomVersion + ", Download DENIED, " +
-                            (searchingTargetTypes.isEmpty() ? "all Types" : StringTool.list(mChkErrTypes, ", ", false)) + ", Results: " + StringTool.list(mChkErrs, ", ", false) + "!" );
-                        }
-					    if (searchingTargetTypes.isEmpty()) {
-					        boolean allHaveFieldErrors = true;
-					        HashSet<ObjectError> mKnown = new HashSet<ObjectError>();
-					        for (BeanPropertyBindingResult mTmp : results) {
-					            allHaveFieldErrors &= mTmp.hasFieldErrors();
-					            List<ObjectError> mErrors = mTmp.getAllErrors();
-					            for (ObjectError mErr : mErrors) {
-					                if (!mKnown.contains(mErr)) {
-					                    mKnown.add(mErr);
-					                    result.addError(mErr);
-					                }
-					            }
-					            //result.addAllErrors(mTmp);
-					        }
-					        if(allHaveFieldErrors) { // no DocumentType has full setting of mandatory fields.
-                                result.reject("PleaseEnterMandatoryFields");
-                            }
-					    } else {
+						int i = 0;
+						HashSet<String> mChkErrs = new HashSet<String>();
+						ArrayList<String> mChkErrTypes = new ArrayList<String>();
+						boolean mIsMatNotFoundForVendor = false;
+						for (DocumentType mDocType : mDocTypes) {
+							i++;
+							Doc41Log.get().debug(this, null, "Check permission for DocType " + i + "/" + mDocTypes.size() + " : " + mDocType.getTypeConst() + " (" + mDocType.getSapTypeId() + ")");
+							// We need to create separate BindingResults per DocType, then see which work
+							// fine and choose them, otherwise merge all to show all errors.
+							// hope this way is fine to create local, temporary result...
+							BeanPropertyBindingResult mTmp = new BeanPropertyBindingResult(bindingResult.getTarget(), bindingResult.getObjectName());
+							results.add(mTmp);
+							CheckForDownloadResult checkResult = documentUC.checkForDownload(mTmp, mDocType.getTypeConst(), searchFormCustomerNumber, searchFormVendorNumber, singleObjectId, searchFormCustomVersion, attributeValues, viewAttributes);
+							if (!mTmp.hasErrors()) {
+								if ((mSelectedDocType == null) || mSelectedDocType.equals(mDocType.getTypeConst())) {
+									searchingTargetTypes.add(mDocType.getTypeConst());
+								}
+								// FIXME: We should report the types possible to search for to the mask... (in
+								// case of GroupSearch, see DocumentType.GROUP*)
+								allAttributeValues.putAll(attributeValues);
+								Map<String, String> additionalAttributes = checkResult.getAdditionalAttributes();
+								if (additionalAttributes != null) {
+									allAttributeValues.putAll(additionalAttributes);
+								}
+								List<String> additionalObjectIds = checkResult.getAdditionalObjectIds();
+								if (additionalObjectIds != null && !additionalObjectIds.isEmpty()) {
+									// FIXME: Will we have a Duplicates Problem???
+									objectIds.addAll(additionalObjectIds);
+								}
+							} else {
+								mChkErrTypes.add("" + mDocType.getTypeConst() + "/" + mDocType.getSapTypeId());
+								for (ObjectError mObjErr : mTmp.getAllErrors()) {
+									String mObjErrStr = "" + mObjErr.getCode();
+									mIsMatNotFoundForVendor |= "[MatNotFoundForVendor]".equals(mObjErrStr);
+									mChkErrs.add(mObjErrStr);
+								}
+								Doc41Log.get().debug(this, null, "==>>> DocType ignored, user has no permission: " + mDocType.getTypeConst() + "(" + mDocType.getSapTypeId() + ")");
+								Doc41Log.get().debug(this, null, StringTool.list(mTmp.getAllErrors(), " // ", false));
+							}
+						}
+						Doc41Log.get().debug(this, null, "SearchingTargetTypes allowed to search: " + searchingTargetTypes.size() + " (" + StringTool.list(searchingTargetTypes, ", ", false) + ")");
+						if (mIsMatNotFoundForVendor) {
+							Doc41Log.get().warning(this, null, "not allowed, Material: " + singleObjectId + ", Partner: " + searchFormVendorNumber + ", Customer: " + searchFormCustomerNumber + ", Version: " + searchFormCustomVersion + ", Download DENIED, " + (searchingTargetTypes.isEmpty() ? "all Types" : StringTool.list(mChkErrTypes, ", ", false)) + ", Results: " + StringTool.list(mChkErrs, ", ", false) + "!");
+						}
+						if (searchingTargetTypes.isEmpty()) {
+							boolean allHaveFieldErrors = true;
+							HashSet<ObjectError> mKnown = new HashSet<ObjectError>();
+							for (BeanPropertyBindingResult mTmp : results) {
+								allHaveFieldErrors &= mTmp.hasFieldErrors();
+								List<ObjectError> mErrors = mTmp.getAllErrors();
+								for (ObjectError mErr : mErrors) {
+									if (!mKnown.contains(mErr)) {
+										mKnown.add(mErr);
+										bindingResult.addError(mErr);
+									}
+								}
+							}
+							if (allHaveFieldErrors) {
+								bindingResult.reject("PleaseEnterMandatoryFields");
+							}
+						} else {
 							int maxResults = searchForm.getMaxResults();
-							//ArrayList<HitListEntry> documents = new ArrayList<HitListEntry>();
-							//for (String mType : searchingTargetTypes) {
-							//  documents.addAll( documentUC.searchDocuments(mType, objectIds, allAttributeValues, maxResults+1, false) );
-							//}
-/** search docs  (stücklisten->werk oder ->searchFormVendorNumber(umgmt)) **/
 							List<HitListEntry> documents = documentUC.searchDocuments(searchingTargetTypes, objectIds, allAttributeValues, maxResults, mOnlyMaxVer);
-							if(documents.isEmpty()){
-							    if(errorOnNoDocuments){
-							        result.reject("NoDocumentsFound");
-							    }
-							} else	if(documents.size()>maxResults){
-								result.reject("ToManyResults");
-                                result.reject("" + documents.size() + " / " + maxResults);
+							if (documents.isEmpty()) {
+								if (errorOnNoDocuments) {
+									bindingResult.reject("NoDocumentsFound");
+								}
+							} else if (documents.size() > maxResults) {
+								bindingResult.reject("ToManyResults");
+								bindingResult.reject("" + documents.size() + " / " + maxResults);
 							} else {
 								searchForm.setDocuments(documents);
 							}
-							// such things should be send to the webmetrix...
-							Doc41Log.get().debug(this, null, "Searched Documents of Types: '" + StringTool.list(searchingTargetTypes, ", ", false) +"' (for " + mFormType + "), object_Id(s): " + StringTool.list(objectIds, ", ", false) + ", onlyMaxVers: " + mOnlyMaxVer + " finding results: " + documents.size());
-					    }
+							Doc41Log.get().debug(this, null, "Searched Documents of Types: '" + StringTool.list(searchingTargetTypes, ", ", false) + "' (for " + mFormType + "), object_Id(s): " + StringTool.list(objectIds, ", ", false) + ", onlyMaxVers: " + mOnlyMaxVer + " finding results: " + documents.size());
+						}
 					}
 				}
 			} else {
-				result.reject("NoSearchWithoutSearchParameters");
+				bindingResult.reject("NoSearchWithoutSearchParameters");
 			}
 		}
 		return searchForm;
 	}
 
-	private void checkAllOption(BindingResult result, String fieldNamePrefix,
-            String fieldNameSuffix, Map<String, String> attributeValues,
-            Map<String, String> attributePredefValuesAsString) {
-        Set<String> keySet = attributeValues.keySet();
-        if(keySet!=null){
-            for (String key : keySet) {
-                String value = attributeValues.get(key);
-                if(value!=null && value.contains("###")){
-                    String fieldName = fieldNamePrefix+key+fieldNameSuffix;
-                    String allString = attributePredefValuesAsString.get(key);
-                    if(!StringTool.equals(allString, value)){
-                        result.rejectValue(fieldName,"ForbiddenValue");
-                    }
-                }
-            }
-        }
-    }
+	private void checkAllOption(BindingResult result, String fieldNamePrefix, String fieldNameSuffix, Map<String, String> attributeValues, Map<String, String> attributePredefValuesAsString) {
+		Set<String> keySet = attributeValues.keySet();
+		if (keySet != null) {
+			for (String key : keySet) {
+				String value = attributeValues.get(key);
+				if (value != null && value.contains("###")) {
+					String fieldName = fieldNamePrefix + key + fieldNameSuffix;
+					String allString = attributePredefValuesAsString.get(key);
+					if (!StringTool.equals(allString, value)) {
+						result.rejectValue(fieldName, "ForbiddenValue");
+					}
+				}
+			}
+		}
+	}
 
-    /**
-	 * Serch Documents Webservice, used for Spepor  (Spepor entry point).
+	/**
+	 * Serch Documents Webservice, used for Spepor (Spepor entry point).
+	 * 
 	 * @param vendor
 	 * @param refnumber
 	 * @return
 	 * @throws Doc41DocServiceException
 	 */
-	@RequestMapping(value="/docservice/sdsearch",method = RequestMethod.GET,produces={"application/json; charset=utf-8"})
-    public @ResponseBody BdsServiceSearchDocumentsResult getSDListForService( @RequestParam(required=true) String vendor,@RequestParam String refnumber) throws Doc41DocServiceException{
-	    try {
-            List<BdsServiceDocumentEntry> documents = new ArrayList<BdsServiceDocumentEntry>();
+	@RequestMapping(value = "/docservice/sdsearch", method = RequestMethod.GET, produces = { "application/json; charset=utf-8" })
+	public @ResponseBody BdsServiceSearchDocumentsResult getSDListForService(@RequestParam(required = true) String vendor, @RequestParam String refnumber) throws Doc41DocServiceException {
+		try {
+			List<BdsServiceDocumentEntry> documents = new ArrayList<BdsServiceDocumentEntry>();
 
-            List<String> types = documentUC.getAvailableSDDownloadDocumentTypes();
-            for (String type : types) {
+			List<String> types = documentUC.getAvailableSDDownloadDocumentTypes();
+			for (String type : types) {
 
-                String[] mPerm = getReqPermission(UserInSession.get(), type);
-                if((mPerm == null) || UserInSession.get().hasPermission(mPerm)) {
-                    SearchForm searchForm = new SearchForm();
-                    Doc41Log.get().debug(this, null, "Initialize SearchForm for WebService (type: " + type + ", vendor: " + vendor + ", refnumber: " + refnumber +")");
-                    searchForm.setType(type);
-                    searchForm.setVendorNumber(vendor);
-                    searchForm.setObjectId(refnumber);
-                    searchForm.setMaxResults(2000);
+				String[] mPerm = getReqPermission(UserInSession.get(), type);
+				if ((mPerm == null) || UserInSession.get().hasPermission(mPerm)) {
+					SearchForm searchForm = new SearchForm();
+					Doc41Log.get().debug(this, null, "Initialize SearchForm for WebService (type: " + type + ", vendor: " + vendor + ", refnumber: " + refnumber + ")");
+					searchForm.setType(type);
+					searchForm.setVendorNumber(vendor);
+					searchForm.setObjectId(refnumber);
+					searchForm.setMaxResults(2000);
 
-                    BindingResult result = new BeanPropertyBindingResult(searchForm, "searchForm");
-                    get(searchForm, result, "DocServiceSearch",false);
-                    if(!result.hasErrors()){
-                        List<HitListEntry> docsOneType = searchForm.getDocuments();
-                        if(docsOneType!=null){
-                            for (HitListEntry hitListEntry : docsOneType) {
-                                BdsServiceDocumentEntry entry = new BdsServiceDocumentEntry();
-                                entry.setDocId(hitListEntry.getDocId());
-                                entry.setObjectId(hitListEntry.getObjectId());
-                                entry.setStorageDate(hitListEntry.getStorageDate());
-                                entry.setArchiveLinkDate(hitListEntry.getArchiveLinkDate());
-                                entry.setObjectType(hitListEntry.getObjectType());
-                                entry.setDocumentClass(hitListEntry.getDocumentClass());
-                                entry.setCustomizedValuesByKey(hitListEntry.getCustomizedValuesByKey());
-                                entry.setKey(hitListEntry.getKey());
-                                entry.setType(hitListEntry.getType());
-                                documents.add(entry);
-                            }
-                        }
-                    } else {
-                        return new BdsServiceSearchDocumentsResult(getAllErrorsAsServiceErrors(result));
-                    }
-                }
-            }
-            return new BdsServiceSearchDocumentsResult(documents);
-        } catch (Exception e) {
-// FIXME: Webservice???
-            throw new Doc41DocServiceException("getSDListForService", e);
-        }
-    }
+					BindingResult result = new BeanPropertyBindingResult(searchForm, "searchForm");
+					get(searchForm, result, "DocServiceSearch", false);
+					if (!result.hasErrors()) {
+						List<HitListEntry> docsOneType = searchForm.getDocuments();
+						if (docsOneType != null) {
+							for (HitListEntry hitListEntry : docsOneType) {
+								BdsServiceDocumentEntry entry = new BdsServiceDocumentEntry();
+								entry.setDocId(hitListEntry.getDocId());
+								entry.setObjectId(hitListEntry.getObjectId());
+								entry.setStorageDate(hitListEntry.getStorageDate());
+								entry.setArchiveLinkDate(hitListEntry.getArchiveLinkDate());
+								entry.setObjectType(hitListEntry.getObjectType());
+								entry.setDocumentClass(hitListEntry.getDocumentClass());
+								entry.setCustomizedValuesByKey(hitListEntry.getCustomizedValuesByKey());
+								entry.setKey(hitListEntry.getKey());
+								entry.setType(hitListEntry.getType());
+								documents.add(entry);
+							}
+						}
+					} else {
+						return new BdsServiceSearchDocumentsResult(getAllErrorsAsServiceErrors(result));
+					}
+				}
+			}
+			return new BdsServiceSearchDocumentsResult(documents);
+		} catch (Exception e) {
+			// FIXME: Webservice???
+			throw new Doc41DocServiceException("getSDListForService", e);
+		}
+	}
 
-    private void checkForbiddenWildcards(BindingResult result, String fieldNamePrefix,
-			String fieldNameSuffix, Map<String, String> attributes) {
+	private void checkForbiddenWildcards(BindingResult result, String fieldNamePrefix, String fieldNameSuffix, Map<String, String> attributes) {
 		Set<Entry<String, String>> entrySet = attributes.entrySet();
 		for (Entry<String, String> entry : entrySet) {
-			String fieldName = fieldNamePrefix+entry.getKey()+fieldNameSuffix;
-			checkForbiddenWildcards(result, fieldName , entry.getValue());
+			String fieldName = fieldNamePrefix + entry.getKey() + fieldNameSuffix;
+			checkForbiddenWildcards(result, fieldName, entry.getValue());
 		}
 	}
 
-	private void checkForbiddenWildcards(BindingResult result, String fieldName,
-			String value) {
-		if(value!=null && (value.indexOf('*')>=0 || value.indexOf('+')>=0)){
-			result.rejectValue(fieldName,"NoWildCardsAllowed");
+	private void checkForbiddenWildcards(BindingResult result, String fieldName, String value) {
+		if (value != null && (value.indexOf('*') >= 0 || value.indexOf('+') >= 0)) {
+			result.rejectValue(fieldName, "NoWildCardsAllowed");
 		}
 	}
 
-	@RequestMapping(value="/documents/searchdelcertcountry",method = RequestMethod.GET)
-	public ModelMap getDelCertCountry(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
+	@RequestMapping(value = "/documents/searchdelcertcountry", method = RequestMethod.GET)
+	public ModelMap getDelCertCountry(@ModelAttribute SearchForm searchForm, BindingResult result, @RequestParam(required = false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException {
 		ModelMap map = new ModelMap();
-		SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
+		SearchForm searchForm2 = get(searchForm, result, ButtonSearch, true);
 		map.addAttribute(searchForm2);
 
-		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
-		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
-		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
+		map.addAttribute("keyCountry", AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
+		map.addAttribute("keyBatch", AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
+		map.addAttribute("keyMaterial", AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
 
 		List<SelectionItem> userCountries = displaytextUC.getCountrySIs(UserInSession.get().getCountries());
-		map.addAttribute("userCountrySIList",userCountries);
+		map.addAttribute("userCountrySIList", userCountries);
 		return map;
 	}
 
-	@RequestMapping(value="/documents/searchdelcertcustomer",method = RequestMethod.GET)
-	public ModelMap getDelCertCustomer(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
+	@RequestMapping(value = "/documents/searchdelcertcustomer", method = RequestMethod.GET)
+	public ModelMap getDelCertCustomer(@ModelAttribute SearchForm searchForm, BindingResult result, @RequestParam(required = false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException {
 		ModelMap map = new ModelMap();
-		SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
+		SearchForm searchForm2 = get(searchForm, result, ButtonSearch, true);
 		map.addAttribute(searchForm2);
 
-		map.addAttribute("keyCountry",AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
-		map.addAttribute("keyBatch",AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
-		map.addAttribute("keyMaterial",AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
-		map.addAttribute("keyDeliveryNumber",AbstractDeliveryCertDocumentType.VIEW_ATTRIB_DELIVERY_NUMBER);
+		map.addAttribute("keyCountry", AbstractDeliveryCertDocumentType.ATTRIB_COUNTRY);
+		map.addAttribute("keyBatch", AbstractDeliveryCertDocumentType.ATTRIB_BATCH);
+		map.addAttribute("keyMaterial", AbstractDeliveryCertDocumentType.ATTRIB_MATERIAL);
+		map.addAttribute("keyDeliveryNumber", AbstractDeliveryCertDocumentType.VIEW_ATTRIB_DELIVERY_NUMBER);
 
 		List<SelectionItem> allCountries = getDisplaytextUC().getCountryCodes();
-		map.addAttribute("allCountryList",allCountries);
+		map.addAttribute("allCountryList", allCountries);
 		return map;
 	}
 
 	/**
-	 * Map the searchDocument request, adding extra attributes for PMSupplierDownload
+	 * Map the searchDocument request, adding extra attributes for
+	 * PMSupplierDownload
+	 * 
 	 * @param searchForm
 	 * @param result
 	 * @param ButtonSearch
@@ -419,193 +398,196 @@ public class SearchController extends AbstractDoc41Controller {
 	 * @throws Doc41BusinessException
 	 * @throws BATranslationsException
 	 */
-	@RequestMapping(value="/documents/searchpmsupplier",method = RequestMethod.GET)
-	public ModelMap getPMSupplier(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
+	@RequestMapping(value = "/documents/searchpmsupplier", method = RequestMethod.GET)
+	public ModelMap getPMSupplier(@ModelAttribute SearchForm searchForm, BindingResult result, @RequestParam(required = false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException {
 		ModelMap map = new ModelMap();
-        String type = searchForm.getType();
-        DocumentType docType = documentUC.getDocType(type);
-		SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
+		String type = searchForm.getType();
+		DocumentType docType = documentUC.getDocType(type);
+		SearchForm searchForm2 = get(searchForm, result, ButtonSearch, true);
 		map.addAttribute(searchForm2);
 
-// check-PO-mode:
-//		map.addAttribute("keyPONumber",PMSupplierDownloadDocumentType.VIEW_ATTRIB_PO_NUMBER);
+		// check-PO-mode:
+		// map.addAttribute("keyPONumber",PMSupplierDownloadDocumentType.VIEW_ATTRIB_PO_NUMBER);
 		if (docType.isDirs()) {
-		    map.addAttribute("keyFileName",PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
+			map.addAttribute("keyFileName", PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
 		}
 
 		return map;
 	}
 
+	/**
+	 * Map the searchDocument request, adding extra attributes for
+	 * PMSupplierDownload (global).
+	 * 
+	 * @param searchForm
+	 *            - search form.
+	 * @param bindingResult
+	 *            - object for error handling.
+	 * @param ButtonSearch
+	 *            - search button string.
+	 * @return modelMap - model of search controller.
+	 * @throws Doc41BusinessException
+	 * @throws BATranslationsException
+	 */
+	@RequestMapping(value = "/documents/searchpmsupplierGlobal", method = RequestMethod.GET)
+	public ModelMap getPMSupplierGlobal(@ModelAttribute SearchForm searchForm, BindingResult bindingResult, @RequestParam(required = false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException {
+		ModelMap modelMap = new ModelMap();
+		SearchForm pppi_TollerSearchForm = get(searchForm, bindingResult, ButtonSearch, true);
+		/*
+		 * For the user groups belonging to PP/PI Tollers (global) a different search
+		 * form is loaded, by saving document type and checking it during view loading
+		 * (in JSP).
+		 */
+		if (pppi_TollerSearchForm.getType().equals(DocumentType.GROUP_PPPI_PM)) {
+			modelMap.addAttribute("documentTypePPPI", pppi_TollerSearchForm.getType());
+		}
+		if (pppi_TollerSearchForm.getType().equals(DocumentType.GROUP_PPPITF_PM)) {
+			modelMap.addAttribute("documentTypePPPITF", pppi_TollerSearchForm.getType());
+		}
+		modelMap.addAttribute(pppi_TollerSearchForm);
+		return modelMap;
+	}
 
+	/**
+	 * Map the searchDocument request, adding extra attributes for
+	 * SDSupplierDownload (global)
+	 * 
+	 * @param searchForm
+	 * @param result
+	 * @param ButtonSearch
+	 * @return
+	 * @throws Doc41BusinessException
+	 * @throws BATranslationsException
+	 */
+	@RequestMapping(value = "/documents/searchsdsupplierGlobal", method = RequestMethod.GET)
+	public ModelMap getSDSupplierGlobal(@ModelAttribute SearchForm searchForm, BindingResult result, @RequestParam(required = false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException {
+		ModelMap map = new ModelMap();
+		// String type = searchForm.getType(); // DOC_SD
+		// DocumentType docType = documentUC.getDocType(type);
 
-    /**
-     * Map the searchDocument request, adding extra attributes for PMSupplierDownload (global)
-     * @param searchForm
-     * @param result
-     * @param ButtonSearch
-     * @return
-     * @throws Doc41BusinessException
-     * @throws BATranslationsException
-     */
-    @RequestMapping(value="/documents/searchpmsupplierGlobal",method = RequestMethod.GET)
-    public ModelMap getPMSupplierGlobal(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
-        ModelMap map = new ModelMap();
-//      String type = searchForm.getType(); // DOC_PM
-//      DocumentType docType = documentUC.getDocType(type);
+		// map.addAttribute("docType",PMSupplierDownloadDocumentType.VIEW_ATTRIB_DOC_TYPE);
 
-//      map.addAttribute("docType",PMSupplierDownloadDocumentType.VIEW_ATTRIB_DOC_TYPE);
+		SearchForm searchForm2 = get(searchForm, result, ButtonSearch, true);
+		map.addAttribute(searchForm2);
 
-        SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
-        if(searchForm2.getType().equals(DocumentType.GROUP_PPPI_PM)){ // when searching documents as PP/PI Toller, additional search fields should be displayed in the jsp
-        	map.addAttribute("docType_PPPI", searchForm2.getType()); //switch for JSP
-        }
-        map.addAttribute(searchForm2);
+		// check-PO-mode:
+		// map.addAttribute("keyPONumber",PMSupplierDownloadDocumentType.VIEW_ATTRIB_PO_NUMBER);
+		// if (docType.isDirs()) {
+		// map.addAttribute("keyFileName",PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
+		// }
 
-// check-PO-mode:
-//      map.addAttribute("keyPONumber",PMSupplierDownloadDocumentType.VIEW_ATTRIB_PO_NUMBER);
-//      if (docType.isDirs()) {
-//          map.addAttribute("keyFileName",PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
-//      }
+		return map;
+	}
 
-        return map;
-    }
+	@RequestMapping(value = "/documents/downloadMulti", method = RequestMethod.POST)
+	public void downloadMulti(@ModelAttribute MultiDownloadForm values, HttpServletResponse response) throws Doc41BusinessException {
+		boolean mDoThrowEx = true;
+		StringBuffer mComments = new StringBuffer();
+		ZipOutputStream mOut = null;
+		String generateFileName = null;
+		String type = null;
+		String docId = null;
+		String cwid = null;
+		String sapObjId = null;
+		String sapObjType = null;
+		String filename = null;
+		String res = null;
+		long mZIPStartMs = System.currentTimeMillis();
+		long mStartMs = System.currentTimeMillis();
+		long mEndMs = System.currentTimeMillis();
+		long mZIPEndMs = System.currentTimeMillis();
+		Doc41Log.get().debug(this, null, "*** DOWNLOAD ZIP... ***");
+		try {
+			List<String> mSelected = values.getDocSel();
+			if ((mSelected == null) || mSelected.isEmpty()) {
+				mSelected = values.getDocAll();
+				Doc41Log.get().debug(this, null, "No explicitly selected Items, assuming user want to download all documents: " + ((mSelected == null) ? "n/a" : "" + mSelected.size()));
+			} else {
+				Doc41Log.get().debug(this, null, "User selected Items for download:" + mSelected.size());
+			}
+			if (mSelected == null) {
+				throw new Doc41BusinessException("no result to download");
+			}
+			// alternate possibility to handle duplicates, but not perfect...
+			// HashMap<String, Integer> mAddedFiles = new HashMap<String, Integer>();
+			for (String mParm : mSelected) {
+				Doc41Log.get().debug(this, null, "Download DOC: " + mParm);
+				String[] mParmArr = StringTool.split(mParm, '|');
+				String key = mParmArr[0];
+				@SuppressWarnings("unused") // currently not used (on original download even completely ignored by download
+											// servlet
+				String formType = mParmArr[0];
+				Map<String, String> decryptParameters = UrlParamCrypt.decryptParameters(key);
+				type = decryptParameters.get(Doc41Constants.URL_PARAM_TYPE);
+				docId = decryptParameters.get(Doc41Constants.URL_PARAM_DOC_ID);
+				cwid = decryptParameters.get(Doc41Constants.URL_PARAM_CWID);
+				sapObjId = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_ID);
+				sapObjType = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE);
+				filename = StringTool.emptyToNull(StringTool.decodeURLWithDefaultFileEnc(decryptParameters.get(Doc41Constants.URL_PARAM_FILENAME)));
+				Doc41Log.get().debug(this, null, "Download DOC KEY: " + key);
+				Doc41Log.get().debug(this, null, "Download DOC FILE: " + filename);
+				if (StringTool.isTrimmedEmptyOrNull(docId)) {
+					new Doc41BusinessException("docId is missing in download link");
+					mComments.append("\n\n*** FAILED (docId): " + StringTool.nvl(filename, "n/a") + " ***");
+				} else if (StringTool.isTrimmedEmptyOrNull(type)) {
+					new Doc41BusinessException("type is missing in download link");
+					mComments.append("\n\n*** FAILED (type): " + StringTool.nvl(filename, "n/a") + " (" + docId + ") ***");
+				} else if (cwid == null || !cwid.equalsIgnoreCase(UserInSession.getCwid())) {
+					new Doc41BusinessException("download link for different user");
+					mComments.append("\n\n*** FAILED (cwid): " + StringTool.nvl(filename, "n/a") + " (" + docId + ") ***");
+				} else {
+					if (mOut == null) {
+						generateFileName = "BDS_" + cwid + "_" + sapObjId + "__" + (new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss").format(new Date(System.currentTimeMillis())) + ".zip");
+						Doc41Log.get().debug(this, null, "...ZIP File: " + generateFileName);
+						mDoThrowEx = false; // OutputStream in USE, redirection no more possible...
+						mOut = documentUC.createZipResponse(response, generateFileName, mZIPStartMs);
+					}
+					// all exceptions catched internal, status added to comment, if not ok...
+					mStartMs = System.currentTimeMillis();
+					Doc41Log.get().debug(this, null, "*** DOWNLOAD ZIP ADD File: " + filename + ", add to ZIP " + generateFileName + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + "... ***");
+					res = documentUC.addDownloadDocumentToZip(mOut, type, docId, filename, sapObjId, sapObjType, mComments, generateFileName, mStartMs /* , mAddedFiles */);
+					mEndMs = System.currentTimeMillis();
+					Doc41Log.get().debug(this, null, "*** DOWNLOAD ZIP ADD File: " + filename + ", add to ZIP " + generateFileName + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + " done, " + ((mEndMs - mStartMs) / 1000.0) + "s, response: " + res + " ***");
+				}
+			}
+			// if this fails, we can not report to user, only to log... (add comment to ZIP
+			// & close ZIP).
+			if (mOut != null) {
+				mComments.append("\n");
+				documentUC.closeZipDownload(response, mOut, generateFileName, mComments.toString(), mZIPStartMs);
+				mZIPEndMs = System.currentTimeMillis();
+				Doc41Log.get().debug(this, null, "*** MULTIDOWNLOAD SUCC: " + generateFileName + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s ***");
+			}
+		} catch (Doc41BusinessException ie) {
+			mEndMs = System.currentTimeMillis();
+			mZIPEndMs = System.currentTimeMillis();
+			Doc41Log.get().error(this, null, "*** DOWNLOAD ZIP FAIL: " + generateFileName + ", last file: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s, last: " + ((mEndMs - mStartMs) / 1000.0) + "s, last response: " + res + " ***");
+			if (mDoThrowEx) {
+				throw ie;
+			}
+		} catch (Doc41ClientAbortException mCAEx) {
+			mEndMs = System.currentTimeMillis();
+			mZIPEndMs = System.currentTimeMillis();
+			Doc41Log.get().warning(this, null, "*** DOWNLOAD ZIP FAIL, ClientAbortedException: " + generateFileName + " failed, last file: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s, last: " + ((mEndMs - mStartMs) / 1000.0) + "s, last response: " + res + " ***");
+		} catch (Exception e) {
+			mEndMs = System.currentTimeMillis();
+			mZIPEndMs = System.currentTimeMillis();
+			Doc41BusinessException mEx = new Doc41BusinessException("*** DOWNLOAD ZIP FAIL: " + generateFileName + ", last file: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s, last: " + ((mEndMs - mStartMs) / 1000.0) + "s, last response: " + res + " ***", e);
+			if (mDoThrowEx) {
+				throw mEx;
+			}
+		}
+	}
 
-    /**
-     * Map the searchDocument request, adding extra attributes for SDSupplierDownload (global)
-     * @param searchForm
-     * @param result
-     * @param ButtonSearch
-     * @return
-     * @throws Doc41BusinessException
-     * @throws BATranslationsException
-     */
-    @RequestMapping(value="/documents/searchsdsupplierGlobal",method = RequestMethod.GET)
-    public ModelMap getSDSupplierGlobal(@ModelAttribute SearchForm searchForm,BindingResult result,@RequestParam(required=false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException{
-        ModelMap map = new ModelMap();
-//      String type = searchForm.getType(); // DOC_SD
-//      DocumentType docType = documentUC.getDocType(type);
-
-//      map.addAttribute("docType",PMSupplierDownloadDocumentType.VIEW_ATTRIB_DOC_TYPE);
-
-        SearchForm searchForm2 = get(searchForm, result, ButtonSearch,true);
-        map.addAttribute(searchForm2);
-
-// check-PO-mode:
-//      map.addAttribute("keyPONumber",PMSupplierDownloadDocumentType.VIEW_ATTRIB_PO_NUMBER);
-//      if (docType.isDirs()) {
-//          map.addAttribute("keyFileName",PMSupplierDownloadDocumentType.VIEW_ATTRIB_FILENAME);
-//      }
-
-        return map;
-    }
-
-    @RequestMapping(value="/documents/downloadMulti",method = RequestMethod.POST)
-    public void downloadMulti(@ModelAttribute MultiDownloadForm values,HttpServletResponse response) throws Doc41BusinessException {
-        boolean mDoThrowEx = true;
-        StringBuffer mComments = new StringBuffer();
-        ZipOutputStream mOut = null;
-        String generateFileName = null;
-        String type = null;
-        String docId = null;
-        String cwid = null;
-        String sapObjId = null;
-        String sapObjType = null;
-        String filename = null;
-        String res = null;
-        long mZIPStartMs = System.currentTimeMillis();
-        long mStartMs = System.currentTimeMillis();
-        long mEndMs = System.currentTimeMillis();
-        long mZIPEndMs = System.currentTimeMillis();
-        Doc41Log.get().debug(this, null, "*** DOWNLOAD ZIP... ***");
-        try {
-            List<String> mSelected = values.getDocSel();
-            if ((mSelected == null) || mSelected.isEmpty()) {
-                mSelected = values.getDocAll();
-                Doc41Log.get().debug(this, null, "No explicitly selected Items, assuming user want to download all documents: " + ((mSelected == null) ? "n/a" : "" + mSelected.size()) );
-            } else {
-                Doc41Log.get().debug(this, null, "User selected Items for download:" + mSelected.size() );
-            }
-            if (mSelected == null) {
-                throw new Doc41BusinessException("no result to download");
-            }
-            //alternate possibility to handle duplicates, but not perfect...
-            //HashMap<String, Integer> mAddedFiles = new HashMap<String, Integer>();
-            for (String mParm : mSelected) {
-                Doc41Log.get().debug(this, null, "Download DOC: " + mParm);
-                String[] mParmArr = StringTool.split(mParm,'|');
-                String key = mParmArr[0];
-                @SuppressWarnings("unused") // currently not used (on original download even completely ignored by download servlet
-                String formType = mParmArr[0];
-                Map<String, String> decryptParameters = UrlParamCrypt.decryptParameters(key);
-                type = decryptParameters.get(Doc41Constants.URL_PARAM_TYPE);
-                docId = decryptParameters.get(Doc41Constants.URL_PARAM_DOC_ID);
-                cwid = decryptParameters.get(Doc41Constants.URL_PARAM_CWID);
-                sapObjId = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_ID);
-                sapObjType = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE);
-                filename = StringTool.emptyToNull(StringTool.decodeURLWithDefaultFileEnc(decryptParameters.get(Doc41Constants.URL_PARAM_FILENAME)));
-                Doc41Log.get().debug(this, null, "Download DOC KEY: " + key);
-                Doc41Log.get().debug(this, null, "Download DOC FILE: " + filename);
-                if (StringTool.isTrimmedEmptyOrNull(docId)) {
-                    new Doc41BusinessException("docId is missing in download link");
-                    mComments.append("\n\n*** FAILED (docId): " + StringTool.nvl(filename,"n/a") + " ***");
-                } else if (StringTool.isTrimmedEmptyOrNull(type)) {
-                    new Doc41BusinessException("type is missing in download link");
-                    mComments.append("\n\n*** FAILED (type): " + StringTool.nvl(filename,"n/a") + " (" + docId + ") ***");
-                } else if (cwid==null || !cwid.equalsIgnoreCase(UserInSession.getCwid())) {
-                    new Doc41BusinessException("download link for different user");
-                    mComments.append("\n\n*** FAILED (cwid): " + StringTool.nvl(filename,"n/a") + " (" + docId + ") ***");
-                } else {
-                    if (mOut == null) {
-                        generateFileName = "BDS_" + cwid + "_" + sapObjId + "__" + (new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss").format(new Date(System.currentTimeMillis())) +".zip");
-                        Doc41Log.get().debug(this, null, "...ZIP File: " + generateFileName);
-                        mDoThrowEx = false; // OutputStream in USE, redirection no more possible...
-                        mOut = documentUC.createZipResponse(response, generateFileName, mZIPStartMs);
-                    }
-                    // all exceptions catched internal, status added to comment, if not ok...
-                    mStartMs = System.currentTimeMillis();
-                    Doc41Log.get().debug(this, null, "*** DOWNLOAD ZIP ADD File: " + filename + ", add to ZIP " + generateFileName + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + "... ***");
-                    res = documentUC.addDownloadDocumentToZip(mOut, type, docId, filename, sapObjId, sapObjType, mComments, generateFileName, mStartMs /*, mAddedFiles*/);
-                    mEndMs = System.currentTimeMillis();
-                    Doc41Log.get().debug(this, null, "*** DOWNLOAD ZIP ADD File: " + filename + ", add to ZIP " + generateFileName + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + " done, " + ((mEndMs - mStartMs) / 1000.0) + "s, response: " + res + " ***");
-                }
-            }
-            // if this fails, we can not report to user, only to log... (add comment to ZIP & close ZIP).
-            if (mOut != null) {
-                mComments.append("\n");
-                documentUC.closeZipDownload(response, mOut, generateFileName, mComments.toString(), mZIPStartMs);
-                mZIPEndMs = System.currentTimeMillis();
-                Doc41Log.get().debug(this, null, "*** MULTIDOWNLOAD SUCC: " + generateFileName + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s ***");
-            }
-        } catch (Doc41BusinessException ie) {
-            mEndMs = System.currentTimeMillis();
-            mZIPEndMs = System.currentTimeMillis();
-            Doc41Log.get().error(this, null, "*** DOWNLOAD ZIP FAIL: " + generateFileName + ", last file: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s, last: " + ((mEndMs - mStartMs) / 1000.0) + "s, last response: " + res + " ***");
-            if (mDoThrowEx) {
-                throw ie;
-            }
-        } catch (Doc41ClientAbortException mCAEx) {
-            mEndMs = System.currentTimeMillis();
-            mZIPEndMs = System.currentTimeMillis();
-            Doc41Log.get().warning(this, null, "*** DOWNLOAD ZIP FAIL, ClientAbortedException: " + generateFileName + " failed, last file: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s, last: " + ((mEndMs - mStartMs) / 1000.0) + "s, last response: " + res + " ***");
-        } catch (Exception e) {
-            mEndMs = System.currentTimeMillis();
-            mZIPEndMs = System.currentTimeMillis();
-            Doc41BusinessException mEx = new Doc41BusinessException("*** DOWNLOAD ZIP FAIL: " + generateFileName + ", last file: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after overall: " + ((mZIPEndMs - mZIPStartMs) / 1000.0) + "s, last: " + ((mEndMs - mStartMs) / 1000.0) + "s, last response: " + res + " ***", e);
-            if (mDoThrowEx) {
-                throw mEx;
-            }
-        }
-    }
-
-
-    /**
-     * Implements Download for WebUI and WebService for Spepor  (Spepor entry point).
-     * @param key
-     * @param response
-     * @throws Doc41BusinessException
-     */
-    @RequestMapping(value={"/documents/download","/docservice/download"},method = RequestMethod.GET)
-	public void download(@RequestParam String key,HttpServletResponse response) throws Doc41BusinessException{
+	/**
+	 * Implements Download for WebUI and WebService for Spepor (Spepor entry point).
+	 * 
+	 * @param key
+	 * @param response
+	 * @throws Doc41BusinessException
+	 */
+	@RequestMapping(value = { "/documents/download", "/docservice/download" }, method = RequestMethod.GET)
+	public void download(@RequestParam String key, HttpServletResponse response) throws Doc41BusinessException {
 		Map<String, String> decryptParameters = UrlParamCrypt.decryptParameters(key);
 		String type = decryptParameters.get(Doc41Constants.URL_PARAM_TYPE);
 		String docId = decryptParameters.get(Doc41Constants.URL_PARAM_DOC_ID);
@@ -614,71 +596,97 @@ public class SearchController extends AbstractDoc41Controller {
 		String sapObjType = decryptParameters.get(Doc41Constants.URL_PARAM_SAP_OBJ_TYPE);
 		String filename = StringTool.emptyToNull(StringTool.decodeURLWithDefaultFileEnc(decryptParameters.get(Doc41Constants.URL_PARAM_FILENAME)));
 		String mRes = null;
-        long mStartMs = System.currentTimeMillis();
-        long mEndMs = System.currentTimeMillis();
-        Doc41Log.get().debug(this, null, "Download DOC KEY: " + key);
-        Doc41Log.get().debug(this, null, "Download DOC FILE: " + filename);
-		if(StringTool.isTrimmedEmptyOrNull(type)){
+		long mStartMs = System.currentTimeMillis();
+		long mEndMs = System.currentTimeMillis();
+		Doc41Log.get().debug(this, null, "Download DOC KEY: " + key);
+		Doc41Log.get().debug(this, null, "Download DOC FILE: " + filename);
+		if (StringTool.isTrimmedEmptyOrNull(type)) {
 			throw new Doc41BusinessException("type is missing in download link");
 		}
-		if(StringTool.isTrimmedEmptyOrNull(docId)){
+		if (StringTool.isTrimmedEmptyOrNull(docId)) {
 			throw new Doc41BusinessException("docId is missing in download link");
 		}
-		if(cwid==null || !cwid.equalsIgnoreCase(UserInSession.getCwid())){
+		if (cwid == null || !cwid.equalsIgnoreCase(UserInSession.getCwid())) {
 			throw new Doc41BusinessException("download link for different user");
 		}
 		try {
-            mStartMs = System.currentTimeMillis();
-            Doc41Log.get().debug(this, null, "*** DOWNLOAD File: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + "... ***");
-            mRes = documentUC.downloadDocument(response,type,docId,filename,sapObjId,sapObjType);
-            mEndMs = System.currentTimeMillis();
-            Doc41Log.get().debug(this, null, "*** DOWNLOAD File: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + " done, " + ((mEndMs - mStartMs) / 1000.0) + "s, response: " + mRes + " ***");
-	    } catch (Doc41BusinessException ie) {
-            mEndMs = System.currentTimeMillis();
-            Doc41Log.get().error(this, null, "*** DOWNLOAD FAIL: " + filename + " failed, type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after: " + ((mEndMs - mStartMs) / 1000.0) + "s ***");
-            throw ie;
+			mStartMs = System.currentTimeMillis();
+			Doc41Log.get().debug(this, null, "*** DOWNLOAD File: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + "... ***");
+			mRes = documentUC.downloadDocument(response, type, docId, filename, sapObjId, sapObjType);
+			mEndMs = System.currentTimeMillis();
+			Doc41Log.get().debug(this, null, "*** DOWNLOAD File: " + filename + ", type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + " done, " + ((mEndMs - mStartMs) / 1000.0) + "s, response: " + mRes + " ***");
+		} catch (Doc41BusinessException ie) {
+			mEndMs = System.currentTimeMillis();
+			Doc41Log.get().error(this, null, "*** DOWNLOAD FAIL: " + filename + " failed, type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after: " + ((mEndMs - mStartMs) / 1000.0) + "s ***");
+			throw ie;
 		} catch (Doc41ClientAbortException e) {
-		    mEndMs = System.currentTimeMillis();
-	        Doc41Log.get().debug(this, null, "*** DOWNLOAD FAIL, ClientAbortedException: " + filename + " failed, type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after: " + ((mEndMs - mStartMs) / 1000.0) + "s ***");
-	    } catch (Exception e) {
-            mEndMs = System.currentTimeMillis();
-	        throw new Doc41BusinessException("*** DOWNLOAD FAIL: " + filename + " failed, type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after: " + ((mEndMs - mStartMs) / 1000.0) + "s ***", e);
+			mEndMs = System.currentTimeMillis();
+			Doc41Log.get().debug(this, null, "*** DOWNLOAD FAIL, ClientAbortedException: " + filename + " failed, type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after: " + ((mEndMs - mStartMs) / 1000.0) + "s ***");
+		} catch (Exception e) {
+			mEndMs = System.currentTimeMillis();
+			throw new Doc41BusinessException("*** DOWNLOAD FAIL: " + filename + " failed, type: " + type + ", docId: " + docId + ", sapObjId: " + sapObjId + ", sapObjType: " + sapObjType + ", after: " + ((mEndMs - mStartMs) / 1000.0) + "s ***", e);
 		}
 
-// FIXME: throws Doc41BusinessException, Webservice???
+		// FIXME: throws Doc41BusinessException, Webservice???
 	}
 
-	private void checkPartnerNumbers(BindingResult errors, boolean hasCustomerNumber, boolean hasVendorNumber, boolean hasVersionIdBom,
-			String customerNumber,String vendorNumber, String versionIdBom) throws Doc41BusinessException {
-		//customer
-		if(hasCustomerNumber){
-			if(StringTool.isTrimmedEmptyOrNull(customerNumber)){
-				errors.rejectValue("customerNumber","CustomerNumberMissing");
+	/**
+	 * 
+	 * @param bindingResult
+	 *            - object for error handling.
+	 * @param hasCustomerNumber
+	 *            - flag which determines if document type is using customer number
+	 *            as identification.
+	 * @param customerNumber
+	 *            - customer number.
+	 * @param hasVendorNumber
+	 *            - flag which determines if document type is using vendor number as
+	 *            identification.
+	 * @param vendorNumber
+	 *            - vendor number.
+	 * @param hasVersionIdBom
+	 *            - flag which determines if document type is using version ID BoM
+	 *            as identification.
+	 * @param versionIdBom
+	 *            - version ID Bill of Material.
+	 * @param hasTimeFrame
+	 *            - flag which determines if document type is using time frame as
+	 *            identification.
+	 * @param timeFrame
+	 *            - time frame.
+	 * @throws Doc41BusinessException
+	 */
+	private void validateMandatoryInputFields(BindingResult bindingResult, boolean hasCustomerNumber, String customerNumber, boolean hasVendorNumber, String vendorNumber, boolean hasVersionIdBom, String versionIdBom, boolean hasTimeFrame, Date timeFrame) throws Doc41BusinessException {
+		if (hasCustomerNumber) {
+			if (StringTool.isTrimmedEmptyOrNull(customerNumber)) {
+				bindingResult.rejectValue("customerNumber", "CustomerNumberMissing");
 			} else {
-				if(!UserInSession.get().hasCustomer(customerNumber)){
-					errors.rejectValue("customerNumber","CustomerNotAssignedToUser");
+				if (!UserInSession.get().hasCustomer(customerNumber)) {
+					bindingResult.rejectValue("customerNumber", "CustomerNotAssignedToUser");
 				} else {
 					setLastCustomerNumberFromSession(customerNumber);
 				}
 			}
 		}
-
-		//vendor
-		if(hasVendorNumber){
-			if(StringTool.isTrimmedEmptyOrNull(vendorNumber)){
-				errors.rejectValue("vendorNumber","VendorNumberMissing");
+		if (hasVendorNumber) {
+			if (StringTool.isTrimmedEmptyOrNull(vendorNumber)) {
+				bindingResult.rejectValue("vendorNumber", "VendorNumberMissing");
 			} else {
-				if(!UserInSession.get().hasVendor(vendorNumber)){
-					errors.rejectValue("vendorNumber","VendorNotAssignedToUser");
+				if (!UserInSession.get().hasVendor(vendorNumber)) {
+					bindingResult.rejectValue("vendorNumber", "VendorNotAssignedToUser");
 				} else {
 					setLastVendorNumberFromSession(vendorNumber);
 				}
 			}
 		}
-
-		if(hasVersionIdBom){
-			if(StringTool.isTrimmedEmptyOrNull(versionIdBom)){
-				errors.rejectValue("versionIdBom", "versionIdBomMissing");
+		if (hasVersionIdBom) {
+			if (StringTool.isTrimmedEmptyOrNull(versionIdBom)) {
+				bindingResult.rejectValue("versionIdBom", "versionIdBomMissing");
+			}
+		}
+		if (hasTimeFrame && timeFrame == null && bindingResult.getFieldError("timeFrame") == null) {
+			if (timeFrame == null) {
+				bindingResult.rejectValue("timeFrame", "timeFrameMissing");
 			}
 		}
 	}

@@ -55,7 +55,8 @@
 			    <doc41:navEntry href="documents/searchpmsupplier?type=ACS_PM"                   title="Anti-Counterfeiting Specification for PM Supplier"     id="ACS_PMDOWN"             cssclass=""            permission="NAV_ACS_DOWN_PM"/>
 
                 <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_PM"             title="PM Supplier (global)"                                  id="ALL_PMDOWN"             cssclass=""            permission="NAV_GLO_PM"/>
-                <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_PPPI_PM"        title="PM PP/PI-Toller (global)"                             id="ALL_PMDOWN"             cssclass=""       	 permission="NAV_GLO_PPPI_PM"/>
+                <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_PPPI_PM"        title="PM PP/PI-Toller (global)"                              id="ALL_PMDOWN"             cssclass=""       	 permission="NAV_GLO_PPPI_PM"/>
+                <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_PPPITF_PM"      title="PM PP/PI-Toller Time Frame (global)"                   id="ALL_PMDOWN"             cssclass=""       	 permission="NAV_GLO_PPPITF_PM"/>
                 <doc41:navEntry href="documents/searchpmsupplierGlobal?type=DOC_SD"             title="SD Supplier (global)"                                  id="ALL_SDDOWN"             cssclass=""            permission="NAV_GLO_SD"/>
                 
                 
