@@ -1,6 +1,7 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -70,7 +71,7 @@ public abstract class LayoutSupplierDocumentType implements DocumentType{
 	 */
 //	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-			String customerNumber, String vendorNumber, String objectId, String customVersion,
+			String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
 		Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);

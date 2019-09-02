@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes.qm;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public class DeliveryCertDownCountryDocumentType extends
 	
 	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
-			String customerNumber, String vendorNumber, String objectId, String customVersion,
+			String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame,
 			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
 		
 		String countryCode = attributeValues.get(ATTRIB_COUNTRY);

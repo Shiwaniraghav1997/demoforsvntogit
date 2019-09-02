@@ -3,14 +3,12 @@ package com.bayer.bhc.doc41webui.usecase.documenttypes;
 import java.util.Set;
 
 public interface DocumentType {
-
+	// Document type groups:
 	public static final String GROUP_SD = "DOC_SD";
 	public static final String GROUP_QM = "DOC_QM";
 	public static final String GROUP_PM = "DOC_PM";
-	public static final String GROUP_PPPI_PM = "DOC_PPPI_PM";
-	public static final String GROUP_PPPITF_PM = "DOC_PPPITF_PM";
 	public static final String GROUP_LS = "DOC_LS";
-
+	// Document type group permissions:
 	public static final String GROUP_SD_PERM_DOWNL = "DOC_GLO_SD";
 	public static final String GROUP_QM_PERM_DOWNL = null; // "DOC_GLO_QM";
 	public static final String GROUP_PM_PERM_DOWNL = "DOC_GLO_PM";
@@ -58,5 +56,4 @@ public interface DocumentType {
 	 * @return true, if using notification e-mail.
 	 */
 	public boolean isNotificationEMailHidden();
-
 }

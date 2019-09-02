@@ -1,5 +1,6 @@
 package com.bayer.bhc.doc41webui.usecase.documenttypes;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.validation.Errors;
@@ -34,5 +35,5 @@ public interface DownloadDocumentType extends DocumentType{
      */
 	public String getDownloadPermissionType();
 
-	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber, String objectId, String customVersion, Map<String, String> attributeValues,Map<String, String> viewAttributes)throws Doc41BusinessException;
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame, Map<String, String> attributeValues,Map<String, String> viewAttributes)throws Doc41BusinessException;
 }

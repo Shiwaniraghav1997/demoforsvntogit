@@ -13,7 +13,6 @@ import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
 import com.bayer.bhc.doc41webui.domain.SapCustomer;
 import com.bayer.bhc.doc41webui.domain.SapVendor;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.DocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.DownloadDocumentType;
 import com.bayer.ecim.foundation.basic.StringTool;
 
@@ -35,9 +34,7 @@ public abstract class CustomizedDocumentForm {
 	private String vendorNumber;
 	private boolean isVendorNumberUsed = false;
 	private String versionIdBom;
-	private boolean isVersionIdBomUsed = false;
 	private Date timeFrame;
-	private boolean isTimeFrameUsed = false;
 	private List<SapVendor> vendors;
 
 	public String getType() {
@@ -255,13 +252,6 @@ public abstract class CustomizedDocumentForm {
 		this.versionIdBom = versionIdBom;
 	}
 
-	public boolean isVersionIdBomUsed(String docType) {
-		if (docType.equals(DocumentType.GROUP_PPPI_PM)) {
-			isVersionIdBomUsed = true;
-		}
-		return isVersionIdBomUsed;
-	}
-
 	/**
 	 * Getter for time frame input.
 	 * 
@@ -280,19 +270,4 @@ public abstract class CustomizedDocumentForm {
 	public void setTimeFrame(Date timeFrame) {
 		this.timeFrame = timeFrame;
 	}
-
-	/**
-	 * Determines if time frame input is used for document type.
-	 * 
-	 * @param docType
-	 *            - document type.
-	 * @return true/false
-	 */
-	public boolean isTimeFrameUsed(String docType) {
-		if (docType.equals(DocumentType.GROUP_PPPITF_PM)) {
-			isTimeFrameUsed = true;
-		}
-		return isTimeFrameUsed;
-	}
-
 }

@@ -1,3 +1,4 @@
+<%@ page import="com.bayer.bhc.doc41webui.common.Doc41Constants" %>
 <%@taglib prefix="doc41" uri="doc41-tags"%>
 <doc41:layout activePage="${pageContext.request.servletPath}" jspName="searchpmsupplier" component="documents" activeTopNav="download" activeNav="${searchForm.type}" title="Search Document PM Global">
 	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -5,8 +6,7 @@
 	<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 	<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
   	<link rel="stylesheet" href="/resources/css/jquery-ui-1.10.3.custom/custom-theme/jquery-ui-1.10.3.custom.css">
-  	<script>$( function() { $( "#datepicker" ).datepicker(); } );
-  </script>
+  	<script>$( function() { $( "#datepicker" ).datepicker(); } );</script>
 	<doc41:searchtemplate action="searchpmsupplierGlobal">
 		<jsp:attribute name="fragmentCustomSearchFields">
 			<c:if test="!${searchForm.kgs}">
@@ -33,7 +33,7 @@
             		<doc41:error path="docType" />
             	</td>
             </tr>
-            <c:if test="${searchForm.type eq documentTypePPPI}">
+            <c:if test="${searchForm.subtype eq Doc41Constants.PM_DOCUMENT_SUBTYPE_BOM_VERSION_ID}">
             	<tr>
             		<th>
             			<label for="versionIdBom">
@@ -47,7 +47,7 @@
             		</td>
             	</tr>
             </c:if>
-            <c:if test="${searchForm.type eq documentTypePPPITF}">
+            <c:if test="${searchForm.subtype eq Doc41Constants.PM_DOCUMENT_SUBTYPE_BOM_TIME_FRAME}">
             	<tr>
             		<th>
             			<label for="timeFrame">

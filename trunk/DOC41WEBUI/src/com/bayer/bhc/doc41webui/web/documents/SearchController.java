@@ -90,10 +90,6 @@ public class SearchController extends AbstractDoc41Controller {
 	}
 
 	private String[] getReqPermission(User user, String documentType) throws Doc41BusinessException {
-		// Checking if user is accessing documents via the PI/PP Toller menu entry.
-		if (documentType.equals(DocumentType.GROUP_PPPI_PM) || documentType.equals(DocumentType.GROUP_PPPITF_PM)) {
-			documentType = DocumentType.GROUP_PM;
-		}
 		return !documentUC.getFilteredDocTypesForDownload(documentType, user).isEmpty() ? null : new String[] { documentUC.getDownloadPermission(documentType), documentUC.getGroupDownloadPermission(documentType) };
 	}
 
@@ -104,10 +100,6 @@ public class SearchController extends AbstractDoc41Controller {
 		String mFormType = searchForm.getType();
 		if (StringTool.isTrimmedEmptyOrNull(mFormType)) {
 			throw new Doc41BusinessException("typeIsMissing");
-		}
-		// Checking if user is accessing documents via the PI/PP Toller menu entry.
-		if (mFormType.equals(DocumentType.GROUP_PPPI_PM) || mFormType.equals(DocumentType.GROUP_PPPITF_PM)) {
-			mFormType = DocumentType.GROUP_PM;
 		}
 		String mSelectedDocType = StringTool.emptyToNull(searchForm.getDocType());
 		List<DownloadDocumentType> mDocTypes = documentUC.getFilteredDocTypesForDownload(mFormType, user);
@@ -161,7 +153,7 @@ public class SearchController extends AbstractDoc41Controller {
 				String searchFormVendorNumber = searchForm.getVendorNumber();
 				String searchFormCustomVersion = searchForm.getVersionIdBom();
 				Date searchFormTimeFrame = searchForm.getTimeFrame();
-				validateMandatoryInputFields(bindingResult, searchForm.isCustomerNumberUsed(), searchFormCustomerNumber, searchForm.isVendorNumberUsed(), searchFormVendorNumber, searchForm.isVersionIdBomUsed(searchForm.getType()), searchFormCustomVersion, searchForm.isTimeFrameUsed(searchForm.getType()), searchFormTimeFrame);
+				validateMandatoryInputFields(bindingResult, searchForm.isCustomerNumberUsed(), searchFormCustomerNumber, searchForm.isVendorNumberUsed(), searchFormVendorNumber, searchForm.getSubtype(), searchFormCustomVersion, searchFormTimeFrame);
 				if (!bindingResult.hasErrors()) {
 					String singleObjectId = searchForm.getObjectId();
 					Map<String, String> attributeValues = searchForm.getAttributeValues();
@@ -198,7 +190,7 @@ public class SearchController extends AbstractDoc41Controller {
 							// hope this way is fine to create local, temporary result...
 							BeanPropertyBindingResult mTmp = new BeanPropertyBindingResult(bindingResult.getTarget(), bindingResult.getObjectName());
 							results.add(mTmp);
-							CheckForDownloadResult checkResult = documentUC.checkForDownload(mTmp, mDocType.getTypeConst(), searchFormCustomerNumber, searchFormVendorNumber, singleObjectId, searchFormCustomVersion, attributeValues, viewAttributes);
+							CheckForDownloadResult checkResult = documentUC.checkForDownload(mTmp, mDocType.getTypeConst(), searchFormCustomerNumber, searchFormVendorNumber, singleObjectId, searchFormCustomVersion, searchFormTimeFrame, attributeValues, viewAttributes);
 							if (!mTmp.hasErrors()) {
 								if ((mSelectedDocType == null) || mSelectedDocType.equals(mDocType.getTypeConst())) {
 									searchingTargetTypes.add(mDocType.getTypeConst());
@@ -432,19 +424,7 @@ public class SearchController extends AbstractDoc41Controller {
 	@RequestMapping(value = "/documents/searchpmsupplierGlobal", method = RequestMethod.GET)
 	public ModelMap getPMSupplierGlobal(@ModelAttribute SearchForm searchForm, BindingResult bindingResult, @RequestParam(required = false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException {
 		ModelMap modelMap = new ModelMap();
-		SearchForm pppi_TollerSearchForm = get(searchForm, bindingResult, ButtonSearch, true);
-		/*
-		 * For the user groups belonging to PP/PI Tollers (global) a different search
-		 * form is loaded, by saving document type and checking it during view loading
-		 * (in JSP).
-		 */
-		if (pppi_TollerSearchForm.getType().equals(DocumentType.GROUP_PPPI_PM)) {
-			modelMap.addAttribute("documentTypePPPI", pppi_TollerSearchForm.getType());
-		}
-		if (pppi_TollerSearchForm.getType().equals(DocumentType.GROUP_PPPITF_PM)) {
-			modelMap.addAttribute("documentTypePPPITF", pppi_TollerSearchForm.getType());
-		}
-		modelMap.addAttribute(pppi_TollerSearchForm);
+		modelMap.addAttribute(get(searchForm, bindingResult, ButtonSearch, true));
 		return modelMap;
 	}
 
@@ -631,6 +611,7 @@ public class SearchController extends AbstractDoc41Controller {
 	}
 
 	/**
+	 * Validates customer/vendor number, BOM version ID´and BOM time frame.
 	 * 
 	 * @param bindingResult
 	 *            - object for error handling.
@@ -644,19 +625,15 @@ public class SearchController extends AbstractDoc41Controller {
 	 *            identification.
 	 * @param vendorNumber
 	 *            - vendor number.
-	 * @param hasVersionIdBom
-	 *            - flag which determines if document type is using version ID BoM
-	 *            as identification.
+	 * @param subtype
+	 *            - the PM document sub-type.
 	 * @param versionIdBom
-	 *            - version ID Bill of Material.
-	 * @param hasTimeFrame
-	 *            - flag which determines if document type is using time frame as
-	 *            identification.
+	 *            - BOM version ID.
 	 * @param timeFrame
-	 *            - time frame.
+	 *            - BOM time frame.
 	 * @throws Doc41BusinessException
 	 */
-	private void validateMandatoryInputFields(BindingResult bindingResult, boolean hasCustomerNumber, String customerNumber, boolean hasVendorNumber, String vendorNumber, boolean hasVersionIdBom, String versionIdBom, boolean hasTimeFrame, Date timeFrame) throws Doc41BusinessException {
+	private void validateMandatoryInputFields(BindingResult bindingResult, boolean hasCustomerNumber, String customerNumber, boolean hasVendorNumber, String vendorNumber, int subtype, String versionIdBom, Date timeFrame) throws Doc41BusinessException {
 		if (hasCustomerNumber) {
 			if (StringTool.isTrimmedEmptyOrNull(customerNumber)) {
 				bindingResult.rejectValue("customerNumber", "CustomerNumberMissing");
@@ -679,12 +656,12 @@ public class SearchController extends AbstractDoc41Controller {
 				}
 			}
 		}
-		if (hasVersionIdBom) {
+		if (subtype == Doc41Constants.PM_DOCUMENT_SUBTYPE_BOM_VERSION_ID) {
 			if (StringTool.isTrimmedEmptyOrNull(versionIdBom)) {
 				bindingResult.rejectValue("versionIdBom", "versionIdBomMissing");
 			}
 		}
-		if (hasTimeFrame && timeFrame == null && bindingResult.getFieldError("timeFrame") == null) {
+		if (subtype == Doc41Constants.PM_DOCUMENT_SUBTYPE_BOM_TIME_FRAME && timeFrame == null && bindingResult.getFieldError("timeFrame") == null) {
 			if (timeFrame == null) {
 				bindingResult.rejectValue("timeFrame", "timeFrameMissing");
 			}
