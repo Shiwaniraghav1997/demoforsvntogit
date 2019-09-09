@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.UserInSession;
 import com.bayer.bhc.doc41webui.domain.Attribute;
@@ -34,6 +36,7 @@ public abstract class CustomizedDocumentForm {
 	private String vendorNumber;
 	private boolean isVendorNumberUsed = false;
 	private String versionIdBom;
+	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date timeFrame;
 	private List<SapVendor> vendors;
 

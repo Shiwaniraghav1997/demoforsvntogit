@@ -33,14 +33,15 @@
 	<div id="div-body" class="portlet-body">
 		<form:form commandName="searchForm" action="${action}" method="get">
 			<form:hidden path="type" />
+			<form:hidden path="subtype" />
 			<div class="portlet-section-header">
 				<div class="portlet-section-header-title">
-					<doc41:translate label="Search Document"/>&nbsp;<doc41:translate label="${searchForm.type}"/>
+					<doc41:translate label="Search Document"/>&nbsp;<doc41:translate label="${searchForm.type}_${searchForm.subtype}"/>
 				</div>
 				<c:if test="${not empty fragmentAdditionalButtons}">
 					<jsp:invoke fragment="fragmentAdditionalButtons"/>
 				</c:if>
-				<a class="portlet-form-button" type="button" href='${action}?type=${searchForm.type}'><doc41:translate label="ButtonReset" /></a>
+				<a class="portlet-form-button" type="button" href='${action}?type=${searchForm.type}&subtype=${searchForm.subtype}'><doc41:translate label="ButtonReset" /></a>
 				<input type="submit" class="portlet-form-button" value="<doc41:translate label="ButtonSearch"/>" name="ButtonSearch"/>
 			</div>
          
