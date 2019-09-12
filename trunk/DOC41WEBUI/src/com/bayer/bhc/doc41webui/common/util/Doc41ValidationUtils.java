@@ -52,6 +52,11 @@ public final class Doc41ValidationUtils {
 	 * from SAP.
 	 */
 	public static final String ERR_MESS_PLANT_NOT_RETURNED = "PlantNotReturned";
+	/**
+	 * Error message for return code mapping in RFC call when do documents are returned
+	 * from SAP.
+	 */
+	public static final String ERROR_MESSAGE_NO_PROCESS_ORDER = "NoProcessOrder";
 
 	// Can not be instantiated.
 	private Doc41ValidationUtils() {

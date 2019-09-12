@@ -44,7 +44,7 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 		if (!errors.hasErrors()) {
 			List<String> deliveryCheck = documentUC.checkMaterialForVendor(vendorNumber, objectId, customVersion, timeFrame);
 			if (deliveryCheck.get(0) != null) {
-				errors.reject("" + deliveryCheck);
+				errors.reject("" + deliveryCheck.get(0));
 			}
 			if (deliveryCheck.size() >= 2) {
 				additionalAttributes.put("IV_PLANT_BOM", deliveryCheck.get(1));

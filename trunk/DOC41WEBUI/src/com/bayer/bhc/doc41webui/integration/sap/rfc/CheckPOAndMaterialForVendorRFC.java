@@ -25,6 +25,7 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String> {
 	private static final String RETURNCODE_OK = "0";
 	private static final String RETURNCODE_ORDER_NOT_EXISTING = "1";
 	private static final String RETURNCODE_ORDER_NOT_FOUND = "2";
+	private static final String RETURNCODE_NO_PROCESS_ORDER = "4";
 
 	/**
 	 * Check PO and material(old) / check material(new) - for vendor. SAP-Developer:
@@ -101,6 +102,8 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String> {
 			return Doc41ValidationUtils.ERROR_MESSAGE_ORDER_NOT_EXISTING;
 		} else if (StringTool.equals(returnCode, RETURNCODE_ORDER_NOT_FOUND)) {
 			return Doc41ValidationUtils.ERROR_MESSAGE_ORDER_NOT_FOUND;
+		} else if (StringTool.equals(returnCode, RETURNCODE_NO_PROCESS_ORDER)) {
+			return Doc41ValidationUtils.ERROR_MESSAGE_NO_PROCESS_ORDER;
 		}
 		return Doc41ValidationUtils.ERROR_MESSAGE_UNKNOWN_RETURN_CODE;
 	}
