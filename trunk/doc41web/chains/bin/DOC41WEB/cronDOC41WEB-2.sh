@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ##################################################################
 # project:   DOC41WEB
 # filename:  Chain-DOC41WEB-2.sh

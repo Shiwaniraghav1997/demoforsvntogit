@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ##################################################################
 # project:      DOC41WEB
 # filename:     cronDOC41WEBSAP-DB.sh
