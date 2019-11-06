@@ -131,10 +131,11 @@ public class BDSUserCreateHTML
                     } else {
                         if (null != mUsr.getCwid()
                                 && !mUsr.hasPermission(Doc41Constants.PERMISSION_READ_ONLY)
-                                && mUsr.hasPermission(Doc41Constants.PERMISSION_USER_IMPORT) ) {
+                                && mUsr.hasPermission(Doc41Constants.PERMISSION_USER_IMPORT)
+                                /*&& mUsr.hasPermission(Doc41Constants.PERMISSION_USER_CREATE)*/ ) { // IMWIF: you may further limit this function
                             mUsr.setReadOnly(Boolean.FALSE);
                         }
-                        mProcessing.append("User found in BDS" + (mUsr.getReadOnly() ? "(read only)" : "") + ".\n");
+                        mProcessing.append("User found in BDS" + (mUsr.getReadOnly() ? "(read only)"/*, create AND import permission required)*/ : "") + ".\n");
                         UserInSession.put(mUsr);
                         LocaleInSession.put(mUsr.getLocale());
                         mProcessing.append("User prepared\n");
