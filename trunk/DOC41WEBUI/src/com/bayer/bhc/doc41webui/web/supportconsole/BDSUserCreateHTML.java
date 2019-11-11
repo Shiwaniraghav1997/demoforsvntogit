@@ -92,7 +92,7 @@ public class BDSUserCreateHTML
                 pInput = mQ + CSV_LAST + mQ + mD + mQ + CSV_FIRST + mQ + mD + mQ + CSV_COMPANY + mQ + mD + mQ + CSV_PHONE + mQ + mD + mQ + CSV_EMAIL + mQ + mD + mQ + CSV_VENDOR + mQ;
             }
             if (pInitPw.length() == 0) {
-                pInitPw = StringTool.nvl(StringTool.trimEmptyToNull(cfg.getProperty("pw.template")), "[VENDOR]");
+                pInitPw = StringTool.nvl(StringTool.trimEmptyToNull(cfg.getProperty("pw.template")), "["+CSV_VENDOR+"]");
             }
 
             println(out, "<P/><P>Paste User CSV List and press GO button.</P>", escJS);
@@ -132,10 +132,10 @@ public class BDSUserCreateHTML
                         if (null != mUsr.getCwid()
                                 && !mUsr.hasPermission(Doc41Constants.PERMISSION_READ_ONLY)
                                 && mUsr.hasPermission(Doc41Constants.PERMISSION_USER_IMPORT)
-                                /*&& mUsr.hasPermission(Doc41Constants.PERMISSION_USER_CREATE)*/ ) { // IMWIF: you may further limit this function
+                                && mUsr.hasPermission(Doc41Constants.PERMISSION_USER_CREATE) ) {
                             mUsr.setReadOnly(Boolean.FALSE);
                         }
-                        mProcessing.append("User found in BDS" + (mUsr.getReadOnly() ? "(read only)"/*, create AND import permission required)*/ : "") + ".\n");
+                        mProcessing.append("User found in BDS" + (mUsr.getReadOnly() ? "(read/sim only, create AND import permission required)" : "") + ".\n");
                         UserInSession.put(mUsr);
                         LocaleInSession.put(mUsr.getLocale());
                         mProcessing.append("User prepared\n");
@@ -209,16 +209,20 @@ public class BDSUserCreateHTML
                                             mNew.setRoles(Arrays.asList(pProfSel));
                                             String mExpPw = "";
                                             try {
-                                                mExpPw = Template.expand(pInitPw, new Object[] { mVendorOrg }, new String[] { "VENDOR" } );
+                                                mExpPw = Template.expand(pInitPw, new Object[] { mVendorOrg, mCompany, mEmail, mPhone, mFirstName, mLastName, ""+System.currentTimeMillis() }, new String[] { CSV_VENDOR, CSV_COMPANY, CSV_EMAIL, CSV_PHONE, CSV_FIRST, CSV_LAST, "$" } );
                                                 mNew.setPassword(mExpPw);
                                                 mNew.setPasswordRepeated(mExpPw);
                                                 if (isSim) {
                                                     mProcessing.append(" - SIM ok, vendor: " + mVenName + ", Roles: " + StringTool.list(mNew.getRoles(), ", ", false) + ", pw: " + mExpPw + "\n");
                                                     mRowResults.append("" + mD + mQ + StringTool.replace(" --- ", ""+mQ, ""+mQ+mQ) + mQ + mD + mQ + StringTool.replace("sim ok, vendor: " + mVenName, ""+mQ, ""+mQ+mQ) + mQ + "\n");
                                                 } else {
-                                                    userMgmtUC.createUser(mNew);
-                                                    mProcessing.append(" - OK, CWID: " + mNew.getCwid() + ", vendor: " + mVenName + ", Roles: " + StringTool.list(mNew.getRoles(), ", ", false) + ", pw: " + mExpPw + "\n");
-                                                    mRowResults.append("" + mD + mQ + StringTool.replace(mNew.getCwid(), ""+mQ, ""+mQ+mQ) + mQ + mD + mQ + StringTool.replace("ok, created, vendor: " + mVenName, ""+mQ, ""+mQ+mQ) + mQ + "\n");
+                                                	if (!mUsr.getReadOnly()) {
+                                                		userMgmtUC.createUser(mNew);
+                                                		mProcessing.append(" - OK, CWID: " + mNew.getCwid() + ", vendor: " + mVenName + ", Roles: " + StringTool.list(mNew.getRoles(), ", ", false) + ", pw: " + mExpPw + "\n");
+                                                		mRowResults.append("" + mD + mQ + StringTool.replace(mNew.getCwid(), ""+mQ, ""+mQ+mQ) + mQ + mD + mQ + StringTool.replace("ok, created, vendor: " + mVenName, ""+mQ, ""+mQ+mQ) + mQ + "\n");
+                                                	} else {
+                                                		mProcessing.append(" - skipped, you not have required permisions...\n");
+                                                	}
                                                 }
                                             } catch (Exception e) {
                                                 Doc41TechnicalException te = new Doc41TechnicalException(this, "user import failed, email: " + mEmail + ", by user: " + pUser, e );
