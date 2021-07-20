@@ -16,6 +16,7 @@
 <%@taglib prefix="form" 	uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="spring"	uri="http://www.springframework.org/tags" %>
 
+
 	<script type="text/javascript">
 		tswidgets = [ 'zebra' ];
 		
@@ -194,10 +195,13 @@
 				<c:forEach items="${searchForm.documents}" var="document"
 					varStatus="status"><c:set var="idx" value="${idx + 1}" scope="page"/>
 					<tr style="cursor: pointer;">
-                        <td><input id="docSel" name="docSel" type="checkbox" onclick="enableDownloadAll()" value="${document.key}|${searchForm.type}"/><input id="docAll" name="docAll" type="hidden" value="${document.key}|${searchForm.type}"/></td>
-                        <td onclick="openDocument('${document.key}','${searchForm.type}')"><doc41:spaceToNbsp><doc41:translate label="${document.type}"/><!-- c:out value="${document.type}" / --></doc41:spaceToNbsp></td>
+                        <td><input id="docSel" name="docSel" type="checkbox" onclick="enableDownloadAll()" value="${document.key}|${searchForm.type}"/>
+                        <input id="docAll" name="docAll" type="hidden" value="${document.key}|${searchForm.type}"/></td>
+                        <td onclick="openDocument('${document.key}','${searchForm.type}')"><doc41:spaceToNbsp><doc41:translate label="${document.type}"/>
+                        <!-- c:out value="${document.type}" / --></doc41:spaceToNbsp></td>
 						<c:if test="${empty showTableObjectId or showTableObjectId}">
-							<td onclick="openDocument('${document.key}','${searchForm.type}')"><doc41:spaceToNbsp><c:out value="${document.objectId}" /></doc41:spaceToNbsp></td>
+							<td onclick="openDocument('${document.key}','${searchForm.type}')"><doc41:spaceToNbsp><c:out value="${document.objectId}" />\
+							</doc41:spaceToNbsp></td>
 						</c:if>
 						<%-- <td>
 							<doc41:formatDate date="${document.storageDate}" zone="${user.timeZone}"></doc41:formatDate>
@@ -230,7 +234,8 @@
 	          </c:choose>
          
           
-          <input id="submitButton" type="submit" class="portlet-form-button" value="Download All" name="ButtonDownload" onclick="disableDownloadAll()" style="opacity: <c:out value="<%= opacity %>"/>;" <c:out value="<%= downloadeable %>"/>/>
+          <input id="submitButton" type="submit" class="portlet-form-button" value="Download All" name="ButtonDownload" 
+          oncomplete="disableDownloadAll()" style="opacity: <c:out value="<%= opacity %>"/>;" <c:out value="<%= downloadeable %>"/>/>
           <script> <!-- Enable/Disable Downloadbutton when clicking on it -->
                 function enableDownloadAll(){
                     document.getElementById("submitButton").disabled = false;
