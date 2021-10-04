@@ -26,6 +26,8 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String> {
 	private static final String RETURNCODE_ORDER_NOT_EXISTING = "1";
 	private static final String RETURNCODE_ORDER_NOT_FOUND = "2";
 	private static final String RETURNCODE_NO_PROCESS_ORDER = "4";
+//	error code for po added by elerj
+	private static final String RETURNCODE_NO_PURCHASE_ORDER = "5";
 
 	/**
 	 * Check PO and material(old) / check material(new) - for vendor. SAP-Developer:
@@ -83,9 +85,15 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String> {
 			}
 			JCoParameterList exportParameterList = pFunction.getExportParameterList();
 			String returnCode = exportParameterList.getString(OUT_RETURNCODE);
+			System.out.println("returnCode::"+returnCode);
+			
 			String evPlant = exportParameterList.getString(OUT_PLANT);
 			String evRequester = exportParameterList.getString(OUT_REQUESTER);
+			/*returnCode="5";
+			System.out.println("returnCode1::"+returnCode);*/
+			
 			mResult.add(mapReturnCodeToTag(returnCode));
+			
 			if (StringTool.emptyToNull(evPlant) != null) {
 				mResult.add(evPlant);
 			}
@@ -105,6 +113,11 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String> {
 		} else if (StringTool.equals(returnCode, RETURNCODE_NO_PROCESS_ORDER)) {
 			return Doc41ValidationUtils.ERROR_MESSAGE_NO_PROCESS_ORDER;
 		}
+//	Added by elerj
+		else if (StringTool.equals(returnCode, RETURNCODE_NO_PURCHASE_ORDER)) {
+			return Doc41ValidationUtils.ERROR_MESSAGE_NO_PURCHASE_ORDER;
+		}
+		
 		return Doc41ValidationUtils.ERROR_MESSAGE_UNKNOWN_RETURN_CODE;
 	}
 
