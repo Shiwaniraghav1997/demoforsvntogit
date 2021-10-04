@@ -57,12 +57,16 @@ public final class Doc41ValidationUtils {
 	 * from SAP.
 	 */
 	public static final String ERROR_MESSAGE_NO_PROCESS_ORDER = "NoProcessOrder";
+	
+	public static final String ERROR_MESSAGE_NO_PURCHASE_ORDER = "purchaseOrderBomMissing";
 
+	
 	// Can not be instantiated.
 	private Doc41ValidationUtils() {
 	}
 
 	public static void checkMaterialNumber(String value, String fieldName, Errors errors, boolean isMandatory) {
+//		System.out.println("value::"+value);
 		if (StringTool.isTrimmedEmptyOrNull(value)) {
 			if (isMandatory) {
 				errors.rejectValue(fieldName, "MatNoMissing");
