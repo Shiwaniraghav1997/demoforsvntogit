@@ -53,10 +53,10 @@ public class ArtworkForPMSupplierDocumentType extends PMSupplierDownloadDocument
     @Override
     public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
             String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame,
-            Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
+            Map<String, String> attributeValues,Map<String, String> viewAttributes,String purchaseOrder) throws Doc41BusinessException {
 
         CheckForDownloadResult result = super.checkForDownload(errors, documentUC, customerNumber, vendorNumber,
-                objectId, customVersion, timeFrame, attributeValues, viewAttributes);
+                objectId, customVersion, timeFrame, attributeValues, viewAttributes,purchaseOrder);
         return result;
 
 /* no more extra check required anymore...

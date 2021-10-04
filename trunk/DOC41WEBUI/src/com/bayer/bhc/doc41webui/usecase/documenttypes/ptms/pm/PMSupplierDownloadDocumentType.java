@@ -38,11 +38,11 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 	}
 
 	@Override
-	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame, Map<String, String> attributeValues, Map<String, String> viewAttributes) throws Doc41BusinessException {
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame, Map<String, String> attributeValues, Map<String, String> viewAttributes,String purchaseOrder) throws Doc41BusinessException {
 		Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
 		Map<String, String> additionalAttributes = new HashMap<String, String>();
 		if (!errors.hasErrors()) {
-			List<String> deliveryCheck = documentUC.checkMaterialForVendor(vendorNumber, objectId, customVersion, timeFrame);
+			List<String> deliveryCheck = documentUC.checkMaterialForVendor(vendorNumber, objectId, customVersion, timeFrame,purchaseOrder);
 			if (deliveryCheck.get(0) != null) {
 				errors.reject("" + deliveryCheck.get(0));
 			}
