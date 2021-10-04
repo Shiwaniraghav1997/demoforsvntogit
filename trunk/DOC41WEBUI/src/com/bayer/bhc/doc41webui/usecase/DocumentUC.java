@@ -69,6 +69,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.PZTecDrawingForLay
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.PackMatSpecForLayoutSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.AntiCounSpecForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.ArtworkForPMSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.BomForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.LayoutForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PZTecDrawingForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PackMatSpecForPMSupplierDocumentType;
@@ -183,6 +184,7 @@ public class DocumentUC {
 		addDocumentType(new PZTecDrawingForPMSupplierDocumentType());
 		addDocumentType(new TecPackDelReqForPMSupplierDocumentType());
         addDocumentType(new AntiCounSpecForPMSupplierDocumentType());
+        addDocumentType(new BomForPMSupplierDocumentType());
         Doc41Log.get().debug(this, null, "Init done, "+
                 "documentTypes("+documentTypes.size()+"): " + StringTool.list(documentTypes.keySet(), ",", false)+ ", " +
                 "documentTypesBySapId("+documentTypesBySapId.size()+"): " + StringTool.list(documentTypesBySapId.keySet(), ",", false)+ "."
@@ -190,13 +192,17 @@ public class DocumentUC {
 	}
 	
 	private void addDocumentType(DocumentType documentType) {
+//		System.out.println("documentType::"+documentType.getTypeConst() +" val::"+documentType);
+//		System.out.println("documentTypesBySapId::"+documentTypesBySapId.toString());/*elerj*/
 		documentTypes.put(documentType.getTypeConst(), documentType);
 		Doc41Log.get().debug(this, null, "Init, added key '" + documentType.getTypeConst() + "' to documentTypes-Map("+documentType.getSapTypeId()+") -- " + documentType.getClass().getSimpleName());
 		if (documentType instanceof DownloadDocumentType) {
+//			System.out.println("download instance");
 	        documentTypesBySapId.put(documentType.getSapTypeId(), documentType);
 	        Doc41Log.get().debug(this, null, "Init, added key '" + documentType.getSapTypeId() + "' to documentTypesBySapId-Map("+documentType.getTypeConst()+") -- " + documentType.getClass().getSimpleName());
 		}
         if (documentType instanceof UploadDocumentType) {
+//        	System.out.println("upload instance");
             documentTypesBySapId.put(documentType.getSapTypeId() + "_U", documentType);
             Doc41Log.get().debug(this, null, "Init, added key '" + documentType.getSapTypeId() + "_U' to documentTypesBySapId-Map("+documentType.getTypeConst()+") -- " + documentType.getClass().getSimpleName());
         }
@@ -221,15 +227,23 @@ public class DocumentUC {
 	        for (PermissionProfiles mPP : mPermList) {
 	            mProfileByCode.put(mPP.getPermissionCode(), mPP);
 	        }
+//	        System.out.println("hm for permission::"+mProfileByCode);
 	        for (DocumentType documentType : documentTypes.values()) {
 	            String typeConst = documentType.getTypeConst();
+//	            System.out.println("typeConst::"+typeConst +" documentype::"+documentType);/*elerj*/
 	            if (documentType instanceof DownloadDocumentType) {
+//	            	System.out.println("documenttype instance"+documentType);
 	                String mPerm = ((DownloadDocumentType)documentType).getPermissionDownload();
+//	                System.out.println("mPerm::"+mPerm);
 	                PermissionProfiles mPP = mProfileByCode.get(mPerm); 
+//	                System.out.println("mPP::"+mPP);
 	                String mPermType = (mPP == null) ? null : mPP.getType();
+//	                System.out.println("mPermType::"+mPermType);
 	                ((DownloadDocumentType) documentType).setDownloadPermissionType(mPermType);
 	                if (mPermType == null) {
+//	                	System.out.println("null 1");
 	                    if (mPP != null) {
+//	                    	System.out.println("null 2");
 	                        Doc41Log.get().warnMessageOnce(this, null, "Download-Permission with code: " + mPerm + " for document type: " + typeConst + " has no permission type!");
 	                    }
 	                } else {
@@ -239,6 +253,8 @@ public class DocumentUC {
 	                        mDocumentTypesByDownloadPermissionType.put(mPermType, mList);
 	                    }
 	                    mList.add(typeConst);
+//	                    System.out.println("mlist::"+mList); /*elerj*/
+	                    
 	                }
 	            }
 	        }
@@ -257,7 +273,7 @@ public class DocumentUC {
 		String sapDocType = dt.getSapTypeId();
 		DocMetadata docMetadata = null;
 		if (dt.isKgs()) {
-		    docMetadata = getDocMetadataBySapDocType(sapDocType);
+		    docMetadata = getDocMetadataBySapDocType(sapDocType); //technical id 
 	        if( docMetadata == null ) {
 	            throw new Doc41BusinessException("document type "+type+"/"+sapDocType+" not found in SAP");
 	        }
@@ -664,7 +680,7 @@ public class DocumentUC {
             ArrayList<String> d41idList = new ArrayList<String>();
             Map<Integer, String> seqToKeyGlo = new HashMap<Integer, String>();
             Map<String, Map<Integer, String>> seqToKeyAllTypes = new HashMap<String, Map<Integer,String>>();
-            HashSet<String>mKnownKeys = new HashSet<String>();
+           HashSet<String>mKnownKeys = new HashSet<String>();
             DocTypeDef docDef = null;
             for (String mType : pTypes) {
                 Map<Integer, String> seqToKey = new HashMap<Integer, String>();
@@ -706,6 +722,7 @@ public class DocumentUC {
                 }
             } else /**/ {
               allResults = bwRFCService.findDocs(d41idList, null, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
+              System.out.println("allResults::"+allResults);/* elerj*/
 		    }
 		        
 		        /* NO MORE USED, FindDocsMulti no takes care itself for al sapObj (types of objectIds = numbers, e.g. material number, po number, delivery number, ...)
@@ -716,6 +733,7 @@ public class DocumentUC {
 		            }
 		        }*/
 		        for (HitListEntry hitListEntry : allResults) {
+		        	System.out.println("after allResults::"+hitListEntry); /*elerj*/
 		            String mDoc41Id = hitListEntry.getDoc41Id();
 		            DocumentType dt = getDocTypeBySapId(mDoc41Id, false);
                     hitListEntry.setType(dt.getTypeConst());
@@ -913,8 +931,8 @@ public class DocumentUC {
 		return checkResult;
 	}
 	
-	public CheckForDownloadResult checkForDownload(Errors errors, String type, String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException{
-		return getDocTypeForDownload(type).checkForDownload(errors, this, customerNumber, vendorNumber, objectId, customVersion, timeFrame, attributeValues,viewAttributes);
+	public CheckForDownloadResult checkForDownload(Errors errors, String type, String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame, Map<String, String> attributeValues,Map<String, String> viewAttributes, String puchaseOrder) throws Doc41BusinessException{
+		return getDocTypeForDownload(type).checkForDownload(errors, this, customerNumber, vendorNumber, objectId, customVersion, timeFrame, attributeValues,viewAttributes,puchaseOrder);
 	}
 	
 	public CheckForDownloadResult checkForDirectDownload(String type, String objectId) throws Doc41BusinessException{
@@ -1092,9 +1110,9 @@ public class DocumentUC {
 		}
 	}
 	
-    public List<String> checkMaterialForVendor(String vendorNumber, String materialNumber, String customVersion, Date timeFrame) throws Doc41BusinessException {
+    public List<String> checkMaterialForVendor(String vendorNumber, String materialNumber, String customVersion, Date timeFrame,String purchaseOrder) throws Doc41BusinessException {
         try {
-            return authorizationRFCService.checkMaterialForVendor(vendorNumber, materialNumber, customVersion, timeFrame);
+            return authorizationRFCService.checkMaterialForVendor(vendorNumber, materialNumber, customVersion, timeFrame,purchaseOrder);
         } catch (Doc41ServiceException e) {
             throw new Doc41BusinessException("checkPOAndMaterialForVendor",e);
         }
