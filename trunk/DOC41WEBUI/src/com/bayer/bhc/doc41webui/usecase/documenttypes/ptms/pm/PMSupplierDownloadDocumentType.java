@@ -50,6 +50,8 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 				additionalAttributes.put("IV_PLANT_BOM", deliveryCheck.get(1));
 				additionalAttributes.put("IV_VERID_BOM", customVersion);
 				additionalAttributes.put("IV_TIMEFRAME_DATE", Doc41Utils.convertDateToString(timeFrame));
+				/*added by elerj*/
+				additionalAttributes.put("IV_PO_BOM", purchaseOrder);
 			}
 		}
 		return new CheckForDownloadResult(additionalAttributes, null);
