@@ -123,9 +123,9 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	 * @throws Doc41ServiceException
 	 *             in case of general RFC failure
 	 */
-	public List<String> checkMaterialForVendor(String vendorNumber, String materialNumber, String customVersion, Date timeFrame) throws Doc41ServiceException {
+	public List<String> checkMaterialForVendor(String vendorNumber, String materialNumber, String customVersion, Date timeFrame ,String poNumber) throws Doc41ServiceException {
 		Doc41Log.get().debug(this, UserInSession.getCwid(), "vendorNumber = " + vendorNumber + ", materialNumber = " + materialNumber + ".");
-		return checkPOAndMaterialForVendor(vendorNumber, null, materialNumber, customVersion, timeFrame);
+		return checkPOAndMaterialForVendor(vendorNumber, poNumber, materialNumber, customVersion, timeFrame);
 	}
 
 	public List<InspectionLot> getInspectionLotsForVendorBatch(String vendor, String vendorBatch, String plant) throws Doc41ServiceException {
