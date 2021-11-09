@@ -104,7 +104,7 @@ public class SearchController extends AbstractDoc41Controller {
 		}
 		String mSelectedDocType = StringTool.emptyToNull(searchForm.getDocType());
 		List<DownloadDocumentType> mDocTypes = documentUC.getFilteredDocTypesForDownload(mFormType, user);
-//		System.out.println("mDocTypes::"+mDocTypes);
+
 		Doc41Log.get().debug(this, null, "Search for download for " + mDocTypes.size() + " document types by '" + mFormType);
 		searchForm.setDocumentTypes(mDocTypes);
 		List<Attribute> attributeDefinitions = new ArrayList<Attribute>();
@@ -185,6 +185,7 @@ public class SearchController extends AbstractDoc41Controller {
 						List<String> objectIds = new ArrayList<String>();
 						if (!StringTool.isTrimmedEmptyOrNull(singleObjectId)) {
 							objectIds.add(singleObjectId);
+							objectIds.add(serachFormPurchaseOrder);
 						}
 						int i = 0;
 						HashSet<String> mChkErrs = new HashSet<String>();
