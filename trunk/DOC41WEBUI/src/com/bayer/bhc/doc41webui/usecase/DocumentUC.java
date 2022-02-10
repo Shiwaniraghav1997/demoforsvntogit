@@ -73,6 +73,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.BomForPMSupplierDo
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.LayoutForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PZTecDrawingForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PackMatSpecForPMSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.RowMaterialSystemPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.TecPackDelReqForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertDownCountryDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertDownCustomerDocumentType;
@@ -184,7 +185,8 @@ public class DocumentUC {
 		addDocumentType(new PZTecDrawingForPMSupplierDocumentType());
 		addDocumentType(new TecPackDelReqForPMSupplierDocumentType());
         addDocumentType(new AntiCounSpecForPMSupplierDocumentType());
-        addDocumentType(new BomForPMSupplierDocumentType());
+//        addDocumentType(new BomForPMSupplierDocumentType());
+        addDocumentType(new RowMaterialSystemPMSupplierDocumentType());
         Doc41Log.get().debug(this, null, "Init done, "+
                 "documentTypes("+documentTypes.size()+"): " + StringTool.list(documentTypes.keySet(), ",", false)+ ", " +
                 "documentTypesBySapId("+documentTypesBySapId.size()+"): " + StringTool.list(documentTypesBySapId.keySet(), ",", false)+ "."
@@ -197,7 +199,7 @@ public class DocumentUC {
 		documentTypes.put(documentType.getTypeConst(), documentType);
 		Doc41Log.get().debug(this, null, "Init, added key '" + documentType.getTypeConst() + "' to documentTypes-Map("+documentType.getSapTypeId()+") -- " + documentType.getClass().getSimpleName());
 		if (documentType instanceof DownloadDocumentType) {
-//			System.out.println("download instance");
+			System.out.println("download instance"+ documentType);
 	        documentTypesBySapId.put(documentType.getSapTypeId(), documentType);
 	        Doc41Log.get().debug(this, null, "Init, added key '" + documentType.getSapTypeId() + "' to documentTypesBySapId-Map("+documentType.getTypeConst()+") -- " + documentType.getClass().getSimpleName());
 		}
@@ -676,6 +678,7 @@ public class DocumentUC {
 			Map<String, String> attributeValues, int maxResults, boolean maxVersionOnly)
 					throws Doc41BusinessException {
 		try{
+//			/System.out.println("attributeValues"+attributeValues);
             List<HitListEntry> allResults = new ArrayList<HitListEntry>();
             ArrayList<String> d41idList = new ArrayList<String>();
             Map<Integer, String> seqToKeyGlo = new HashMap<Integer, String>();
@@ -685,9 +688,13 @@ public class DocumentUC {
             for (String mType : pTypes) {
                 Map<Integer, String> seqToKey = new HashMap<Integer, String>();
                 //DocumentType docType = getDocType(mType);
+//                System.out.println("mType::"+mType);
                 DocMetadata metadata = getMetadata(mType);
+//                System.out.println("metadata::"+metadata);
                 docDef = metadata.getDocDef();
+//                System.out.println("docDef::"+docDef);
                 d41idList.add( docDef.getD41id() );
+//                System.out.println("drid::"+docDef.getD41id());
                 if (pTypes.size() == 1) { // not check on multi document type (groups), because there are always extra attributes...
                     checkAttribsWithCustomizing(attributeValues,mType);
                 }
@@ -721,8 +728,9 @@ public class DocumentUC {
                     allResults.addAll(oneResult);
                 }
             } else /**/ {
+//            	System.out.println("in documentUC");
               allResults = bwRFCService.findDocs(d41idList, null, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
-              System.out.println("allResults::"+allResults);/* elerj*/
+//              System.out.println("allResults::"+allResults);/* elerj*/
 		    }
 		        
 		        /* NO MORE USED, FindDocsMulti no takes care itself for al sapObj (types of objectIds = numbers, e.g. material number, po number, delivery number, ...)
@@ -733,7 +741,7 @@ public class DocumentUC {
 		            }
 		        }*/
 		        for (HitListEntry hitListEntry : allResults) {
-		        	System.out.println("after allResults::"+hitListEntry); /*elerj*/
+//		        	System.out.println("after allResults::"+hitListEntry); /*elerj*/
 		            String mDoc41Id = hitListEntry.getDoc41Id();
 		            DocumentType dt = getDocTypeBySapId(mDoc41Id, false);
                     hitListEntry.setType(dt.getTypeConst());
@@ -949,6 +957,7 @@ public class DocumentUC {
 	
     private DownloadDocumentType getDocTypeForDownload(String type) throws Doc41BusinessException{
         DocumentType documentType = getDocType(type);
+//        System.out.println("documentType::"+documentType + "type"+type);
         if(!(documentType instanceof DownloadDocumentType)){
             throw new Doc41BusinessException("doctype not enabled for download: "+type);
         }
