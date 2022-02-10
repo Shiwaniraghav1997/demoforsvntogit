@@ -51,7 +51,7 @@ public class BomForPMSupplierDocumentType extends PMSupplierDownloadDocumentType
     public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
             String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame,
             Map<String, String> attributeValues,Map<String, String> viewAttributes,String purchaseOrder) throws Doc41BusinessException {
-System.out.println("in BOM download class");
+//System.out.println("in BOM download class");
         CheckForDownloadResult result = super.checkForDownload(errors, documentUC, customerNumber, vendorNumber,
                 objectId, customVersion, timeFrame, attributeValues, viewAttributes,purchaseOrder);
         return result;
