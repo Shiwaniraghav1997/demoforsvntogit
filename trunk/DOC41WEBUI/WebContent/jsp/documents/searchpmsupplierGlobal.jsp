@@ -36,11 +36,11 @@
             	</td>
             </tr>
             <script>
-            $(document).ready(function(){
+            /* $(document).ready(function(){
     		    $("select").change(function(){
     		        $(this).find("option:selected").each(function(){
     		            var optionValue = $(this).attr("value");
-    		         
+    		            /* alert("optionValue ::"+optionValue);  */
     		             if(optionValue=='YBM'){
     		            	  /* alert("optionValue"+optionValue);  */
     		            
@@ -50,7 +50,7 @@
     		            }  */
     		        });
     		    }).change();
-    		});
+    		}); */
     		 
 
     		 			
@@ -75,7 +75,7 @@
             </c:if>
             <!-- ------------------- purchase order elerj------------------- -->
             <!-- <div style='display:none;'>  -->
-            <c:if test="${searchForm.subtype eq Doc41Constants.PM_DOCUMENT_SUBTYPE_PURCHASE_ORDER}">
+          <%--   <c:if test="${searchForm.subtype eq Doc41Constants.PM_DOCUMENT_SUBTYPE_PURCHASE_ORDER}">
                 <tr id="purchaseOrd" style='display:none;'>
                     <th>
                         <label for="PurchaseOrderBOM">
@@ -90,7 +90,7 @@
                 </tr>
              
            </c:if>
-           
+           --%> 
            
             
             <!-- ---------purchase order end ------ -->
