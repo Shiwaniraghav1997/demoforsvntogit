@@ -85,7 +85,7 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String> {
 			}
 			JCoParameterList exportParameterList = pFunction.getExportParameterList();
 			String returnCode = exportParameterList.getString(OUT_RETURNCODE);
-			System.out.println("returnCode::"+returnCode);
+//			System.out.println("returnCode::"+returnCode);
 			
 			String evPlant = exportParameterList.getString(OUT_PLANT);
 			String evRequester = exportParameterList.getString(OUT_REQUESTER);
