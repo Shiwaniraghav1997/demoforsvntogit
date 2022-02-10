@@ -73,6 +73,7 @@ public class BwRFCService extends AbstractSAPJCOService {
 		params.add(maxVersionOnly);
 		params.add(attributeValues);
 		params.add(seqToKey);
+//		System.out.println("param finddocs ::"+params);
 		
 		List<HitListEntry> result = performRFC(params, RFC_NAME_FIND_DOCS);
 		return result;
