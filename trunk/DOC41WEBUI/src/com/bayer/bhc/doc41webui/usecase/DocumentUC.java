@@ -73,7 +73,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.ArtworkForPMSuppli
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.LayoutForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PZTecDrawingForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PackMatSpecForPMSupplierDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.RowMaterialSystemPMSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.RawMaterialSpecificationPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.TecPackDelReqForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertDownCountryDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.qm.DeliveryCertDownCustomerDocumentType;
@@ -185,7 +185,7 @@ public class DocumentUC {
 		addDocumentType(new PZTecDrawingForPMSupplierDocumentType());
 		addDocumentType(new TecPackDelReqForPMSupplierDocumentType());
         addDocumentType(new AntiCounSpecForPMSupplierDocumentType());
-        addDocumentType(new RowMaterialSystemPMSupplierDocumentType());
+        addDocumentType(new RawMaterialSpecificationPMSupplierDocumentType());
 //        addDocumentType(new BomForPMSupplierDocumentType());
       
         Doc41Log.get().debug(this, null, "Init done, "+
