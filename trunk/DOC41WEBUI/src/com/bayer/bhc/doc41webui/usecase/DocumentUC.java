@@ -69,7 +69,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.PZTecDrawingForLay
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.PackMatSpecForLayoutSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.AntiCounSpecForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.ArtworkForPMSupplierDocumentType;
-import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.BomForPMSupplierDocumentType;
+//import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.BomForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.LayoutForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PZTecDrawingForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PackMatSpecForPMSupplierDocumentType;
@@ -185,8 +185,9 @@ public class DocumentUC {
 		addDocumentType(new PZTecDrawingForPMSupplierDocumentType());
 		addDocumentType(new TecPackDelReqForPMSupplierDocumentType());
         addDocumentType(new AntiCounSpecForPMSupplierDocumentType());
-//        addDocumentType(new BomForPMSupplierDocumentType());
         addDocumentType(new RowMaterialSystemPMSupplierDocumentType());
+//        addDocumentType(new BomForPMSupplierDocumentType());
+      
         Doc41Log.get().debug(this, null, "Init done, "+
                 "documentTypes("+documentTypes.size()+"): " + StringTool.list(documentTypes.keySet(), ",", false)+ ", " +
                 "documentTypesBySapId("+documentTypesBySapId.size()+"): " + StringTool.list(documentTypesBySapId.keySet(), ",", false)+ "."
