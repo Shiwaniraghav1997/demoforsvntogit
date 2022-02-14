@@ -151,10 +151,10 @@ public class SearchController extends AbstractDoc41Controller {
 		}
 //		To display YBM only for ppi toller 
 //		System.out.println("mallowdoctype::+"+mAllowedDocTypes.size());/*elerj*/
-		if(!(searchForm.getSubtype()==1)) {
+		/*if(!(searchForm.getSubtype()==1)) {
 //			System.out.println("in if block");
 			mAllowedDocTypes.remove(6);
-		}
+		}*/
 		searchForm.setAllowedDocTypes(mAllowedDocTypes);
 //		System.out.println("mallowdoctype 1::+"+mAllowedDocTypes.size());/*elerj*/
 //		System.out.println("mallowdocty11::"+Arrays.toString(mAllowedDocTypes.toArray()));
