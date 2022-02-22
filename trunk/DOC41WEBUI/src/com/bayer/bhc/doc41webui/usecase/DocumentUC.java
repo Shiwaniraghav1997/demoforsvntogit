@@ -187,7 +187,6 @@ public class DocumentUC {
 
         addDocumentType(new RawMaterialSpecificationPMSupplierDocumentType());
 
-
         Doc41Log.get().debug(this, null, "Init done, "+
                 "documentTypes("+documentTypes.size()+"): " + StringTool.list(documentTypes.keySet(), ",", false)+ ", " +
                 "documentTypesBySapId("+documentTypesBySapId.size()+"): " + StringTool.list(documentTypesBySapId.keySet(), ",", false)+ "."
