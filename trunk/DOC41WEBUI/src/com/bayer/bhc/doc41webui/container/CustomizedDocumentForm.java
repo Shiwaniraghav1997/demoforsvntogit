@@ -39,17 +39,6 @@ public abstract class CustomizedDocumentForm {
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date timeFrame;
 	private List<SapVendor> vendors;
-	
-//	Purchase oder added by elerj
-	private String purchaseOrder;
-
-	public String getPurchaseOrder() {
-		return purchaseOrder;
-	}
-
-	public void setPurchaseOrder(String purchaseOrder) {
-		this.purchaseOrder = purchaseOrder;
-	}
 
 	public String getType() {
 		return type;
