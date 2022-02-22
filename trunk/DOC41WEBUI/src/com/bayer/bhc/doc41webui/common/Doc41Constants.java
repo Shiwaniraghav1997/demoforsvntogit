@@ -165,7 +165,5 @@ public final class Doc41Constants {
 	/**
 	 * Private constructor to prevent instantiation.
 	 */
-//	purchase order elerj
-	public static final int PM_DOCUMENT_SUBTYPE_PURCHASE_ORDER = 1;
 	private Doc41Constants() {}
 }
