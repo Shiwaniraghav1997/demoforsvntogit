@@ -61,7 +61,7 @@ public class ArtworkForLayoutSupplierDocumentType extends LayoutSupplierDocument
     @Override
     public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
             String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame,
-            Map<String, String> attributeValues,Map<String, String> viewAttributes,String purchaseOrder) throws Doc41BusinessException {
+            Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
         
         Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
         
