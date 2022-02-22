@@ -38,11 +38,11 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 	}
 
 	@Override
-	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame, Map<String, String> attributeValues, Map<String, String> viewAttributes,String purchaseOrder) throws Doc41BusinessException {
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame, Map<String, String> attributeValues, Map<String, String> viewAttributes) throws Doc41BusinessException {
 		Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
 		Map<String, String> additionalAttributes = new HashMap<String, String>();
 		if (!errors.hasErrors()) {
-			List<String> deliveryCheck = documentUC.checkMaterialForVendor(vendorNumber, objectId, customVersion, timeFrame,purchaseOrder);
+			List<String> deliveryCheck = documentUC.checkMaterialForVendor(vendorNumber, objectId, customVersion, timeFrame);
 			if (deliveryCheck.get(0) != null) {
 				errors.reject("" + deliveryCheck.get(0));
 			}
@@ -50,8 +50,6 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 				additionalAttributes.put("IV_PLANT_BOM", deliveryCheck.get(1));
 				additionalAttributes.put("IV_VERID_BOM", customVersion);
 				additionalAttributes.put("IV_TIMEFRAME_DATE", Doc41Utils.convertDateToString(timeFrame));
-				/*added by elerj*/
-				additionalAttributes.put("IV_PO_BOM", purchaseOrder);
 			}
 		}
 		return new CheckForDownloadResult(additionalAttributes, null);

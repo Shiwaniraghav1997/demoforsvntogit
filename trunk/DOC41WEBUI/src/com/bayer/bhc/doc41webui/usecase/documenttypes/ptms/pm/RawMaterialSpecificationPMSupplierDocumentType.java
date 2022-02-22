@@ -54,10 +54,10 @@ public class RawMaterialSpecificationPMSupplierDocumentType  extends PMSupplierD
     @Override
     public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
             String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame,
-            Map<String, String> attributeValues,Map<String, String> viewAttributes,String purchaseOrder) throws Doc41BusinessException {
+            Map<String, String> attributeValues,Map<String, String> viewAttributes/*,String purchaseOrder*/) throws Doc41BusinessException {
 //    	System.out.println("in rms download class");
         CheckForDownloadResult result = super.checkForDownload(errors, documentUC, customerNumber, vendorNumber,
-                objectId, customVersion, timeFrame, attributeValues, viewAttributes,purchaseOrder);
+                objectId, customVersion, timeFrame, attributeValues, viewAttributes/*,purchaseOrder*/);
         return result;
 
 /* no more extra check required anymore...
