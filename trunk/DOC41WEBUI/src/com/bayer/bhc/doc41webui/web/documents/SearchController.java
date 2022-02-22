@@ -2,7 +2,6 @@ package com.bayer.bhc.doc41webui.web.documents;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -94,7 +93,6 @@ public class SearchController extends AbstractDoc41Controller {
 		return !documentUC.getFilteredDocTypesForDownload(documentType, user).isEmpty() ? null : new String[] { documentUC.getDownloadPermission(documentType), documentUC.getGroupDownloadPermission(documentType) };
 	}
 
-	@SuppressWarnings("unlikely-arg-type")
 	@RequestMapping(value = "/documents/documentsearch", method = RequestMethod.GET)
 	public SearchForm get(@ModelAttribute SearchForm searchForm, BindingResult bindingResult, @RequestParam(required = false) String ButtonSearch, @RequestParam(required = false, defaultValue = "true") boolean errorOnNoDocuments) throws Doc41BusinessException, BATranslationsException {
 		User user = UserInSession.get();
@@ -105,7 +103,6 @@ public class SearchController extends AbstractDoc41Controller {
 		}
 		String mSelectedDocType = StringTool.emptyToNull(searchForm.getDocType());
 		List<DownloadDocumentType> mDocTypes = documentUC.getFilteredDocTypesForDownload(mFormType, user);
-
 		Doc41Log.get().debug(this, null, "Search for download for " + mDocTypes.size() + " document types by '" + mFormType);
 		searchForm.setDocumentTypes(mDocTypes);
 		List<Attribute> attributeDefinitions = new ArrayList<Attribute>();
@@ -113,15 +110,13 @@ public class SearchController extends AbstractDoc41Controller {
 		int objectIdFillLength = -1;
 		boolean isFirst = true;
 		boolean isKgs = false;
-		Properties mMaxVer = ConfigMap.get().getSubCfg("documents", "getOnlyMaxVer"); //gives the information host name 
+		Properties mMaxVer = ConfigMap.get().getSubCfg("documents", "getOnlyMaxVer");
 		boolean mOnlyMaxVer = true;
 		Locale locale = LocaleInSession.get();
 		Tags tags = new Doc41Tags(TranslationsDAO.SYSTEM_ID, "documents", "*", (locale == null) ? Locale.US : locale);
-//		System.out.println("tags::"+tags +"val:"+tags.getOptTagNoEsc("allDocType/s")); /*elerj*/
 		ArrayList<SelectionItem> mAllowedDocTypes = new ArrayList<SelectionItem>();
 		mAllowedDocTypes.add(new SelectionItem("", tags.getOptTagNoEsc("allDocTypes")));
 		for (DownloadDocumentType mDocType : mDocTypes) {
-//			System.out.println("mDocType::"+mDocType.getTypeConst());
 			mAllowedDocTypes.add(new SelectionItem(mDocType.getTypeConst(), tags.getTagNoEsc(mDocType.getTypeConst())));
 			if (isFirst) {
 				isFirst = false;
@@ -149,15 +144,8 @@ public class SearchController extends AbstractDoc41Controller {
 				}
 			}
 		}
-//		To display YBM only for ppi toller 
-//		System.out.println("mallowdoctype::+"+mAllowedDocTypes.size());/*elerj*/
-		/*if(!(searchForm.getSubtype()==1)) {
-//			System.out.println("in if block");
-			mAllowedDocTypes.remove(6);
-		}*/
+
 		searchForm.setAllowedDocTypes(mAllowedDocTypes);
-//		System.out.println("mallowdoctype 1::+"+mAllowedDocTypes.size());/*elerj*/
-//		System.out.println("mallowdocty11::"+Arrays.toString(mAllowedDocTypes.toArray()));
 		searchForm.setKgs(isKgs);
 		searchForm.initAttributes(attributeDefinitions, language);
 		if (!StringTool.isTrimmedEmptyOrNull(ButtonSearch)) {
@@ -166,13 +154,9 @@ public class SearchController extends AbstractDoc41Controller {
 				String searchFormVendorNumber = searchForm.getVendorNumber();
 				String searchFormCustomVersion = searchForm.getVersionIdBom();
 				Date searchFormTimeFrame = searchForm.getTimeFrame();
-				String serachFormPurchaseOrder= searchForm.getPurchaseOrder();
-				String SearchFormdocumentType=searchForm.getDocType();
-//				System.out.println("documentType::"+SearchFormdocumentType);
-				validateMandatoryInputFields(bindingResult, searchForm.isCustomerNumberUsed(), searchFormCustomerNumber, searchForm.isVendorNumberUsed(), searchFormVendorNumber, searchForm.getSubtype(), searchFormCustomVersion, searchFormTimeFrame,serachFormPurchaseOrder, SearchFormdocumentType);
+				validateMandatoryInputFields(bindingResult, searchForm.isCustomerNumberUsed(), searchFormCustomerNumber, searchForm.isVendorNumberUsed(), searchFormVendorNumber, searchForm.getSubtype(), searchFormCustomVersion, searchFormTimeFrame);
 				if (!bindingResult.hasErrors()) {
 					String singleObjectId = searchForm.getObjectId();
-//					System.out.println("singleObjectId"+singleObjectId);
 					Map<String, String> attributeValues = searchForm.getAttributeValues();
 					Map<String, String> viewAttributes = searchForm.getViewAttributes();
 					Map<String, String> attributePredefValuesAsString = searchForm.getAttributePredefValuesAsString();
@@ -194,14 +178,12 @@ public class SearchController extends AbstractDoc41Controller {
 						List<String> objectIds = new ArrayList<String>();
 						if (!StringTool.isTrimmedEmptyOrNull(singleObjectId)) {
 							objectIds.add(singleObjectId);
-							objectIds.add(serachFormPurchaseOrder);
 						}
 						int i = 0;
 						HashSet<String> mChkErrs = new HashSet<String>();
 						ArrayList<String> mChkErrTypes = new ArrayList<String>();
 						boolean mIsMatNotFoundForVendor = false;
 						for (DocumentType mDocType : mDocTypes) {
-//							System.out.println("mDocType::"+mDocType.getTypeConst());
 							i++;
 							Doc41Log.get().debug(this, null, "Check permission for DocType " + i + "/" + mDocTypes.size() + " : " + mDocType.getTypeConst() + " (" + mDocType.getSapTypeId() + ")");
 							// We need to create separate BindingResults per DocType, then see which work
@@ -209,7 +191,7 @@ public class SearchController extends AbstractDoc41Controller {
 							// hope this way is fine to create local, temporary result...
 							BeanPropertyBindingResult mTmp = new BeanPropertyBindingResult(bindingResult.getTarget(), bindingResult.getObjectName());
 							results.add(mTmp);
-							CheckForDownloadResult checkResult = documentUC.checkForDownload(mTmp, mDocType.getTypeConst(), searchFormCustomerNumber, searchFormVendorNumber, singleObjectId, searchFormCustomVersion, searchFormTimeFrame, attributeValues, viewAttributes,serachFormPurchaseOrder);
+							CheckForDownloadResult checkResult = documentUC.checkForDownload(mTmp, mDocType.getTypeConst(), searchFormCustomerNumber, searchFormVendorNumber, singleObjectId, searchFormCustomVersion, searchFormTimeFrame, attributeValues, viewAttributes);
 							if (!mTmp.hasErrors()) {
 								if ((mSelectedDocType == null) || mSelectedDocType.equals(mDocType.getTypeConst())) {
 									searchingTargetTypes.add(mDocType.getTypeConst());
@@ -258,9 +240,7 @@ public class SearchController extends AbstractDoc41Controller {
 								bindingResult.reject("PleaseEnterMandatoryFields");
 							}
 						} else {
-//							to search document call find doc
 							int maxResults = searchForm.getMaxResults();
-//							System.out.println("searchingTargetTypes::"+searchingTargetTypes);
 							List<HitListEntry> documents = documentUC.searchDocuments(searchingTargetTypes, objectIds, allAttributeValues, maxResults, mOnlyMaxVer);
 							if (documents.isEmpty()) {
 								if (errorOnNoDocuments) {
@@ -445,9 +425,7 @@ public class SearchController extends AbstractDoc41Controller {
 	@RequestMapping(value = "/documents/searchpmsupplierGlobal", method = RequestMethod.GET)
 	public ModelMap getPMSupplierGlobal(@ModelAttribute SearchForm searchForm, BindingResult bindingResult, @RequestParam(required = false) String ButtonSearch) throws Doc41BusinessException, BATranslationsException {
 		ModelMap modelMap = new ModelMap();
-//		System.out.println("in searchpmsupplierGlobal control::"+searchForm.getSubtype());
 		modelMap.addAttribute(get(searchForm, bindingResult, ButtonSearch, true));
-//		System.out.println("modelmap::"+searchForm.toString());
 		return modelMap;
 	}
 
@@ -500,7 +478,6 @@ public class SearchController extends AbstractDoc41Controller {
 		long mEndMs = System.currentTimeMillis();
 		long mZIPEndMs = System.currentTimeMillis();
 		Doc41Log.get().debug(this, null, "*** DOWNLOAD ZIP... ***");
-		System.out.println("in serach control");
 		try {
 			List<String> mSelected = values.getDocSel();
 			if ((mSelected == null) || mSelected.isEmpty()) {
@@ -655,11 +632,9 @@ public class SearchController extends AbstractDoc41Controller {
 	 *            - BOM version ID.
 	 * @param timeFrame
 	 *            - BOM time frame.
-	 * @param serachFormPurchaseOrder 
-	 * @param searchFormdocumentType 
 	 * @throws Doc41BusinessException
 	 */
-	private void validateMandatoryInputFields(BindingResult bindingResult, boolean hasCustomerNumber, String customerNumber, boolean hasVendorNumber, String vendorNumber, int subtype, String versionIdBom, Date timeFrame, String serachFormPurchaseOrder, String searchFormdocumentType) throws Doc41BusinessException {
+	private void validateMandatoryInputFields(BindingResult bindingResult, boolean hasCustomerNumber, String customerNumber, boolean hasVendorNumber, String vendorNumber, int subtype, String versionIdBom, Date timeFrame) throws Doc41BusinessException {
 		if (hasCustomerNumber) {
 			if (StringTool.isTrimmedEmptyOrNull(customerNumber)) {
 				bindingResult.rejectValue("customerNumber", "CustomerNumberMissing");
@@ -685,20 +660,8 @@ public class SearchController extends AbstractDoc41Controller {
 		if (subtype == Doc41Constants.PM_DOCUMENT_SUBTYPE_BOM_VERSION_ID) {
 			if (StringTool.isTrimmedEmptyOrNull(versionIdBom)) {
 				bindingResult.rejectValue("versionIdBom", "versionIdBomMissing");
-//				System.out.println("binding ::"+bindingResult.toString());
 			}
 		}
-//		Added by elerj
-		/*if(subtype == Doc41Constants.PM_DOCUMENT_SUBTYPE_PURCHASE_ORDER) {
-//			System.out.println("purchaseOrder ::"+bindingResult.toString());
-			if(searchFormdocumentType.equals("YBM")) {
-				
-				  if (StringTool.isTrimmedEmptyOrNull(serachFormPurchaseOrder)) {
-		                bindingResult.rejectValue("purchaseOrder", "PONumberMissing");
-		            }
-			}}*/
-          
-        
 		if (subtype == Doc41Constants.PM_DOCUMENT_SUBTYPE_BOM_TIME_FRAME && timeFrame == null && bindingResult.getFieldError("timeFrame") == null) {
 			if (timeFrame == null) {
 				bindingResult.rejectValue("timeFrame", "timeFrameMissing");
