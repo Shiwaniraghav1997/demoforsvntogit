@@ -39,6 +39,112 @@ public abstract class CustomizedDocumentForm {
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date timeFrame;
 	private List<SapVendor> vendors;
+	/*
+     * // Added by EGFBC
+     */  
+	private String productionVersion;
+     //added by ELERJ
+     private String purchaseOrder;
+     private boolean lineItemFlag; 
+     /*private List<String> multipleLineItem;*/
+     private String flag;
+     private List<String> materialText;
+     
+     private List<String> materialNumberList;
+     private List<String> productionversionList;
+     private ArrayList<String> searchingTargetType;
+     String searchType;
+     
+	 
+	public String getSearchType() {
+		return searchType;
+	}
+
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+
+	public List<String> getMaterialNumber() {
+		return materialNumber;
+	}
+
+	public void setMaterialNumber(List<String> materialNumber) {
+		this.materialNumber = materialNumber;
+	}
+
+	private List<String> materialNumber;
+
+	public ArrayList<String> getSearchingTargetType() {
+		return searchingTargetType;
+	}
+
+	public void setSearchingTargetType(ArrayList<String> searchingTargetType) {
+		this.searchingTargetType = searchingTargetType;
+	}
+
+	public List<String> getProductionversionList() {
+		return productionversionList;
+	}
+
+	public void setProductionversionList(List<String> productionversionList) {
+		this.productionversionList = productionversionList;
+	}
+
+	public List<String> getMaterialNumberList() {
+		return materialNumberList;
+	}
+
+	public void setMaterialNumberList(List<String> materialNumberList) {
+		this.materialNumberList = materialNumberList;
+	}
+
+	public List<String> getMaterialText() {
+		return materialText;
+	}
+	
+	public void setMaterialText(List<String> materialText) {
+		this.materialText = materialText;
+	}
+
+	public String getFlag() {
+		return flag;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+
+/*	public List<String> getMultipleLineItem() {
+		return multipleLineItem;
+	}
+
+	public void setMultipleLineItem(List<String> multipleLineItem) {
+		this.multipleLineItem = multipleLineItem;
+	}*/
+
+	public boolean getLineItemFlag() {
+		return lineItemFlag;
+	}
+
+	public void setLineItemFlag(boolean lineItemFlag) {
+		this.lineItemFlag = lineItemFlag;
+	}
+
+	public String getPurchaseOrder() {
+		return purchaseOrder;
+	}
+
+	public void setPurchaseOrder(String purchaseOrder) {
+		this.purchaseOrder = purchaseOrder;
+	}
+
+	public String getProductionVersion() {
+		return productionVersion;
+	}
+
+	public void setProductionVersion(String productionVersion) {
+		this.productionVersion = productionVersion;
+	}
 
 	public String getType() {
 		return type;
@@ -196,7 +302,9 @@ public abstract class CustomizedDocumentForm {
 		attributeMandatory = new HashMap<String, Boolean>();
 		for (Attribute attribute : attributeDefinitions) {
 			String key = attribute.getName();
+			System.out.println("key:"+key);
 			String label = attribute.getTranslation(languageCode);
+			System.out.println("label:"+label);
 			attributeLabels.put(key, label);
 			if (oldAttributeValuesMap == null || !oldAttributeValuesMap.containsKey(key)) {
 				attributeValues.put(key, "");
@@ -217,6 +325,7 @@ public abstract class CustomizedDocumentForm {
 				}
 				predefValuesAsString = sb.toString();
 			}
+			System.out.println("predefValuesAsString:"+predefValuesAsString);
 			attributePredefValuesAsString.put(key, predefValuesAsString);
 		}
 		if (oldAttributeValuesMap != null && !oldAttributeValuesMap.isEmpty()) {
