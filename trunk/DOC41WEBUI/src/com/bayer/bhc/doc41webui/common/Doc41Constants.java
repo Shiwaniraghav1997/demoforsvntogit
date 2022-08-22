@@ -22,6 +22,7 @@ public final class Doc41Constants {
 	public static final String MONITORING_SUCCESS = "Success";
 	public static final String MONITORING_FAILURE = "Failure";
 	// Field size specific constants:
+	public static final int FIELD_SIZE_PURCHASE_ORDER = 10;
 	public static final int FIELD_SIZE_CUSTOMER_NUMBER = 10;
 	public static final int FIELD_SIZE_VENDOR_NUMBER = 10;
 	public static final int FIELD_SIZE_MATNR = 18;
@@ -157,7 +158,9 @@ public final class Doc41Constants {
 	/**
 	 * The Bill of Material (BOM) version ID sub-type for PM documents.
 	 */
-	public static final int PM_DOCUMENT_SUBTYPE_BOM_VERSION_ID = 1;
+	/*public static final int PM_DOCUMENT_SUBTYPE_BOM_VERSION_ID = 1;*/
+	
+	 public static final int PM_DOCUMENT_SUBTYPE_PRODUCTION_VERSION = 1;
 	/**
 	 * The Bill of Material (BOM) time frame sub-type for PM documents.
 	 */
