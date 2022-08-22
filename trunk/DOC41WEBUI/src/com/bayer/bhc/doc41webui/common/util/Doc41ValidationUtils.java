@@ -57,6 +57,14 @@ public final class Doc41ValidationUtils {
 	 * from SAP.
 	 */
 	public static final String ERROR_MESSAGE_NO_PROCESS_ORDER = "NoProcessOrder";
+	
+	
+	//Added for SPecification by ELERJ
+	public static final String ERROR_MESSAGE_PV_NOT_FOUND = "NoPvFound"; //1
+	public static final String ERROR_MESSAGE_NO_MAT_FOR_PO = "NoMatForPo";
+	public static final String ERROR_MESSAGE_PO_NOT_FOUND = "NoPoFound";
+	
+	
 
 	// Can not be instantiated.
 	private Doc41ValidationUtils() {
@@ -64,6 +72,7 @@ public final class Doc41ValidationUtils {
 
 	public static void checkMaterialNumber(String value, String fieldName, Errors errors, boolean isMandatory) {
 		if (StringTool.isTrimmedEmptyOrNull(value)) {
+//			System.out.println("isMandatory::"+isMandatory);
 			if (isMandatory) {
 				errors.rejectValue(fieldName, "MatNoMissing");
 			}
@@ -75,6 +84,21 @@ public final class Doc41ValidationUtils {
 				numberCheck(trimmedValue, fieldName, errors, 8);
 			}
 		}
+	}
+	
+	public static void checkPurchaseOrder(String value, String fieldName, Errors errors,int maxSignificant ) {
+		try {
+		Long intValue=Long.parseLong(value);
+		int length = String.valueOf(intValue).length();
+		if (length > Doc41Constants.FIELD_SIZE_PURCHASE_ORDER) {
+			errors.rejectValue(fieldName, "TooLong");
+			/*errors.rejectValue(fieldName, "TooManySignificant" + maxSignificant);*/
+		}
+		}
+		 catch (NumberFormatException e) {
+				errors.rejectValue(fieldName, "OnlyNumbers");
+			}
+		
 	}
 
 	private static void numberCheck(String value, String fieldName, Errors errors, int maxSignificant) {
@@ -121,6 +145,7 @@ public final class Doc41ValidationUtils {
 	 *            is used for error handling.
 	 */
 	public static String validateMaterialNumber(String materialNumber, Errors errors) {
+//		System.out.println("material validation::"+materialNumber);
 		if (StringTool.isTrimmedEmptyOrNull(materialNumber)) {
 			errors.rejectValue(String.format("attributeValues['%s']", Doc41Constants.ATTRIB_NAME_MATERIAL),
 					MATERIAL_NUMBER_MISSING_ERROR_MESSAGE);
