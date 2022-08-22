@@ -38,7 +38,7 @@ public class CheckPOAndMaterialForVendorRFC extends AbstractDoc41RFC<String> {
 	 *            parameters to be feeded: 1. vendornumber (obligatory), 2. poNumber
 	 *            (optional = may be null), 3. materialNumber(obligatory)
 	 */
-	@Override
+//	@Override
 	public void prepareCall(JCoFunction jCoFunction, List<?> inputParameterList) throws SAPException {
 		Doc41Log.get().debug(this, null, "ENTRY");
 		if (jCoFunction != null) {
