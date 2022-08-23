@@ -1,4 +1,4 @@
-/*package com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm;
+package com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm;
 
 import java.util.Collections;
 import java.util.Date;
@@ -34,8 +34,8 @@ public class BomForPMSupplierDocumentType extends PMSupplierDownloadDocumentType
 	public Set<String> getExcludedAttributes() {
 		return Collections.singleton(Doc41Constants.ATTRIB_NAME_VENDOR);
 	}
-	
-    *//**
+
+    /**
      * checkForDownload
      * @param errors
      * @param documentUC
@@ -46,17 +46,17 @@ public class BomForPMSupplierDocumentType extends PMSupplierDownloadDocumentType
      * @param viewAttributes - what kind of magic attributes?
      * @return
      * @throws Doc41BusinessException
-     *//*
+     */
     @Override
     public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
             String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame,
-            Map<String, String> attributeValues,Map<String, String> viewAttributes,String purchaseOrder) throws Doc41BusinessException {
-//System.out.println("in BOM download class");
+            Map<String, String> attributeValues,Map<String, String> viewAttributes,int subType,String purchaseOrder) throws Doc41BusinessException {
+
         CheckForDownloadResult result = super.checkForDownload(errors, documentUC, customerNumber, vendorNumber,
-                objectId, customVersion, timeFrame, attributeValues, viewAttributes,purchaseOrder);
+                objectId, customVersion, timeFrame, attributeValues, viewAttributes,subType,purchaseOrder);
         return result;
 
- no more extra check required anymore...
+/* no more extra check required anymore...
 
         Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
         
@@ -68,7 +68,7 @@ public class BomForPMSupplierDocumentType extends PMSupplierDownloadDocumentType
         additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
         
         return new CheckForDownloadResult(additionalAttributes,null);
-
+*/
     }
 
 	@Override
@@ -78,6 +78,4 @@ public class BomForPMSupplierDocumentType extends PMSupplierDownloadDocumentType
 	}
     
 	//TODO downloadcheck wie pm
-
 }
-*/
