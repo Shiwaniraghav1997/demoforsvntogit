@@ -72,7 +72,7 @@ public abstract class LayoutSupplierDocumentType implements DocumentType{
 //	@Override
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame,
-			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
+			Map<String, String> attributeValues,Map<String, String> viewAttributes,int subType,String purchaseOrder) throws Doc41BusinessException {
 		
 		Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
 		
@@ -85,7 +85,7 @@ public abstract class LayoutSupplierDocumentType implements DocumentType{
 		Map<String, String> additionalAttributes = new HashMap<String, String>();
 		additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
 		
-		return new CheckForDownloadResult(additionalAttributes,null);
+		return new CheckForDownloadResult(additionalAttributes,null,null);
 	}
 	
 	protected abstract boolean checkExistingDocs();
