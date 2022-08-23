@@ -38,4 +38,15 @@ implements DownloadDocumentType{
 		return false;
 	}
 
+/*//	Addedd by force ELERJ
+
+	@Override
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber,
+			String vendorNumber, String objectId, String customVersion, Date timeFrame,
+			Map<String, String> attributeValues, Map<String, String> viewAttributes, int subType,String purchaseOrder)
+			throws Doc41BusinessException {
+		// TODO Auto-generated method stub
+		return null;
+	}*/
+
 }

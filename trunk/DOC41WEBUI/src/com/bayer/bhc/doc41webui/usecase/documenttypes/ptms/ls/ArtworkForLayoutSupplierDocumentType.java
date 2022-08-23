@@ -61,7 +61,7 @@ public class ArtworkForLayoutSupplierDocumentType extends LayoutSupplierDocument
     @Override
     public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
             String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame,
-            Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
+            Map<String, String> attributeValues,Map<String, String> viewAttributes, int subType,String purchaseOrder) throws Doc41BusinessException {
         
         Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
         
@@ -72,7 +72,7 @@ public class ArtworkForLayoutSupplierDocumentType extends LayoutSupplierDocument
         Map<String, String> additionalAttributes = new HashMap<String, String>();
         additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
         
-        return new CheckForDownloadResult(additionalAttributes,null);
+        return new CheckForDownloadResult(additionalAttributes,null,null);
     }
 
 	@Override
@@ -86,5 +86,17 @@ public class ArtworkForLayoutSupplierDocumentType extends LayoutSupplierDocument
 	public boolean isNotificationEMailHidden() {
 		return false;
 	}
+
+	//Addedd by force ELERJ
+	/*@Override
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber,
+			String vendorNumber, String objectId, String customVersion, Date timeFrame,
+			Map<String, String> attributeValues, Map<String, String> viewAttributes, int subType,String purchaseOrder)
+			throws Doc41BusinessException {
+		// TODO Auto-generated method stub
+		return null;
+	}*/
+	
+
     	
 }

@@ -44,5 +44,9 @@ public class LayoutForLayoutSupplierDocumentType extends LayoutSupplierDocumentT
 	public boolean isNotificationEMailHidden() {
 		return false;
 	}
+
+	
+
+	
 	
 }
