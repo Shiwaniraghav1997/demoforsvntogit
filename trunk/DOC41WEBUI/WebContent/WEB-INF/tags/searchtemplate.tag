@@ -183,7 +183,7 @@
 			<div class="modal-content modal-lg">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<!-- <h4 class="modal-title">Modal Header</h4> -->
+					 <h4 class="modal-title">Material Selection Window</h4>
 				</div>
 				<div class="modal-body">
 					<div class="scrollit">
@@ -347,16 +347,19 @@ addSerialNumber();
     var subType=1;
     var purchaseOrder=$('#purchaseOrder').val() ;
     var searchType=$('#searchType').val() ;
+    var path="${pageContext.request.contextPath}/documents/searchpmsupplierGlobal";
     /* console.log("seledata:"+selectedRowData); */
   /*   console.log(selectedRowData);
     console.log(materialNumber); */
     console.log(materialNumber);
     console.log("searchType:"+searchType);
     console.log("targetType:"+targetType.toString());
+    console.log("path"+path);
+    
       
        $.ajax({ 
     	type: "get",
-    	 url: "/bds/documents/searchpmsupplierGlobal", 
+    	 url:path, 
     	 async:false,
          data: {"objectId":materialNumber,"productionVersion":PvNumber,"vendorNumber":vendorNumber,"searchType":searchType, "type":doctype, "flag":flag,"subtype":subType,"purchaseOrder":purchaseOrder}, 
          
