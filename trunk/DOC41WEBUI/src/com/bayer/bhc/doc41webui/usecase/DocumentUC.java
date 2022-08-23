@@ -69,6 +69,7 @@ import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.PZTecDrawingForLay
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.ls.PackMatSpecForLayoutSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.AntiCounSpecForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.ArtworkForPMSupplierDocumentType;
+import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.BomForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.LayoutForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PZTecDrawingForPMSupplierDocumentType;
 import com.bayer.bhc.doc41webui.usecase.documenttypes.ptms.pm.PackMatSpecForPMSupplierDocumentType;
@@ -186,6 +187,8 @@ public class DocumentUC {
         addDocumentType(new AntiCounSpecForPMSupplierDocumentType());
 
         addDocumentType(new RawMaterialSpecificationPMSupplierDocumentType());
+        addDocumentType(new BomForPMSupplierDocumentType());
+        
 
         Doc41Log.get().debug(this, null, "Init done, "+
                 "documentTypes("+documentTypes.size()+"): " + StringTool.list(documentTypes.keySet(), ",", false)+ ", " +
@@ -434,6 +437,7 @@ public class DocumentUC {
         List<Attribute> filteredAttributes = new ArrayList<Attribute>();
         if (documentType.isKgs()) {
             DocMetadata metadata = getMetadata(doctype);
+//            System.out.println("metadata:"+metadata);
             List<Attribute> kgsAttributes = metadata.getAttributes();
             Set<String> excludedAttributes = documentType.getExcludedAttributes();
             Set<String> mandatoryAttributes = documentType.getMandatoryAttributes();
@@ -449,6 +453,7 @@ public class DocumentUC {
                 }
             }
         }
+//        System.out.println("filteredAttributes"+filteredAttributes);
 		//Doc41Constants.ATTRIB_NAME_FILENAME
 		return filteredAttributes;
 	}
@@ -670,9 +675,11 @@ public class DocumentUC {
             Map<String, Map<Integer, String>> seqToKeyAllTypes = new HashMap<String, Map<Integer,String>>();
             HashSet<String>mKnownKeys = new HashSet<String>();
             DocTypeDef docDef = null;
+//            System.out.println("pTypes:"+pTypes);
             for (String mType : pTypes) {
                 Map<Integer, String> seqToKey = new HashMap<Integer, String>();
                 //DocumentType docType = getDocType(mType);
+//                System.out.println("mType:"+mType);
                 DocMetadata metadata = getMetadata(mType);
                 docDef = metadata.getDocDef();
                 d41idList.add( docDef.getD41id() );
@@ -708,7 +715,10 @@ public class DocumentUC {
                     List<HitListEntry> oneResult = bwRFCService.findDocsOld(docDef.getD41id(), sapObj, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
                     allResults.addAll(oneResult);
                 }
-            } else /**/ {
+            } else /**/ 
+            /*/added by ELERJ for specficication*/
+            if(!(objectIds == null)){
+//            	System.out.println("calling finddoc--------"+ d41idList);
               allResults = bwRFCService.findDocs(d41idList, null, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
 		    }
 		        
@@ -917,8 +927,8 @@ public class DocumentUC {
 		return checkResult;
 	}
 	
-	public CheckForDownloadResult checkForDownload(Errors errors, String type, String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame, Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException{
-		return getDocTypeForDownload(type).checkForDownload(errors, this, customerNumber, vendorNumber, objectId, customVersion, timeFrame, attributeValues,viewAttributes);
+	public CheckForDownloadResult checkForDownload(Errors errors, String type, String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame, Map<String, String> attributeValues,Map<String, String> viewAttributes, int subType, String purchaseOrder) throws Doc41BusinessException{
+		return getDocTypeForDownload(type).checkForDownload(errors, this, customerNumber, vendorNumber, objectId, customVersion, timeFrame, attributeValues,viewAttributes, subType,purchaseOrder);
 	}
 	
 	public CheckForDownloadResult checkForDirectDownload(String type, String objectId) throws Doc41BusinessException{
@@ -996,6 +1006,7 @@ public class DocumentUC {
 	 */
 	public DocumentType getDocType(String typeConstant) throws Doc41BusinessException {
 		DocumentType documentType = documentTypes.get(typeConstant);
+//		System.out.println(typeConstant +"::typeConstant");
 		if(documentType==null){
 			throw new Doc41BusinessException("unknown doctype, typeConstant: "+typeConstant);
 		}
@@ -1201,5 +1212,9 @@ public class DocumentUC {
 	public boolean isNotificationEMailHidden(String documentType) throws Doc41BusinessException {
 		return getDocType(documentType).isNotificationEMailHidden();
 	}
+
+	public List<String> checkSpecification(String vendorNumber, String purchaseOrder) throws Doc41BusinessException, Doc41ServiceException {
+        return authorizationRFCService.checkSpecification(vendorNumber, purchaseOrder);
+    }
 
 }
