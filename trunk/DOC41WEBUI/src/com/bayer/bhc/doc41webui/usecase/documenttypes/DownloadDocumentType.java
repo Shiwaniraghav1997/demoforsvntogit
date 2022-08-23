@@ -35,5 +35,7 @@ public interface DownloadDocumentType extends DocumentType{
      */
 	public String getDownloadPermissionType();
 
-	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame, Map<String, String> attributeValues,Map<String, String> viewAttributes)throws Doc41BusinessException;
-}
+	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame, Map<String, String> attributeValues,Map<String, String> viewAttributes, int subType,String purchaseOrder)throws Doc41BusinessException;
+//	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC, String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame, Map<String, String> attributeValues,Map<String, String> viewAttributes)throws Doc41BusinessException;
+
+	}
