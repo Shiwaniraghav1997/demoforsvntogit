@@ -23,6 +23,7 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 	private static final String RFC_NAME_GET_INSPECTION_LOTS_FOR_VENDOR_BATCH = "GetInspectionLotsForVendorBatch";
 	private static final String RFC_NAME_GET_BATCH_OBJECTS_FOR_SUPPLIER = "GetBatchObjectsForSupplier";
 	private static final String RFC_NAME_GET_BATCH_OBJECTS_FOR_CUSTOMER = "GetBatchObjectsForCustomer";
+	private static final String RFC_NAME_GET_SPECIFICATION = "CheckPurchaseOrderForVendor";
 
 	public SDReferenceCheckResult checkDeliveryForPartner(String carrier, String referenceNumber) throws Doc41ServiceException {
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(), "checkDeliveryForPartner() - deliveryNumber=" + referenceNumber + ", carrier=" + carrier + ".");
@@ -111,7 +112,9 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		params.add(materialNumber);
 		params.add(customVersion);
 		params.add(timeFrame);
-		return performRFC(params, RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR);
+		List<String> ret=performRFC(params, RFC_NAME_CHECK_PO_AND_MATERIAL_FOR_VENDOR);
+//		System.out.println("ret:"+ret);
+		return ret;
 	}
 
 	/**
@@ -169,5 +172,16 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		List<QMBatchObject> batchObjects = performRFC(params, RFC_NAME_GET_BATCH_OBJECTS_FOR_CUSTOMER);
 
 		return batchObjects;
+	}
+
+	public List<String> checkSpecification(String vendorNumber, String purchaseOrder) throws Doc41ServiceException {
+
+		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(), "checkSpecification() - vendorNumber = " + vendorNumber + ".");
+		List<Object> params = new ArrayList<Object>();
+		params.add(vendorNumber);
+		params.add(purchaseOrder);
+		List<String> ret=performRFC(params, RFC_NAME_GET_SPECIFICATION);
+		return ret;
+	
 	}
 }
