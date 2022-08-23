@@ -69,6 +69,7 @@ public class CheckArtworkLayoutForVendorRFC extends AbstractDoc41RFC<String>{
 		if(StringTool.equals(returnCode, RETURNCODE_OK)){
 			return null;
 		} else if(StringTool.equals(returnCode, RETURNCODE_NOT_FOUND)){
+//			System.out.println(" no dic fornd in lra");
 			return "NoDocumentsFound";
 		}
 		return "UnknownReturnCode";
