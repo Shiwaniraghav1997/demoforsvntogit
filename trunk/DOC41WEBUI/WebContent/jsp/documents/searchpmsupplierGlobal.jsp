@@ -6,7 +6,7 @@
 	<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 	<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 	
-  	<link rel="stylesheet" href="/resources/css/jquery-ui-1.10.3.custom/custom-theme/jquery-ui-1.10.3.custom.css">
+  	<!-- <link rel="stylesheet" href="/resources/css/jquery-ui-1.10.3.custom/custom-theme/jquery-ui-1.10.3.custom.css"> -->
   	<script>$( function() { $( "#datepicker" ).datepicker(); } );</script>
 	<doc41:searchtemplate action="searchpmsupplierGlobal">
 		<jsp:attribute name="fragmentCustomSearchFields">
@@ -35,31 +35,34 @@
             		<doc41:error path="docType" />
             	</td>
             </tr>
-            <script>
-            /* $(document).ready(function(){
-    		    $("select").change(function(){
-    		        $(this).find("option:selected").each(function(){
-    		            var optionValue = $(this).attr("value");
-    		            /* alert("optionValue ::"+optionValue);  */
-    		             if(optionValue=='YBM'){
-    		            	  /* alert("optionValue"+optionValue);  */
-    		            
-    		                $("#purchaseOrd").show();
-    		            } /* else{
-    		                $("#purchaseOrd").hide();
-    		            }  */
-    		        });
-    		    }).change();
-    		}); */
-    		 
 
-    		 			
-    		
+            <script>
+
+                var subType = ${param.subtype};
+                /* var subType = ${param.subtype}; */
+               /*  var flag=  ${param.flag}; */
+                
+            if(subType==1){
+
+                /* alert("hello "+${param.subtype});  */
+                /* alert("hello "+${param.flag});  */
+                /* document.getElementById("objectId").style.display='none'; */
+                 $("#objectId").hide();
+
+            }
+            else
+                {
+                 /* alert("hello else"); */
+                 $("#objectId").show();
+                /*  document.getElementById("objectId").style.display='';  */
+
+                }
+
             </script>
             <!-- -----------------end of document type----------- -->
             
-            
-            <c:if test="${searchForm.subtype eq Doc41Constants.PM_DOCUMENT_SUBTYPE_BOM_VERSION_ID}">
+            <!-- test end -->
+           <%--  <c:if test="${searchForm.subtype eq Doc41Constants.PM_DOCUMENT_SUBTYPE_BOM_VERSION_ID}">
             	<tr>
             		<th>
             			<label for="versionIdBom">
@@ -73,24 +76,40 @@
             		</td>
             	</tr>
             </c:if>
-            <!-- ------------------- purchase order elerj------------------- -->
-            <!-- <div style='display:none;'>  -->
-          <%--   <c:if test="${searchForm.subtype eq Doc41Constants.PM_DOCUMENT_SUBTYPE_PURCHASE_ORDER}">
-                <tr id="purchaseOrd" style='display:none;'>
-                    <th>
-                        <label for="PurchaseOrderBOM">
-                            <doc41:translate label="PurchaseOrderBOM" />
-                        </label>
-                    </th>
-                    <td >
-                        <form:input  path="purchaseOrder" cssClass="portlet-form-input-field portlet-big" maxlength="70" />
-                        <doc41:error path="purchaseOrder" />
-                        <!--------------<doc41:error path="docType" />   ---------------------->
-                    </td>
-                </tr>
-             
-           </c:if>
-           --%> 
+            --%> <!-- ------------------- purchase order elerj------------------- -->
+            <c:if test="${searchForm.subtype eq Doc41Constants.PM_DOCUMENT_SUBTYPE_PRODUCTION_VERSION}">
+            	<tr>
+            		<th>
+            			<label for="purchaseOrder">
+            				<doc41:translate label="purchaseOrder" />
+            				<span title="mandatory"> *</span>
+            			</label>
+            		</th>
+            		<td>
+            			<form:input path="purchaseOrder" cssClass="portlet-form-input-field portlet-mandatory-custom portlet-big" maxlength="70" />
+            			<doc41:error path="purchaseOrder" />
+            			<doc41:error path="docType" />
+            		</td>
+            	</tr>
+            </c:if> 
+           
+           <!-- Production version is addedd -->
+           <c:if test="${searchForm.subtype eq Doc41Constants.PM_DOCUMENT_SUBTYPE_PRODUCTION_VERSION}">
+<tr>
+<th>
+<label for="productionVersion">
+<doc41:translate label="productionVersion" />
+</label>
+</th>
+<td>
+<form:input path="productionVersion" cssClass="portlet-form-input-field portlet-big" maxlength="70" />
+<doc41:error path="productionVersion" />
+<doc41:error path="docType" />
+</td>
+</tr>
+</c:if>
+
+<!-- -----------------------------production version end-- -->
            
             
             <!-- ---------purchase order end ------ -->
@@ -110,5 +129,5 @@
             </c:if>
 		</jsp:attribute>
 	</doc41:searchtemplate>
-	<script src="/resources/js/datepicker.js"></script>
+	<!-- <script src="/resources/js/datepicker.js"></script> -->
 </doc41:layout>
