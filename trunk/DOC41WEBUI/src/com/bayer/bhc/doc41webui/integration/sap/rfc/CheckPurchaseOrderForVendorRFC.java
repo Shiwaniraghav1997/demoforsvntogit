@@ -1,8 +1,8 @@
 package com.bayer.bhc.doc41webui.integration.sap.rfc;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.ecim.foundation.basic.StringTool;
@@ -26,17 +26,7 @@ public class CheckPurchaseOrderForVendorRFC extends AbstractDoc41RFC<String> {
 	 private static final String RETURNCODE_NO_MAT_FOR_PO = "3";
 	private static final String RETURNCODE_PV_NOT_FOUND = "2";
 
-	/**
-	 * Check PO and material(old) / check material(new) - for vendor. SAP-Developer:
-	 * IV_PONUMBER ist optional. Es wird nur noch RC = 0 zurück gegebenen wenn es
-	 * PO Positionen mit nicht gesetztem Endlieferkennzeichen gibt.
-	 * 
-	 * @param JCoFunction
-	 *            sap function object to be called.
-	 * @param pInputParams
-	 *            parameters to be feeded: 1. vendornumber (obligatory), 2. poNumber
-	 *            (optional = may be null), 3. materialNumber(obligatory)
-	 */
+	
 	// @Override
 	public void prepareCall(JCoFunction jCoFunction, List<?> inputParameterList) throws SAPException {
 		Doc41Log.get().debug(this, null, "ENTRY");
