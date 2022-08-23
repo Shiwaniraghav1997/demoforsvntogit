@@ -120,6 +120,10 @@
 	background-color: #FFDDCC;
 }
 
+.portlet-mandatory-custom {
+	background-color: #FFDDCC;
+}
+
 .portlet-big {
 	width: 600px;
 }
