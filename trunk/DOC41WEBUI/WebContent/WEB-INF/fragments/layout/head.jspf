@@ -38,7 +38,14 @@
 		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/layoutstyle.css" />
 		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/doc41.css" />
 		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/portlet.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui-1.10.3.custom/custom-theme/jquery-ui-1.10.3.custom.css">
+		<!-- CSS for popup modal -->
+		<!--  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+		 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" /> 
+		 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/modalLayout.css" />
 		
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/datepicker.js"></script>
 		
 		
 		<!-- domLib/domTT -->
