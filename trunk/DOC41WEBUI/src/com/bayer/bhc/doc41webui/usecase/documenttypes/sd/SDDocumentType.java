@@ -88,7 +88,7 @@ public abstract class SDDocumentType implements DocumentType {
 	 */
 	public CheckForDownloadResult checkForDownload(Errors errors, DocumentUC documentUC,
 			String customerNumber, String vendorNumber, String objectId, String customVersion, Date timeFrame,
-			Map<String, String> attributeValues,Map<String, String> viewAttributes) throws Doc41BusinessException {
+			Map<String, String> attributeValues,Map<String, String> viewAttributes,int subType,String purchaseOrder) throws Doc41BusinessException {
 		if(StringTool.isTrimmedEmptyOrNull(objectId)){
 			errors.rejectValue("objectId","MandatoryField");
 		} else {
@@ -98,7 +98,7 @@ public abstract class SDDocumentType implements DocumentType {
 				errors.rejectValue("objectId",""+deliveryCheck.getError());
 			} 
 		}
-		return new CheckForDownloadResult(null,null);
+		return new CheckForDownloadResult(null,null,null);
 	}
 	
 	public CheckForDownloadResult checkForDirectDownload(DocumentUC documentUC, String objectId)throws Doc41BusinessException{
@@ -110,7 +110,7 @@ public abstract class SDDocumentType implements DocumentType {
             Doc41Log.get().warning(this, null, "Delivery: " + objectId + " not allowed for Partner: null, DirectDownload " + getTypeConst() + "/" + getSapTypeId() + " aborted!");
 			throw new Doc41BusinessException(""+deliveryCheck.getError());
 		}
-		return new CheckForDownloadResult(null,null);
+		return new CheckForDownloadResult(null,null,null);
 	}
 	
 	@Override
