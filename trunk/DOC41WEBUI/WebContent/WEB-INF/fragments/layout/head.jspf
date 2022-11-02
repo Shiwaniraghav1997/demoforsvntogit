@@ -17,7 +17,10 @@
 		<!-- jQuery -->
 <%-- 		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui-1.10.3.custom/cupertino/jquery-ui.min.css" /> --%>
 		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui-1.10.3.custom/custom-theme/jquery-ui-1.10.3.custom.min.css" />
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
+		 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
+		 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+		<link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"  rel="stylesheet"  />
+		<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.10.3.custom.min.js"></script>
 		
 		<!-- Tablesorter: required -->
