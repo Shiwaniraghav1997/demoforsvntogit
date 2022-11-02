@@ -185,7 +185,7 @@ public class DocumentUC {
 		addDocumentType(new PZTecDrawingForPMSupplierDocumentType());
 		addDocumentType(new TecPackDelReqForPMSupplierDocumentType());
         addDocumentType(new AntiCounSpecForPMSupplierDocumentType());
-
+        /*---Added by ELERJ--*/
         addDocumentType(new RawMaterialSpecificationPMSupplierDocumentType());
         addDocumentType(new BomForPMSupplierDocumentType());
         
@@ -229,6 +229,7 @@ public class DocumentUC {
 	            mProfileByCode.put(mPP.getPermissionCode(), mPP);
 	        }
 	        for (DocumentType documentType : documentTypes.values()) {
+//	        	System.out.println("documentType:"+documentType);
 	            String typeConst = documentType.getTypeConst();
 	            if (documentType instanceof DownloadDocumentType) {
 	                String mPerm = ((DownloadDocumentType)documentType).getPermissionDownload();
@@ -264,7 +265,9 @@ public class DocumentUC {
 		String sapDocType = dt.getSapTypeId();
 		DocMetadata docMetadata = null;
 		if (dt.isKgs()) {
+//			System.out.println("sapDocType:"+sapDocType);
 		    docMetadata = getDocMetadataBySapDocType(sapDocType);
+//		    System.out.println("docMetadata:"+docMetadata);
 	        if( docMetadata == null ) {
 	            throw new Doc41BusinessException("document type "+type+"/"+sapDocType+" not found in SAP");
 	        }
@@ -321,6 +324,7 @@ public class DocumentUC {
 	 */
 	public DocMetadata getDocMetadataBySapDocType(String sapDocType) throws Doc41BusinessException {
 		Map<String, DocMetadata> mdContainer = getDocMetadataContainer();
+//		System.out.println("mdContainer.get(sapDocType)::"+mdContainer.get(sapDocType));
 		return mdContainer.get(sapDocType);
 	}
 	
@@ -434,15 +438,18 @@ public class DocumentUC {
 	
 	public List<Attribute> getAttributeDefinitions(String doctype,boolean filterFileName) throws Doc41BusinessException{
         DocumentType documentType = documentTypes.get(doctype);
+//        System.out.println("doctype:"+doctype+ " documentType:"+documentType);
         List<Attribute> filteredAttributes = new ArrayList<Attribute>();
         if (documentType.isKgs()) {
             DocMetadata metadata = getMetadata(doctype);
-//            System.out.println("metadata:"+metadata);
+
             List<Attribute> kgsAttributes = metadata.getAttributes();
+
             Set<String> excludedAttributes = documentType.getExcludedAttributes();
             Set<String> mandatoryAttributes = documentType.getMandatoryAttributes();
             for (Attribute attribute : kgsAttributes) {
                 String name = attribute.getName();
+             
                 if(excludedAttributes==null || !excludedAttributes.contains(name)){
                 	setMandatoryAttribute(attribute, mandatoryAttributes);
                     boolean fileNameFilterCheck = !filterFileName || !StringTool.equals(name, Doc41Constants.ATTRIB_NAME_FILENAME);
@@ -453,8 +460,6 @@ public class DocumentUC {
                 }
             }
         }
-//        System.out.println("filteredAttributes"+filteredAttributes);
-		//Doc41Constants.ATTRIB_NAME_FILENAME
 		return filteredAttributes;
 	}
 	
@@ -665,7 +670,7 @@ public class DocumentUC {
 		}
 	}
 	
-	public List<HitListEntry> searchDocuments(ArrayList<String> pTypes, List<String> objectIds,
+	public List<HitListEntry> searchDocuments(ArrayList<String> pTypes, List<String> objectIds, String PurchaseOrder,
 			Map<String, String> attributeValues, int maxResults, boolean maxVersionOnly)
 					throws Doc41BusinessException {
 		try{
@@ -718,8 +723,8 @@ public class DocumentUC {
             } else /**/ 
             /*/added by ELERJ for specficication*/
             if(!(objectIds == null)){
-//            	System.out.println("calling finddoc--------"+ d41idList);
-              allResults = bwRFCService.findDocs(d41idList, null, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
+//            	System.out.println("calling finddoc--------"+ objectIds);
+              allResults = bwRFCService.findDocs(d41idList, null, objectIds,attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
 		    }
 		        
 		        /* NO MORE USED, FindDocsMulti no takes care itself for al sapObj (types of objectIds = numbers, e.g. material number, po number, delivery number, ...)
@@ -1006,10 +1011,10 @@ public class DocumentUC {
 	 */
 	public DocumentType getDocType(String typeConstant) throws Doc41BusinessException {
 		DocumentType documentType = documentTypes.get(typeConstant);
-//		System.out.println(typeConstant +"::typeConstant");
 		if(documentType==null){
 			throw new Doc41BusinessException("unknown doctype, typeConstant: "+typeConstant);
 		}
+//		System.out.println(documentType +"::documentType");
 		return documentType;
 	}
 
@@ -1213,8 +1218,8 @@ public class DocumentUC {
 		return getDocType(documentType).isNotificationEMailHidden();
 	}
 
-	public List<String> checkSpecification(String vendorNumber, String purchaseOrder) throws Doc41BusinessException, Doc41ServiceException {
-        return authorizationRFCService.checkSpecification(vendorNumber, purchaseOrder);
+	public List<String> checkSpecification(String vendorNumber, String purchaseOrder, String customVersion) throws Doc41BusinessException, Doc41ServiceException {
+        return authorizationRFCService.checkSpecification(vendorNumber, purchaseOrder,customVersion);
     }
 
 }
