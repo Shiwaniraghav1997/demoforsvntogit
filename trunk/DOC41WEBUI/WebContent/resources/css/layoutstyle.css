@@ -186,3 +186,17 @@ body {
 	width: 				100%;
 	overflow: 			visible;
 }
+
+/* -----------------------------------Draggable modal------------------ */
+
+
+/* #myModal {
+  position: relative;
+}
+
+.modal-content modal-lg {
+  position: fixed;
+  width: 100%;
+  margin: 0;
+  padding: 10px;
+} */
