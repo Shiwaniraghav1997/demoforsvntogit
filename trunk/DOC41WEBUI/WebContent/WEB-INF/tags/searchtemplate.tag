@@ -30,18 +30,13 @@
 		function openDocument(key,type){
 			window.location ="download?type="+type+"&key="+key;
 		}
+		
 	</script>
 
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/doc41tablesorterclient.js"></script>
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+	<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.tablesorter.pager.min.js"></script> --%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
-<!-- <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/> -->
-
-
-<%--  <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/modalLayout.css" /> --%>
-
 
 <div id="div-body" class="portlet-body">
 	<!-- searchform in tag -->
@@ -63,8 +58,7 @@
 					label="ButtonReset" /></a> <input type="submit" id="search"
 				class="portlet-form-button"
 				value="<doc41:translate label="ButtonSearch"/>" name="ButtonSearch" />
-			<%-- <input type="submit" id="search1" class="portlet-form-button"
-				value="<doc41:translate label="ButtonSearch"/>" name="ButtonSearch" /> --%>
+			
 		</div>
 
 		<doc41:errors form="searchForm" />
@@ -98,8 +92,7 @@
 						<c:if
 							test="${searchForm.vendorNumberUsed && (empty showVendorNumber or showVendorNumber)}">
 							<th><label for="vendorNumber"><doc41:translate
-										label="VendorNumber" />
-										<span title="mandatory"> *</span></label></th>
+										label="VendorNumber" /> <span title="mandatory"> *</span></label></th>
 							<td><form:select path="vendorNumber"
 									items="${searchForm.vendors}"
 									cssClass="portlet-form-input-field portlet-mandatory-custom portlet-big"
@@ -110,7 +103,8 @@
 					<tr>
 					<tr id="objectId">
 						<c:if test="${empty showObjectId or showObjectId}">
-							<th><doc41:translate label="ObjectId${searchForm.type}" /> <span title="mandatory"> *</span></th>
+							<th><doc41:translate label="ObjectId${searchForm.type}" />
+								<span title="mandatory"> *</span></th>
 							<td><form:input path="objectId"
 									cssClass="portlet-form-input-field portlet-mandatory portlet-big"
 									maxlength="70" /> <doc41:error path="objectId" /></td>
@@ -128,10 +122,11 @@
 								<c:if test="${lovStatus.count % 2 != 0}">class="portlet-table-alternate"</c:if>>
 								<th><label for="${attributeValue.key}"><c:out
 											value="${searchForm.attributeLabels[attributeValue.key]}" />
-										<%-- <input type="hidden" name="attributeLabels['${attributeValue.key}']" value="${searchForm.attributeLabels[attributeValue.key]}"/> --%>
-								</label></th>
+										<input type="hidden" id="attributeLabel"
+										name="${attributeValue.key}"
+										value="${searchForm.attributeLabels[attributeValue.key]}" /> </label></th>
 								<td><c:choose>
-								
+
 										<c:when
 											test="${fn:length(searchForm.attributePredefValues[attributeValue.key])>0}">
 											<select id="${attributeValue.key}"
@@ -146,7 +141,7 @@
 													items="${searchForm.attributePredefValues[attributeValue.key]}"
 													var="predefValue" varStatus="pdstatus">
 													<c:choose>
-													
+
 														<c:when test="${attributeValue.value ==  predefValue}">
 															<option selected="selected">${predefValue}</option>
 														</c:when>
@@ -158,7 +153,7 @@
 											</select>
 										</c:when>
 										<c:otherwise>
-										<!-- -----file  value in tag----- -->
+											<!-- -----file  value in tag----- -->
 											<input id="${attributeValue.key}"
 												class="portlet-form-input-field portlet-big" maxlength="255"
 												name="attributeValues['${attributeValue.key}']"
@@ -183,7 +178,7 @@
 			<div class="modal-content modal-lg">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					 <h4 class="modal-title">Material Selection Window</h4>
+					<h4 class="modal-title">Material Selection Window</h4>
 				</div>
 				<div class="modal-body">
 					<div class="scrollit">
@@ -233,88 +228,49 @@
 
 	</form:form>
 </div>
-<!-- ---------------------------------popup strat------------- -->
 
-
-
-<!-- --------------------------New CODE share by LALITA--------- -->
-<%-- <form:form commandName="searchpmsupplierGlobal" action="searchpmsupplierGlobal"
-			method="get">  --%>
-
-<%--  
-	<!-- The Modal -->
-	<div id="myModal" class="modal">
-
-<div class="modal-content modal-lg">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <!-- <h4 class="modal-title">Modal Header</h4> -->
-        </div>
-        <div class="modal-body">
-        <div class ="scrollit">
-          <table class="table" id="example">
-            <thead>
-              <tr>
-              
-                <th>No</th>
-                <th>Material No</th>
-                <th>Material Text</th>
-                
-              </tr>
-            </thead>
-            
-            <tbody>
-
-                      <c:forEach var="p" items="${searchForm.materialNumberList}" varStatus="status">
-  <tr>
-			
- 		 <td>  </td>
-      <td>${p}</td>
-      <td>${searchForm.materialText[status.index]}
-      <input type="hidden" id="pvId" name="pvId"
-			value="${searchForm.productionversionList[status.index]}"> 
-      </td>
-      
-  </tr>
-</c:forEach>
-            </tbody>
-          </table>
-          </div>
-           <!-- <div class="selectRowButtonContainer"><input type="submit"  class="btn btn-primary" value="Submit" id="selectRowButton" /></div> -->
-        </div>
-        <div class="modal-footer">
-<!--           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-<!-- <div class="selectRowButtonContainer"><input type="submit" value="Submit" id="selectRowButton" /></div> -->
- <div class="selectRowButtonContainer"><input type="submit"  class="btn btn-primary" value="Submit" id="selectRowButton" /></div>
-      </div>
-     </div>
-    </div> --%>
-
-<%-- </form:form> --%>
 <script>
 
 $(document).ready(function(){
-  /* $("#myBtn").click(function(){  	
-  	$("#myModal").show();
-  }); */
   $(".close").click(function(){  	
   	$("#myModal").hide();
   });
   
+//result table -------
+  /* $("#doc41table th.Plant, #doc41table td.PLANT").remove(); */
+  $('.pager').addClass("forSpecificationPagerOnly");
+ $('.forSpecificationPagerOnly').hide();
+ 
+ $('#doc41table').DataTable({                
+     dom: "<'rowDoc41table'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l><'searchDoc41table'f>><'clear'><'row'<'col-sm-12'tr>><'row'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l>>",
+     pagingType: 'full',
+     
+"language": {
+"info": " _START_ - _END_ / _TOTAL_ (_TOTAL_)",
+"infoEmpty": " _START_ - _END_ / _TOTAL_ (_TOTAL_)",
+"lengthMenu": "  _MENU_  ",
+"emptyTable": "",
+"zeroRecords": "",
+"paginate": {
+	"first": '<img src="/bds/resources/img/tablesorter/first.png" class="first" alt="First" title="First page">',
+	"previous": '<img src="/bds/resources/img/tablesorter/prev.png" class="prev" alt="Prev" title="Previous page">',
+	"next": '<img src="/bds/resources/img/tablesorter/next.png" class="next" alt="Next" title="Next page">',
+	"last": '<img src="/bds/resources/img/tablesorter/last.png" class="last" alt="Last" title="Last page">'
+	}
+},
+columnDefs: [
+ { orderable: false, targets: 0 }
+],
+order: [[1, 'asc']]
+});
+ 
+ 
+ 
+ //---END -------------------------------
   $(".selectRowButtonContainer").click(function(){  	
 	  	$("#myModal").hide();
 	  });
   
-  
-  /* $(".table-body-row").click(function(e){
-    e.preventDefault();
-    e.stopPropagation();
-  	$(".resp-table-row , .table-body-row").removeClass("blue");
-  	$(this).addClass("blue");
-  });
-  $(document).click(function() {  
-  	$(".resp-table-row , .table-body-row").removeClass("blue");
-}); */
 
 $("#selectRowButton").prop('disabled', true);
 $("#example td").click(function () {
@@ -330,6 +286,11 @@ var addSerialNumber = function () {
     });
 };
 
+
+
+
+
+
 addSerialNumber();
 
    $("#selectRowButton").click(function(){ 
@@ -341,40 +302,63 @@ addSerialNumber();
     var PvNumber=$('.selectedRow #pvId').val() ;
     var  vendorNumber=$('.selectedRow #vendorNumber').val() ;
     var  targetType=$('#targetType').val() ;
-    var allowedDocTypes=$('#allowedDocTypes').val() ;
+    /* var allowedDocTypes=$('#docType').val() ;  */
     var doctype =$('#doctype').val() ;
     var flag="0";
     var subType=1;
     var purchaseOrder=$('#purchaseOrder').val() ;
     var searchType=$('#searchType').val() ;
     var path="${pageContext.request.contextPath}/documents/searchpmsupplierGlobal";
-    /* console.log("seledata:"+selectedRowData); */
-  /*   console.log(selectedRowData);
-    console.log(materialNumber); */
-    console.log(materialNumber);
-    console.log("searchType:"+searchType);
-    console.log("targetType:"+targetType.toString());
-    console.log("path"+path);
+    var attributeLabel=$('#attributeLabel').val() ;
+    var docType =$('#docType option:selected').val() ;
     
-      
-       $.ajax({ 
+    var attributeValues = {};
+    attributeValues["DESCRIPTION"] = $('#DESCRIPTION').val() ;
+    attributeValues["FILENAME"] = $('#FILENAME').val() ;
+    attributeValues["LANGUAGE"] = $('#LANGUAGE').val() ;
+    attributeValues["PLMTYPE"] = $('#PLMTYPE').val() ;
+    attributeValues["STATUS"] = $('#STATUS').val() ;
+    attributeValues["VERSION"] = $('#VERSION').val() ;
+           $.ajax({ 
     	type: "get",
     	 url:path, 
     	 async:false,
-         data: {"objectId":materialNumber,"productionVersion":PvNumber,"vendorNumber":vendorNumber,"searchType":searchType, "type":doctype, "flag":flag,"subtype":subType,"purchaseOrder":purchaseOrder}, 
-         
+         data: {"objectId":materialNumber,"productionVersion":PvNumber,"vendorNumber":vendorNumber,"searchType":searchType, "type":doctype, "flag":flag,"subtype":subType,"purchaseOrder":purchaseOrder, "attributeValues":attributeValues, "docType":docType }, 
         contentType: "application/json", 
-     
          success: function(data){
-        	 
+        	 console.log("data:"+data);
         	 $("html").html(data);
-        	 console.log("res:"+$("html").html(data));
-        	 
-      	
-      		 return data; }, 
+        	 //Table result-----
+        	 $.noConflict();
+        	 $('.pager').addClass("forSpecificationPagerOnly");
+        	 $('.forSpecificationPagerOnly').hide();
+        	 $('#doc41table').DataTable({                
+        	       dom: "<'rowDoc41table'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l><'searchDoc41table'f>><'clear'><'row'<'col-sm-12'tr>><'row'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l>>",
+        	       pagingType: 'full',
+        	       
+        	"language": {
+        	"info": " _START_ - _END_ / _TOTAL_ (_TOTAL_)",
+        	"infoEmpty": " _START_ - _END_ / _TOTAL_ (_TOTAL_)",
+        	"lengthMenu": "  _MENU_  ",
+        	"emptyTable": "",
+        	"zeroRecords": "",
+        	"paginate": {
+        		"first": '<img src="/bds/resources/img/tablesorter/first.png" class="first" alt="First" title="First page">',
+        		"previous": '<img src="/bds/resources/img/tablesorter/prev.png" class="prev" alt="Prev" title="Previous page">',
+        		"next": '<img src="/bds/resources/img/tablesorter/next.png" class="next" alt="Next" title="Next page">',
+        		"last": '<img src="/bds/resources/img/tablesorter/last.png" class="last" alt="Last" title="Last page">'
+        		}
+        	},
+        	columnDefs: [
+        	   { orderable: false, targets: 0 }
+        	],
+        	order: [[1, 'asc']]
+        	});
+        	  
+      	return data; 
+         }, 
     	  error: function( xhr){
-             
-            console.log("data01"+data); 
+            console.log("Error"+data); 
              
         }}); 
         
@@ -387,16 +371,115 @@ addSerialNumber();
  
 
 </script>
-<%-- </form:form> --%>
+<!-- ========= -->
+<style>
+.paginate_button {
+    margin: 0 !important;
+    padding: 0 3px !important;
+}
+.paginate_button.next {
+    padding-left: 79px !important;
+}
+.dataTables_wrapper .dataTables_info {
+    clear:none;
+}
+.paginationDoc41table , .infoDoc41table , .lengthDoc41table , .searchDoc41table {
+    float:left;
+}
+.rowDoc41table {
+    position:relative;tablesorter.pager.min
+}
+.infoDoc41table {
+    position: absolute;
+    padding-left: 4em;
+    margin-top: -4px;
+}
+.dataTables_wrapper .dataTables_length select {
+    margin: 3px !important;
+    padding: 0px !important;
+    border-radius: 0;
+    border: 1px solid #565656;
+}
+.searchDoc41table {
+    margin-left: 10px;
+}
+.dataTables_wrapper .dataTables_filter input {
+    padding: 2px !important;
+    border-radius: 0;
+    border: 1px solid #565656;
+}
+.paginate_button.disabled {
+    /* visibility: hidden; */
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+    cursor: default;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover , .dataTables_wrapper .dataTables_paginate .paginate_button{
+    border:0 none !important;
+    background:none;
+    padding:0;
+    margin:0;
+}
+table.dataTable.stripe>tbody>tr.odd>*, table.dataTable.display>tbody>tr.odd>* {
+    box-shadow: none;
+}
+.dataTables_wrapper .tablesorter-blue th:first-child {
+    background: 0 none;
+}
+.dataTables_empty {
+    display:none;
+}
 
-<%-- <input type="hidden" id="flagId" name="flagId"
-			value="${searchForm.flag}">
-			<input type="hidden" id="vendorNo" name="vendorNo"
-			value="${searchForm.vendorNumber}">
-			<input type="hidden" id="targetType" name="targetType"
-			value="${searchForm.searchingTargetType}">
-			<input type="hidden" id="doctype" name="doctype"
-			value="${searchForm.type}"> --%>
+.dataTables_wrapper .tablesorter-blue th {
+    background: 0 none;    
+    BACKGROUND-COLOR: #f2f9fc;
+}
+.dataTables_empty {
+    display:none;
+}
+table.dataTable thead>tr>th.sorting_asc:before, table.dataTable thead>tr>td.sorting_asc:before {
+    background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7) !important;
+    background-repeat: no-repeat !important;
+}
+table.dataTable thead>tr>th.sorting_desc:after, table.dataTable thead>tr>td.sorting_desc:after {
+    background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7) !important;
+    background-repeat: no-repeat !important;    
+    background-position: 0px 0 !important;
+}
+table.dataTable thead>tr>th.sorting_asc:after, table.dataTable thead>tr>td.sorting_asc:after,
+table.dataTable thead>tr>th.sorting_desc:before, table.dataTable thead>tr>td.sorting_desc:before {    
+    display: none;
+}
+table.dataTable thead>tr>th.sorting:before, table.dataTable thead>tr>th.sorting_asc:before, table.dataTable thead>tr>th.sorting_desc:before, table.dataTable thead>tr>th.sorting_asc_disabled:before, table.dataTable thead>tr>th.sorting_desc_disabled:before, table.dataTable thead>tr>td.sorting:before, table.dataTable thead>tr>td.sorting_asc:before, table.dataTable thead>tr>td.sorting_desc:before, table.dataTable thead>tr>td.sorting_asc_disabled:before, table.dataTable thead>tr>td.sorting_desc_disabled:before{
+    background: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
+    width: 21px;
+    content: "";
+    height: 5px;
+    margin-bottom: 1px;
+    background-position: 0px 0px;
+    opacity: unset;
+    right: 1px;
+}
+table.dataTable thead>tr>th.sorting:after, table.dataTable thead>tr>th.sorting_asc:after, table.dataTable thead>tr>th.sorting_desc:after, table.dataTable thead>tr>th.sorting_asc_disabled:after, table.dataTable thead>tr>th.sorting_desc_disabled:after, table.dataTable thead>tr>td.sorting:after, table.dataTable thead>tr>td.sorting_asc:after, table.dataTable thead>tr>td.sorting_desc:after, table.dataTable thead>tr>td.sorting_asc_disabled:after, table.dataTable thead>tr>td.sorting_desc_disabled:after{
+    background: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
+    width: 21px;
+    content: "";
+    height: 5px;
+    opacity: unset;
+    background-position: 0px 4px;
+    right: 1px;
+}
+
+#doc41table th{
+text-align: center;
+}
+
+
+</style>
+
+
+
+<!-- ======================== -->
 
 <!-- --------------------popup end-------------- -->
 
@@ -406,6 +489,7 @@ addSerialNumber();
 	<div class="section-separator">
 		<doc41:translate label="results" />
 	</div>
+	<!-- pager start -->
 	<doc41:pager />
 	<form:form commandName="downloadMulti" action="downloadMulti"
 		method="post">
@@ -431,7 +515,8 @@ addSerialNumber();
 					</c:if>
 					<c:forEach items="${searchForm.customizedValuesLabels}"
 						var="custValueLabel" varStatus="status">
-						<th><c:out value="${custValueLabel}" /></th>
+						<th class="${custValueLabel}"><c:out
+								value="${custValueLabel}" /></th>
 					</c:forEach>
 
 				</tr>
@@ -494,7 +579,7 @@ addSerialNumber();
 						</c:if>
 						<c:forEach items="${searchForm.attributeLabels}" var="attribLabel"
 							varStatus="status">
-							<td
+							<td class="${attribLabel.key}"
 								onclick="openDocument('${document.key}','${searchForm.type}')"><c:out
 									value="${document.customizedValuesByKey[attribLabel.key]}" /></td>
 						</c:forEach>
@@ -521,7 +606,7 @@ addSerialNumber();
 			oncomplete="disableDownloadAll()"
 			style="opacity: <c:out value="<%= opacity %>"/>;"
 			<c:out value="<%= downloadeable %>"/> />
-		<script> <!-- Enable/Disable Downloadbutton when clicking on it -->
+		<script> 
                 function enableDownloadAll(){
                     document.getElementById("submitButton").disabled = false;
                     document.getElementById("submitButton").style.opacity= "1.0";
@@ -545,22 +630,22 @@ addSerialNumber();
 	<input type="hidden" id="purchaseOrder" name="purchaseOrder"
 		value="${searchForm.purchaseOrder}"> <input type="hidden"
 		id="pvId" name="pvId" value="${searchForm.productionversionList}">
-		<input type="hidden" id="searchType" name="searchType"
-		value="${searchForm.searchType}">
-		
+	<input type="hidden" id="searchType" name="searchType"
+		value="${searchForm.searchType}"> <input type="hidden"
+		id="allowedDocTypes" name="allowedDocTypes"
+		value="${searchForm.allowedDocTypes}">
+
+
+
 
 </div>
 <script>
-	/* var flag00=$("#flagId").val(); */
 	var flag=$("#flagId").val();
-/* alert(flag+"flag"); */
 	var response = "1"
 	if (response == flag) {
 		$("#myModal").show();
 
 	}
-	
-
 	var addSerialNumber = function () {
 	    var i = 0
 	    $("#example tr").each(function(index) {
@@ -569,9 +654,6 @@ addSerialNumber();
 	};
 
 	addSerialNumber();
-
-	
-	
 	</script>
 
 <%--<div id="div-body" class="portlet-body">
