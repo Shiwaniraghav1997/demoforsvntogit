@@ -16,6 +16,7 @@ import com.sap.conn.jco.JCoTable;
 public class CheckPurchaseOrderForVendorRFC extends AbstractDoc41RFC<String> {
 	private static final String IN_VENDOR = "IV_VENDOR";
 	private static final String IN_PO = "IV_PONUMBER";
+	private static final String IN_PV ="IV_PVERSION";
 
 	private static final String OUT_RETURNCODE = "EV_RETURN";
 	private static final String OUT_FLAG = "EV_FLAG";
@@ -23,7 +24,7 @@ public class CheckPurchaseOrderForVendorRFC extends AbstractDoc41RFC<String> {
 
 	private static final String RETURNCODE_OK = "0";
 	private static final String RETURNCODE_PO_NOT_FOUND = "1";
-	 private static final String RETURNCODE_NO_MAT_FOR_PO = "3";
+//	 private static final String RETURNCODE_NO_MAT_FOR_PO = "3";
 	private static final String RETURNCODE_PV_NOT_FOUND = "2";
 
 	
@@ -35,9 +36,12 @@ public class CheckPurchaseOrderForVendorRFC extends AbstractDoc41RFC<String> {
 			if (inputParameterList != null) {
 				String vendorNumber = (String) inputParameterList.get(0);
 				String purchaseOrderNumber = (String) inputParameterList.get(1);
+				String productionVersion = (String) inputParameterList.get(2);
+//				System.out.println("productionVersion:"+productionVersion);
 
 				JCoParameterList sapInput = jCoFunction.getImportParameterList();
 				sapInput.setValue(IN_VENDOR, vendorNumber);
+				sapInput.setValue(IN_PV, productionVersion);
 				if (purchaseOrderNumber != null) {
 					sapInput.setValue(IN_PO, purchaseOrderNumber);
 				}
@@ -69,6 +73,7 @@ public class CheckPurchaseOrderForVendorRFC extends AbstractDoc41RFC<String> {
 			}
 			JCoParameterList exportParameterList = pFunction.getExportParameterList();
 			String returnCode = exportParameterList.getString(OUT_RETURNCODE);
+//			System.out.println("returnCode:"+returnCode);
 			mResult.add(mapReturnCodeToTag(returnCode));
 			String outFlag = exportParameterList.getString(OUT_FLAG);
 			mResult.add(outFlag);
@@ -103,8 +108,9 @@ public class CheckPurchaseOrderForVendorRFC extends AbstractDoc41RFC<String> {
 		} else if (StringTool.equals(returnCode, RETURNCODE_PO_NOT_FOUND)) {
 			return Doc41ValidationUtils.ERROR_MESSAGE_PO_NOT_FOUND;
 		} 
-			  else if (StringTool.equals(returnCode, RETURNCODE_NO_MAT_FOR_PO)) { return
-			  Doc41ValidationUtils.ERROR_MESSAGE_NO_MAT_FOR_PO; }
+			  /*else if (StringTool.equals(returnCode, RETURNCODE_NO_MAT_FOR_PO)) { return
+			  Doc41ValidationUtils.ERROR_MESSAGE_NO_MAT_FOR_PO; }*/
+			 
 			  else if (StringTool.equals(returnCode, RETURNCODE_PV_NOT_FOUND)) {
 			return Doc41ValidationUtils.ERROR_MESSAGE_PV_NOT_FOUND;
 		}
@@ -112,3 +118,6 @@ public class CheckPurchaseOrderForVendorRFC extends AbstractDoc41RFC<String> {
 	}
 
 }
+
+
+

@@ -7,6 +7,7 @@ import java.util.Map;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.Doc41Utils;
+import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.sap3.SAPException;
@@ -25,6 +26,8 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	private static final String IN_LOW = "LOW";
 	private static final String IN_VERID_BOM = "IV_VERID_BOM";
 	private static final String IN_PLANT_BOM = "IV_PLANT_BOM";
+	private static final String IV_PO_BOM = "IV_PO_BOM";
+	
 	private static final String IN_TIME_FRAME_DATE = "IV_TIMEFRAME_DATE";
 	private static final String IT_VALUE_RANGE = "IT_VALUE_RANGE";
 	private static final String IT_D41ID = "IT_D41ID";
@@ -39,18 +42,23 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	private static final String OUT_OBJ_TYPE = "OBJTY";
 	private static final String OUT_DOC_CLASS = "CLASS";
 	private static final String OUT_VAL = "VAL0";
+	private static final String OUT_RETURNCODE = "EV_RETURN";
+	private static final String RETURNCODE_BOM_PLANT_NOT_FOUND = "1";
 
 	@Override
 	public void prepareCall(JCoFunction pFunction, List<?> pInputParms) throws SAPException {
 		Doc41Log.get().debug(this, null, "ENTRY");
 		if (pFunction != null) {
+//			System.out.println("pInputParms:"+pInputParms.toString());
 			if (pInputParms != null) {
 				@SuppressWarnings("unchecked")
 				List<String> d41idList = (List<String>) pInputParms.get(0);
+//				System.out.println("d41idList::"+d41idList);
 				String sapObj = (String) pInputParms.get(1); // expected to be null, when using FindDocsMulti!!!
 				@SuppressWarnings("unchecked")
 				List<String> objectIds = (List<String>) pInputParms.get(2);
 				Integer maxResults = (Integer) pInputParms.get(3);
+//				String PurchaseOrder = (String) pInputParms.get(3);
 				Boolean maxVersionOnly = (Boolean) pInputParms.get(4);
 				@SuppressWarnings("unchecked")
 				Map<String, String> attribValues = (Map<String, String>) pInputParms.get(5);
@@ -65,6 +73,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 					table.appendRow();
 					table.setValue(D41ID, d41id);
 				}
+//				sapInput.setValue(IV_PO_BOM, PurchaseOrder);
 				sapInput.setValue(IN_MAXHIT, maxResults);
 				// TODO: Here you can temporary disable LAST_VER_SEARCH - new: YOU NEED TO
 				// EXPICITLY set FALSE (TRUE is new default!)
@@ -165,6 +174,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 
 	@Override
 	public List<HitListEntry> processResult(JCoFunction pFunction) throws SAPException {
+//		System.out.println("i am in processResult method");
 		Doc41Log.get().debug(FindDocsRFC.class, null, "ENTRY");
 		ArrayList<HitListEntry> mResult = new ArrayList<HitListEntry>();
 		if (pFunction != null) {
@@ -172,7 +182,19 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 				Doc41Log.get().debug(getClass(), null, RFCFunctionDumper.dumpFunction(pFunction));
 			}
 			processReturnTable(pFunction, "OT_RETURN");
+			JCoParameterList exportParameterList = pFunction.getExportParameterList();
+			String returnCode = exportParameterList.getString(OUT_RETURNCODE);
+			returnCode="1";
+			System.out.println("returnCode find doc:"+returnCode);
+//			mResult.add(mapReturnCodeToTag(returnCode));
+			 if (returnCode.equals("1")) {
+				 returnCode= Doc41ValidationUtils.ERROR_MESSAGE_PO_NOT_FOUND;
+			} 
+			
+
+//			ev_return = 1
 			JCoTable table = pFunction.getTableParameterList().getTable(OT_HITS);
+//			System.out.println("table:"+table.toString());
 			if (table != null) {
 				for (int i = 0; i < table.getNumRows(); i++) {
 					HitListEntry doc = new HitListEntry();
@@ -192,9 +214,12 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 						custValues[v] = table.getString(OUT_VAL + (v + 1));
 					}
 					doc.setCustomizedValues(custValues);
+					System.out.println("217:"+returnCode);
+					doc.setRetunCode(returnCode);
 
 					table.nextRow();
 					mResult.add(doc);
+					System.out.println("mResult:"+mResult.toString());
 				}
 			}
 
@@ -202,4 +227,15 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 		Doc41Log.get().debug(FindDocsRFC.class, null, "EXIT");
 		return mResult;
 	}
+
+/*	private HitListEntry mapReturnCodeToTag(String returnCode) {
+		// TODO Auto-generated method stub
+
+			if (StringTool.equals(returnCode, RETURNCODE_BOM_PLANT_NOT_FOUND)) {
+				return Doc41ValidationUtils.ERROR_MESSAGE_PO_NOT_FOUND;
+
+			}
+			return Doc41ValidationUtils.ERROR_MESSAGE_UNKNOWN_RETURN_CODE;
+		}*/
+	
 }
