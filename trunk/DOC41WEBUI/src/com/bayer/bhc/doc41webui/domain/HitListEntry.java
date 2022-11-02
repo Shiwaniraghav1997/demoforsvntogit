@@ -25,6 +25,16 @@ public class HitListEntry implements Serializable {
 	private Map<String, String> customizedValuesByKey = new HashMap<String, String>();
 	private String key;
 	private String type; // DOC41 internal Type
+//	added by elerj 
+	private String retunCode;
+
+	public String getRetunCode() {
+		return retunCode;
+	}
+
+	public void setRetunCode(String retunCode) {
+		this.retunCode = retunCode;
+	}
 
 	/**
 	 * Get the DOC41 sap type
