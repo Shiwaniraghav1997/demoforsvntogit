@@ -70,7 +70,7 @@ public class DirectDownloadController extends AbstractDoc41Controller {
 		
 		ArrayList<String>mTypes = new ArrayList<String>();
 		mTypes.add(type);
-		List<HitListEntry> documents = documentUC.searchDocuments(mTypes,Collections.singletonList(refId), attributeValues, MAX_RESULTS+1, true);
+		List<HitListEntry> documents = documentUC.searchDocuments(mTypes,Collections.singletonList(refId), null,attributeValues, MAX_RESULTS+1, true);
 		if(documents==null || documents.isEmpty()){
 			throw new Doc41BusinessException("NotFound");
 		} else if(documents.size()>MAX_RESULTS){
