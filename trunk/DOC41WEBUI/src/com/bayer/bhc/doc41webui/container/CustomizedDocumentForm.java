@@ -46,16 +46,14 @@ public abstract class CustomizedDocumentForm {
      //added by ELERJ
      private String purchaseOrder;
      private boolean lineItemFlag; 
-     /*private List<String> multipleLineItem;*/
      private String flag;
      private List<String> materialText;
-     
      private List<String> materialNumberList;
      private List<String> productionversionList;
      private ArrayList<String> searchingTargetType;
-     String searchType;
-     
-	 
+     private  String searchType;
+
+
 	public String getSearchType() {
 		return searchType;
 	}
@@ -302,9 +300,7 @@ public abstract class CustomizedDocumentForm {
 		attributeMandatory = new HashMap<String, Boolean>();
 		for (Attribute attribute : attributeDefinitions) {
 			String key = attribute.getName();
-			System.out.println("key:"+key);
 			String label = attribute.getTranslation(languageCode);
-			System.out.println("label:"+label);
 			attributeLabels.put(key, label);
 			if (oldAttributeValuesMap == null || !oldAttributeValuesMap.containsKey(key)) {
 				attributeValues.put(key, "");
@@ -325,7 +321,7 @@ public abstract class CustomizedDocumentForm {
 				}
 				predefValuesAsString = sb.toString();
 			}
-			System.out.println("predefValuesAsString:"+predefValuesAsString);
+//			System.out.println("predefValuesAsString:"+predefValuesAsString);
 			attributePredefValuesAsString.put(key, predefValuesAsString);
 		}
 		if (oldAttributeValuesMap != null && !oldAttributeValuesMap.isEmpty()) {
