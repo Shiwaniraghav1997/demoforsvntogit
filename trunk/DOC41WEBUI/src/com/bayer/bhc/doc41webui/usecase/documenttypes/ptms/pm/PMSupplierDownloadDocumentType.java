@@ -56,7 +56,7 @@ public abstract class PMSupplierDownloadDocumentType implements DownloadDocument
 			
 			if(subType==1) {
 				try {
-					 deliveryCheck = documentUC.checkSpecification(vendorNumber, purchaseOrder);
+					 deliveryCheck = documentUC.checkSpecification(vendorNumber, purchaseOrder,customVersion);
 					/* System.out.println("deliveryCheck for specification::"+deliveryCheck.get(0));*/
 					 if (deliveryCheck.get(0) != null) {
 							errors.reject("" + deliveryCheck.get(0));
