@@ -252,12 +252,14 @@ $(document).ready(function(){
 "emptyTable": "",
 "zeroRecords": "",
 "paginate": {
-	"first": '<img src="/bds/resources/img/tablesorter/first.png" class="first" alt="First" title="First page">',
-	"previous": '<img src="/bds/resources/img/tablesorter/prev.png" class="prev" alt="Prev" title="Previous page">',
-	"next": '<img src="/bds/resources/img/tablesorter/next.png" class="next" alt="Next" title="Next page">',
-	"last": '<img src="/bds/resources/img/tablesorter/last.png" class="last" alt="Last" title="Last page">'
+	"first":'<img class="first"  alt="First" title="First page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/first.png" /> ',
+	"previous":'<img class="prev"  alt="Prev" title="Previous page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/prev.png" /> ',
+	"next":'<img class="next"  alt="Next" title="Next  page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/next.png" /> ',
+	"last":'<img class="last"  alt="Last" title="Last page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/last.png" /> ',
+		
 	}
 },
+//test "first": '<img class="first"  alt="First" title="First page" src=" ${pageContext.request.contextPath} /resources/img/tablesorter/first.png" /> ',
 columnDefs: [
  { orderable: false, targets: 0 }
 ],
@@ -343,11 +345,13 @@ addSerialNumber();
         	"emptyTable": "",
         	"zeroRecords": "",
         	"paginate": {
-        		"first": '<img src="/bds/resources/img/tablesorter/first.png" class="first" alt="First" title="First page">',
-        		"previous": '<img src="/bds/resources/img/tablesorter/prev.png" class="prev" alt="Prev" title="Previous page">',
-        		"next": '<img src="/bds/resources/img/tablesorter/next.png" class="next" alt="Next" title="Next page">',
-        		"last": '<img src="/bds/resources/img/tablesorter/last.png" class="last" alt="Last" title="Last page">'
+        		"first":'<img class="first"  alt="First" title="First page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/first.png" /> ',
+        		"previous":'<img class="prev"  alt="Prev" title="Previous page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/prev.png" /> ',
+        		"next":'<img class="next"  alt="Next" title="Next  page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/next.png" /> ',
+        		"last":'<img class="last"  alt="Last" title="Last page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/last.png" /> ',
+        		
         		}
+        	     
         	},
         	columnDefs: [
         	   { orderable: false, targets: 0 }
