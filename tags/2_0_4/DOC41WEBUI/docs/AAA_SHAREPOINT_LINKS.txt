@@ -1,8 +1,0 @@
-DOC41-BDS: http://sp-coll-bbs.bayer-ag.com/sites/030874/Documents/Forms/AllItems.aspx?RootFolder=%2Fsites%2F030874%2FDocuments%2F06%20%2D%20BDS&FolderCTID=0x0120005CC56D631D2680449F1C1999E16CBDF9&View=%7B89E7D240%2D7C6D%2D4E40%2D88CD%2D18CE084A0651%7D&InitialTabId=Ribbon%2EDocument&VisibilityContext=WSSTabPersistence
-DOC41: http://sp-coll-bbs.bayer-ag.com/sites/030874/Documents/Forms/AllItems.aspx
-
-Latest Version of:
-BDS_DocTypes
-BDS_User_Registration
-Doc41_BDS_Overview
--> see Sharepoint!!!
