@@ -39,44 +39,21 @@
             <script>
 
                 var subType = ${param.subtype};
-                /* var subType = ${param.subtype}; */
-               /*  var flag=  ${param.flag}; */
-                
             if(subType==1){
-
-                /* alert("hello "+${param.subtype});  */
-                /* alert("hello "+${param.flag});  */
-                /* document.getElementById("objectId").style.display='none'; */
                  $("#objectId").hide();
+                 
 
             }
             else
                 {
-                 /* alert("hello else"); */
                  $("#objectId").show();
-                /*  document.getElementById("objectId").style.display='';  */
-
+                 $("#docType option[value='YBM']").remove();
                 }
 
             </script>
             <!-- -----------------end of document type----------- -->
             
-            <!-- test end -->
-           <%--  <c:if test="${searchForm.subtype eq Doc41Constants.PM_DOCUMENT_SUBTYPE_BOM_VERSION_ID}">
-            	<tr>
-            		<th>
-            			<label for="versionIdBom">
-            				<doc41:translate label="versionIdBom" />
-            			</label>
-            		</th>
-            		<td>
-            			<form:input path="versionIdBom" cssClass="portlet-form-input-field portlet-mandatory portlet-big" maxlength="70" />
-            			<doc41:error path="versionIdBom" />
-            			<doc41:error path="docType" />
-            		</td>
-            	</tr>
-            </c:if>
-            --%> <!-- ------------------- purchase order elerj------------------- -->
+             <!-- ------------------- purchase order elerj------------------- -->
             <c:if test="${searchForm.subtype eq Doc41Constants.PM_DOCUMENT_SUBTYPE_PRODUCTION_VERSION}">
             	<tr>
             		<th>
