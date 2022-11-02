@@ -40,7 +40,9 @@
 							<th><label for="vendorNumber"><doc41:translate label="VendorNumber" /></label></th>
 							<td><form:select path="vendorNumber" items="${batchObjectForm.vendors}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" itemLabel="label" itemValue="number"/><doc41:error path="vendorNumber" /></td>
 						</tr>
+						
 						<tr>
+						<!-- ------plant---- -->
 							<th><label for="plant"><doc41:translate label="Plant" /></label></th>
 							<td><form:select path="plant" items="${user.plants}" cssClass="portlet-form-input-field portlet-mandatory portlet-big" /><doc41:error path="plant" /></td>
 						</tr>
