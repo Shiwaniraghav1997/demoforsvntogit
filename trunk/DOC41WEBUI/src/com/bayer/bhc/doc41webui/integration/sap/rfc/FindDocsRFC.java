@@ -184,11 +184,11 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 			processReturnTable(pFunction, "OT_RETURN");
 			JCoParameterList exportParameterList = pFunction.getExportParameterList();
 			String returnCode = exportParameterList.getString(OUT_RETURNCODE);
-			returnCode="1";
-			System.out.println("returnCode find doc:"+returnCode);
+			//returnCode="1";
+			//System.out.println("returnCode find doc:"+returnCode);
 //			mResult.add(mapReturnCodeToTag(returnCode));
 			 if (returnCode.equals("1")) {
-				 returnCode= Doc41ValidationUtils.ERROR_MESSAGE_PO_NOT_FOUND;
+				 returnCode= Doc41ValidationUtils.ERROR_MESSAGE_BOM_NOT_FOUND;
 			} 
 			
 
@@ -214,12 +214,9 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 						custValues[v] = table.getString(OUT_VAL + (v + 1));
 					}
 					doc.setCustomizedValues(custValues);
-					System.out.println("217:"+returnCode);
 					doc.setRetunCode(returnCode);
-
 					table.nextRow();
 					mResult.add(doc);
-					System.out.println("mResult:"+mResult.toString());
 				}
 			}
 
