@@ -114,8 +114,8 @@ public class HitListEntry implements Serializable {
                 + archiveLinkDate + ", objectType=" + objectType
                 + ", documentClass=" + documentClass + ", customizedValues="
                 + Arrays.toString(customizedValues) + ", customizedValuesByKey="
-                + customizedValuesByKey + ", key=" + key + ", type=" + type
-                + "]";
+                + customizedValuesByKey + ", key=" + key + ", type=" + type 
+                +  " retunCode="+retunCode+"]";
     }
     public void initCustValuesMap(Map<Integer, String> seqToKey){
 		customizedValuesByKey = new HashMap<String, String>();
