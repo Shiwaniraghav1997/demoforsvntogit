@@ -373,7 +373,7 @@ public class SearchController extends AbstractDoc41Controller {
 									objectIds.add(searchFormPurchaseOrder);
 									List<HitListEntry> documents = documentUC.searchDocuments(searchingTargetTypes,
 											objectIds, searchFormPurchaseOrder, allAttributeValues, maxResults, mOnlyMaxVer);
-									System.out.println("line no 376"+documents.contains("NoPoFound"));
+//									System.out.println("line no 376"+documents.contains("NoPoFound"));
 									if (documents.isEmpty()) {
 										if (errorOnNoDocuments) {
 											bindingResult.reject("NoDocumentsFound");
@@ -600,8 +600,19 @@ public class SearchController extends AbstractDoc41Controller {
 		try {
 			List<HitListEntry> documents = documentUC.searchDocuments(searchingType, matNo, modalForm.getPurchaseOrder(), allAttributeValues,
 					maxResults, mOnlyMaxVer);
-			System.out.println("line no 603"+documents.contains("NoPoFound"));
+//			System.out.println("line no 603"+documents));
+			//System.out.println("line no 603"+documents.contains("retunCode"));
+			
+				
+		
 			if (documents.isEmpty()) {
+				for (HitListEntry temp : documents) {
+					boolean val=temp.getRetunCode().equals("NoBomFound");
+					if(val) {
+						bindingResult.reject("NoBomFound");
+		            System.out.println("temp::"+temp.getRetunCode().equals("NoBomFound"));
+					}
+		        }
 				if (errorOnNoDocuments) {
 					bindingResult.reject("NoDocumentsFound");
 				}
@@ -699,7 +710,7 @@ public class SearchController extends AbstractDoc41Controller {
 	@RequestMapping(value = "/documents/downloadMulti", method = RequestMethod.POST)
 	public void downloadMulti(@ModelAttribute MultiDownloadForm values, HttpServletResponse response)
 			throws Doc41BusinessException {
-		// System.out.println("downloadMulti calling..");
+		 System.out.println("downloadMulti calling.."+ response);
 		boolean mDoThrowEx = true;
 		StringBuffer mComments = new StringBuffer();
 		ZipOutputStream mOut = null;
