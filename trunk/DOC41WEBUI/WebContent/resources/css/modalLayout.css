@@ -1223,12 +1223,10 @@ button.close {
 /* ============================================For Result Table LAyout=================== */
 
 .paginate_button {
-    margin: 0 !important;
+    margin: 0 ;
     padding: 0 3px !important;
 }
-.paginate_button.next {
-    padding-left: 79px !important;
-}
+
 .dataTables_wrapper .dataTables_info {
     clear:none;
 }
@@ -1321,7 +1319,47 @@ table.dataTable thead>tr>th.sorting:after, table.dataTable thead>tr>th.sorting_a
 
 #doc41table th{
 text-align: center;
+width: auto !important;
+}
+
+/* =====================  */
+
+.paginate_button img {
+              display:none;
+}
+
+.paginate_button {
+    height: 16px
+}
+.paginate_button.first {
+              background: url("../img/tablesorter/first.png") no-repeat !important;
+}
+.paginate_button.previous  {
+              background: url("../img/tablesorter/prev.png") no-repeat !important;
+}
+.paginate_button.next  {
+              background: url("../img/tablesorter/next.png") no-repeat !important;
+}
+.paginate_button.last {
+              background: url("../img/tablesorter/last.png") no-repeat !important;
 }
 
 
+/* =========================================== */
 
+.removePaddingFromPagination{
+    padding-left: 0 !important;
+}
+
+.fileNameTd {
+    word-break: break-all;
+    width: 100% !important;
+}
+
+#container {
+    
+    width: 1024px;
+}
+ 
+
+/* =========================== */
