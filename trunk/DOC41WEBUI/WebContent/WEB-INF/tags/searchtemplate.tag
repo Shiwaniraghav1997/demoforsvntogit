@@ -251,11 +251,7 @@ $(document).ready(function(){
 					$(".paginate_button.next").css("margin-left", widthOfInfo + 20);
 					}else{
 					$(".paginate_button.next").css("margin-left", 0);
-					}
-					 if($('#doc41table tr').css('display') == 'none') {
-						 console.log("inside if");
 					     $("#doc41table tr").css("display", "table-row");
-					}
 
             });  
          $(".dataTables_length select").change(function() {
@@ -265,10 +261,9 @@ $(document).ready(function(){
         	    }else{
         	        $(".paginate_button.next").css("margin-left", 0);
         	    }  
-        	    if($('#doc41table tr').css('display') == 'none') {
-        	   	 console.log("inside if");
+        	    
         	        $("#doc41table tr").css("display", "table-row");
-        	   }
+        	   
 
         	  });
       },               
