@@ -240,17 +240,48 @@ $(document).ready(function(){
   /* $("#doc41table th.Plant, #doc41table td.PLANT").remove(); */
   $('.pager').addClass("forSpecificationPagerOnly");
  $('.forSpecificationPagerOnly').hide();
- 
- $('#doc41table').DataTable({                
+ $('#doc41table td:nth-child(6)').addClass("fileNameTd");
+
+ var doc41table = $('#doc41table').DataTable({ 
+	 drawCallback: function(){
+         $('.paginate_button:not(.disabled)', this.api().table().container())          
+            .on('click', function(){
+					var widthOfInfo = $('.dataTables_info').width();
+					if(widthOfInfo){
+					$(".paginate_button.next").css("margin-left", widthOfInfo + 20);
+					}else{
+					$(".paginate_button.next").css("margin-left", 0);
+					}
+					 if($('#doc41table tr').css('display') == 'none') {
+						 console.log("inside if");
+					     $("#doc41table tr").css("display", "table-row");
+					}
+
+            });  
+         $(".dataTables_length select").change(function() {
+        	    var widthOfInfo = $('.dataTables_info').width();
+        	    if(widthOfInfo){
+        	        $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
+        	    }else{
+        	        $(".paginate_button.next").css("margin-left", 0);
+        	    }  
+        	    if($('#doc41table tr').css('display') == 'none') {
+        	   	 console.log("inside if");
+        	        $("#doc41table tr").css("display", "table-row");
+        	   }
+
+        	  });
+      },               
      dom: "<'rowDoc41table'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l><'searchDoc41table'f>><'clear'><'row'<'col-sm-12'tr>><'row'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l>>",
      pagingType: 'full',
      
 "language": {
 "info": " _START_ - _END_ / _TOTAL_ (_TOTAL_)",
-"infoEmpty": " _START_ - _END_ / _TOTAL_ (_TOTAL_)",
+"infoEmpty": " ",
 "lengthMenu": "  _MENU_  ",
 "emptyTable": "",
-"zeroRecords": "",
+"zeroRecords": "", 
+"infoFiltered": "",
 "paginate": {
 	"first":'<img class="first"  alt="First" title="First page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/first.png" /> ',
 	"previous":'<img class="prev"  alt="Prev" title="Previous page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/prev.png" /> ',
@@ -259,6 +290,8 @@ $(document).ready(function(){
 		
 	}
 },
+
+"lengthMenu": [ 10, 20, 30, 40, 50, 100 ] ,
 //test "first": '<img class="first"  alt="First" title="First page" src=" ${pageContext.request.contextPath} /resources/img/tablesorter/first.png" /> ',
 columnDefs: [
  { orderable: false, targets: 0 }
@@ -266,9 +299,23 @@ columnDefs: [
 order: [[1, 'asc']]
 });
  
+ doc41table.on( 'search.dt', function () {
+	 setTimeout(function() {
+	 var widthOfInfo = $('.dataTables_info').width();
+	 if(widthOfInfo){
+	 $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
+	 }
+	 }, 0);
+ });
  
- 
+ var widthOfInfo = $('.dataTables_info').width();
+ if(widthOfInfo){
+ $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
+ }else{
+ $(".paginate_button.next").css("margin-left", 0);
+ }
  //---END -------------------------------
+ 
   $(".selectRowButtonContainer").click(function(){  	
 	  	$("#myModal").hide();
 	  });
@@ -333,17 +380,42 @@ addSerialNumber();
         	 //Table result-----
         	 $.noConflict();
         	 $('.pager').addClass("forSpecificationPagerOnly");
+        	 $('#doc41table td:nth-child(6)').addClass("fileNameTd");
         	 $('.forSpecificationPagerOnly').hide();
-        	 $('#doc41table').DataTable({                
+        	 if($('#doc41table tr').css('display') == 'none') {
+                 $("#doc41table tr").css("display", "table-row");
+   }
+
+        	 var doc41table = $('#doc41table').DataTable({  
+        		 drawCallback: function(){
+        	         $('.paginate_button:not(.disabled)', this.api().table().container())          
+        	            .on('click', function(){
+        						var widthOfInfo = $('.dataTables_info').width();
+        						if(widthOfInfo){
+        						$(".paginate_button.next").css("margin-left", widthOfInfo + 20);
+        						}else{
+        						$(".paginate_button.next").css("margin-left", 0);
+        						}
+        	            });  
+        	         $(".dataTables_length select").change(function() {
+        	        	    var widthOfInfo = $('.dataTables_info').width();
+        	        	    if(widthOfInfo){
+        	        	        $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
+        	        	    }else{
+        	        	        $(".paginate_button.next").css("margin-left", 0);
+        	        	    }    
+        	        	  });
+        	      },              
         	       dom: "<'rowDoc41table'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l><'searchDoc41table'f>><'clear'><'row'<'col-sm-12'tr>><'row'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l>>",
         	       pagingType: 'full',
         	       
         	"language": {
         	"info": " _START_ - _END_ / _TOTAL_ (_TOTAL_)",
-        	"infoEmpty": " _START_ - _END_ / _TOTAL_ (_TOTAL_)",
+        	"infoEmpty": " ",
         	"lengthMenu": "  _MENU_  ",
         	"emptyTable": "",
         	"zeroRecords": "",
+        	"infoFiltered": "",
         	"paginate": {
         		"first":'<img class="first"  alt="First" title="First page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/first.png" /> ',
         		"previous":'<img class="prev"  alt="Prev" title="Previous page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/prev.png" /> ',
@@ -353,12 +425,29 @@ addSerialNumber();
         		}
         	     
         	},
+        	
+        	"lengthMenu": [ 10, 20, 30, 40, 50, 100 ] ,
         	columnDefs: [
         	   { orderable: false, targets: 0 }
         	],
         	order: [[1, 'asc']]
         	});
-        	  
+        	 
+        	 doc41table.on( 'search.dt', function () {
+        		 setTimeout(function() {
+        		 var widthOfInfo = $('.dataTables_info').width();
+        		 if(widthOfInfo){
+        		 $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
+        		 }
+        		 }, 0);
+        	 });
+        	 
+        	 var widthOfInfo = $('.dataTables_info').width();
+        	 if(widthOfInfo){
+        	 $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
+        	 }else{
+        	 $(".paginate_button.next").css("margin-left", 0);
+        	 }
       	return data; 
          }, 
     	  error: function( xhr){
@@ -376,112 +465,6 @@ addSerialNumber();
 
 </script>
 <!-- ========= -->
-<style>
-.paginate_button {
-    margin: 0 !important;
-    padding: 0 3px !important;
-}
-.paginate_button.next {
-    padding-left: 79px !important;
-}
-.dataTables_wrapper .dataTables_info {
-    clear:none;
-}
-.paginationDoc41table , .infoDoc41table , .lengthDoc41table , .searchDoc41table {
-    float:left;
-}
-.rowDoc41table {
-    position:relative;tablesorter.pager.min
-}
-.infoDoc41table {
-    position: absolute;
-    padding-left: 4em;
-    margin-top: -4px;
-}
-.dataTables_wrapper .dataTables_length select {
-    margin: 3px !important;
-    padding: 0px !important;
-    border-radius: 0;
-    border: 1px solid #565656;
-}
-.searchDoc41table {
-    margin-left: 10px;
-}
-.dataTables_wrapper .dataTables_filter input {
-    padding: 2px !important;
-    border-radius: 0;
-    border: 1px solid #565656;
-}
-.paginate_button.disabled {
-    /* visibility: hidden; */
-    opacity: 0.5;
-    filter: alpha(opacity=50);
-    cursor: default;
-}
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover , .dataTables_wrapper .dataTables_paginate .paginate_button{
-    border:0 none !important;
-    background:none;
-    padding:0;
-    margin:0;
-}
-table.dataTable.stripe>tbody>tr.odd>*, table.dataTable.display>tbody>tr.odd>* {
-    box-shadow: none;
-}
-.dataTables_wrapper .tablesorter-blue th:first-child {
-    background: 0 none;
-}
-.dataTables_empty {
-    display:none;
-}
-
-.dataTables_wrapper .tablesorter-blue th {
-    background: 0 none;    
-    BACKGROUND-COLOR: #f2f9fc;
-}
-.dataTables_empty {
-    display:none;
-}
-table.dataTable thead>tr>th.sorting_asc:before, table.dataTable thead>tr>td.sorting_asc:before {
-    background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7) !important;
-    background-repeat: no-repeat !important;
-}
-table.dataTable thead>tr>th.sorting_desc:after, table.dataTable thead>tr>td.sorting_desc:after {
-    background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7) !important;
-    background-repeat: no-repeat !important;    
-    background-position: 0px 0 !important;
-}
-table.dataTable thead>tr>th.sorting_asc:after, table.dataTable thead>tr>td.sorting_asc:after,
-table.dataTable thead>tr>th.sorting_desc:before, table.dataTable thead>tr>td.sorting_desc:before {    
-    display: none;
-}
-table.dataTable thead>tr>th.sorting:before, table.dataTable thead>tr>th.sorting_asc:before, table.dataTable thead>tr>th.sorting_desc:before, table.dataTable thead>tr>th.sorting_asc_disabled:before, table.dataTable thead>tr>th.sorting_desc_disabled:before, table.dataTable thead>tr>td.sorting:before, table.dataTable thead>tr>td.sorting_asc:before, table.dataTable thead>tr>td.sorting_desc:before, table.dataTable thead>tr>td.sorting_asc_disabled:before, table.dataTable thead>tr>td.sorting_desc_disabled:before{
-    background: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
-    width: 21px;
-    content: "";
-    height: 5px;
-    margin-bottom: 1px;
-    background-position: 0px 0px;
-    opacity: unset;
-    right: 1px;
-}
-table.dataTable thead>tr>th.sorting:after, table.dataTable thead>tr>th.sorting_asc:after, table.dataTable thead>tr>th.sorting_desc:after, table.dataTable thead>tr>th.sorting_asc_disabled:after, table.dataTable thead>tr>th.sorting_desc_disabled:after, table.dataTable thead>tr>td.sorting:after, table.dataTable thead>tr>td.sorting_asc:after, table.dataTable thead>tr>td.sorting_desc:after, table.dataTable thead>tr>td.sorting_asc_disabled:after, table.dataTable thead>tr>td.sorting_desc_disabled:after{
-    background: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
-    width: 21px;
-    content: "";
-    height: 5px;
-    opacity: unset;
-    background-position: 0px 4px;
-    right: 1px;
-}
-
-#doc41table th{
-text-align: center;
-}
-
-
-</style>
-
-
 
 <!-- ======================== -->
 
