@@ -311,7 +311,7 @@ public class SearchController extends AbstractDoc41Controller {
 //								System.out.println("searchingTargetTypes: in "+searchingTargetTypes);
 								List<HitListEntry> documents = documentUC.searchDocuments(searchingTargetTypes,
 										objectIds, searchFormPurchaseOrder,allAttributeValues, maxResults, mOnlyMaxVer);
-								System.out.println("line no314"+documents.contains("NoPoFound"));
+							//	System.out.println("line no314"+documents.contains("NoPoFound"));
 								if (documents.isEmpty()) {
 									if (errorOnNoDocuments) {
 										bindingResult.reject("NoDocumentsFound");
