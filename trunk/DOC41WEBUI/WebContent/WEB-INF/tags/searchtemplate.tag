@@ -252,8 +252,9 @@ $(document).ready(function(){
 					}else{
 					$(".paginate_button.next").css("margin-left", 0);
 					     $("#doc41table tr").css("display", "table-row");
-
+					}
             });  
+             
          $(".dataTables_length select").change(function() {
         	    var widthOfInfo = $('.dataTables_info').width();
         	    if(widthOfInfo){
