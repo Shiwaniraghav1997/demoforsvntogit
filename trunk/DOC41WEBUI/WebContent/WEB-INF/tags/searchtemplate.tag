@@ -277,14 +277,14 @@ $(document).ready(function(){
 "lengthMenu": "  _MENU_  ",
 "emptyTable": "",
 "zeroRecords": "", 
-"infoFiltered": "",
+"infoFiltered": ""/* ,
 "paginate": {
 	"first":'<img class="first"  alt="First" title="First page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/first.png" /> ',
 	"previous":'<img class="prev"  alt="Prev" title="Previous page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/prev.png" /> ',
 	"next":'<img class="next"  alt="Next" title="Next  page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/next.png" /> ',
 	"last":'<img class="last"  alt="Last" title="Last page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/last.png" /> ',
 		
-	}
+	} */
 },
 
 "lengthMenu": [ 10, 20, 30, 40, 50, 100 ] ,
@@ -411,14 +411,14 @@ addSerialNumber();
         	"lengthMenu": "  _MENU_  ",
         	"emptyTable": "",
         	"zeroRecords": "",
-        	"infoFiltered": "",
-        	"paginate": {
+        	"infoFiltered": ""
+        	/* "paginate": {
         		"first":'<img class="first"  alt="First" title="First page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/first.png" /> ',
         		"previous":'<img class="prev"  alt="Prev" title="Previous page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/prev.png" /> ',
         		"next":'<img class="next"  alt="Next" title="Next  page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/next.png" /> ',
         		"last":'<img class="last"  alt="Last" title="Last page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/last.png" /> ',
         		
-        		}
+        		} */
         	     
         	},
         	
@@ -446,6 +446,12 @@ addSerialNumber();
         	 }
       	return data; 
          }, 
+         beforeSend: function (xhr) {
+        	 console.log("in be4send");
+        	 var username="SX001KGS";
+        	 var password="*GFKMNTZQ";
+        	    xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
+        	},
     	  error: function( xhr){
             console.log("Error"+data); 
              
