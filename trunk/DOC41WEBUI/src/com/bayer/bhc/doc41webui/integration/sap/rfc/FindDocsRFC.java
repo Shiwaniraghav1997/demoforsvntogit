@@ -26,7 +26,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	private static final String IN_LOW = "LOW";
 	private static final String IN_VERID_BOM = "IV_VERID_BOM";
 	private static final String IN_PLANT_BOM = "IV_PLANT_BOM";
-	private static final String IV_PO_BOM = "IV_PO_BOM";
+//	private static final String IV_PO_BOM = "IV_PO_BOM";
 	
 	private static final String IN_TIME_FRAME_DATE = "IV_TIMEFRAME_DATE";
 	private static final String IT_VALUE_RANGE = "IT_VALUE_RANGE";
@@ -43,7 +43,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	private static final String OUT_DOC_CLASS = "CLASS";
 	private static final String OUT_VAL = "VAL0";
 	private static final String OUT_RETURNCODE = "EV_RETURN";
-	private static final String RETURNCODE_BOM_PLANT_NOT_FOUND = "1";
+	//private static final String RETURNCODE_BOM_PLANT_NOT_FOUND = "1";
 
 	@Override
 	public void prepareCall(JCoFunction pFunction, List<?> pInputParms) throws SAPException {
@@ -177,6 +177,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 //		System.out.println("i am in processResult method");
 		Doc41Log.get().debug(FindDocsRFC.class, null, "ENTRY");
 		ArrayList<HitListEntry> mResult = new ArrayList<HitListEntry>();
+		HitListEntry doc = new HitListEntry();
 		if (pFunction != null) {
 			if (Doc41Log.get().isDebugActive()) {
 				Doc41Log.get().debug(getClass(), null, RFCFunctionDumper.dumpFunction(pFunction));
@@ -185,20 +186,21 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 			JCoParameterList exportParameterList = pFunction.getExportParameterList();
 			String returnCode = exportParameterList.getString(OUT_RETURNCODE);
 			//returnCode="1";
-			//System.out.println("returnCode find doc:"+returnCode);
 //			mResult.add(mapReturnCodeToTag(returnCode));
 			 if (returnCode.equals("1")) {
 				 returnCode= Doc41ValidationUtils.ERROR_MESSAGE_BOM_NOT_FOUND;
+				 
+				 
 			} 
 			
-
+			 doc.setRetunCode(returnCode);
+			 mResult.add(doc);
 //			ev_return = 1
 			JCoTable table = pFunction.getTableParameterList().getTable(OT_HITS);
 //			System.out.println("table:"+table.toString());
 			if (table != null) {
 				for (int i = 0; i < table.getNumRows(); i++) {
-					HitListEntry doc = new HitListEntry();
-
+					
 					doc.setDoc41Id(table.getString(OUT_D41ID));
 					doc.setDocId(table.getString(OUT_DOC_ID));
 					doc.setObjectId(table.getString(OUT_OBJ_ID));
@@ -214,7 +216,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 						custValues[v] = table.getString(OUT_VAL + (v + 1));
 					}
 					doc.setCustomizedValues(custValues);
-					doc.setRetunCode(returnCode);
+					
 					table.nextRow();
 					mResult.add(doc);
 				}
