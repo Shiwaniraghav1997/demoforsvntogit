@@ -131,12 +131,6 @@ public class SearchController extends AbstractDoc41Controller {
 		ArrayList<SelectionItem> mAllowedDocTypes = new ArrayList<SelectionItem>();
 		mAllowedDocTypes.add(new SelectionItem("", tags.getOptTagNoEsc("allDocTypes")));
 		for (DownloadDocumentType mDocType : mDocTypes) {
-//			System.out.println("mDocType:"+mDocType);
-//			System.out.println("mDocTypes:"+mDocType.getTypeConst());
-			/*if(searchForm.getSubtype()==1 && mDocType.getTypeConst()=="YBM") {
-				mAllowedDocTypes.add(new SelectionItem(mDocType.getTypeConst(), tags.getTagNoEsc(mDocType.getTypeConst())));
-				System.out.println("in e=if clause:"+mDocType.getTypeConst());
-			}else*/
 			mAllowedDocTypes.add(new SelectionItem(mDocType.getTypeConst(), tags.getTagNoEsc(mDocType.getTypeConst())));
 			if (isFirst) {
 				isFirst = false;
@@ -178,18 +172,12 @@ public class SearchController extends AbstractDoc41Controller {
 		if (!StringTool.isTrimmedEmptyOrNull(ButtonSearch)) {
 			if (searchForm.isSearchFilled()) {
 				CheckForDownloadResult checkResult = new CheckForDownloadResult();
-				;
+				
 				String searchFormCustomerNumber = searchForm.getCustomerNumber();
 				String searchFormVendorNumber = searchForm.getVendorNumber();
-//				String searchFormCustomVersion = searchForm.getVersionIdBom();
 				String searchFormCustomVersion = searchForm.getProductionVersion();
 				Date searchFormTimeFrame = searchForm.getTimeFrame();
-//System.out.println("searchFormCustomVersion"+searchFormCustomVersion);
-//System.out.println("searchFormCustomVersion::"+searchForm.getProductionVersion());
-
 				String searchFormPurchaseOrder = searchForm.getPurchaseOrder();
-//				System.out.println("searchFormPurchaseOrder::"+searchFormPurchaseOrder);
-//				System.out.println("subtype in 181::"+searchForm.getSubtype());
 				validateMandatoryInputFields(bindingResult, searchForm.isCustomerNumberUsed(), searchFormCustomerNumber,
 						searchForm.isVendorNumberUsed(), searchFormVendorNumber, searchForm.getSubtype(),
 						/* searchFormCustomVersion */ searchFormPurchaseOrder, searchFormTimeFrame);
@@ -219,7 +207,6 @@ public class SearchController extends AbstractDoc41Controller {
 						List<String> objectIds = new ArrayList<String>();
 						if (!StringTool.isTrimmedEmptyOrNull(singleObjectId)) {
 							objectIds.add(singleObjectId);
-//							objectIds.add(singleObjectId);
 							objectIds.add(searchFormPurchaseOrder);
 						}
 						int i = 0;
@@ -301,17 +288,13 @@ public class SearchController extends AbstractDoc41Controller {
 								bindingResult.reject("PleaseEnterMandatoryFields");
 							}
 						} else {
-//							System.out.println("searchingTargetTypes:"+searchingTargetTypes);
-//							System.out.println("in doc else objectIds:"+objectIds);
 							int maxResults = searchForm.getMaxResults();
 							if (!(searchForm.getSubtype() == 1)) {
-//								objectIds.add(searchFormPurchaseOrder);
-//								System.out.println("in doc else objectIds:"+objectIds);
 								searchingTargetTypes.remove("YBM");
-//								System.out.println("searchingTargetTypes: in "+searchingTargetTypes);
+								//System.out.println("allAttributeValue in controller:: "+allAttributeValues);
 								List<HitListEntry> documents = documentUC.searchDocuments(searchingTargetTypes,
 										objectIds, searchFormPurchaseOrder,allAttributeValues, maxResults, mOnlyMaxVer);
-							//	System.out.println("line no314"+documents.contains("NoPoFound"));
+								//System.out.println("line no314::"+documents.toString());
 								if (documents.isEmpty()) {
 									if (errorOnNoDocuments) {
 										bindingResult.reject("NoDocumentsFound");
@@ -327,11 +310,6 @@ public class SearchController extends AbstractDoc41Controller {
 										+ "), object_Id(s): " + StringTool.list(objectIds, ", ", false)
 										+ ", onlyMaxVers: " + mOnlyMaxVer + " finding results: " + documents.size());
 							} else {
-
-								/*
-								 * System.out.println("multipleLineItem:"+multipleLineItem);
-								 * searchForm.setMultipleLineItem(multipleLineItem);
-								 */
 								HashSet<String> uniqueValues = new HashSet<String>();
 								ArrayList<String> material_list = new ArrayList<String>();
 								ArrayList<String> pv_list = new ArrayList<String>();
@@ -373,10 +351,22 @@ public class SearchController extends AbstractDoc41Controller {
 									objectIds.add(searchFormPurchaseOrder);
 									List<HitListEntry> documents = documentUC.searchDocuments(searchingTargetTypes,
 											objectIds, searchFormPurchaseOrder, allAttributeValues, maxResults, mOnlyMaxVer);
-//									System.out.println("line no 376"+documents.contains("NoPoFound"));
+									boolean bind_flag=false;
+									for (HitListEntry temp : documents) {
+										if(temp.getRetunCode().equals("NoBomFound")) {
+											bind_flag=true;
+										
+										}
+										
+							        }
+									if(bind_flag) {
+										bindingResult.reject("NoBomFound");
+									}else {
+							        
 									if (documents.isEmpty()) {
 										if (errorOnNoDocuments) {
 											bindingResult.reject("NoDocumentsFound");
+											
 										}
 									} else if (documents.size() > maxResults) {
 										bindingResult.reject("ToManyResults");
@@ -384,6 +374,8 @@ public class SearchController extends AbstractDoc41Controller {
 									} else {
 										searchForm.setDocuments(documents);
 									}
+									}
+									//documents.clear();
 									Doc41Log.get().debug(this, null,
 											"Searched Documents of Types: '"
 													+ StringTool.list(searchingTargetTypes, ", ", false) + "' (for "
@@ -588,11 +580,16 @@ public class SearchController extends AbstractDoc41Controller {
 		boolean mOnlyMaxVer = true;
 		Map<String, String> allAttributeValues = new HashMap<String, String>();
 		allAttributeValues = modalForm.getAttributeValues();
+		 
+		
+	//IV_VERID_BOM	System.out.println("additionalAttributes::"+additionalAttributes);
+		
+			allAttributeValues.put("IV_VERID_BOM", modalForm.getProductionVersion());
+		
 		List<String> matNo = new ArrayList<String>();
 		String obj = modalForm.getObjectId();
 		matNo.add(obj);
 		matNo.add (modalForm.getPurchaseOrder());
-//		System.out.println("matNo:"+matNo);
 		String type = modalForm.getSearchType();
 		String[] strSplit = type.split(",");
 
@@ -600,20 +597,25 @@ public class SearchController extends AbstractDoc41Controller {
 		try {
 			List<HitListEntry> documents = documentUC.searchDocuments(searchingType, matNo, modalForm.getPurchaseOrder(), allAttributeValues,
 					maxResults, mOnlyMaxVer);
-//			System.out.println("line no 603"+documents));
-			//System.out.println("line no 603"+documents.contains("retunCode"));
-			
+			//System.out.println("documents: 597"+documents.toString());
+			allAttributeValues.remove("IV_VERID_BOM");
+			boolean bind_flag=false;
+			for (HitListEntry temp : documents) {
+				//System.out.println("tt:"+temp.getRetunCode());
+				if(temp.getRetunCode().equals("NoBomFound"))
+					bind_flag=true;
+					
 				
-		
+	        }
+			if(bind_flag) {
+				bindingResult.reject("NoBomFound");
+				documents.clear();
+			}
+	      
 			if (documents.isEmpty()) {
-				for (HitListEntry temp : documents) {
-					boolean val=temp.getRetunCode().equals("NoBomFound");
-					if(val) {
-						bindingResult.reject("NoBomFound");
-		            System.out.println("temp::"+temp.getRetunCode().equals("NoBomFound"));
-					}
-		        }
+				
 				if (errorOnNoDocuments) {
+					
 					bindingResult.reject("NoDocumentsFound");
 				}
 			} else if (documents.size() > maxResults) {
@@ -622,11 +624,11 @@ public class SearchController extends AbstractDoc41Controller {
 			} else {
 				modalForm.setDocuments(documents);
 			}
+			
 		} catch (Doc41BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return modalForm;
 	}
 
@@ -651,26 +653,13 @@ public class SearchController extends AbstractDoc41Controller {
 		ModelMap modelMap = new ModelMap();
 
 		SearchForm form = get(searchForm, bindingResult, ButtonSearch, true);
-//		System.out.println("before searchForm:"+searchForm.getProductionVersion());
 //		System.out.println("before form:"+form.getSubtype());
 		if (form.getLineItemFlag()) {
 			searchForm.setFlag("1");
 			modelMap.addAttribute(form);
-			// System.out.println("attributeValues:::"+form.getAttributeValues());
-			// System.out.println("attributeValues
-			// searchForm:::"+searchForm.getAttributeValues());
-			// System.out.println("attributeValues preff size
-			// searchForm:::"+searchForm.getAttributePredefValues().size());
-			// System.out.println("attributeValues str
-			// searchForm:::"+searchForm.getAttributePredefValuesAsString());
-			// System.out.println("attribute labels str
-			// searchForm:::"+searchForm.getAttributeLabels());
-
 		} else if (!(searchForm.getFlag() == null)) {
-
 			searchForm = getModalData(searchForm, bindingResult, true);
 		}
-
 		return modelMap;
 	}
 
