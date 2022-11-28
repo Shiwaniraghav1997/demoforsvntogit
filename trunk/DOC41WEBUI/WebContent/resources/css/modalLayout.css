@@ -1238,8 +1238,8 @@ button.close {
 }
 .infoDoc41table {
     position: absolute;
-    padding-left: 4em;
     margin-top: -4px;
+    left: 4em;
 }
 .dataTables_wrapper .dataTables_length select {
     margin: 3px !important;
@@ -1329,7 +1329,11 @@ width: auto !important;
 }
 
 .paginate_button {
-    height: 16px
+    height: 16px;
+    font-size: 0;
+    width: 19px;
+    display: block !important;
+    float: left;
 }
 .paginate_button.first {
               background: url("../img/tablesorter/first.png") no-repeat !important;
