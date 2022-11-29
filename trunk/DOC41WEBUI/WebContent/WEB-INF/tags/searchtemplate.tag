@@ -364,13 +364,19 @@ addSerialNumber();
     attributeValues["PLMTYPE"] = $('#PLMTYPE').val() ;
     attributeValues["STATUS"] = $('#STATUS').val() ;
     attributeValues["VERSION"] = $('#VERSION').val() ;
+    alert("before ajax:"+window.location.host);
+   // alert("before ajax path:"+window.location.href);
            $.ajax({ 
     	type: "get",
     	 url:path, 
     	 async:false,
-         data: {"objectId":materialNumber,"productionVersion":PvNumber,"vendorNumber":vendorNumber,"searchType":searchType, "type":doctype, "flag":flag,"subtype":subType,"purchaseOrder":purchaseOrder, "attributeValues":attributeValues, "docType":docType }, 
+    	   /* data:JSON.stringify({
+    		 "objectId":materialNumber,"productionVersion":PvNumber,"vendorNumber":vendorNumber,"searchType":searchType, "type":doctype, "flag":flag,"subtype":subType,"purchaseOrder":purchaseOrder, "attributeValues":attributeValues, "docType":docType
+    		  }), */  
+       data: {"objectId":materialNumber,"productionVersion":PvNumber,"vendorNumber":vendorNumber,"searchType":searchType, "type":doctype, "flag":flag,"subtype":subType,"purchaseOrder":purchaseOrder, "attributeValues":attributeValues, "docType":docType }, 
         contentType: "application/json", 
          success: function(data){
+        	 alert("URL:"+path);
         	 console.log("data:"+data);
         	 $("html").html(data);
         	 //Table result-----
