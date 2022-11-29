@@ -364,8 +364,8 @@ addSerialNumber();
     attributeValues["PLMTYPE"] = $('#PLMTYPE').val() ;
     attributeValues["STATUS"] = $('#STATUS').val() ;
     attributeValues["VERSION"] = $('#VERSION').val() ;
-    alert("before ajax:"+window.location.host);
-   // alert("before ajax path:"+window.location.href);
+   // alert("before ajax:"+window.location.host);
+   alert("before ajax path:"+path);
            $.ajax({ 
     	type: "get",
     	 url:path, 
