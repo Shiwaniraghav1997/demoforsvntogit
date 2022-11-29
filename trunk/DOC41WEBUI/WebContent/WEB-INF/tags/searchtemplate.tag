@@ -353,7 +353,7 @@ addSerialNumber();
     var subType=1;
     var purchaseOrder=$('#purchaseOrder').val() ;
     var searchType=$('#searchType').val() ;
-    var path="${pageContext.request.contextPath}/documents/searchpmsupplierGlobal";
+    var path="${pageContext.request.contextPath}/bdswebui/documents/searchpmsupplierGlobal";
     var attributeLabel=$('#attributeLabel').val() ;
     var docType =$('#docType option:selected').val() ;
     
@@ -366,6 +366,7 @@ addSerialNumber();
     attributeValues["VERSION"] = $('#VERSION').val() ;
    // alert("before ajax:"+window.location.host);
    alert("before ajax path:"+path);
+   //alert("before ajax path request:"+${request.contextPath}});
            $.ajax({ 
     	type: "get",
     	 url:path, 
