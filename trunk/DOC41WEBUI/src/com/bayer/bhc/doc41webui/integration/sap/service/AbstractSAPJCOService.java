@@ -46,7 +46,7 @@ public abstract class AbstractSAPJCOService  {
 	public <E> List<E> performRFC(List<?> parms, String rfcName, boolean checkUserWriteAccess) throws Doc41ServiceException {
 		String serviceName = getClass().getSimpleName();
 		List<E> result = null;
-        
+		
 		if (checkUserWriteAccess && UserInSession.isReadOnly()) {
 			throw new Doc41ServiceException("performRFC.accessDenied", new Doc41AccessDeniedException(this.getClass()));
 		}
@@ -55,7 +55,9 @@ public abstract class AbstractSAPJCOService  {
         String logDetails = paramsToLogDetails(parms);
         try {
         	startTime=System.currentTimeMillis();
+        	System.out.println("RFC:"+rfcName +" Param:"+parms);
             result = SAPSingleton.get().performRFC(rfcName, parms);
+          System.out.println("result:"+result);
             endTime=System.currentTimeMillis();
             getMonitorService().monitor(serviceName, rfcName, new Date(), Doc41Constants.MONITORING_SUCCESS, "result count: "+result.size(),logDetails,endTime-startTime);
 
