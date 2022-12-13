@@ -350,10 +350,10 @@ addSerialNumber();
     /* var allowedDocTypes=$('#docType').val() ;  */
     var doctype =$('#doctype').val() ;
     var flag="0";
-    var subType=1;
+    var subType="1";
     var purchaseOrder=$('#purchaseOrder').val() ;
     var searchType=$('#searchType').val() ;
-    var path="${pageContext.request.contextPath}/bdswebui/documents/searchpmsupplierGlobal";
+   // var path="${pageContext.request.contextPath}/documents/searchpmsupplierGlobal";
     var attributeLabel=$('#attributeLabel').val() ;
     var docType =$('#docType option:selected').val() ;
     
@@ -364,24 +364,38 @@ addSerialNumber();
     attributeValues["PLMTYPE"] = $('#PLMTYPE').val() ;
     attributeValues["STATUS"] = $('#STATUS').val() ;
     attributeValues["VERSION"] = $('#VERSION').val() ;
-   // alert("before ajax:"+window.location.host);
-   alert("before ajax path:"+path);
-   //alert("before ajax path request:"+${request.contextPath}});
+  
+    var pathHostName= $(location).attr('pathname');
+    var _array = pathHostName.split('/');
+    pathHostName = _array[_array.length-3];
+    // console.log(pathHostName);
+    if(pathHostName == 'bdswebui'){
+        var path="/bdswebui/documents/searchpmsupplierGlobal";
+        /* console.log("qa"+path); */
+    }else if(pathHostName=="bds"){
+        var path="/bds/documents/searchpmsupplierGlobal";
+        /* console.log("local"+path); */
+    }
+        else{
+        var path="/documents/searchpmsupplierGlobal";
+        /* console.log("dev"+path); */
+    } 
            $.ajax({ 
     	type: "get",
     	 url:path, 
     	 async:false,
-    	   /* data:JSON.stringify({
-    		 "objectId":materialNumber,"productionVersion":PvNumber,"vendorNumber":vendorNumber,"searchType":searchType, "type":doctype, "flag":flag,"subtype":subType,"purchaseOrder":purchaseOrder, "attributeValues":attributeValues, "docType":docType
-    		  }), */  
+    	   
        data: {"objectId":materialNumber,"productionVersion":PvNumber,"vendorNumber":vendorNumber,"searchType":searchType, "type":doctype, "flag":flag,"subtype":subType,"purchaseOrder":purchaseOrder, "attributeValues":attributeValues, "docType":docType }, 
         contentType: "application/json", 
          success: function(data){
-        	 alert("URL:"+path);
-        	 console.log("data:"+data);
+    //    	 alert("URL:"+path);
+        	//console.log("data:"+data);
         	 $("html").html(data);
         	 //Table result-----
         	 $.noConflict();
+        	 $('form').find("input[type=text], textarea").val("");      
+        	  $('#purchaseOrder').val(purchaseOrder);
+
         	 $('.pager').addClass("forSpecificationPagerOnly");
         	 $('#doc41table td:nth-child(6)').addClass("fileNameTd");
         	 $('.forSpecificationPagerOnly').hide();
@@ -419,13 +433,7 @@ addSerialNumber();
         	"emptyTable": "",
         	"zeroRecords": "",
         	"infoFiltered": ""
-        	/* "paginate": {
-        		"first":'<img class="first"  alt="First" title="First page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/first.png" /> ',
-        		"previous":'<img class="prev"  alt="Prev" title="Previous page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/prev.png" /> ',
-        		"next":'<img class="next"  alt="Next" title="Next  page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/next.png" /> ',
-        		"last":'<img class="last"  alt="Last" title="Last page" src=" ${pageContext.request.contextPath}/resources/img/tablesorter/last.png" /> ',
-        		
-        		} */
+        	
         	     
         	},
         	
@@ -453,12 +461,7 @@ addSerialNumber();
         	 }
       	return data; 
          }, 
-         beforeSend: function (xhr) {
-        	 console.log("in be4send");
-        	 var username="SX001KGS";
-        	 var password="*GFKMNTZQ";
-        	    xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
-        	},
+         
     	  error: function( xhr){
             console.log("Error"+data); 
              
