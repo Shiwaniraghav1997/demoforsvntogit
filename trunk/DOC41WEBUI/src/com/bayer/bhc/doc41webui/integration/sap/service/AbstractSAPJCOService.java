@@ -55,9 +55,9 @@ public abstract class AbstractSAPJCOService  {
         String logDetails = paramsToLogDetails(parms);
         try {
         	startTime=System.currentTimeMillis();
-        	System.out.println("RFC:"+rfcName +" Param:"+parms);
+        	//System.out.println("RFC:"+rfcName +" Param:"+parms);
             result = SAPSingleton.get().performRFC(rfcName, parms);
-          System.out.println("result:"+result);
+        //  System.out.println("result:"+result);
             endTime=System.currentTimeMillis();
             getMonitorService().monitor(serviceName, rfcName, new Date(), Doc41Constants.MONITORING_SUCCESS, "result count: "+result.size(),logDetails,endTime-startTime);
 

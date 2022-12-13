@@ -173,13 +173,15 @@ public class AuthorizationRFCService extends AbstractSAPJCOService {
 		return batchObjects;
 	}
 
-	public List<String> checkSpecification(String vendorNumber, String purchaseOrder, String customVersion) throws Doc41ServiceException {
+	public List<String> checkSpecification(String vendorNumber, String purchaseOrder, String customVersion, String materialNo) throws Doc41ServiceException {
 
 		Doc41Log.get().debug(this.getClass(), UserInSession.getCwid(), "checkSpecification() - vendorNumber = " + vendorNumber + ".");
 		List<Object> params = new ArrayList<Object>();
 		params.add(vendorNumber);
 		params.add(purchaseOrder);
 		params.add(customVersion);
+		params.add(materialNo);
+		
 		List<String> ret=performRFC(params, RFC_NAME_GET_SPECIFICATION);
 		return ret;
 	
