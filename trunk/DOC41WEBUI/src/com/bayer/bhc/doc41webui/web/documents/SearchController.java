@@ -33,6 +33,7 @@ import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.exception.Doc41BusinessException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41ClientAbortException;
 import com.bayer.bhc.doc41webui.common.exception.Doc41DocServiceException;
+import com.bayer.bhc.doc41webui.common.exception.Doc41ServiceException;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.LocaleInSession;
 import com.bayer.bhc.doc41webui.common.util.UrlParamCrypt;
@@ -228,6 +229,8 @@ public class SearchController extends AbstractDoc41Controller {
 									mDocType.getTypeConst(), searchFormCustomerNumber, searchFormVendorNumber,
 									singleObjectId, searchFormCustomVersion, searchFormTimeFrame, attributeValues,
 									viewAttributes, searchForm.getSubtype(), searchForm.getPurchaseOrder());
+							
+							
 							if (!mTmp.hasErrors()) {
 								if ((mSelectedDocType == null) || mSelectedDocType.equals(mDocType.getTypeConst())) {
 									searchingTargetTypes.add(mDocType.getTypeConst());
@@ -288,9 +291,11 @@ public class SearchController extends AbstractDoc41Controller {
 								bindingResult.reject("PleaseEnterMandatoryFields");
 							}
 						} else {
+							System.out.println("in esle at 292"+checkResult.getMaterialList().get(0));
 							int maxResults = searchForm.getMaxResults();
 							if (!(searchForm.getSubtype() == 1)) {
 								searchingTargetTypes.remove("YBM");
+								
 								//System.out.println("allAttributeValue in controller:: "+allAttributeValues);
 								List<HitListEntry> documents = documentUC.searchDocuments(searchingTargetTypes,
 										objectIds, searchFormPurchaseOrder,allAttributeValues, maxResults, mOnlyMaxVer);
@@ -305,6 +310,10 @@ public class SearchController extends AbstractDoc41Controller {
 								} else {
 									searchForm.setDocuments(documents);
 								}
+								if(checkResult.getMaterialList().get(0).equals("NoBomFound")) {
+									bindingResult.reject("NoBomFound");
+								}
+								
 								Doc41Log.get().debug(this, null, "Searched Documents of Types: '"
 										+ StringTool.list(searchingTargetTypes, ", ", false) + "' (for " + mFormType
 										+ "), object_Id(s): " + StringTool.list(objectIds, ", ", false)
@@ -344,6 +353,7 @@ public class SearchController extends AbstractDoc41Controller {
 
 								}
 								p_Flag = checkResult.getMaterialList().get(1);
+								
 								if (!(p_Flag.equals("X")) || (uniqueValues.size() == 1)) {
 //									objectIds.add(searchFormPurchaseOrder);
 //									System.out.println("not eq x objectIds:"+objectIds);
@@ -351,17 +361,7 @@ public class SearchController extends AbstractDoc41Controller {
 									objectIds.add(searchFormPurchaseOrder);
 									List<HitListEntry> documents = documentUC.searchDocuments(searchingTargetTypes,
 											objectIds, searchFormPurchaseOrder, allAttributeValues, maxResults, mOnlyMaxVer);
-									boolean bind_flag=false;
-									for (HitListEntry temp : documents) {
-										if(temp.getRetunCode().equals("NoBomFound")) {
-											bind_flag=true;
-										
-										}
-										
-							        }
-									if(bind_flag) {
-										bindingResult.reject("NoBomFound");
-									}else {
+									
 							        
 									if (documents.isEmpty()) {
 										if (errorOnNoDocuments) {
@@ -374,7 +374,14 @@ public class SearchController extends AbstractDoc41Controller {
 									} else {
 										searchForm.setDocuments(documents);
 									}
+									if(checkResult.getMaterialList().get(0)==null) {
+										
 									}
+									
+									else if(checkResult.getMaterialList().get(0).equals("NoBomFound")) {
+										bindingResult.reject("NoBomFound");
+									}
+									
 									//documents.clear();
 									Doc41Log.get().debug(this, null,
 											"Searched Documents of Types: '"
@@ -594,24 +601,23 @@ public class SearchController extends AbstractDoc41Controller {
 		String[] strSplit = type.split(",");
 
 		ArrayList<String> searchingType = new ArrayList<String>(Arrays.asList(strSplit));
+		List<String> deliveryCheck= new ArrayList<String>();
 		try {
+		try {
+			deliveryCheck = documentUC.checkSpecification( modalForm.getPurchaseOrder(),modalForm.getVendorNumber(),modalForm.getProductionVersion(),obj);
+			
+			if (deliveryCheck.get(0) != null) {
+				bindingResult.reject("" + deliveryCheck.get(0));
+			}
+		} catch (Doc41ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+			
 			List<HitListEntry> documents = documentUC.searchDocuments(searchingType, matNo, modalForm.getPurchaseOrder(), allAttributeValues,
 					maxResults, mOnlyMaxVer);
 			//System.out.println("documents: 597"+documents.toString());
 			allAttributeValues.remove("IV_VERID_BOM");
-			boolean bind_flag=false;
-			for (HitListEntry temp : documents) {
-				//System.out.println("tt:"+temp.getRetunCode());
-				if(temp.getRetunCode().equals("NoBomFound"))
-					bind_flag=true;
-					
-				
-	        }
-			if(bind_flag) {
-				bindingResult.reject("NoBomFound");
-				documents.clear();
-			}
-	      
 			if (documents.isEmpty()) {
 				
 				if (errorOnNoDocuments) {
@@ -624,6 +630,9 @@ public class SearchController extends AbstractDoc41Controller {
 			} else {
 				modalForm.setDocuments(documents);
 			}
+			/*if(deliveryCheck.get(0).equals("NoBomFound")) {
+				bindingResult.reject("NoBomFound");
+			}*/
 			
 		} catch (Doc41BusinessException e) {
 			// TODO Auto-generated catch block
@@ -653,11 +662,15 @@ public class SearchController extends AbstractDoc41Controller {
 		ModelMap modelMap = new ModelMap();
 
 		SearchForm form = get(searchForm, bindingResult, ButtonSearch, true);
-//		System.out.println("before form:"+form.getSubtype());
+	//	System.out.println("before  line item:"+form.getLineItemFlag());
 		if (form.getLineItemFlag()) {
+			//set flag=1 to display popup modal
 			searchForm.setFlag("1");
+			//System.out.println("form flag:"+form.getLineItemFlag());
 			modelMap.addAttribute(form);
 		} else if (!(searchForm.getFlag() == null)) {
+			//System.out.println("in else for flag val:"+searchForm.getFlag());
+			//System.out.println("in else for mat val:"+searchForm.getObjectId());
 			searchForm = getModalData(searchForm, bindingResult, true);
 		}
 		return modelMap;
@@ -699,7 +712,6 @@ public class SearchController extends AbstractDoc41Controller {
 	@RequestMapping(value = "/documents/downloadMulti", method = RequestMethod.POST)
 	public void downloadMulti(@ModelAttribute MultiDownloadForm values, HttpServletResponse response)
 			throws Doc41BusinessException {
-		 System.out.println("downloadMulti calling.."+ response);
 		boolean mDoThrowEx = true;
 		StringBuffer mComments = new StringBuffer();
 		ZipOutputStream mOut = null;
