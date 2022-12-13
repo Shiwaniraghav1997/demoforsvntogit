@@ -224,7 +224,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 
 		}
 		Doc41Log.get().debug(FindDocsRFC.class, null, "EXIT");
-		System.out.println("mResult:"+mResult.toString());
+		//System.out.println("mResult:"+mResult.toString());
 		return mResult;
 	}
 
