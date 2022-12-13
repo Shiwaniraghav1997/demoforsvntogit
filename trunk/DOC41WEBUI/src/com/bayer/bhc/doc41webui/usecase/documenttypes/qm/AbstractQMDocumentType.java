@@ -111,6 +111,7 @@ public abstract class AbstractQMDocumentType implements DocumentType {
 			String vendorNumber, String objectId, Map<String, String> attributeValues,
 			Map<String, String> viewAttributes, String sapTypeId) throws Doc41BusinessException {
 		String purchaseOrderNumber = Doc41ValidationUtils.validatePurchaseOrderNumber(objectId, errors);
+		
 		String materialNumber = Doc41ValidationUtils
 				.validateMaterialNumber(attributeValues.get(Doc41Constants.ATTRIB_NAME_MATERIAL), errors);
 		String vendorBatch = Doc41ValidationUtils.validateVendorBatch(
@@ -129,8 +130,8 @@ public abstract class AbstractQMDocumentType implements DocumentType {
 				vendorBatch, sapTypeId, results.get(2));
 		return new CheckForUpdateResult(SAP_OBJECT_BATCH_OBJ, null, null);
 	}
-
 	private void validateResults(List<String> results, Errors errors) {
+		
 		if (results == null || results.isEmpty()) {
 			errors.reject(Doc41ValidationUtils.ERROR_MESSAGE_NO_RETURN_CODE);
 		} else if (results.get(0) != null
