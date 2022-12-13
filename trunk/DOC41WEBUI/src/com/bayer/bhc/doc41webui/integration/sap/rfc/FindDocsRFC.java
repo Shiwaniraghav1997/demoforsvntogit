@@ -7,7 +7,6 @@ import java.util.Map;
 import com.bayer.bhc.doc41webui.common.Doc41Constants;
 import com.bayer.bhc.doc41webui.common.logging.Doc41Log;
 import com.bayer.bhc.doc41webui.common.util.Doc41Utils;
-import com.bayer.bhc.doc41webui.common.util.Doc41ValidationUtils;
 import com.bayer.bhc.doc41webui.domain.HitListEntry;
 import com.bayer.ecim.foundation.basic.StringTool;
 import com.bayer.ecim.foundation.sap3.SAPException;
@@ -42,7 +41,7 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 	private static final String OUT_OBJ_TYPE = "OBJTY";
 	private static final String OUT_DOC_CLASS = "CLASS";
 	private static final String OUT_VAL = "VAL0";
-	private static final String OUT_RETURNCODE = "EV_RETURN";
+//	private static final String OUT_RETURNCODE = "EV_RETURN";
 	//private static final String RETURNCODE_BOM_PLANT_NOT_FOUND = "1";
 
 	@Override
@@ -177,30 +176,31 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 //		System.out.println("i am in processResult method");
 		Doc41Log.get().debug(FindDocsRFC.class, null, "ENTRY");
 		ArrayList<HitListEntry> mResult = new ArrayList<HitListEntry>();
-		HitListEntry doc = new HitListEntry();
+		
 		if (pFunction != null) {
 			if (Doc41Log.get().isDebugActive()) {
 				Doc41Log.get().debug(getClass(), null, RFCFunctionDumper.dumpFunction(pFunction));
 			}
 			processReturnTable(pFunction, "OT_RETURN");
-			JCoParameterList exportParameterList = pFunction.getExportParameterList();
-			String returnCode = exportParameterList.getString(OUT_RETURNCODE);
+			//JCoParameterList exportParameterList = pFunction.getExportParameterList();
+			//String returnCode = exportParameterList.getString(OUT_RETURNCODE);
 			//returnCode="1";
 //			mResult.add(mapReturnCodeToTag(returnCode));
-			 if (returnCode.equals("1")) {
+			/* if (returnCode.equals("1")) {
 				 returnCode= Doc41ValidationUtils.ERROR_MESSAGE_BOM_NOT_FOUND;
-				 
+				 doc.setRetunCode(returnCode);
+				 mResult.add(doc);
 				 
 			} 
 			
 			 doc.setRetunCode(returnCode);
-			 mResult.add(doc);
+			 mResult.add(doc);*/
 //			ev_return = 1
 			JCoTable table = pFunction.getTableParameterList().getTable(OT_HITS);
-//			System.out.println("table:"+table.toString());
+		//	System.out.println("table:"+table.toString());
 			if (table != null) {
 				for (int i = 0; i < table.getNumRows(); i++) {
-					
+					HitListEntry doc = new HitListEntry();
 					doc.setDoc41Id(table.getString(OUT_D41ID));
 					doc.setDocId(table.getString(OUT_DOC_ID));
 					doc.setObjectId(table.getString(OUT_OBJ_ID));
@@ -224,17 +224,10 @@ public class FindDocsRFC extends AbstractDoc41RFC<HitListEntry> {
 
 		}
 		Doc41Log.get().debug(FindDocsRFC.class, null, "EXIT");
+		System.out.println("mResult:"+mResult.toString());
 		return mResult;
 	}
 
-/*	private HitListEntry mapReturnCodeToTag(String returnCode) {
-		// TODO Auto-generated method stub
 
-			if (StringTool.equals(returnCode, RETURNCODE_BOM_PLANT_NOT_FOUND)) {
-				return Doc41ValidationUtils.ERROR_MESSAGE_PO_NOT_FOUND;
-
-			}
-			return Doc41ValidationUtils.ERROR_MESSAGE_UNKNOWN_RETURN_CODE;
-		}*/
 	
 }
