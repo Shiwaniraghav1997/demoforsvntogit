@@ -700,41 +700,27 @@ public class DocumentUC {
             if (objectIds != null && objectIds.isEmpty()) {
                 objectIds = null;
             }
-		        //if(objectIds == null){
+		        
             
-            /***
-
-              FOR TESTING SINGLE SD WITH OLD FindDocs2 enable here...
-            * /
-            
-            // OLD: SD
-            boolean useOldCall = false;
-            if (pTypes.size() == 1) {
-                DocumentType docType = getDocType(pTypes.get(0));
-                useOldCall = (DocumentType.GROUP_SD.equals(docType.getGroup()));
-            }
-            if (useOldCall) {
-                Doc41Log.get().warning(this,  null, "Using old RFC: FindDocs2 for single SD search...");
-                List<String> sapObjList = docDef.getSapObjList();
-                for (String sapObj : sapObjList) {
-                    List<HitListEntry> oneResult = bwRFCService.findDocsOld(docDef.getD41id(), sapObj, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
-                    allResults.addAll(oneResult);
-                }
-            } else /**/ 
-            /*/added by ELERJ for specficication*/
+                      /*/added by ELERJ for specficication*/
             if(!(objectIds == null)){
-//            	System.out.println("calling finddoc--------"+ objectIds);
               allResults = bwRFCService.findDocs(d41idList, null, objectIds,attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
 		    }
-		        
-		        /* NO MORE USED, FindDocsMulti no takes care itself for al sapObj (types of objectIds = numbers, e.g. material number, po number, delivery number, ...)
-		          } else {
-		            for (String sapObj : sapObjList) {
-		                List<HitListEntry> oneResult = bwRFCService.findDocs(d41id, sapObj, objectIds, attributeValues, maxResults, maxVersionOnly,seqToKey);
-		                allResults.addAll(oneResult);
-		            }
-		        }*/
+//		        System.out.println("allResults:"+allResults.toString());
+//		        System.out.println("allResults size:"+allResults.size());
+//		        boolean bind_flag=false;
 		        for (HitListEntry hitListEntry : allResults) {
+		        /*	if(hitListEntry.getRetunCode().equals("NoBomFound")) {
+						bind_flag=true;
+						
+					
+					}else {*/
+		        	//System.out.println("allResults 1in:"+hitListEntry.getDoc41Id());
+		        	 //System.out.println("allResults in:"+hitListEntry.getDoc41Id().equals("null"));
+					
+		        	
+		        	if(!hitListEntry.getDoc41Id().isEmpty()) {
+		        	
 		            String mDoc41Id = hitListEntry.getDoc41Id();
 		            DocumentType dt = getDocTypeBySapId(mDoc41Id, false);
                     hitListEntry.setType(dt.getTypeConst());
@@ -756,7 +742,12 @@ public class DocumentUC {
 		            String key = UrlParamCrypt.encryptParameters(params);
 		            hitListEntry.setKey(key);
 		        }
+		        }
+		        
 		    //}
+		        
+		        /*if(bind_flag) {
+					bindingResult.reject("NoBomFound");*/
 			return allResults;
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("searchDocuments",e);
@@ -1218,8 +1209,8 @@ public class DocumentUC {
 		return getDocType(documentType).isNotificationEMailHidden();
 	}
 
-	public List<String> checkSpecification(String vendorNumber, String purchaseOrder, String customVersion) throws Doc41BusinessException, Doc41ServiceException {
-        return authorizationRFCService.checkSpecification(vendorNumber, purchaseOrder,customVersion);
+	public List<String> checkSpecification(String vendorNumber, String purchaseOrder, String customVersion, String materialNo) throws Doc41BusinessException, Doc41ServiceException {
+        return authorizationRFCService.checkSpecification(vendorNumber, purchaseOrder,customVersion,materialNo );
     }
 
 }
