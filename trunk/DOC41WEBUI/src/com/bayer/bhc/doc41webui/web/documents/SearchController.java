@@ -291,7 +291,6 @@ public class SearchController extends AbstractDoc41Controller {
 								bindingResult.reject("PleaseEnterMandatoryFields");
 							}
 						} else {
-							System.out.println("in esle at 292"+checkResult.getMaterialList().get(0));
 							int maxResults = searchForm.getMaxResults();
 							if (!(searchForm.getSubtype() == 1)) {
 								searchingTargetTypes.remove("YBM");
