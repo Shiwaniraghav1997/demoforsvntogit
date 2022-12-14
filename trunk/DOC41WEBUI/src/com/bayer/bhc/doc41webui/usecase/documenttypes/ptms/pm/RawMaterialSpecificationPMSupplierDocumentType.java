@@ -60,19 +60,7 @@ public class RawMaterialSpecificationPMSupplierDocumentType  extends PMSupplierD
                 objectId, customVersion, timeFrame, attributeValues, viewAttributes,subType,purchaseOrder);
         return result;
 
-/* no more extra check required anymore...
 
-        Doc41ValidationUtils.checkMaterialNumber(objectId, "objectId", errors, true);
-        
-        String deliveryCheck = documentUC.checkArtworkLayoutForVendor(vendorNumber, objectId, getSapTypeId());
-        if(deliveryCheck != null){
-            errors.reject(""+deliveryCheck);
-        }
-        Map<String, String> additionalAttributes = new HashMap<String, String>();
-        additionalAttributes.put(Doc41Constants.ATTRIB_NAME_VENDOR, vendorNumber);
-        
-        return new CheckForDownloadResult(additionalAttributes,null);
-*/
     }
 
 	@Override
