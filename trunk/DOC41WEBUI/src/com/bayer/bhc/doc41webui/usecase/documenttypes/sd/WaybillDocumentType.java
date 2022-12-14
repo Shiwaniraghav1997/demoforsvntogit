@@ -30,7 +30,6 @@ public class WaybillDocumentType extends SDDocumentType implements DownloadDocum
 
 	@Override
 	public Set<String> getMandatoryAttributes() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

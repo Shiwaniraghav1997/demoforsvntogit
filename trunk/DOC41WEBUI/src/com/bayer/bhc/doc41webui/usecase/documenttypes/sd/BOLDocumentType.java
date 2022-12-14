@@ -40,4 +40,5 @@ public class BOLDocumentType extends SDDocumentType implements DownloadDocumentT
 		return null;
 	}
 
+	
 }

@@ -38,6 +38,5 @@ public class AWBDocumentType extends SDDocumentType implements DownloadDocumentT
 	public Set<String> getMandatoryAttributes() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
+	}	
 }
