@@ -309,9 +309,10 @@ public class SearchController extends AbstractDoc41Controller {
 								} else {
 									searchForm.setDocuments(documents);
 								}
+								/*System.out.println("before----------");
 								if(checkResult.getMaterialList().get(0).equals("NoBomFound")) {
 									bindingResult.reject("NoBomFound");
-								}
+								}*/
 								
 								Doc41Log.get().debug(this, null, "Searched Documents of Types: '"
 										+ StringTool.list(searchingTargetTypes, ", ", false) + "' (for " + mFormType
