@@ -253,6 +253,7 @@ $(document).ready(function(){
 					$(".paginate_button.next").css("margin-left", 0);
 					     $("#doc41table tr").css("display", "table-row");
 					}
+					$("#doc41table tr").css("display", "table-row");
             });  
              
          $(".dataTables_length select").change(function() {
@@ -302,6 +303,7 @@ order: [[1, 'asc']]
 	 $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
 	 }
 	 }, 0);
+	 $("#doc41table tr").css("display", "table-row");
  });
  
  var widthOfInfo = $('.dataTables_info').width();
@@ -413,6 +415,8 @@ addSerialNumber();
         						}else{
         						$(".paginate_button.next").css("margin-left", 0);
         						}
+        						$("#doc41table tr").css("display", "table-row");
+        						
         	            });  
         	         $(".dataTables_length select").change(function() {
         	        	    var widthOfInfo = $('.dataTables_info').width();
@@ -420,7 +424,8 @@ addSerialNumber();
         	        	        $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
         	        	    }else{
         	        	        $(".paginate_button.next").css("margin-left", 0);
-        	        	    }    
+        	        	    }   
+        	        	    $("#doc41table tr").css("display", "table-row");
         	        	  });
         	      },              
         	       dom: "<'rowDoc41table'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l><'searchDoc41table'f>><'clear'><'row'<'col-sm-12'tr>><'row'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l>>",
@@ -451,6 +456,7 @@ addSerialNumber();
         		 $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
         		 }
         		 }, 0);
+        		 $("#doc41table tr").css("display", "table-row");
         	 });
         	 
         	 var widthOfInfo = $('.dataTables_info').width();
