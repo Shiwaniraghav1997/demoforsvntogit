@@ -241,9 +241,21 @@ $(document).ready(function(){
   $('.pager').addClass("forSpecificationPagerOnly");
  $('.forSpecificationPagerOnly').hide();
  $('#doc41table td:nth-child(6)').addClass("fileNameTd");
-
+ function downloadAllJs(){				    
+	 var seen = {};
+	 $('.dwdAll').each(function() {
+		 $(this).prop({'id':'docAll','name':'docAll'});
+	     var id = $(this).val();
+	     if (seen[id]){
+	      	$(this).prop({'id':'docAllRemove','name':'docAllRemove'});
+	     }else{
+	         seen[id] = true;
+	     }
+	 }); 
+}
  var doc41table = $('#doc41table').DataTable({ 
 	 drawCallback: function(){
+		 downloadAllJs();
          $('.paginate_button:not(.disabled)', this.api().table().container())          
             .on('click', function(){
 					var widthOfInfo = $('.dataTables_info').width();
@@ -251,9 +263,9 @@ $(document).ready(function(){
 					$(".paginate_button.next").css("margin-left", widthOfInfo + 20);
 					}else{
 					$(".paginate_button.next").css("margin-left", 0);
-					     $("#doc41table tr").css("display", "table-row");
 					}
-					$("#doc41table tr").css("display", "table-row");
+				    $("#doc41table tr").css("display", "table-row");				    
+				    downloadAllJs();
             });  
              
          $(".dataTables_length select").change(function() {
@@ -262,11 +274,9 @@ $(document).ready(function(){
         	        $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
         	    }else{
         	        $(".paginate_button.next").css("margin-left", 0);
-        	    }  
-        	    
-        	        $("#doc41table tr").css("display", "table-row");
-        	   
-
+        	    }          	    
+        	    $("#doc41table tr").css("display", "table-row");        	    
+        	    downloadAllJs();
         	  });
       },               
      dom: "<'rowDoc41table'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l><'searchDoc41table'f>><'clear'><'row'<'col-sm-12'tr>><'row'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l>>",
@@ -301,7 +311,8 @@ order: [[1, 'asc']]
 	 var widthOfInfo = $('.dataTables_info').width();
 	 if(widthOfInfo){
 	 $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
-	 }
+	 }	    
+	 downloadAllJs();
 	 }, 0);
 	 $("#doc41table tr").css("display", "table-row");
  });
@@ -355,7 +366,7 @@ addSerialNumber();
     var subType="1";
     var purchaseOrder=$('#purchaseOrder').val() ;
     var searchType=$('#searchType').val() ;
-   // var path="${pageContext.request.contextPath}/documents/searchpmsupplierGlobal";
+    //var path="${pageContext.request.contextPath}/documents/searchpmsupplierGlobal";
     var attributeLabel=$('#attributeLabel').val() ;
     var docType =$('#docType option:selected').val() ;
     
@@ -366,11 +377,13 @@ addSerialNumber();
     attributeValues["PLMTYPE"] = $('#PLMTYPE').val() ;
     attributeValues["STATUS"] = $('#STATUS').val() ;
     attributeValues["VERSION"] = $('#VERSION').val() ;
-  
+   
+   
     var pathHostName= $(location).attr('pathname');
     var _array = pathHostName.split('/');
     pathHostName = _array[_array.length-3];
-    // console.log(pathHostName);
+   
+    /* console.log(pathHostName); */
     if(pathHostName == 'bdswebui'){
         var path="/bdswebui/documents/searchpmsupplierGlobal";
         /* console.log("qa"+path); */
@@ -381,32 +394,32 @@ addSerialNumber();
         else{
         var path="/documents/searchpmsupplierGlobal";
         /* console.log("dev"+path); */
-    } 
+    }
            $.ajax({ 
     	type: "get",
     	 url:path, 
     	 async:false,
-    	   
+
        data: {"objectId":materialNumber,"productionVersion":PvNumber,"vendorNumber":vendorNumber,"searchType":searchType, "type":doctype, "flag":flag,"subtype":subType,"purchaseOrder":purchaseOrder, "attributeValues":attributeValues, "docType":docType }, 
         contentType: "application/json", 
          success: function(data){
-    //    	 alert("URL:"+path);
-        	//console.log("data:"+data);
+        	 //alert("URL:"+path);
+        	 //console.log("data:"+data);
         	 $("html").html(data);
         	 //Table result-----
         	 $.noConflict();
         	 $('form').find("input[type=text], textarea").val("");      
         	  $('#purchaseOrder').val(purchaseOrder);
-
+        	 
         	 $('.pager').addClass("forSpecificationPagerOnly");
         	 $('#doc41table td:nth-child(6)').addClass("fileNameTd");
         	 $('.forSpecificationPagerOnly').hide();
         	 if($('#doc41table tr').css('display') == 'none') {
                  $("#doc41table tr").css("display", "table-row");
-   }
-
+   			}
         	 var doc41table = $('#doc41table').DataTable({  
         		 drawCallback: function(){
+        			 downloadAllJs();
         	         $('.paginate_button:not(.disabled)', this.api().table().container())          
         	            .on('click', function(){
         						var widthOfInfo = $('.dataTables_info').width();
@@ -415,8 +428,8 @@ addSerialNumber();
         						}else{
         						$(".paginate_button.next").css("margin-left", 0);
         						}
-        						$("#doc41table tr").css("display", "table-row");
-        						
+        						$("#doc41table tr").css("display", "table-row"); 
+        						downloadAllJs();
         	            });  
         	         $(".dataTables_length select").change(function() {
         	        	    var widthOfInfo = $('.dataTables_info').width();
@@ -424,8 +437,9 @@ addSerialNumber();
         	        	        $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
         	        	    }else{
         	        	        $(".paginate_button.next").css("margin-left", 0);
-        	        	    }   
-        	        	    $("#doc41table tr").css("display", "table-row");
+        	        	    }  
+        	        	    $("#doc41table tr").css("display", "table-row"); 
+        	        	    downloadAllJs();
         	        	  });
         	      },              
         	       dom: "<'rowDoc41table'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l><'searchDoc41table'f>><'clear'><'row'<'col-sm-12'tr>><'row'<'paginationDoc41table'p><'infoDoc41table'i><'lengthDoc41table'l>>",
@@ -437,9 +451,7 @@ addSerialNumber();
         	"lengthMenu": "  _MENU_  ",
         	"emptyTable": "",
         	"zeroRecords": "",
-        	"infoFiltered": ""
-        	
-        	     
+        	"infoFiltered": ""       	     
         	},
         	
         	"lengthMenu": [ 10, 20, 30, 40, 50, 100 ] ,
@@ -455,8 +467,9 @@ addSerialNumber();
         		 if(widthOfInfo){
         		 $(".paginate_button.next").css("margin-left", widthOfInfo + 20);
         		 }
+        		 $("#doc41table tr").css("display", "table-row"); 
+        		 downloadAllJs();
         		 }, 0);
-        		 $("#doc41table tr").css("display", "table-row");
         	 });
         	 
         	 var widthOfInfo = $('.dataTables_info').width();
@@ -465,9 +478,21 @@ addSerialNumber();
         	 }else{
         	 $(".paginate_button.next").css("margin-left", 0);
         	 }
+
+        	 function downloadAllJs(){				    
+        		 var seen = {};
+        		 $('.dwdAll').each(function() {
+        			 $(this).prop({'id':'docAll','name':'docAll'});
+        		     var id = $(this).val();
+        		     if (seen[id]){
+        		      	$(this).prop({'id':'docAllRemove','name':'docAllRemove'});
+        		     }else{
+        		         seen[id] = true;
+        		     }
+        		 }); 
+        	}
       	return data; 
          }, 
-         
     	  error: function( xhr){
             console.log("Error"+data); 
              
@@ -553,7 +578,7 @@ addSerialNumber();
 					varStatus="status">
 					<c:set var="idx" value="${idx + 1}" scope="page" />
 					<tr style="cursor: pointer;">
-						<td><input id="docSel" name="docSel" type="checkbox"
+						<td><input id="docSel" class="dwdAll" name="docSel" type="checkbox"
 							onclick="enableDownloadAll()"
 							value="${document.key}|${searchForm.type}" /> <input id="docAll"
 							name="docAll" type="hidden"
@@ -592,6 +617,10 @@ addSerialNumber();
 				</c:forEach>
 			</tbody>
 		</table>
+		 <c:forEach items="${searchForm.documents}" var="document" varStatus="status">
+			<div class="dwdAllDiv"><input id="docAll" class="dwdAll" name="docAll" type="hidden" value="${document.key}|${searchForm.type}" /></div>
+		</c:forEach> 
+		
 		<doc41:pager />
 		<!--  input id="download" name="download" type="button" -->
 		<% String downloadeable = "";%>
