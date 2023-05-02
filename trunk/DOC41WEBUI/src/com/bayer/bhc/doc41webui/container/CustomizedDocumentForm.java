@@ -321,7 +321,7 @@ public abstract class CustomizedDocumentForm {
 				}
 				predefValuesAsString = sb.toString();
 			}
-//			System.out.println("predefValuesAsString:"+predefValuesAsString);
+
 			attributePredefValuesAsString.put(key, predefValuesAsString);
 		}
 		if (oldAttributeValuesMap != null && !oldAttributeValuesMap.isEmpty()) {
