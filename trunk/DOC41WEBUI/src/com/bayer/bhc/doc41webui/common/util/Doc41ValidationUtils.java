@@ -64,7 +64,9 @@ public final class Doc41ValidationUtils {
 	public static final String ERROR_MESSAGE_NO_MAT_FOR_PO = "NoMatForPo";
 	public static final String ERROR_MESSAGE_PO_NOT_FOUND = "NoPoFound";
 	public static final String ERROR_MESSAGE_BOM_NOT_FOUND = "NoBomFound";
-	public static final String ERROR_MESSAGE_CORRECT_VENDOR_NUM = "WrongVendorNumber"; //4
+
+	public static final String ERROR_MESSAGE_CORRECT_VENDOR_NUM = "WrongVendorNumber"; //errorcode:4
+
 	
 	
 
