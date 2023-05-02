@@ -64,6 +64,7 @@ public final class Doc41ValidationUtils {
 	public static final String ERROR_MESSAGE_NO_MAT_FOR_PO = "NoMatForPo";
 	public static final String ERROR_MESSAGE_PO_NOT_FOUND = "NoPoFound";
 	public static final String ERROR_MESSAGE_BOM_NOT_FOUND = "NoBomFound";
+	public static final String ERROR_MESSAGE_CORRECT_VENDOR_NUM = "WrongVendorNumber"; //4
 	
 	
 
@@ -73,7 +74,7 @@ public final class Doc41ValidationUtils {
 
 	public static void checkMaterialNumber(String value, String fieldName, Errors errors, boolean isMandatory) {
 		if (StringTool.isTrimmedEmptyOrNull(value)) {
-//			System.out.println("isMandatory::"+isMandatory);
+
 			if (isMandatory) {
 				errors.rejectValue(fieldName, "MatNoMissing");
 			}
@@ -104,6 +105,7 @@ public final class Doc41ValidationUtils {
 
 	private static void numberCheck(String value, String fieldName, Errors errors, int maxSignificant) {
 		try {
+			
 			Integer intValue = Integer.valueOf(value);
 			int length = String.valueOf(intValue).length();
 			if (length > maxSignificant) {
@@ -146,7 +148,7 @@ public final class Doc41ValidationUtils {
 	 *            is used for error handling.
 	 */
 	public static String validateMaterialNumber(String materialNumber, Errors errors) {
-//		System.out.println("material validation::"+materialNumber);
+
 		if (StringTool.isTrimmedEmptyOrNull(materialNumber)) {
 			errors.rejectValue(String.format("attributeValues['%s']", Doc41Constants.ATTRIB_NAME_MATERIAL),
 					MATERIAL_NUMBER_MISSING_ERROR_MESSAGE);
