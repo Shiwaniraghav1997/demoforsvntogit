@@ -39,7 +39,7 @@ public class Doc41TransactionManager {
             Map<Object,Object> cache = transctionalCache.get(cacheKey);
             if (cache != null) {
                 cache.put(dc.getObjectID(), dc);
-                //System.out.println("put to cache: "+dc.getClass().getName()+ dc.getObjectID());
+                
             }
         }
     }
