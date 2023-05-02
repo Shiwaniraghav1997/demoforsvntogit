@@ -229,7 +229,6 @@ public class DocumentUC {
 	            mProfileByCode.put(mPP.getPermissionCode(), mPP);
 	        }
 	        for (DocumentType documentType : documentTypes.values()) {
-//	        	System.out.println("documentType:"+documentType);
 	            String typeConst = documentType.getTypeConst();
 	            if (documentType instanceof DownloadDocumentType) {
 	                String mPerm = ((DownloadDocumentType)documentType).getPermissionDownload();
@@ -265,9 +264,7 @@ public class DocumentUC {
 		String sapDocType = dt.getSapTypeId();
 		DocMetadata docMetadata = null;
 		if (dt.isKgs()) {
-//			System.out.println("sapDocType:"+sapDocType);
 		    docMetadata = getDocMetadataBySapDocType(sapDocType);
-//		    System.out.println("docMetadata:"+docMetadata);
 	        if( docMetadata == null ) {
 	            throw new Doc41BusinessException("document type "+type+"/"+sapDocType+" not found in SAP");
 	        }
@@ -324,7 +321,6 @@ public class DocumentUC {
 	 */
 	public DocMetadata getDocMetadataBySapDocType(String sapDocType) throws Doc41BusinessException {
 		Map<String, DocMetadata> mdContainer = getDocMetadataContainer();
-//		System.out.println("mdContainer.get(sapDocType)::"+mdContainer.get(sapDocType));
 		return mdContainer.get(sapDocType);
 	}
 	
@@ -438,7 +434,6 @@ public class DocumentUC {
 	
 	public List<Attribute> getAttributeDefinitions(String doctype,boolean filterFileName) throws Doc41BusinessException{
         DocumentType documentType = documentTypes.get(doctype);
-//        System.out.println("doctype:"+doctype+ " documentType:"+documentType);
         List<Attribute> filteredAttributes = new ArrayList<Attribute>();
         if (documentType.isKgs()) {
             DocMetadata metadata = getMetadata(doctype);
@@ -680,11 +675,9 @@ public class DocumentUC {
             Map<String, Map<Integer, String>> seqToKeyAllTypes = new HashMap<String, Map<Integer,String>>();
             HashSet<String>mKnownKeys = new HashSet<String>();
             DocTypeDef docDef = null;
-//            System.out.println("pTypes:"+pTypes);
             for (String mType : pTypes) {
                 Map<Integer, String> seqToKey = new HashMap<Integer, String>();
                 //DocumentType docType = getDocType(mType);
-//                System.out.println("mType:"+mType);
                 DocMetadata metadata = getMetadata(mType);
                 docDef = metadata.getDocDef();
                 d41idList.add( docDef.getD41id() );
@@ -706,18 +699,7 @@ public class DocumentUC {
             if(!(objectIds == null)){
               allResults = bwRFCService.findDocs(d41idList, null, objectIds,attributeValues, maxResults, maxVersionOnly,seqToKeyGlo);
 		    }
-//		        System.out.println("allResults:"+allResults.toString());
-//		        System.out.println("allResults size:"+allResults.size());
-//		        boolean bind_flag=false;
 		        for (HitListEntry hitListEntry : allResults) {
-		        /*	if(hitListEntry.getRetunCode().equals("NoBomFound")) {
-						bind_flag=true;
-						
-					
-					}else {*/
-		        	//System.out.println("allResults 1in:"+hitListEntry.getDoc41Id());
-		        	 //System.out.println("allResults in:"+hitListEntry.getDoc41Id().equals("null"));
-					
 		        	
 		        	if(!hitListEntry.getDoc41Id().isEmpty()) {
 		        	
@@ -744,10 +726,7 @@ public class DocumentUC {
 		        }
 		        }
 		        
-		    //}
-		        
-		        /*if(bind_flag) {
-					bindingResult.reject("NoBomFound");*/
+		   
 			return allResults;
 		} catch (Doc41ServiceException e) {
 			throw new Doc41BusinessException("searchDocuments",e);
@@ -1005,7 +984,6 @@ public class DocumentUC {
 		if(documentType==null){
 			throw new Doc41BusinessException("unknown doctype, typeConstant: "+typeConstant);
 		}
-//		System.out.println(documentType +"::documentType");
 		return documentType;
 	}
 
