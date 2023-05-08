@@ -286,6 +286,7 @@ public class SearchController extends AbstractDoc41Controller {
 									}
 								}
 							}
+						
 							if (allHaveFieldErrors) {
 								bindingResult.reject("PleaseEnterMandatoryFields");
 							}
@@ -400,10 +401,10 @@ public class SearchController extends AbstractDoc41Controller {
 							}
 						}
 					}
-				} else {
+				} }else {
 					bindingResult.reject("NoSearchWithoutSearchParameters");
 				}
-			}
+			
 		}
 
 		return searchForm;
