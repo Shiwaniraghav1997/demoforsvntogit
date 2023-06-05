@@ -131,6 +131,8 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
                 " class.........................: " + pRequest.getClass().getName()                  + "\n"
         );
         
+        
+        
         if ((pDetailLevel >= 1) || (pDetailLevel == -1)) {
             sb.append("\n\nHeaders:\n-----------\n\n");
             @SuppressWarnings("unchecked")
@@ -143,13 +145,17 @@ public class Doc41HandlerInterceptor extends HandlerInterceptorAdapter implement
         
         if ((pDetailLevel >= 2) || (pDetailLevel == -1)) {
             sb.append("\n\nParameters:\n-----------\n\n");
+            
             @SuppressWarnings("unchecked")
             Enumeration<String> mParmList = pRequest.getParameterNames();
             while (mParmList.hasMoreElements()) {
                 String mParm = mParmList.nextElement();
-                sb.append(" " + StringTool.minRString(mParm, 30, '.') + ": " + /*pRequest.getParameter(mParm) + " / " +*/ StringTool.list(pRequest.getParameterValues(mParm), ",", false) + "\n");
+                if (!StringTool.minRString(mParm, 30, '.').contains("password")) {
+                 sb.append(" " + StringTool.minRString(mParm, 30, '.') + ": " + /*pRequest.getParameter(mParm) + " / " +*/ StringTool.list(pRequest.getParameterValues(mParm), ",", false) + "\n");
+                }
             }
-        }
+            }
+        
         
         if ((pDetailLevel >= 3) || (pDetailLevel == -1)) {
             sb.append("\n\nAttributes:\n-----------\n\n");
