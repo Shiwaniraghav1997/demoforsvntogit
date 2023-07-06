@@ -1,0 +1,17 @@
+name: BDS_DEV
+on:
+  push:
+    branches:
+    - master
+  
+jobs:
+  my_job:
+    name: deploy to staging
+    runs-on: ubuntu latest
+    
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        java-version: 1.8
+              
+    
